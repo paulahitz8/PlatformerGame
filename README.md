@@ -1,6 +1,6 @@
-# {Project Name}
+# TNT Cat
 
-## Description
+## Best game ever
 
 {project description}
 
@@ -17,11 +17,10 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
- - {Dev05} - {Role(s)}
+ - Paula Hitz - role 
+ - María Calle - role 
+ - Irene Hernández - role 
+
 
 ## License
 
