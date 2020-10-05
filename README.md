@@ -1,8 +1,8 @@
-# {Project Name}
+# TNT Cat
 
 ## Description
 
-{project description}
+Best platformer game ever.
 
 ## Key Features
 
@@ -17,11 +17,10 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
- - {Dev05} - {Role(s)}
+ - Paula Hitz - role 
+ - María Calle - role 
+ - Irene Hernández - role 
+
 
 ## License
 
