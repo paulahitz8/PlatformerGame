@@ -45,6 +45,10 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
+	// L02: TODO 1: Create methods to request Load / Save
+	//FUNCIONS VOID LOADrEQUEST (CONST CHAR* FILENAME) OR THE ACTUAL FUNCTION ????? NOT SURE. IT GOES HERE OR BELOW
+
+
 private:
 
 	// Load config file
@@ -97,10 +101,8 @@ private:
 	float dt;
 
 	// L02: TODO 1: Create required variables to request load / save and 
-	////////////////////////////////////////////// the filename for save / load
-
-	bool requestLoad;
-	bool requestSave;
+	// the filename for save / loadç
+	//VARIABLES BOOL
 
 
 };
