@@ -45,8 +45,6 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	// L02: TODO 1: Create methods to request Load / Save
-
 private:
 
 	// Load config file
@@ -99,7 +97,12 @@ private:
 	float dt;
 
 	// L02: TODO 1: Create required variables to request load / save and 
-	// the filename for save / load
+	////////////////////////////////////////////// the filename for save / load
+
+	bool requestLoad;
+	bool requestSave;
+
+
 };
 
 extern App* app;
