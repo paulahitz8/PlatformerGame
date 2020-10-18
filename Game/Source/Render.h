@@ -30,8 +30,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// L02: TODO 6: Declare Load / Save methods
-
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
 
