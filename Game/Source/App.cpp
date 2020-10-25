@@ -278,7 +278,6 @@ const char* App::GetOrganization() const
 	return organization.GetString();
 }
 
-// Load / Save
 void App::LoadGameRequest()
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
@@ -286,7 +285,7 @@ void App::LoadGameRequest()
 }
 
 // ---------------------------------------
-void App::SaveGameRequest() const
+void App::SaveGameRequest()
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
 	saveRequest = true;
@@ -297,7 +296,7 @@ void App::SaveGameRequest() const
 // then call all the modules to load themselves
 bool App::LoadGame()
 {
-	bool ret = false;
+	bool ret = true;
 	pugi::xml_document saveDoc;
 	pugi::xml_parse_result result = saveDoc.load_file(saveFile.GetString());
 	
@@ -318,14 +317,13 @@ bool App::LoadGame()
 			item = item->next;
 		}
 	}
-	loadRequest = false;
 	return ret;
 }
 
 // L02: TODO 7: Implement the xml save method for current state
-bool App::SaveGame() const
+bool App::SaveGame() 
 {
-	bool ret = false;
+	bool ret = true;
 	pugi::xml_document saveDoc;
 	saveDoc.append_child("save_state");
 
@@ -338,7 +336,6 @@ bool App::SaveGame() const
 		ret = item->data->SaveState(saveDoc.child("save_state").child(item->data->name.GetString()));
 		item = item->next;
 	}
-	saveRequest = false;
 	return ret;
 }
 

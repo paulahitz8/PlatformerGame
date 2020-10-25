@@ -49,7 +49,7 @@ public:
 	const char* GetOrganization() const;
 
 	void LoadGameRequest();
-	void SaveGameRequest() const;
+	void SaveGameRequest();
 
 private:
 
@@ -73,7 +73,7 @@ private:
 
 	// Load / Save
 	bool LoadGame();
-	bool SaveGame() const;
+	bool SaveGame();
 
 public:
 
@@ -101,8 +101,7 @@ private:
 	uint frames;
 	float dt;
 
-	mutable bool saveRequest;
-	bool loadRequest;
+	bool saveRequest, loadRequest;
 	SString saveFile;
 };
 

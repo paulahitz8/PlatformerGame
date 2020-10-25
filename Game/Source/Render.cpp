@@ -103,14 +103,13 @@ bool Render::LoadState(pugi::xml_node& data)
 
 // L02: DONE 8: Create a method to save the state of the renderer
 // Save Game State
-bool Render::SaveState(pugi::xml_node& data) const
+bool Render::SaveState(pugi::xml_node& data)
 {
 	LOG("Loading Renderer");
 	bool ret = true;
 
 	data.remove_child("camera");
 	pugi::xml_node cam = data.append_child("camera");
-
 	cam.append_attribute("x") = camera.x;
 	cam.append_attribute("y") = camera.y;
 

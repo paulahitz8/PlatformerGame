@@ -32,7 +32,7 @@ public:
 
 	// Load / Save
 	bool LoadState(pugi::xml_node&);
-	bool SaveState(pugi::xml_node&) const;
+	bool SaveState(pugi::xml_node&);
 
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
