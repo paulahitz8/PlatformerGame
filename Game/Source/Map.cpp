@@ -252,18 +252,33 @@ bool Map::LoadMap()
 		data.tileWidth = map.attribute("tilewidth").as_int();
 		data.tileHeight = map.attribute("tileheight").as_int();
 
-		if (map.attribute("orientation").as_string() == "orthogonal") {
+		SString orientation(map.attribute("orientation").as_string());
+		if (orientation == "orthogonal") {
 			data.type = MAPTYPE_ORTHOGONAL;
 		}
-		else if (map.attribute("orientation").as_string() == "isometric") {
+		else if (orientation == "isometric") {
 			data.type = MAPTYPE_ISOMETRIC;
 		}
-		else if (map.attribute("orientation").as_string() == "staggered") {
+		else if (orientation == "staggered") {
 			data.type = MAPTYPE_STAGGERED;
 		}
 		else {
 			data.type = MAPTYPE_UNKNOWN;
 		}
+		
+		
+		//if (map.attribute("orientation").as_string() == "orthogonal") {
+		//	data.type = MAPTYPE_ORTHOGONAL;
+		//}
+		//else if (map.attribute("orientation").as_string() == "isometric") {
+		//	data.type = MAPTYPE_ISOMETRIC;
+		//}
+		//else if (map.attribute("orientation").as_string() == "staggered") {
+		//	data.type = MAPTYPE_STAGGERED;
+		//}
+		//else {
+		//	data.type = MAPTYPE_UNKNOWN;
+		//}
 	}
 	return ret;
 }
