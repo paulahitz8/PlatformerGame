@@ -32,8 +32,8 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 
-	//app->map->Load("map.tmx");
-	app->map->Load("hello2.tmx");
+	app->map->Load("map.tmx");
+	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 	return true;
