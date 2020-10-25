@@ -160,12 +160,10 @@ void App::FinishUpdate()
 {
 	// This is a good place to call Load / Save functions
 	if (loadRequest) {
-		loadRequest = false;
 		LoadGame();
 	}
 
 	if (saveRequest) {
-		saveRequest = false;
 		SaveGame();
 	}
 }
@@ -317,6 +315,7 @@ bool App::LoadGame()
 			item = item->next;
 		}
 	}
+	loadRequest = false;
 	return ret;
 }
 
@@ -336,6 +335,8 @@ bool App::SaveGame()
 		ret = item->data->SaveState(saveDoc.child("save_state").child(item->data->name.GetString()));
 		item = item->next;
 	}
+	saveDoc.save_file("savegame.xml");
+	saveRequest = false;
 	return ret;
 }
 
