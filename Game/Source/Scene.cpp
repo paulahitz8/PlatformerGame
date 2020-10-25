@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
+#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -30,7 +31,10 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	img = app->tex->Load("Assets/textures/test.png");
+
+	//app->map->Load("map.tmx");
+	app->map->Load("hello2.tmx");
+	//img = app->tex->Load("Assets/textures/test.png");
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 	return true;
 }
@@ -63,7 +67,18 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 1;
 
-	app->render->DrawTexture(img, 380, 100);
+	//app->render->DrawTexture(img, 380, 100);
+
+	// Draw map
+	app->map->Draw();
+
+	// L03: DONE 7: Set the window title with map/tileset info
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+		app->map->data.width, app->map->data.height,
+		app->map->data.tileWidth, app->map->data.tileHeight,
+		app->map->data.tilesets.count());
+
+	app->win->SetTitle(title.GetString());
 
 	return true;
 }
