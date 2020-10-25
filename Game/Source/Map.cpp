@@ -215,7 +215,7 @@ bool Map::Load(const char* filename)
 		{
 			LOG("Tilesets----");
 			LOG("name: %s", item->data->name.GetString());
-			//LOG("tile width: %d tile height: %d", item->data->width item->data->height);
+			LOG("tile width: %d tile height: %d", item->data->tile_width, item->data->tile_height);
 		}
 
 
@@ -224,7 +224,7 @@ bool Map::Load(const char* filename)
 		{
 			LOG("Layers----");
 			LOG("name: %s", item->data->name.GetString());
-			//LOG("layer width: %d layer height: %d", item->data->width item->data->height);
+			LOG("layer width: %d layer height: %d", item->data->width, item->data->height);
 		}
 	}
 
