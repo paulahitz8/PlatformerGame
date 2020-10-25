@@ -33,6 +33,7 @@ bool Scene::Start()
 {
 
 	app->map->Load("map.tmx");
+	img = app->tex->Load("Assets/textures/4.png");
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -90,6 +91,20 @@ bool Scene::PostUpdate()
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+
+
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+	uint wmb, hmb;
+	app->tex->GetSize(img, wmb, hmb);
+	for (int i = 0; (wmb * i) <= (w - app->render->camera.x); i++)
+	{
+		app->render->DrawTexture(img, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
+		}
+
+	app->map->Draw();
+
+
 
 	return ret;
 }
