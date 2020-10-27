@@ -17,6 +17,14 @@ Map::Map() : Module(), mapLoaded(false)
 Map::~Map()
 {}
 
+// L06: TODO 7: Ask for the value of a custom property
+int Properties::GetProperty(const char* value, int defaultValue) const
+{
+	//...
+
+	return defaultValue;
+}
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -38,6 +46,9 @@ void Map::Draw()
 	ListItem<TileSet*>* tileset = data.tilesets.start;
 	ListItem<MapLayer*>* layer = data.mapLayers.start;
 
+
+
+
 	for (int y = 0; y < data.height; y++)
 	{
 		for (int x = 0; x < data.width; x++)
@@ -53,8 +64,23 @@ void Map::Draw()
 			if (gid != 0) app->render->DrawTexture(tileset->data->texture, pos.x, pos.y, &tileset->data->GetTileRect(gid));
 		}
 	}
-	//tileset = tiledset->next;
-	//layer = layer->next;
+
+	//// L06: TODO 4: Make sure we draw all the layers and not just the first one
+
+	//for (int y = 0; y < data.height; ++y)
+	//{
+	//	for (int x = 0; x < data.width; ++x)
+	//	{
+	//		int tileId = layer->Get(x, y);
+	//		if (tileId > 0)
+	//		{
+	//			// L04: TODO 9: Complete the draw function
+	//		}
+	//	}
+	//}
+
+	tileset = tileset->next;
+	layer = layer->next;
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
@@ -96,6 +122,19 @@ iPoint Map::WorldToMap(int x, int y) const
 
 	return ret;
 }
+
+
+// L06: TODO 3: Pick the right Tileset based on a tile id
+TileSet* Map::GetTilesetFromTileId(int id) const
+{
+	ListItem<TileSet*>* item = data.tilesets.start;
+	TileSet* set = item->data;
+
+	//...
+
+	return set;
+}
+
 
 // Get relative Tile rectangle
 SDL_Rect TileSet::GetTileRect(int id) const
@@ -344,5 +383,14 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		layer->data[i] = tile.attribute("gid").as_uint();
 	}
 
+	return ret;
+}
+
+// L06: TODO 6: Load a group of properties from a node and fill a list with it
+bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+	bool ret = false;
+
+	//...
 	return ret;
 }

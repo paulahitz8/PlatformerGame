@@ -2,6 +2,69 @@
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="50" height="15" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" name="Snowww" tilewidth="64" tileheight="64" tilecount="56" columns="8">
   <image source="snowtileset.png" width="512" height="449"/>
+  <terraintypes>
+   <terrain name="Ground" tile="19"/>
+   <terrain name="Water" tile="29"/>
+   <terrain name="Decoration" tile="29"/>
+  </terraintypes>
+  <tile id="0" terrain=",,2,2"/>
+  <tile id="1" terrain="2,2,2,2"/>
+  <tile id="2" terrain=",,2,2"/>
+  <tile id="3" terrain=",,2,2"/>
+  <tile id="4" terrain="2,2,2,2"/>
+  <tile id="5" terrain="2,2,2,2"/>
+  <tile id="6" terrain="2,2,2,2"/>
+  <tile id="7" terrain=",,2,2"/>
+  <tile id="8" terrain="0,0,,"/>
+  <tile id="9" terrain="1,1,1,1"/>
+  <tile id="10" terrain="1,1,1,1"/>
+  <tile id="11" terrain=",,2,2"/>
+  <tile id="12" terrain=",,2,2"/>
+  <tile id="13" terrain=",,2,2"/>
+  <tile id="14" terrain=",,2,2"/>
+  <tile id="15" terrain=",,2,2"/>
+  <tile id="16" terrain="0,0,0,0"/>
+  <tile id="17" terrain="0,0,0,0"/>
+  <tile id="18" terrain="0,0,0,0"/>
+  <tile id="19" terrain="0,0,,0"/>
+  <tile id="20" terrain="0,0,0,"/>
+  <tile id="21" terrain="0,0,,"/>
+  <tile id="22" terrain="0,0,,"/>
+  <tile id="23" terrain="0,0,,"/>
+  <tile id="24" terrain="2,2,2,2"/>
+  <tile id="25" terrain="2,2,2,2"/>
+  <tile id="26" terrain="0,0,0,0"/>
+  <tile id="27" terrain="0,0,0,0"/>
+  <tile id="28" terrain="0,0,0,0"/>
+  <tile id="29" terrain="0,0,,0"/>
+  <tile id="30" terrain="0,0,0,"/>
+  <tile id="31" terrain="0,0,,"/>
+  <tile id="32" terrain="0,0,,"/>
+  <tile id="33" terrain="0,0,,"/>
+  <tile id="34" terrain="0,0,,"/>
+  <tile id="35" terrain="0,0,,"/>
+  <tile id="36" terrain="0,0,0,0"/>
+  <tile id="37" terrain="0,0,0,0"/>
+  <tile id="38" terrain="0,0,0,0"/>
+  <tile id="39" terrain="0,0,,0"/>
+  <tile id="40" terrain="0,0,0,"/>
+  <tile id="41" terrain="0,0,,"/>
+  <tile id="42" terrain="0,0,,"/>
+  <tile id="43" terrain="0,0,,"/>
+  <tile id="44" terrain="0,0,,"/>
+  <tile id="45" terrain="0,0,0,0"/>
+  <tile id="46" terrain="0,0,0,0"/>
+  <tile id="47" terrain="0,0,0,0"/>
+  <tile id="48" terrain="0,0,,"/>
+  <tile id="49" terrain="0,0,,"/>
+  <tile id="50" terrain="0,0,,"/>
+  <tile id="51" terrain="0,0,0,0"/>
+  <tile id="52" terrain="0,0,0,0"/>
+  <tile id="53" terrain="0,0,,"/>
+  <tile id="54" terrain="0,0,,"/>
+ </tileset>
+ <tileset firstgid="57" name="collidergreenandred" tilewidth="64" tileheight="64" tilecount="2" columns="2">
+  <image source="../textures/collidergreenandred.png" width="128" height="64"/>
  </tileset>
  <layer id="1" name="Base " width="50" height="15">
   <data>
@@ -347,6 +410,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -393,6 +457,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="35"/>
+   <tile gid="34"/>
+   <tile gid="34"/>
+   <tile gid="44"/>
    <tile/>
    <tile/>
    <tile/>
@@ -474,13 +542,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="50"/>
+   <tile gid="55"/>
    <tile/>
    <tile/>
    <tile/>
@@ -488,11 +551,11 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="20"/>
+   <tile gid="17"/>
+   <tile gid="17"/>
+   <tile gid="17"/>
+   <tile gid="21"/>
    <tile/>
    <tile/>
    <tile/>
@@ -606,7 +669,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="4"/>
    <tile gid="2"/>
    <tile gid="25"/>
    <tile gid="26"/>
@@ -619,7 +682,7 @@
    <tile/>
    <tile/>
    <tile gid="7"/>
-   <tile/>
+   <tile gid="4"/>
    <tile/>
    <tile/>
    <tile/>
@@ -758,6 +821,10 @@
   </data>
  </layer>
  <layer id="2" name="Collisions" width="50" height="15">
+  <properties>
+   <property name="Drawable" type="bool" value="false"/>
+   <property name="Navigation" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -1148,6 +1215,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1229,6 +1300,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="58"/>
+   <tile gid="58"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1236,6 +1309,11 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1325,6 +1403,11 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1393,122 +1476,106 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
   </data>
  </layer>
 </map>
