@@ -55,6 +55,7 @@
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\FadeScreen.h" />
+    <ClInclude Include="Source\Animation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
