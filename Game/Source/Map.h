@@ -63,13 +63,22 @@ struct Properties
 {
 	struct Property
 	{
-		bool navigation;
-		bool drawable;
+		SString name;
+		int value;
 	};
 
 	~Properties()
 	{
 		//...
+		ListItem<Property*>* item;
+		item = list.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+		list.Clear();
 	}
 
 	// L06: TODO 7: Method to ask for the value of a custom property

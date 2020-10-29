@@ -21,7 +21,20 @@ Map::~Map()
 int Properties::GetProperty(const char* value, int defaultValue) const
 {
 	//...
+	ListItem<Property*>* listProp;
+	listProp = list.start;
 
+	SString prop = value;
+
+	while (listProp != NULL)
+	{
+		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
+		if (listProp->data->name == prop)
+		{
+			return listProp->data->value;
+		}
+		listProp = listProp->next;
+	}
 	return defaultValue;
 }
 
@@ -53,31 +66,11 @@ void Map::Draw()
 	{
 		for (int x = 0; x < data.width; x++)
 		{
-			//int tileId = layer->Get(x, y);
-			//if (tileId > 0)
-			//{
-			//	// L04: TODO 9: Complete the draw function
-			//}
-
 			iPoint pos = MapToWorld(x, y);
 			uint gid = layer->data->Get(x, y);
 			if (gid != 0) app->render->DrawTexture(tileset->data->texture, pos.x, pos.y, &tileset->data->GetTileRect(gid));
 		}
 	}
-
-	//// L06: TODO 4: Make sure we draw all the layers and not just the first one
-
-	//for (int y = 0; y < data.height; ++y)
-	//{
-	//	for (int x = 0; x < data.width; ++x)
-	//	{
-	//		int tileId = layer->Get(x, y);
-	//		if (tileId > 0)
-	//		{
-	//			// L04: TODO 9: Complete the draw function
-	//		}
-	//	}
-	//}
 
 	tileset = tileset->next;
 	layer = layer->next;
@@ -131,6 +124,15 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	TileSet* set = item->data;
 
 	//...
+	while (item != NULL)
+	{
+		if (set->firstgid <= id)
+		{
+			return set;
+		}
+		item = item->prev;
+		set = item->data;
+	}
 
 	return set;
 }
@@ -142,12 +144,6 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	SDL_Rect rect = { 0 };
 
 	// L04: DONE 7: Get relative Tile rectangle
-
-	/*int relativeId = id - firstgid;
-	rect.w = tileWidth;
-	rect.h = tileHeight;
-	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
-	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));*/
 
 	int col = ((id - 1) % numTilesWidth);
 	int row = ((id - 1) / numTilesWidth);
@@ -304,20 +300,6 @@ bool Map::LoadMap()
 		else {
 			data.type = MAPTYPE_UNKNOWN;
 		}
-		
-		
-		//if (map.attribute("orientation").as_string() == "orthogonal") {
-		//	data.type = MAPTYPE_ORTHOGONAL;
-		//}
-		//else if (map.attribute("orientation").as_string() == "isometric") {
-		//	data.type = MAPTYPE_ISOMETRIC;
-		//}
-		//else if (map.attribute("orientation").as_string() == "staggered") {
-		//	data.type = MAPTYPE_STAGGERED;
-		//}
-		//else {
-		//	data.type = MAPTYPE_UNKNOWN;
-		//}
 	}
 	return ret;
 }
@@ -392,5 +374,15 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	bool ret = false;
 
 	//...
+	pugi::xml_node property;
+	for (property = node.child("property"); property; property = property.next_sibling("property"))
+	{
+		Properties::Property* prop = new Properties::Property();
+
+		prop->name = property.attribute("name").as_string();
+		prop->value = property.attribute("value").as_int();
+
+		properties.list.Add(prop);
+	}
 	return ret;
 }
