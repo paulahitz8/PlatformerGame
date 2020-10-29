@@ -17,6 +17,7 @@
     </ClCompile>
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\FadeScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -53,6 +54,7 @@
     </ClInclude>
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\FadeScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

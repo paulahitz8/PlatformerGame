@@ -95,6 +95,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\FadeScreen.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -105,6 +106,7 @@
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Window.cpp" />
+    <ClInclude Include="Source\FadeScreen.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Scene.h" />
