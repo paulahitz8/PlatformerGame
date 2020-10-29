@@ -5,6 +5,7 @@
 #include "Animation.h"
 //#include "SDL_Rect.h"
 //#include "Point.h"
+#include "Physics.h"
 
 #include "SDL/include/SDL.h"
 
@@ -43,10 +44,6 @@ public:
 
 private:
 
-	fPoint speed;
-	bool godmode = false;
-	bool destroyed = false;
-
 	enum CollisionType {
 
 	};
@@ -59,8 +56,9 @@ private:
 	Animation death;
 	Animation shoot;
 	
-	iPoint position;
-
+	iPoint playerPos;
+	fPoint speed;
+	Physics playerPhysics;
 
 	bool ground = false;
 	bool platform = false;
@@ -79,9 +77,9 @@ private:
 	//float jumpingspeedx = 0.3;
 
 	bool isJumping = false;
-	//bool isFalling = false;
 	bool isDead;
 	bool godMode;
+	//bool isFalling = false;
 
 	bool resetLives = false;
 	int lifeCount = 3;

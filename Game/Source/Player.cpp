@@ -6,7 +6,7 @@
 #include "Render.h"
 #include "Scene.h"
 #include "Log.h"
-//#include "Map.h"
+#include "Map.h"
 //#include ""Collision.h"
 
 Player::Player() {}
@@ -27,8 +27,8 @@ bool Player::Start()
 	//playerTexture = App->textures->Load("Assets/...");
 	//currentAnimation = &rightIdleAnim;
 
-	//position.x = {};
-	//position.y = {};
+	//playerPos = {0,0};
+
 
 	if (resetLives == true)
 	{
@@ -88,7 +88,7 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				position.x -= 4;
+				playerPos.x -= 4;
 				if (isJumping != true)
 				{
 					//currentAnimation = &leftAnim;
@@ -97,7 +97,7 @@ bool Player::Update(float dt)
 			
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				position.x += 4;
+				playerPos.x += 4;
 				if (isJumping != true)
 				{
 					//currentAnimation = &rightAnim;
@@ -107,12 +107,12 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			{
-				position.y += 4;
+				playerPos.y += 4;
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 			{
-				position.y -= 4;
+				playerPos.y -= 4;
 			}
 
 			// If last movement was left, set the current animation back to left idle
@@ -132,11 +132,6 @@ bool Player::Update(float dt)
 				}
 			}
 
-			//limits we used to have
-			/*if (position.x < 0) { position.x += 2; }
-			if (position.x > 216) { position.x -= 2; }
-			if (position.y < 0) { position.y += 2; }
-			if (position.y > 232) { position.y -= 2; }*/
 		}
 
 		else //left + right + jump
@@ -151,7 +146,7 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) // por si clicamos ambos a la vez
 			{
-				position.x -= 4;
+				playerPos.x -= 4;
 				if (isJumping != true)
 				{
 					//currentAnimation = &leftAnim;
@@ -160,7 +155,7 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				position.x += 4;
+				playerPos.x += 4;
 				if (isJumping != true)
 				{
 					//currentAnimation = &rightAnim;
@@ -185,12 +180,53 @@ bool Player::Update(float dt)
 				}
 			}
 
+			playerPhysics.DoPhysics(playerPos.y, speed.y);
+
+
 		}
+
+		if (isDead)
+		{
+			currentAnimation = &death;
+			//app->audio->PlayFx(deadFx);
+			if (currentAnimation->HasFinished())
+			{
+				//app->transition->FadeEffect((Module*)app->scene, (Module*)app->deadScreen, false, 60.0f)
+			}
+		}
+
+		return true;
 	}
 
-
-
 }
+
+bool Player::PostUpdate()
+{
+
+	// Map Limits
+	if (playerPos.x <= 0) 
+	{ 
+		playerPos.x = 0; 
+	}
+	if ((playerPos.x + playerRect.x) > (app->map->data.width * app->map->data.tileWidth)) 
+	{ 
+		--playerPos.x; 
+	}
+	//In case of godmode on
+	if (playerPos.y <= 0) 
+	{ 
+		playerPos.y = 0; 
+	}
+	if ((playerPos.y + playerRect.y) > (app->map->data.height * app->map->data.tileHeight))
+	{ 
+		--playerPos.y; 
+	}
+
+	//Drawing the player
+	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
+}
+
 
 
 
