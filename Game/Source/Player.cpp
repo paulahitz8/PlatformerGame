@@ -1,3 +1,90 @@
+#include "Player.h"
+#include "App.h"
+#include "Textures.h"
+#include "Audio.h"
+#include "Input.h"
+#include "Render.h"
+#include "Scene.h"
+#include "Log.h"
+//#include "Map.h"
+//#include ""Collision.h"
+
+Player::Player() {}
+
+Player::~Player() {}
+
+
+bool Player::Awake(pugi::xml_node&)
+{
+	//animaciones
+	return true;
+}
+
+
+bool Player::Start()
+{
+	LOG("Loading player textures");
+	//playerTexture = App->textures->Load("Assets/...");
+	//currentAnimation = &rightIdleAnim;
+
+	//position.x = {};
+	//position.y = {};
+
+	if (resetLives == true)
+	{
+		lifeCount = 3;
+		resetLives = false;
+	}
+
+	godMode = false;
+	isDead = false;
+	isJumping = false;
+
+	//Collider
+
+	//Audios
+	
+	return true;
+}
+
+bool Player::PreUpdate()
+{
+	return true;
+}
+
+bool Player::Update(float dt)
+{
+	currentAnimation->Update();
+
+	//if (godmode == false)
+	//{
+	//	if (position.x == 100)
+	//	{
+	//		app->fade->FadeToBlack((Module*)App->lvl2, (Module*)App->winningscreen, 0);
+	//	}
+	//}
+
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		isDead = true;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		godMode = !godMode;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		//app->fade->FadeToBlackk((Module*)app->lvl2, (Module*)app->gameover,0);
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F12) == KEY_DOWN)
+	{
+		//app->fade->FadeToBlackk((Module*)app->lvl2, (Module*)app->winning,0);
+	}
+
+}
+
+
+
 //
 //#include "Player.h"
 //#include "App.h"

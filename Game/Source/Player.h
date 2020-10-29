@@ -1,97 +1,92 @@
-////#pragma once
-//#ifndef __PLAYER_H__
-//#define __PLAYER_H__
-//
-//#include "Module.h"
-////#include "SDL_Rect.h"
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
+
+#include "Module.h"
+#include "Animation.h"
+//#include "SDL_Rect.h"
 //#include "Point.h"
-////#include "Animation.h"
-//
-//struct SDL_Texture;
-//
-//class Player : public Module
-//{
-//private:
-//
-//	//SDL_Rect player;
-//	SDL_Texture* playertexture;
-//
-//	bool godmode = false;
-//
-//	bool destroyed = false;
-//
-//
-//
-//	//the WHAT ID DIS category:
-//
-//	////////////////////////////////////////////////////////
-//	bool leftPlatOn = false;
-//
-//	int i = 1;
-//	int j = 0;
-//
-//	bool firstFloor = false;
-//	bool secondFloor = false;
-//	bool leftfall = false;
-//	bool rightfall = false;
-//
-//	int jumpTimer = 0;
-//	int gravity = 1;
-//	int speedx = 1;
-//	int speedy = 1;
-//	int currenty;
-//	int startingy;
-//	int jumpingspeedy = 6;
-//	float jumpingspeedx = 0.3;
-//
-//	////////////////////////////////////////////////////////
-//
-//
-//public:
-//
-//	//Lives
-//	bool resetVidas = false;
-//	int livecount = 3;
-//
-//	//Probably re-do this
-//	bool isJumping = false;
-//	bool isFalling = false;
-//
-//
-//	// The player's collider
-//		//Collider* collider = nullptr;
-//		//Collider* colliderDelete = nullptr;
-//		//void OnCollision(Collider* c1, Collider* c2) override;
-//
-//	int activelevel = 0;
-//
-//	//We dont have an iPoint class this year but I think it would be useful to implement
-//	iPoint position;
-//
-//
-//	Player(/*bool startEnabled*/);
-//	virtual ~Player();
-//
-//	// In donkey kong start, update and postupdate weren't bool, they were another class named "Update_Status"
-//	bool Awake(pugi::xml_node& conf);
-//	bool Start(); //In donkey kong we had "override" right here as in "bool Start() override;"
-//	bool PreUpdate();
-//	bool Update(); //override
-//	bool PostUpdate(); //override
-//	bool CleanUp(); //override
-//
-//
-//
-//
-//	//the private WHAT IS DIS category:
-//
-//	////////////////////////////////////////////////////////
-//
-//	int n = 0;
-//
-//	////////////////////////////////////////////////////////
-//
-//};
-//
-//#endif
-//
+
+#include "SDL/include/SDL.h"
+
+struct SDL_Texture;
+
+class Player : public Module
+{
+public:
+	Player();
+
+	void Init();
+	
+	// Destructor
+	virtual ~Player();
+
+	// Called before player is available
+	bool Awake(pugi::xml_node& conf);
+
+	// Called before the first frame
+	bool Start();
+
+	// Called each loop iteration
+	bool PreUpdate();
+	bool Update(float dt);
+	bool PostUpdate();
+
+	// Called before quitting
+	bool CleanUp(); 
+
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&);
+
+	//SDL_Rect player;
+	SDL_Texture* playerTexture;
+	//SDL_Rect playerRect = {};
+
+private:
+
+	bool godmode = false;
+	bool destroyed = false;
+
+	enum CollisionType {
+		/*DoubleAir,
+		DoubleSolid,
+		SolidAir,
+		AirSolid*/
+	};
+
+	//list of animation
+	Animation* currentAnimation = &idle;
+	Animation idle;
+	Animation walk;
+	Animation jump;
+	Animation death;
+	Animation shoot;
+	
+	iPoint position;
+
+
+	bool ground = false;
+	bool platform = false;
+	bool water = false;
+
+	/*unsigned int deadFx;
+	unsigned int jumpFx;*/
+
+	//int jumpTimer = 0;
+	//int gravity = 1;
+	//int speedx = 1;
+	//int speedy = 1;
+	//int currenty;
+	//int startingy;
+	//int jumpingspeedy = 6;
+	//float jumpingspeedx = 0.3;
+
+	bool isJumping = false;
+	//bool isFalling = false;
+	bool isDead;
+	bool godMode;
+
+	bool resetLives = false;
+	int lifeCount = 3;
+};
+
+#endif // __PLAYER_H__
