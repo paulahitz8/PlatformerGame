@@ -48,10 +48,7 @@ private:
 	bool destroyed = false;
 
 	enum CollisionType {
-		/*DoubleAir,
-		DoubleSolid,
-		SolidAir,
-		AirSolid*/
+
 	};
 
 	//list of animation
