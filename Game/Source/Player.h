@@ -39,10 +39,11 @@ public:
 
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
-	//SDL_Rect playerRect = {};
+	SDL_Rect playerRect = {50,50,50,50}; //me he inventado estos valores
 
 private:
 
+	fPoint speed;
 	bool godmode = false;
 	bool destroyed = false;
 

@@ -82,6 +82,112 @@ bool Player::Update(float dt)
 	}
 
 
+	if (isDead == false)
+	{
+		if (godMode) //left + right + up + down
+		{
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				position.x -= 4;
+				if (isJumping != true)
+				{
+					//currentAnimation = &leftAnim;
+				}
+			}
+			
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				position.x += 4;
+				if (isJumping != true)
+				{
+					//currentAnimation = &rightAnim;
+				}
+
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			{
+				position.y += 4;
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				position.y -= 4;
+			}
+
+			// If last movement was left, set the current animation back to left idle
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+			{
+				if (isJumping != true)
+				{
+					//currentAnimation = &leftidleAnim;
+				}
+			}
+			// If last movement was right, set the current animation back to right idle
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+			{
+				if (isJumping != true)
+				{
+					//currentAnimation = &rightidleAnim;
+				}
+			}
+
+			//limits we used to have
+			/*if (position.x < 0) { position.x += 2; }
+			if (position.x > 216) { position.x -= 2; }
+			if (position.y < 0) { position.y += 2; }
+			if (position.y > 232) { position.y -= 2; }*/
+		}
+
+		else //left + right + jump
+		{
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			{
+				isJumping = true;
+				//currentAnimation = &jump;
+				//app->audio->PlayFx(jumpFx);
+				//speed.y = -500.0f;
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) // por si clicamos ambos a la vez
+			{
+				position.x -= 4;
+				if (isJumping != true)
+				{
+					//currentAnimation = &leftAnim;
+				}
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				position.x += 4;
+				if (isJumping != true)
+				{
+					//currentAnimation = &rightAnim;
+				}
+
+			}
+
+			// If last movement was left, set the current animation back to left idle
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+			{
+				if (isJumping != true)
+				{
+					//currentAnimation = &leftidleAnim;
+				}
+			}
+			// If last movement was right, set the current animation back to right idle
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+			{
+				if (isJumping != true)
+				{
+					//currentAnimation = &rightidleAnim;
+				}
+			}
+
+		}
+	}
+
 
 
 }
