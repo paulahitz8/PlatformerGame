@@ -24,10 +24,10 @@ bool Player::Awake(pugi::xml_node&)
 bool Player::Start()
 {
 	LOG("Loading player textures");
-	//playerTexture = App->textures->Load("Assets/...");
+	playerTexture = app->tex->Load("Assets/textures/penguinSprites.png");
 	//currentAnimation = &rightIdleAnim;
 
-	//playerPos = {0,0};
+	playerPos = {0,0};
 
 
 	if (resetLives == true)
@@ -58,7 +58,7 @@ bool Player::Update(float dt)
 
 	//if (godmode == false)
 	//{
-	//	if (position.x == 100)
+	//	if (position.x == 100) esto era para ganar pero ahora usariamos Tiled
 	//	{
 	//		app->fade->FadeToBlack((Module*)App->lvl2, (Module*)App->winningscreen, 0);
 	//	}
@@ -225,6 +225,8 @@ bool Player::PostUpdate()
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
+
+	return true;
 }
 
 bool Player::CleanUp()
@@ -233,6 +235,8 @@ bool Player::CleanUp()
 	//app->audio->UnloadFx(deadFx); asi con todos
 
 	app->tex->UnLoad(playerTexture);
+
+	return true;
 }
 
 bool Player::Load(pugi::xml_node&)

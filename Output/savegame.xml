@@ -5,7 +5,6 @@
 	<textures />
 	<audio />
 	<scene />
-	<renderer>
-		<camera x="0" y="-220" />
-	</renderer>
+	<map />
+	<renderer />
 </save_state>
