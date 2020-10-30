@@ -7,7 +7,7 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Map.h"
-//#include ""Collision.h"
+#include "Collision.h"
 
 Player::Player() {}
 

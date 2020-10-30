@@ -6,6 +6,9 @@
 #include "SDL/include/SDL_scancode.h"
 #include "Log.h"
 
+
+
+
 Collisions::Collisions() : Module() {
 	name = "Collisions";
 
