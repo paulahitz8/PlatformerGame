@@ -33,7 +33,7 @@ bool Scene::Start()
 {
 
 	app->map->Load("map.tmx");
-	img = app->tex->Load("Assets/textures/4.png");
+	img = app->tex->Load("Assets/textures/5.png");
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
