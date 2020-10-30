@@ -17,8 +17,10 @@ Player::~Player() {}
 bool Player::Awake(pugi::xml_node&)
 {
 	//right idle animations
-	rightIdle.PushBack({ 59, 129, 22, 25 });
-	rightIdle.PushBack({ 91, 129, 22, 25 });
+	/*rightIdle.PushBack({ 59, 129, 22, 25 });
+	rightIdle.PushBack({ 91, 129, 22, 25 });*/
+	rightIdle.PushBack({ 508, 392, 40, 45 });
+	rightIdle.PushBack({ 448, 392, 40, 45 });
 	rightIdle.speed = 0.008f;
 
 	//left idle animations
@@ -100,10 +102,11 @@ bool Player::Awake(pugi::xml_node&)
 bool Player::Start()
 {
 	LOG("Loading player textures");
-	playerTexture = app->tex->Load("Assets/textures/Assets Player Dev.png");
+	playerTexture = app->tex->Load("Assets/textures/Assets Player Dev 1.png");
 	currentAnimation = &rightIdle;
 
-	playerPos = {100,1000};
+	/*playerPos = {100,1000};*/
+	playerPos = {100,980};
 
 
 	if (resetLives == true)
