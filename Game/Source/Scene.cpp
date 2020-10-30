@@ -6,9 +6,14 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
+
+
+
+
 
 Scene::Scene() : Module()
 {
@@ -18,6 +23,11 @@ Scene::Scene() : Module()
 // Destructor
 Scene::~Scene()
 {}
+
+void Scene::Init()
+{
+	active = false;
+}
 
 // Called before render is available
 bool Scene::Awake()
@@ -37,6 +47,8 @@ bool Scene::Start()
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
 	app->audio->PlayMusic("Assets/audio/music/Snowland Loop.wav");
+	app->player->Enable();
+
 	return true;
 }
 
@@ -137,10 +149,14 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
+	//app->render->camera.x = 0;
+	//app->render->camera.y = 0;
+
+	app->tex->UnLoad(img);
+	app->player->Disable();
+	app->map->Disable();
+
+
 	return true;
 }
 
-void Scene::Init()
-{
-	active = false;
-}

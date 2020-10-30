@@ -11,6 +11,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+
+
 TitleScreen::TitleScreen() : Module()
 {
 	name.Create("TitleScreen");
@@ -19,6 +21,12 @@ TitleScreen::TitleScreen() : Module()
 // Destructor
 TitleScreen::~TitleScreen()
 {}
+
+void TitleScreen::Init()
+{
+	active = true;
+}
+
 
 // Called before render is available
 bool TitleScreen::Awake()
@@ -62,9 +70,9 @@ bool TitleScreen::PostUpdate()
 	bool ret = true;
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() };
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-	else app->render->DrawTexture(titleScreen, NULL, NULL, &rect);
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
+
+	app->render->DrawTexture(titleScreen, 0, 0, &rect);
 
 
 	return ret;
@@ -80,7 +88,3 @@ bool TitleScreen::CleanUp()
 	return true;
 }
 
-void TitleScreen::Init()
-{
-	active = true;
-}

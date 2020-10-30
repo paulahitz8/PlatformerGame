@@ -34,11 +34,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(win);
 	AddModule(input);
-	AddModule(fadeScreen);
+	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(fadeScreen);
 	AddModule(titleS);
 	AddModule(scene);
 	AddModule(map);
