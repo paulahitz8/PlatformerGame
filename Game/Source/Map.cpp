@@ -17,6 +17,11 @@ Map::Map() : Module(), mapLoaded(false)
 Map::~Map()
 {}
 
+void Map::Init()
+{
+	active = false;
+}
+
 // L06: TODO 7: Ask for the value of a custom property
 //int Properties::GetProperty(const char* value, int defaultValue) const
 //{
@@ -54,6 +59,10 @@ int Properties::GetProperty(const char* value, int defaultValue) const
 
 	return defaultValue;
 }
+
+
+
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {

@@ -16,8 +16,8 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class TitleScreen;
 class Map;
-//class TitleScreen;
 class FadeScreen;
 class Player;
 
@@ -88,8 +88,8 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
+	TitleScreen* titleS;
 	Map* map;
-	//TitleScreen* titleS;
 	FadeScreen* fadeScreen;
 	Player* player;
 
