@@ -54,7 +54,7 @@ private:
 	Animation rightIdle;
 	Animation leftIdle;
 	Animation rightWalk;
-	Animation lefttWalk;
+	Animation leftWalk;
 	Animation rightJump;
 	Animation leftJump;
 	Animation rightDeath;

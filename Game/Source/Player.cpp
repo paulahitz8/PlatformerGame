@@ -17,43 +17,46 @@ Player::~Player() {}
 bool Player::Awake(pugi::xml_node&)
 {
 	//right idle animations
-	/*rightIdle.PushBack({ 59, 129, 22, 25 });
-	rightIdle.PushBack({ 91, 129, 22, 25 });*/
-	rightIdle.PushBack({ 508, 392, 40, 45 });
-	rightIdle.PushBack({ 448, 392, 40, 45 });
+	rightIdle.PushBack({ 59, 129, 22, 25 });
+	rightIdle.PushBack({ 91, 129, 22, 25 });
+	/*rightIdle.PushBack({ 508, 392, 40, 45 });
+	rightIdle.PushBack({ 448, 392, 40, 45 });*/
 	rightIdle.speed = 0.008f;
 
 	//left idle animations
 	leftIdle.PushBack({ 289, 229, 22, 25 });
 	leftIdle.PushBack({ 257, 229, 22, 25 });
+	leftIdle.speed = 0.008f;
 
 	//walking to the right animations
 	rightWalk.PushBack({ 58, 97, 22, 25 });
 	rightWalk.PushBack({ 121, 97, 22, 25 });
 	rightWalk.PushBack({ 151, 97, 22, 25 });
 	rightWalk.PushBack({ 185, 97, 22, 25 });
-	rightWalk.PushBack({ 218, 97, 22, 25 });
 	rightWalk.PushBack({ 249, 97, 22, 25 });
 	rightWalk.PushBack({ 282, 97, 22, 25 });
-	rightWalk.PushBack({ 249, 97, 22, 25 });
 	rightWalk.PushBack({ 218, 97, 22, 25 });
+	rightWalk.PushBack({ 282, 97, 22, 25 });
+	rightWalk.PushBack({ 249, 97, 22, 25 });
 	rightWalk.PushBack({ 185, 97, 22, 25 });
 	rightWalk.PushBack({ 151, 97, 22, 25 });
 	rightWalk.PushBack({ 121, 97, 22, 25 });
+	rightWalk.speed = 0.05f;
 
 	//walking to the left animations
-	lefttWalk.PushBack({ 290, 197, 22, 25 });
-	lefttWalk.PushBack({ 227, 197, 22, 25 });
-	lefttWalk.PushBack({ 195, 197, 22, 25 });
-	lefttWalk.PushBack({ 163, 197, 22, 25 });
-	lefttWalk.PushBack({ 130, 197, 22, 25 });
-	lefttWalk.PushBack({ 98, 197, 22, 25 });
-	lefttWalk.PushBack({ 66, 197, 22, 25 });
-	lefttWalk.PushBack({ 98, 197, 22, 25 });
-	lefttWalk.PushBack({ 130, 197, 22, 25 });
-	lefttWalk.PushBack({ 163, 197, 22, 25 });
-	lefttWalk.PushBack({ 195, 197, 22, 25 });
-	lefttWalk.PushBack({ 227, 197, 22, 25 });
+	leftWalk.PushBack({ 290, 197, 22, 25 });
+	leftWalk.PushBack({ 227, 197, 22, 25 });
+	leftWalk.PushBack({ 195, 197, 22, 25 });
+	leftWalk.PushBack({ 163, 197, 22, 25 });
+	leftWalk.PushBack({ 98, 197, 22, 25 });
+	leftWalk.PushBack({ 66, 197, 22, 25 });
+	leftWalk.PushBack({ 130, 197, 22, 25 });
+	leftWalk.PushBack({ 66, 197, 22, 25 });
+	leftWalk.PushBack({ 98, 197, 22, 25 });
+	leftWalk.PushBack({ 163, 197, 22, 25 });
+	leftWalk.PushBack({ 195, 197, 22, 25 });
+	leftWalk.PushBack({ 227, 197, 22, 25 });
+	leftWalk.speed = 0.05f;
 
 	//jumping to the right animations
 	rightJump.PushBack({ 58, 64, 22, 25 });
@@ -102,11 +105,11 @@ bool Player::Awake(pugi::xml_node&)
 bool Player::Start()
 {
 	LOG("Loading player textures");
-	playerTexture = app->tex->Load("Assets/textures/Assets Player Dev 1.png");
+	playerTexture = app->tex->Load("Assets/textures/Assets Player Dev.png");
 	currentAnimation = &rightIdle;
 
-	/*playerPos = {100,1000};*/
-	playerPos = {100,980};
+	playerPos = {100,1000};
+	/*playerPos = {100,980};*/
 
 
 	if (resetLives == true)
@@ -227,7 +230,7 @@ bool Player::Update(float dt)
 				playerPos.x -= 4;
 				if (isJumping != true)
 				{
-					//currentAnimation = &leftAnim;
+					currentAnimation = &leftWalk;
 				}
 				/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
 			}
@@ -237,10 +240,28 @@ bool Player::Update(float dt)
 				playerPos.x += 4;
 				if (isJumping != true)
 				{
-					//currentAnimation = &rightAnim;
+					currentAnimation = &rightWalk;
 				}
 				/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
 
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				playerPos.x += 1;
+				if (isJumping != true)
+				{
+					currentAnimation = &rightWalk;
+				}
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				playerPos.x -= 1;
+				if (isJumping != true)
+				{
+					currentAnimation = &leftWalk;
+				}
 			}
 
 			// If last movement was left, set the current animation back to left idle
@@ -248,15 +269,16 @@ bool Player::Update(float dt)
 			{
 				if (isJumping != true)
 				{
-					//currentAnimation = &leftidleAnim;
+					currentAnimation = &leftIdle;
 				}
 			}
+
 			// If last movement was right, set the current animation back to right idle
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
 				if (isJumping != true)
 				{
-					//currentAnimation = &rightidleAnim;
+					currentAnimation = &rightIdle;
 				}
 			}
 
