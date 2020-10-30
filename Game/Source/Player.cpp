@@ -17,6 +17,7 @@ Player::~Player() {}
 bool Player::Awake(pugi::xml_node&)
 {
 	//animaciones
+
 	return true;
 }
 
@@ -187,7 +188,7 @@ bool Player::Update(float dt)
 
 		if (isDead)
 		{
-			currentAnimation = &death;
+			currentAnimation = &rightDeath;
 			//app->audio->PlayFx(deadFx);
 			if (currentAnimation->HasFinished())
 			{
