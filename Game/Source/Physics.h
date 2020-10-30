@@ -6,7 +6,7 @@
 
 struct Physics {
 public:
-    void DoPhysics(int& x, float& y) {
+    void DoPhysics(int& x, int& y) {
      //   if (axisY) {
          
             x = x + y * time + (0.5 * gravity * time * time);

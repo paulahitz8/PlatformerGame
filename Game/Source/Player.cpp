@@ -220,33 +220,35 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
 				isJumping = true;
-				//currentAnimation = &jump;
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
+				{
+					currentAnimation = &rightJump;
+				}
+				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+				{
+					currentAnimation = &leftJump;
+				}
 				//app->audio->PlayFx(jumpFx);
 				//speed.y = -500.0f;
+				playerPhysics.DoPhysics(playerPos.x, playerPos.y);
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) // por si clicamos ambos a la vez
 			{
-				playerPos.x -= 4;
 				if (isJumping != true)
 				{
-					currentAnimation = &leftWalk;
+					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
+					{
+						currentAnimation = &rightWalk;
+					}
+					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+					{
+						currentAnimation = &leftWalk;
+					}
 				}
-				/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				playerPos.x += 4;
-				if (isJumping != true)
-				{
-					currentAnimation = &rightWalk;
-				}
-				/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
-
-			}
-
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				playerPos.x += 1;
 				if (isJumping != true)
@@ -255,7 +257,7 @@ bool Player::Update(float dt)
 				}
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
 				playerPos.x -= 1;
 				if (isJumping != true)
@@ -281,10 +283,6 @@ bool Player::Update(float dt)
 					currentAnimation = &rightIdle;
 				}
 			}
-
-			/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
-
-
 		}
 
 		if (isDead)
