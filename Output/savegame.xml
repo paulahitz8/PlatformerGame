@@ -10,7 +10,8 @@
 	<scene />
 	<map />
 	<:anonymous />
+	<Collisions />
 	<renderer>
-		<camera x="-1171" y="-773" />
+		<camera x="-67111062" y="-362091" />
 	</renderer>
 </save_state>
