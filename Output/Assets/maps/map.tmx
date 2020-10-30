@@ -67,6 +67,9 @@
   <image source="../textures/collidergreenandred.png" width="128" height="64"/>
  </tileset>
  <layer id="1" name="Base " width="50" height="15">
+  <properties>
+   <property name="Drawable" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>

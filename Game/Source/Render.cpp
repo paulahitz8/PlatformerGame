@@ -106,36 +106,24 @@ bool Render::LoadState(pugi::xml_node& data)
 // Save Game State
 bool Render::SaveState(pugi::xml_node& data)
 {
-	LOG("Loading Renderer");
-	bool ret = true;
+	//LOG("Loading Renderer");
+	//bool ret = true;
 
-	data.remove_child("camera");
+	//data.remove_child("camera");
+	//pugi::xml_node cam = data.append_child("camera");
+	//cam.append_attribute("x").set_value(camera.x);
+	//cam.append_attribute("y").set_value(camera.y);
+
+	//return ret;
+
 	pugi::xml_node cam = data.append_child("camera");
-	cam.append_attribute("x").set_value(camera.x);
-	cam.append_attribute("y").set_value(camera.y);
 
-	return ret;
+	cam.append_attribute("x") = camera.x;
+	cam.append_attribute("y") = camera.y;
+
+	return true;
 }
 
-//bool Render::LoadState(pugi::xml_node& data)
-//{
-//	camera.x = data.child("camera").attribute("x").as_int();
-//	camera.y = data.child("camera").attribute("y").as_int();
-//
-//	return true;
-//}
-//
-//// L02: DONE 8: Create a method to save the state of the renderer
-//// Save Game State
-//bool Render::SaveState(pugi::xml_node& data) const
-//{
-//	pugi::xml_node cam = data.append_child("camera");
-//
-//	cam.append_attribute("x") = camera.x;
-//	cam.append_attribute("y") = camera.y;
-//
-//	return true;
-//}
 
 void Render::SetBackgroundColor(SDL_Color color)
 {

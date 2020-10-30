@@ -15,8 +15,8 @@ struct TileSet
 	int	firstgid;
 	int margin;
 	int	spacing;
-	int	tile_width;
-	int	tile_height;
+	int	tileWidth;
+	int	tileHeight;
 
 	SDL_Texture* texture;
 	int	texWidth;
@@ -28,25 +28,7 @@ struct TileSet
 
 	// L04: DONE 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
-
-	/*TileSet() {}
-	~TileSet() {}
-	bool LoadTilesetData(pugi::xml_node&);
-	int firstGid;
-	int tileWidth;
-	int tileHeight;
-	int spacing;
-	int margin;
-	int imgWidth;
-	int imgHeight;
-	SString name, imgSource;*/
 };
-
-//struct MapNode {
-//	bool LoadMapData(pugi::xml_node&);
-//	SString orientation, renderOrder;
-//	int width, height, tileWidth, tileHeight, nextObjectId;
-//};
 
 // L03: DONE 1: We create an enum for map type, just for convenience,
 // NOTE: Platformer game will be of type ORTHOGONAL
@@ -125,7 +107,7 @@ struct MapData
 	List<TileSet*> tilesets;
 
 	// L04: DONE 2: Add a list/array of layers to the map
-	List<MapLayer*> mapLayers;
+	List<MapLayer*> layers;
 };
 
 class Map : public Module

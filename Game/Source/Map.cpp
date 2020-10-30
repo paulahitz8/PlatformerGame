@@ -18,26 +18,42 @@ Map::~Map()
 {}
 
 // L06: TODO 7: Ask for the value of a custom property
+//int Properties::GetProperty(const char* value, int defaultValue) const
+//{
+//	//...
+//	ListItem<Property*>* listProp;
+//	listProp = list.start;
+//
+//	SString prop = value;
+//
+//	while (listProp != NULL)
+//	{
+//		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
+//		if (listProp->data->name == prop)
+//		{
+//			return listProp->data->value;
+//		}
+//		listProp = listProp->next;
+//	}
+//	return defaultValue;
+//}
+
 int Properties::GetProperty(const char* value, int defaultValue) const
 {
 	//...
-	ListItem<Property*>* listProp;
-	listProp = list.start;
-
-	SString prop = value;
-
-	while (listProp != NULL)
+	ListItem<Property*>* property = list.start;
+	while (property != NULL)
 	{
-		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
-		if (listProp->data->name == prop)
+		if (property->data->name == value)
 		{
-			return listProp->data->value;
+			return property->data->value;
 		}
-		listProp = listProp->next;
+
+		property = property->next;
 	}
+
 	return defaultValue;
 }
-
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -56,13 +72,39 @@ void Map::Draw()
 
 	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
 	/*MapLayer* layer = data.layers.start->data;*/
-	ListItem<TileSet*>* tileset = data.tilesets.start;
-	ListItem<MapLayer*>* layer = data.mapLayers.start;
+
+	//ListItem<TileSet*>* tileset = data.tilesets.start;
+
+	ListItem<MapLayer*>* layer = data.layers.start;
+
+	while (layer != NULL)
+	{
+		if (layer->data->properties.GetProperty("Drawable") == true)
+		{
+			for (int y = 0; y < data.height; y++)
+			{
+				for (int x = 0; x < data.width; x++)
+				{
+					int tileId = layer->data->Get(x, y);
+					if (tileId > 0)
+					{
+						// L04: TODO 9: Complete the draw function
+						TileSet* tileset;
+						tileset = GetTilesetFromTileId(tileId);
+						SDL_Rect tileRect = tileset->GetTileRect(tileId);
+						iPoint pos = MapToWorld(x, y);
+						app->render->DrawTexture(tileset->texture, pos.x, pos.y, &tileRect);
+					}
+				}
+			}
+
+			
+		}
+		layer = layer->next;
+	}
 
 
-
-
-	for (int y = 0; y < data.height; y++)
+	/*for (int y = 0; y < data.height; y++)
 	{
 		for (int x = 0; x < data.width; x++)
 		{
@@ -73,7 +115,7 @@ void Map::Draw()
 	}
 
 	tileset = tileset->next;
-	layer = layer->next;
+	layer = layer->next;*/
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
@@ -126,12 +168,18 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	//...
 	while (item != NULL)
 	{
-		if (set->firstgid <= id)
+		if (item->next == nullptr)
 		{
-			return set;
+			set = item->data;
+			break;
 		}
-		item = item->prev;
-		set = item->data;
+		else if (id < item->next->data->firstgid)
+		{
+			set = item->data;
+			break;
+		}
+
+		item = item->next;
 	}
 
 	return set;
@@ -147,11 +195,11 @@ SDL_Rect TileSet::GetTileRect(int id) const
 
 	int col = ((id - 1) % numTilesWidth);
 	int row = ((id - 1) / numTilesWidth);
+	rect.w = tileWidth;
+	rect.h = tileHeight;
+	rect.x = margin + col * tileWidth + (spacing * col);
+	rect.y = margin + row * tileHeight + (spacing * row);
 
-	rect.x = margin + col * tile_width + (spacing * col);
-	rect.y = margin + row * tile_height + (spacing * row);
-	rect.w = tile_width;
-	rect.h = tile_height;
 
 	return rect;
 }
@@ -175,15 +223,15 @@ bool Map::CleanUp()
 
 	// L04: DONE 2: clean up all layer data
 	// Remove all layers
-	ListItem<MapLayer*>* itemMapLayers;
-	itemMapLayers = data.mapLayers.start;
+	ListItem<MapLayer*>* item2;
+	item2 = data.layers.start;
 
-	while (itemMapLayers != NULL)
+	while (item2 != NULL)
 	{
-		RELEASE(itemMapLayers->data);
-		itemMapLayers = itemMapLayers->next;
+		RELEASE(item2->data);
+		item2 = item2->next;
 	}
-	data.mapLayers.Clear();
+	data.layers.Clear();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -233,33 +281,58 @@ bool Map::Load(const char* filename)
 	{
 		MapLayer* layer = new MapLayer();
 
-		if (ret == true) ret = LoadLayer(layerNode, layer);
+		ret = LoadLayer(layerNode, layer);
 
-		data.mapLayers.Add(layer);
+		ret = LoadProperties(layerNode, layer->properties);
 
-		/*ret = LoadLayer(layer, lay);
-
-		if (ret == true)
-			data.layers.Add(lay);*/
+		if (ret == true) data.layers.Add(layer);
 	}
 
 	if (ret == true)
 	{
 		// L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
-		for (ListItem<TileSet*>* item = data.tilesets.start; item != NULL && ret == true; item = item->next)
+		/*for (ListItem<TileSet*>* item = data.tilesets.start; item != NULL && ret == true; item = item->next)
 		{
 			LOG("Tilesets----");
 			LOG("name: %s", item->data->name.GetString());
-			LOG("tile width: %d tile height: %d", item->data->tile_width, item->data->tile_height);
+			LOG("tile width: %d tile height: %d", item->data->tileWidth, item->data->tileHeight);
+		}*/
+		LOG("Successfully parsed map XML file: %s", filename);
+		LOG("width: %d", data.width);
+		LOG("height: %d", data.height);
+		LOG("tile width: %d", data.tileWidth);
+		LOG("tile height: %d", data.tileHeight);
+		if (data.type == MAPTYPE_ORTHOGONAL)
+		{
+			LOG("orientation: orthogonal");
+		}
+		else if (data.type == MAPTYPE_ISOMETRIC)
+		{
+			LOG("orientation: isometric");
+		}
+
+		for (int i = 0; i < data.tilesets.count(); i++)
+		{
+			LOG("Tileset %d", i + 1);
+			LOG("name: %s", data.tilesets[i]->name.GetString());
+			LOG("first gid: %d", data.tilesets[i]->firstgid);
+			LOG("margin: %d", data.tilesets[i]->margin);
+			LOG("spacing: %d", data.tilesets[i]->spacing);
+			LOG("tile width: %d", data.tilesets[i]->tileWidth);
+			LOG("tile height: %d", data.tilesets[i]->tileHeight);
+
+			LOG("width: %d", data.tilesets[i]->texWidth);
+			LOG("height: %d", data.tilesets[i]->texHeight);
 		}
 
 
 		// L04: TODO 4: LOG the info for each loaded layer
-		for (ListItem<MapLayer*>* item = data.mapLayers.start; item != NULL && ret == true; item = item->next)
+		for (int i = 0; i < data.layers.count(); i++)
 		{
-			LOG("Layers----");
-			LOG("name: %s", item->data->name.GetString());
-			LOG("layer width: %d layer height: %d", item->data->width, item->data->height);
+			LOG("Layer %d", i + 1);
+			LOG("name: %s", data.layers[i]->name.GetString());
+			LOG("width: %d", data.layers[i]->width);
+			LOG("height: %d", data.layers[i]->height);
 		}
 	}
 
@@ -311,15 +384,15 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 
 	// L03: TODO: Load Tileset attributes
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
-	set->tile_width = tileset_node.attribute("tilewidth").as_int();
-	set->tile_height = tileset_node.attribute("tileheight").as_int();
+	set->tileWidth = tileset_node.attribute("tilewidth").as_int();
+	set->tileHeight = tileset_node.attribute("tileheight").as_int();
 	set->spacing = tileset_node.attribute("spacing").as_int();
 	set->margin = tileset_node.attribute("margin").as_int();
 	set->name.Create(tileset_node.attribute("name").as_string());
 	set->texWidth = tileset_node.child("image").attribute("width").as_int();
 	set->texHeight = tileset_node.child("image").attribute("height").as_int();
-	set->numTilesWidth = set->texWidth / set->tile_width;
-	set->numTilesHeight = set->texHeight / set->tile_height;
+	set->numTilesWidth = set->texWidth / set->tileWidth;
+	set->numTilesHeight = set->texHeight / set->tileHeight;
 
 	return ret;
 }
@@ -339,8 +412,17 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	{
 		// L03: TODO: Load Tileset image
 
-		SString texPath("%s%s", folder.GetString(), image.attribute("source").as_string());
-		set->texture = app->tex->Load(texPath.GetString());
+		/*SString texPath("%s%s", folder.GetString(), image.attribute("source").as_string());
+		set->texture = app->tex->Load(texPath.GetString());*/
+		SString tmp("%s%s", folder.GetString(), image.attribute("source").as_string());
+		set->texture = app->tex->Load(tmp.GetString());
+		set->texWidth = image.attribute("width").as_int();
+		set->texHeight = image.attribute("height").as_int();
+
+		set->numTilesWidth = set->texWidth / set->tileWidth;
+		set->numTilesHeight = set->texHeight / set->tileHeight;
+		set->offsetX = 0;
+		set->offsetY = 0;
 	}
 
 	return ret;
@@ -355,9 +437,11 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string();
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
+
 	size_t size = layer->width * layer->height * sizeof(uint);
 	layer->data = new uint[size]();
 	memset(layer->data, 0, size);
+
 	pugi::xml_node tile;
 	int i = 0;
 	for (tile = node.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"),i++)
@@ -374,15 +458,21 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	bool ret = false;
 
 	//...
-	pugi::xml_node property;
-	for (property = node.child("property"); property; property = property.next_sibling("property"))
+	pugi::xml_node property = node.child("properties");
+	if (property != NULL)
 	{
-		Properties::Property* prop = new Properties::Property();
+		ret = true;
 
-		prop->name = property.attribute("name").as_string();
-		prop->value = property.attribute("value").as_int();
+		for (property = property.child("property"); property; property = property.next_sibling("property"))
+		{
+			Properties::Property* prop = new Properties::Property();
 
-		properties.list.Add(prop);
+			prop->name = property.attribute("name").as_string();
+			prop->value = property.attribute("value").as_int();
+
+			properties.list.Add(prop);
+		}
 	}
+
 	return ret;
 }
