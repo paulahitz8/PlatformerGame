@@ -40,7 +40,7 @@ public:
 
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
-	SDL_Rect playerRect = {9,7,22,25};
+	SDL_Rect playerRect = {9,7,30,25};
 
 private:
 
