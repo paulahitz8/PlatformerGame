@@ -9,7 +9,10 @@
 #include "Map.h"
 #include "Collisions.h"
 
-Player::Player() {}
+Player::Player() 
+{
+	name.Create("player");
+}
 
 Player::~Player() {}
 
@@ -230,7 +233,7 @@ bool Player::Update(float dt)
 					currentAnimation = &leftJump;
 				}
 				//app->audio->PlayFx(jumpFx);
-				//speed.y = -500.0f;
+				//speed.y = -2.0f;
 				
 			}
 
@@ -309,8 +312,9 @@ bool Player::Update(float dt)
 				//app->audio->PlayFx(jumpFx);
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
 			}
-			speed.y = -500.0f;
-			playerPhysics.DoPhysics(playerPos.x, playerPos.y);
+			
+			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
+			
 		}
 
 		if (isDead)
@@ -350,6 +354,8 @@ bool Player::PostUpdate()
 	{ 
 		--playerPos.y; 
 	}
+	
+
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();

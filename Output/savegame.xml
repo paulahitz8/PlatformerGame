@@ -12,6 +12,6 @@
 	<:anonymous />
 	<Collisions />
 	<renderer>
-		<camera x="-67111062" y="-362091" />
+		<camera x="0" y="-500" />
 	</renderer>
 </save_state>
