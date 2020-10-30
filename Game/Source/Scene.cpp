@@ -56,6 +56,7 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
 
+
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
 
@@ -89,9 +90,32 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
+
+	//Camera
+	//Follow the player
+	//if ((app->player.x + player.width) > (app->render->camera.x + app->render->camera.w - 50))
+	//{
+	//	app->render->camera.x ++;
+	//}
+	//if ((app->player->playerRect.x) < (app->render->camera.x + 50))
+	//{
+	//	app->render->camera.x --;
+	//}
+	//if ((app->player.y + player.height) > (app->render->camera.y + app->render->camera.h - 50))
+	//{
+	//	app->render->camera.y ++;
+	//}
+	//if ((app->player->playerRect.y) < (app->render->camera.y + 50))
+	//{
+	//	app->render->camera.y --;
+	//}
+
+	//Limits
+	if (app->render->camera.x > 0) { app->render->camera.x--; }
+
+
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-
 
 	uint w, h;
 	app->win->GetWindowSize(w, h);
@@ -102,9 +126,8 @@ bool Scene::PostUpdate()
 		app->render->DrawTexture(img, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
 		}
 
+
 	app->map->Draw();
-
-
 
 	return ret;
 }
