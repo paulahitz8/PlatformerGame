@@ -40,7 +40,7 @@ public:
 
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
-	SDL_Rect playerRect = {9,7,14,25};
+	SDL_Rect playerRect = {9,7,22,25};
 
 private:
 
@@ -58,8 +58,8 @@ private:
 	Animation leftJump;
 	Animation rightDeath;
 	Animation leftDeath;
-	Animation rightShoot;
-	Animation leftShoot;
+	//Animation rightShoot;
+	//Animation leftShoot;
 	
 	iPoint playerPos;
 	fPoint speed;
