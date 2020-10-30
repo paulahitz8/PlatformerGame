@@ -16,7 +16,81 @@ Player::~Player() {}
 
 bool Player::Awake(pugi::xml_node&)
 {
-	//animaciones
+	//right idle animations
+	rightIdle.PushBack({59, 129, 22, 25 });
+	rightIdle.PushBack({ 90, 129, 22, 25 });
+
+	//left idle animations
+	leftIdle.PushBack({ 289, 229, 22, 25 });
+	leftIdle.PushBack({ 257, 229, 22, 25 });
+
+	//walking to the right animations
+	rightWalk.PushBack({ 58, 97, 22, 25 });
+	rightWalk.PushBack({ 121, 97, 22, 25 });
+	rightWalk.PushBack({ 151, 97, 22, 25 });
+	rightWalk.PushBack({ 185, 97, 22, 25 });
+	rightWalk.PushBack({ 218, 97, 22, 25 });
+	rightWalk.PushBack({ 249, 97, 22, 25 });
+	rightWalk.PushBack({ 282, 97, 22, 25 });
+	rightWalk.PushBack({ 249, 97, 22, 25 });
+	rightWalk.PushBack({ 218, 97, 22, 25 });
+	rightWalk.PushBack({ 185, 97, 22, 25 });
+	rightWalk.PushBack({ 151, 97, 22, 25 });
+	rightWalk.PushBack({ 121, 97, 22, 25 });
+
+	//walking to the left animations
+	lefttWalk.PushBack({ 290, 197, 22, 25 });
+	lefttWalk.PushBack({ 227, 197, 22, 25 });
+	lefttWalk.PushBack({ 195, 197, 22, 25 });
+	lefttWalk.PushBack({ 163, 197, 22, 25 });
+	lefttWalk.PushBack({ 130, 197, 22, 25 });
+	lefttWalk.PushBack({ 98, 197, 22, 25 });
+	lefttWalk.PushBack({ 66, 197, 22, 25 });
+	lefttWalk.PushBack({ 98, 197, 22, 25 });
+	lefttWalk.PushBack({ 130, 197, 22, 25 });
+	lefttWalk.PushBack({ 163, 197, 22, 25 });
+	lefttWalk.PushBack({ 195, 197, 22, 25 });
+	lefttWalk.PushBack({ 227, 197, 22, 25 });
+
+	//jumping to the right animations
+	rightJump.PushBack({ 58, 64, 22, 25 });
+	rightJump.PushBack({ 89, 97, 22, 25 });
+	rightJump.PushBack({ 91, 62, 22, 25 });
+	rightJump.PushBack({ 123, 64, 22, 25 });
+
+	//jumping to the left animations
+	leftJump.PushBack({ 289, 165, 22, 25 });
+	leftJump.PushBack({ 258, 197, 22, 25 });
+	leftJump.PushBack({ 258, 162, 22, 25 });
+	leftJump.PushBack({ 225, 165, 22, 25 });
+
+	//right death animations
+	rightDeath.PushBack({ 187, 129, 22, 25 });
+	rightDeath.PushBack({ 218, 129, 22, 25 });
+	rightDeath.PushBack({ 66, 277, 22, 25 });
+	rightDeath.PushBack({ 90, 277, 22, 25 });
+	rightDeath.PushBack({ 114, 277, 22, 25 });
+	rightDeath.PushBack({ 138, 277, 22, 25 });
+
+	//left death animations
+	leftDeath.PushBack({ 162, 229, 22, 25 });
+	leftDeath.PushBack({ 130, 229, 22, 25 });
+	leftDeath.PushBack({ 66, 277, 22, 25 });
+	leftDeath.PushBack({ 90, 277, 22, 25 });
+	leftDeath.PushBack({ 114, 277, 22, 25 });
+	leftDeath.PushBack({ 138, 277, 22, 25 });
+
+	////shooting to the right animations
+	//rightShoot.PushBack({ 155, 65, 22, 25 });
+	//rightShoot.PushBack({ 186, 65, 22, 25 });
+	//rightShoot.PushBack({ 216, 65, 22, 25 });
+	//rightShoot.PushBack({ 284, 65, 22, 25 });
+
+	////shooting to the left animations
+	//leftShoot.PushBack({ 193, 165, 22, 25 });
+	//leftShoot.PushBack({ 162, 165, 22, 25 });
+	//leftShoot.PushBack({ 132, 165, 22, 25 });
+	//leftShoot.PushBack({ 64, 165, 22, 25 });
 
 	return true;
 }
