@@ -90,7 +90,7 @@ public:
 public:
 
 	SString name;
-	bool active = true;
+	bool active;
 
 };
 

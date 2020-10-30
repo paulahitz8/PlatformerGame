@@ -10,7 +10,7 @@
 
 FadeScreen::FadeScreen() : Module()
 {
-
+	name.Create("fadeScreen");
 }
 
 // Destructor

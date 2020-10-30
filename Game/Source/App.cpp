@@ -6,7 +6,7 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
-//#include "TitleScreen.h"
+#include "TitleScreen.h"
 #include "FadeScreen.h"
 #include "Player.h"
 
@@ -27,21 +27,21 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	scene = new Scene();
+	titleS = new TitleScreen();
 	map = new Map();
-	//titleS = new TitleScreen();
 	fadeScreen = new FadeScreen();
 	player = new Player();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(input);
 	AddModule(win);
+	AddModule(input);
+	AddModule(fadeScreen);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(titleS);
 	AddModule(scene);
 	AddModule(map);
-	//AddModule(titleS);
-	AddModule(fadeScreen);
 	AddModule(player);
 
 	// Render last to swap buffer

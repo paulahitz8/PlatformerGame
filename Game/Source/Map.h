@@ -119,6 +119,8 @@ public:
 	// Destructor
 	virtual ~Map();
 
+	void Map::Init();
+
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
 
@@ -136,6 +138,8 @@ public:
 
 	// L05: TODO 2: Add orthographic world to map coordinates
 	iPoint WorldToMap(int x, int y) const;
+
+
 
 private:
 
