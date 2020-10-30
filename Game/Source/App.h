@@ -21,6 +21,7 @@ class LogoScreen;
 class Map;
 class FadeScreen;
 class Player;
+class Collisions;
 
 class App
 {
@@ -94,6 +95,7 @@ public:
 	Map* map;
 	FadeScreen* fadeScreen;
 	Player* player;
+	Collisions* collisions;
 
 private:
 

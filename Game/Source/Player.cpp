@@ -217,6 +217,7 @@ bool Player::Update(float dt)
 
 		else //left + right + jump
 		{
+			//Jump
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
 				isJumping = true;
@@ -230,10 +231,17 @@ bool Player::Update(float dt)
 				}
 				//app->audio->PlayFx(jumpFx);
 				//speed.y = -500.0f;
-				playerPhysics.DoPhysics(playerPos.x, playerPos.y);
+				
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) // por si clicamos ambos a la vez
+			/*if (currentAnimation == &rightJump || currentAnimation == &leftJump)
+			{
+				playerPhysics.DoPhysics(playerPos.x, playerPos.y);
+				time++;
+			}*/
+
+			//In case of both keys pressed
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				if (isJumping != true)
 				{
@@ -248,6 +256,7 @@ bool Player::Update(float dt)
 				}
 			}
 
+			//Walking to the left
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				playerPos.x += 1;
@@ -257,6 +266,7 @@ bool Player::Update(float dt)
 				}
 			}
 
+			//Walking to the right
 			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
 				playerPos.x -= 1;
@@ -266,7 +276,7 @@ bool Player::Update(float dt)
 				}
 			}
 
-			// If last movement was left, set the current animation back to left idle
+			//If last movement was left, set the current animation back to left idle
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 			{
 				if (isJumping != true)
@@ -275,7 +285,7 @@ bool Player::Update(float dt)
 				}
 			}
 
-			// If last movement was right, set the current animation back to right idle
+			//If last movement was right, set the current animation back to right idle
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
 				if (isJumping != true)
@@ -283,6 +293,24 @@ bool Player::Update(float dt)
 					currentAnimation = &rightIdle;
 				}
 			}
+
+			//If last movement was jumping, set the current animation back to idle
+			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
+			{
+				isJumping = false;
+				if (currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightIdle;
+				}
+				else if (currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftIdle;
+				}
+				//app->audio->PlayFx(jumpFx);
+				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
+			}
+			speed.y = -500.0f;
+			playerPhysics.DoPhysics(playerPos.x, playerPos.y);
 		}
 
 		if (isDead)
