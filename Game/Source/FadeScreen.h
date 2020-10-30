@@ -26,8 +26,6 @@
 //
 //	bool PostUpdate();
 //
-//	bool CleanUp();
-//
 //	bool FadeToBlack(Module* toDisable, Module* toEnable, float frames = 60);
 //
 //private:

@@ -67,11 +67,30 @@ public:
 		return true;
 	}
 
+	void Module::Enable()
+	{
+		if (!active)
+		{
+			active = true;
+			Start();
+		}
+	}
+
+	void Module::Disable()
+	{
+		if (active)
+		{
+			active = false;
+			CleanUp();
+		}
+
+	}
+
 
 public:
 
 	SString name;
-	bool active;
+	bool active = true;
 
 };
 
