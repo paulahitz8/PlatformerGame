@@ -79,7 +79,7 @@ void Map::Draw()
 
 	while (layer != NULL)
 	{
-		if (layer->data->properties.GetProperty("Drawable") == true)
+		if (layer->data->properties.GetProperty("Drawable") == 1)
 		{
 			for (int y = 0; y < data.height; y++)
 			{

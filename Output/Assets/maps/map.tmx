@@ -68,7 +68,7 @@
  </tileset>
  <layer id="1" name="Base " width="50" height="15">
   <properties>
-   <property name="Drawable" type="bool" value="true"/>
+   <property name="Drawable" type="int" value="1"/>
   </properties>
   <data>
    <tile/>
@@ -825,8 +825,7 @@
  </layer>
  <layer id="2" name="Collisions" width="50" height="15">
   <properties>
-   <property name="Drawable" type="bool" value="false"/>
-   <property name="Navigation" type="bool" value="true"/>
+   <property name="Drawable" type="int" value="0"/>
   </properties>
   <data>
    <tile/>
