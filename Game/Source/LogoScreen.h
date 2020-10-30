@@ -1,18 +1,18 @@
-#ifndef __TITLE_SCREEN_H__
-#define __TITLE_SCREEN_H__
+#ifndef __LOGO_SCREEN_H__
+#define __LOGO_SCREEN_H__
 
 #include "Module.h"
 
 struct SDL_Texture;
 
-class TitleScreen : public Module
+class LogoScreen : public Module
 {
 public:
 
-	TitleScreen();
+	LogoScreen();
 
 	// Destructor
-	virtual ~TitleScreen();
+	virtual ~LogoScreen();
 
 	void Init();
 
@@ -35,8 +35,8 @@ public:
 	bool CleanUp();
 
 private:
-	SDL_Texture* titleScreen;
+	SDL_Texture* logoScreen;
 	SDL_Rect rect;
 };
 
-#endif // __TITLE_SCREEN_H__
+#endif // __LOGO_SCREEN_H__

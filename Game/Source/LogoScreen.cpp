@@ -4,8 +4,8 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "TitleScreen.h"
 #include "FadeScreen.h"
+#include "LogoScreen.h"
 #include "Scene.h"
 
 #include "Defs.h"
@@ -13,77 +13,76 @@
 
 
 
-TitleScreen::TitleScreen() : Module()
+LogoScreen::LogoScreen() : Module()
 {
-	name.Create("TitleScreen");
+	name.Create("LogoScreen");
 }
 
 // Destructor
-TitleScreen::~TitleScreen()
+LogoScreen::~LogoScreen()
 {}
 
-void TitleScreen::Init()
+void LogoScreen::Init()
 {
-	active = false;
+	active = true;
 }
 
 
 // Called before render is available
-bool TitleScreen::Awake()
+bool LogoScreen::Awake()
 {
-	LOG("Loading Title Screen");
+	LOG("Loading Logo Screen");
 	bool ret = true;
 
 	return ret;
 }
 
 // Called before the first frame
-bool TitleScreen::Start()
+bool LogoScreen::Start()
 {
 	bool ret = true;
 
 	app->render->SetBackgroundColor({ 0,0,0,0 });
-	titleScreen = app->tex->Load("Assets/textures/winscreen.png");
-	//app->audio->PlayMusic("Assets/audio/music/TitleScreen.ogg", 0.0f);
+	logoScreen = app->tex->Load("Assets/textures/logoscreen.png");
 	return ret;
 }
 
 // Called each loop iteration
-bool TitleScreen::PreUpdate()
+bool LogoScreen::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool TitleScreen::Update(float dt)
+bool LogoScreen::Update(float dt)
 {
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 30.0f);
+		app->fadeScreen->FadeToBlack(this, (Module*)app->titleS, 30.0f);
 	}
 	return true;
 }
 
 // Called each loop iteration
-bool TitleScreen::PostUpdate()
+bool LogoScreen::PostUpdate()
 {
 	bool ret = true;
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() };
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
-	app->render->DrawTexture(titleScreen, NULL, NULL, &rect);
+	app->render->DrawTexture(logoScreen, NULL, NULL, &rect);
 
 
 	return ret;
 }
 
 // Called before quitting
-bool TitleScreen::CleanUp()
+bool LogoScreen::CleanUp()
 {
 	LOG("Freeing scene");
 
-	app->tex->UnLoad(titleScreen);
+	app->tex->UnLoad(logoScreen);
 
 	return true;
 }

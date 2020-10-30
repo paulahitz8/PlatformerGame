@@ -4,12 +4,13 @@
 	<window />
 	<textures />
 	<audio />
+	<fadeScreen />
+	<LogoScreen />
+	<TitleScreen />
 	<scene />
 	<map />
-	<TitleScreen />
-	<:anonymous />
 	<:anonymous />
 	<renderer>
-		<camera x="0" y="-500" />
+		<camera x="0" y="-461" />
 	</renderer>
 </save_state>
