@@ -13,6 +13,7 @@ public:
 
 
             y = y + gravity * time;
+			time += 1.0f / 60.0f;
      //   }
     }
 
