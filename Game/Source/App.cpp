@@ -7,7 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 //#include "TitleScreen.h"
-//#include "FadeScreen.h"
+#include "FadeScreen.h"
 //#include "Player.h"
 
 #include "Defs.h"
@@ -29,7 +29,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	map = new Map();
 	//titleS = new TitleScreen();
-	//fadeScreen = new FadeScreen();
+	fadeScreen = new FadeScreen();
 	//player = new Player();
 
 	// Ordered for awake / Start / Update
@@ -41,7 +41,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(map);
 	//AddModule(titleS);
-	//AddModule(fadeScreen);
+	AddModule(fadeScreen);
 	//AddModule(player);
 
 	// Render last to swap buffer

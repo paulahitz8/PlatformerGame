@@ -18,7 +18,7 @@ class Audio;
 class Scene;
 class Map;
 //class TitleScreen;
-//class FadeScreen;
+class FadeScreen;
 //class Player;
 
 class App
@@ -90,7 +90,7 @@ public:
 	Scene* scene;
 	Map* map;
 	//TitleScreen* titleS;
-	//FadeScreen* fadeScreen;
+	FadeScreen* fadeScreen;
 	//Player* player;
 
 private:
