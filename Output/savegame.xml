@@ -8,5 +8,7 @@
 	<map />
 	<:anonymous />
 	<:anonymous />
-	<renderer />
+	<renderer>
+		<camera x="0" y="-500" />
+	</renderer>
 </save_state>
