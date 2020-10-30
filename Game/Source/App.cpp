@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
+//#include "TitleScreen.h"
 //#include "FadeScreen.h"
 //#include "Player.h"
 
@@ -27,6 +28,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	map = new Map();
+	//titleS = new TitleScreen();
 	//fadeScreen = new FadeScreen();
 	//player = new Player();
 
@@ -38,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(scene);
 	AddModule(map);
+	//AddModule(titleS);
 	//AddModule(fadeScreen);
 	//AddModule(player);
 
