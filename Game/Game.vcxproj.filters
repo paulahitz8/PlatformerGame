@@ -18,6 +18,7 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\FadeScreen.cpp" />
+    <ClCompile Include="Source\TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -57,6 +58,7 @@
     <ClInclude Include="Source\FadeScreen.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Physics.h" />
+    <ClInclude Include="Source\TitleScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

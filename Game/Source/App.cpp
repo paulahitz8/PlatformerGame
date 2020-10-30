@@ -6,7 +6,8 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
-//#include "FadeScreen.h"
+//#include "TitleScreen.h"
+#include "FadeScreen.h"
 //#include "Player.h"
 
 #include "Defs.h"
@@ -27,7 +28,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	map = new Map();
-	//fadeScreen = new FadeScreen();
+	//titleS = new TitleScreen();
+	fadeScreen = new FadeScreen();
 	//player = new Player();
 
 	// Ordered for awake / Start / Update
@@ -38,7 +40,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(scene);
 	AddModule(map);
-	//AddModule(fadeScreen);
+	//AddModule(titleS);
+	AddModule(fadeScreen);
 	//AddModule(player);
 
 	// Render last to swap buffer

@@ -17,7 +17,8 @@ class Textures;
 class Audio;
 class Scene;
 class Map;
-//class FadeScreen;
+//class TitleScreen;
+class FadeScreen;
 //class Player;
 
 class App
@@ -88,7 +89,8 @@ public:
 	Audio* audio;
 	Scene* scene;
 	Map* map;
-	//FadeScreen* fadeScreen;
+	//TitleScreen* titleS;
+	FadeScreen* fadeScreen;
 	//Player* player;
 
 private:
