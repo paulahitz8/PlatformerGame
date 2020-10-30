@@ -36,7 +36,7 @@ bool Scene::Start()
 	img = app->tex->Load("Assets/textures/5.png");
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	app->audio->PlayMusic("Assets/audio/music/Snowland Loop.wav");
 	return true;
 }
 
