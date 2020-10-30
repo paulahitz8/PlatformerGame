@@ -49,12 +49,17 @@ private:
 	};
 
 	//list of animation
-	Animation* currentAnimation = &idle;
-	Animation idle;
-	Animation walk;
-	Animation jump;
-	Animation death;
-	Animation shoot;
+	Animation* currentAnimation = &rightIdle;
+	Animation rightIdle;
+	Animation leftIdle;
+	Animation rightWalk;
+	Animation lefttWalk;
+	Animation rightJump;
+	Animation leftJump;
+	Animation rightDeath;
+	Animation leftDeath;
+	Animation rightShoot;
+	Animation leftShoot;
 	
 	iPoint playerPos;
 	fPoint speed;
