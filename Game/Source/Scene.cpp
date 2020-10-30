@@ -105,22 +105,13 @@ bool Scene::PostUpdate()
 
 	//Camera
 	//Follow the player
-	//if ((app->player.x + player.width) > (app->render->camera.x + app->render->camera.w - 50))
-	//{
-	//	app->render->camera.x ++;
-	//}
-	//if ((app->player->playerRect.x) < (app->render->camera.x + 50))
-	//{
-	//	app->render->camera.x --;
-	//}
-	//if ((app->player.y + player.height) > (app->render->camera.y + app->render->camera.h - 50))
-	//{
-	//	app->render->camera.y ++;
-	//}
-	//if ((app->player->playerRect.y) < (app->render->camera.y + 50))
-	//{
-	//	app->render->camera.y --;
-	//}
+	if (app->player->playerPos.x >= 500) {
+
+		app->render->camera.x = -(app->player->playerPos.x - 500);
+		app->render->camera.y = -(app->player->playerPos.y - 500);
+
+	}
+
 
 	//Limits
 	if (app->render->camera.x > 0) { app->render->camera.x--; }
