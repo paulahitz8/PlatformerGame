@@ -45,10 +45,10 @@ public:
 	virtual ~Collisions();
 
 	// Called before player is available
-	bool Awake(pugi::xml_node& conf);
+	//bool Awake(pugi::xml_node& conf);
 
 	// Called before the first frame
-	bool Start();
+	//bool Start();
 
 	// Called at the beginning of the application loop
 	// Removes all colliders pending to delete
