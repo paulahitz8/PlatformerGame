@@ -19,7 +19,7 @@ class Scene;
 class Map;
 //class TitleScreen;
 class FadeScreen;
-//class Player;
+class Player;
 
 class App
 {
@@ -91,7 +91,7 @@ public:
 	Map* map;
 	//TitleScreen* titleS;
 	FadeScreen* fadeScreen;
-	//Player* player;
+	Player* player;
 
 private:
 

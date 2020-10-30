@@ -17,8 +17,9 @@ Player::~Player() {}
 bool Player::Awake(pugi::xml_node&)
 {
 	//right idle animations
-	rightIdle.PushBack({59, 129, 22, 25 });
-	rightIdle.PushBack({ 90, 129, 22, 25 });
+	rightIdle.PushBack({ 59, 129, 22, 25 });
+	rightIdle.PushBack({ 91, 129, 22, 25 });
+	rightIdle.speed = 0.008f;
 
 	//left idle animations
 	leftIdle.PushBack({ 289, 229, 22, 25 });
@@ -99,10 +100,10 @@ bool Player::Awake(pugi::xml_node&)
 bool Player::Start()
 {
 	LOG("Loading player textures");
-	playerTexture = app->tex->Load("Assets/textures/penguinSprites.png");
-	//currentAnimation = &rightIdleAnim;
+	playerTexture = app->tex->Load("Assets/textures/Assets Player Dev.png");
+	currentAnimation = &rightIdle;
 
-	playerPos = {0,0};
+	playerPos = {100,1000};
 
 
 	if (resetLives == true)
@@ -129,7 +130,6 @@ bool Player::PreUpdate()
 
 bool Player::Update(float dt)
 {
-	currentAnimation->Update();
 
 	//if (godmode == false)
 	//{
@@ -226,6 +226,7 @@ bool Player::Update(float dt)
 				{
 					//currentAnimation = &leftAnim;
 				}
+				/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -235,6 +236,7 @@ bool Player::Update(float dt)
 				{
 					//currentAnimation = &rightAnim;
 				}
+				/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
 
 			}
 
@@ -255,7 +257,7 @@ bool Player::Update(float dt)
 				}
 			}
 
-			playerPhysics.DoPhysics(playerPos.y, speed.y);
+			/*playerPhysics.DoPhysics(playerPos.y, speed.y);*/
 
 
 		}
@@ -269,9 +271,10 @@ bool Player::Update(float dt)
 				//app->transition->FadeEffect((Module*)app->scene, (Module*)app->deadScreen, false, 60.0f)
 			}
 		}
-
-		return true;
 	}
+	currentAnimation->Update();
+
+	return true;
 
 }
 
