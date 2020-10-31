@@ -37,6 +37,8 @@ public:
 private:
 	SDL_Texture* logoScreen;
 	SDL_Rect rect;
+	int timer = 0;
+	unsigned int logoFx = 0;
 };
 
 #endif // __LOGO_SCREEN_H__

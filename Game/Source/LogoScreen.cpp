@@ -49,6 +49,8 @@ bool LogoScreen::Start()
 
 	//app->render->SetBackgroundColor({ 0,0,0,0 });
 	logoScreen = app->tex->Load("Assets/textures/logoscreen.png");
+	//logoFx = app->audio->LoadFx("Assets/audio/fx/logo.wav");
+	//app->audio->SetFxVolume(logoFx);
 
 	app->map->active = false;
 	app->player->active = false;
@@ -72,10 +74,14 @@ bool LogoScreen::Update(float dt)
 	//rect = { 0, -500, 640, 480 };
 	app->render->DrawTexture(logoScreen, 0,300, &rect);
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 30.0f);
-	}
+	
+
+	//if (timer == 50)
+	//{
+	//	//app->audio->PlayFx(logoFx);
+	//}
+
+	timer++;
 
 	return true;
 }
@@ -88,7 +94,10 @@ bool LogoScreen::PostUpdate()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
-	
+	if (timer == 40000) 
+	{
+		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 30.0f);
+	}
 
 
 	return ret;
