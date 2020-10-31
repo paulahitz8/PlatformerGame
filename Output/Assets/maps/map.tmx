@@ -70,6 +70,16 @@
     <property name="CollisionId" type="int" value="1"/>
    </properties>
   </tile>
+  <tile id="1">
+   <properties>
+    <property name="CollisionId" type="int" value="4"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="CollisionId" type="int" value="5"/>
+   </properties>
+  </tile>
   <tile id="3">
    <properties>
     <property name="CollisionId" type="int" value="3"/>
@@ -78,6 +88,11 @@
   <tile id="4">
    <properties>
     <property name="CollisionId" type="int" value="2"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="CollisionId" type="int" value="6"/>
    </properties>
   </tile>
  </tileset>
@@ -5494,10 +5509,10 @@
    <tile/>
    <tile/>
    <tile gid="57"/>
-   <tile gid="57"/>
-   <tile gid="57"/>
-   <tile gid="57"/>
-   <tile gid="57"/>
+   <tile gid="61"/>
+   <tile gid="61"/>
+   <tile gid="61"/>
+   <tile gid="61"/>
    <tile gid="57"/>
    <tile/>
    <tile/>

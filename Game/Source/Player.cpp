@@ -316,12 +316,12 @@ bool Player::Update(float dt)
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
 			}
 			
-			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
+			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
 			
-
-			if (GetTileProperty(playerPos.x, playerPos.y+25, "CollisionId") == Collider::Type::GROUND)
+			int coll = GetTileProperty(playerPos.x, playerPos.y + 26, "CollisionId"); 
+			if (GetTileProperty(playerPos.x, playerPos.y+30, "CollisionId") == Collider::Type::WATER)
 			{
-				playerPos.y-=10;
+				playerPos.y -= 10; 
 			}
 
 
