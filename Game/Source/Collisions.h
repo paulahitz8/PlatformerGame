@@ -12,9 +12,9 @@ struct Collider
 	enum Type
 	{
 		NONE = -1,
+		PLAYER,
 		GROUND,
 		WATER,
-		PLAYER,
 		PLATFORM,
 		MAX
 	};
@@ -76,6 +76,8 @@ public:
 	void DrawCollider();
 
 	inline uint GetColliderCount() const { return colliderCount; };
+
+	Collider* collider;
 
 private:
 	// All existing colliders in the scene

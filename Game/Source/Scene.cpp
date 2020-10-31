@@ -71,11 +71,11 @@ bool Scene::Update(float dt)
 		app->SaveGameRequest();
 
 	// Camera controls
-	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	/*if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
 
 	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += 1;
+		app->render->camera.y += 1;*/
 
 	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		app->render->camera.x -= 1;

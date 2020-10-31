@@ -14,6 +14,6 @@
 	<DeathScreen />
 	<WinScreen />
 	<renderer>
-		<camera x="-26" y="-500" />
+		<camera x="0" y="-500" />
 	</renderer>
 </save_state>

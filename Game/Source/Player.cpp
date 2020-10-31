@@ -316,11 +316,23 @@ bool Player::Update(float dt)
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
 			}
 			
-			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
+			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
 			
-			//collisions
+			
 
 
+
+			if (GetTileProperty(playerPos.x, playerPos.y+25, "CollisionId") == Collider::Type::GROUND)
+			{
+				playerPos.y-=10;
+			}
+
+
+		/*	app->collisions->collider->type  = GetCollisionType(GetTileProperty(playerPos.x, playerPos.y, "CollisionId"), GetTileProperty(playerPos.x + 1, playerPos.y + 1, "CollisionId"));
+			if (collisionType == CollisionType::GROUND)
+			{
+				playerPos.y++;
+			}*/
 
 
 
@@ -409,20 +421,12 @@ bool Player::Save(pugi::xml_node&)
 
 //FALTAN COLLIDERS Y TODO LO DE TILES
 
-int Player::GetTileProperty(int x, int y, const char* property, bool notMovCollision, bool isObject) const
+int Player::GetTileProperty(int x, int y, const char* property) const
 {
 	int ret;
 	// MapLayer
 	ListItem <MapLayer*>* ML = app->map->data.layers.start;
-	SString layerName;
-	if (isObject)
-	{
-		layerName = "Base";
-	}
-	else
-	{
-		layerName = "Collisions";
-	}
+	SString layerName = "Collisions";
 	while (ML != NULL)
 	{
 		if (ML->data->name == layerName)
@@ -434,15 +438,9 @@ int Player::GetTileProperty(int x, int y, const char* property, bool notMovColli
 
 	// TileSet
 	ListItem <TileSet*>* T = app->map->data.tilesets.start;
-	SString tileSetName;
-	if (notMovCollision)
-	{
-		tileSetName = "Snowww";
-	}
-	else
-	{
-		tileSetName = "Collisions";
-	}
+	SString tileSetName = "Collisions";
+	
+
 	while (T != NULL)
 	{
 		if (T->data->name == tileSetName)

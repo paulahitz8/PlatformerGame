@@ -176,6 +176,8 @@ bool Map::Load(const char* filename)
 
 		if (ret == true) ret = LoadTilesetImage(tileset, set);
 
+		if (ret == true) ret = LoadTileSetProperties(tileset, set);
+
 		data.tilesets.Add(set);
 	}
 
@@ -382,25 +384,19 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 // L06: TODO 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
-	bool ret = false;
+	bool ret = true;
 
 	//...
-	pugi::xml_node property = node.child("properties");
-	if (property != NULL)
+	pugi::xml_node property;
+
+	for (property = node.child("property"); property; property = property.next_sibling("property"))
 	{
-		ret = true;
-
-		for (property = property.child("property"); property; property = property.next_sibling("property"))
-		{
-			Properties::Property* prop = new Properties::Property();
-
-			prop->name = property.attribute("name").as_string();
-			prop->value = property.attribute("value").as_int();
-
-			properties.list.Add(prop);
-		}
+		Properties::Property* prop = new Properties::Property();
+		prop->name = property.attribute("name").as_string();
+		prop->value = property.attribute("value").as_int();
+		properties.list.Add(prop);
 	}
-
+	
 	return ret;
 }
 
@@ -492,19 +488,12 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	return rect;
 }
 
-void Map::SetTileProperty(int x, int y, const char* property, int value, bool notMovCollision, bool isObject)
+void Map::SetTileProperty(int x, int y, const char* property, int value)
 {
 	// MapLayer
 	ListItem <MapLayer*>* ML = data.layers.start;
-	SString layerName;
-	if (isObject)
-	{
-		layerName = "Base";
-	}
-	else
-	{
-		layerName = "Collisions";
-	}
+	SString layerName = "Collisions";
+	
 	while (ML != NULL)
 	{
 		if (ML->data->name == layerName)
@@ -516,15 +505,8 @@ void Map::SetTileProperty(int x, int y, const char* property, int value, bool no
 
 	// TileSet
 	ListItem <TileSet*>* T = data.tilesets.start;
-	SString tileSetName;
-	if (notMovCollision)
-	{
-		tileSetName = "Snowww";
-	}
-	else
-	{
-		tileSetName = "Collisions";
-	}
+	SString tileSetName = "Collisions";
+	
 	while (T != NULL)
 	{
 		if (T->data->name == tileSetName)

@@ -93,7 +93,7 @@ private:
 	bool resetLives = false;
 	int lifeCount = 3;
 
-	int GetTileProperty(int x, int y, const char* property, bool notMovCollision = false, bool isObject = false) const;
+	int GetTileProperty(int x, int y, const char* property) const;
 	CollisionType GetCollisionType(int A, int B) const;
 
 };

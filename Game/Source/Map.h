@@ -158,7 +158,7 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 
 	// Changes property to value assigned
-	void SetTileProperty(int x, int y, const char* property, int value, bool notMovCollision = false, bool isObject = false);
+	void SetTileProperty(int x, int y, const char* property, int value);
 
 	MapData data;
 
