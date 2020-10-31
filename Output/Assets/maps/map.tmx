@@ -65,6 +65,21 @@
  </tileset>
  <tileset firstgid="57" name="Collisions" tilewidth="64" tileheight="64" tilecount="6" columns="2">
   <image source="../textures/colliders.png" width="128" height="192"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="ground"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Tile" value="platform"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Type" value="water"/>
+   </properties>
+  </tile>
  </tileset>
  <layer id="1" name="Base " width="150" height="20">
   <properties>
