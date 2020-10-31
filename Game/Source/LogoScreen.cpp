@@ -108,6 +108,7 @@ bool LogoScreen::CleanUp()
 {
 	LOG("Freeing scene");
 
+	active = false;
 	app->tex->UnLoad(logoScreen);
 
 	return true;

@@ -86,7 +86,7 @@ bool TitleScreen::PostUpdate()
 bool TitleScreen::CleanUp()
 {
 	LOG("Freeing scene");
-
+	active = false;
 	app->tex->UnLoad(titleScreen);
 
 	return true;
