@@ -264,7 +264,7 @@ bool Player::Update(float dt)
 			//Walking to the left
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				playerPos.x += 1;
+				playerPos.x += 4;
 				if (isJumping != true)
 				{
 					currentAnimation = &rightWalk;
@@ -274,7 +274,7 @@ bool Player::Update(float dt)
 			//Walking to the right
 			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				playerPos.x -= 1;
+				playerPos.x -= 4;
 				if (isJumping != true)
 				{
 					currentAnimation = &leftWalk;
