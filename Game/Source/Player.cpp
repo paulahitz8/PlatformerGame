@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
+#include "FadeScreen.h"
 
 Player::Player() 
 {
@@ -323,7 +324,8 @@ bool Player::Update(float dt)
 			//app->audio->PlayFx(deadFx);
 			if (currentAnimation->HasFinished())
 			{
-				//app->transition->FadeEffect((Module*)app->scene, (Module*)app->deadScreen, false, 60.0f)
+				app->fadeScreen->active = true;
+				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 200.0f);
 			}
 		}
 	}

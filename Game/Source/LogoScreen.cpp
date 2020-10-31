@@ -96,7 +96,8 @@ bool LogoScreen::PostUpdate()
 
 	if (timer == 40000) 
 	{
-		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 30.0f);
+		app->fadeScreen->active = true;
+		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 2500.0f);
 	}
 
 

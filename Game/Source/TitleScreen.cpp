@@ -46,7 +46,8 @@ bool TitleScreen::Start()
 
 	app->render->SetBackgroundColor({ 0,0,0,0 });
 	titleScreen = app->tex->Load("Assets/textures/titlescreen.png");
-	//app->audio->PlayMusic("Assets/audio/music/TitleScreen.ogg", 0.0f);
+	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
+	//titleFx = app->audio->LoadFx("Assets/audio/music/TitleScreenMusic.ogg");
 	return ret;
 }
 
@@ -67,7 +68,8 @@ bool TitleScreen::Update(float dt)
 	{
 		app->map->active = true;
 		app->logoScreen->active = false;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 30.0f);
+		app->fadeScreen->active = true;
+		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 300.0f);
 	}
 	return true;
 }
@@ -86,8 +88,9 @@ bool TitleScreen::PostUpdate()
 bool TitleScreen::CleanUp()
 {
 	LOG("Freeing scene");
-	active = false;
+	
 	app->tex->UnLoad(titleScreen);
+	
 
 	return true;
 }

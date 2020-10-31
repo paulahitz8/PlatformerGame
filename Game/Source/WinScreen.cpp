@@ -85,7 +85,7 @@ bool WinScreen::PostUpdate()
 bool WinScreen::CleanUp()
 {
 	LOG("Freeing scene");
-
+	active = false;
 	app->tex->UnLoad(winScreen);
 
 	return true;

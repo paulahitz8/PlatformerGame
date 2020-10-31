@@ -37,6 +37,7 @@ public:
 private:
 	SDL_Texture* titleScreen;
 	SDL_Rect rect;
+	unsigned int titleFx = 0;
 };
 
 #endif // __TITLE_SCREEN_H__

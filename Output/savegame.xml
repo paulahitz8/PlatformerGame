@@ -4,14 +4,16 @@
 	<window />
 	<textures />
 	<audio />
+	<scene />
 	<LogoScreen />
 	<TitleScreen />
 	<map />
-	<scene />
 	<fadeScreen />
 	<player />
 	<collisions />
+	<DeathScreen />
+	<WinScreen />
 	<renderer>
-		<camera x="0" y="-500" />
+		<camera x="-2051" y="-500" />
 	</renderer>
 </save_state>

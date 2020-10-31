@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "LogoScreen.h"
+#include "TitleScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -44,7 +45,7 @@ bool Scene::Start()
 	img = app->tex->Load("Assets/textures/5.png");
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
-
+	//app->titleScreen->active = false;
 	if (app->logoScreen->active == false) app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
 
 	app->player->Enable();
