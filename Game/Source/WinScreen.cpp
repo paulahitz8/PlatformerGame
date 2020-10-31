@@ -43,10 +43,11 @@ bool WinScreen::Awake()
 bool WinScreen::Start()
 {
 	bool ret = true;
-
-	//app->render->SetBackgroundColor({ 0,0,0,0 });
+	app->scene->active = false;
+	app->render->camera.x = 0;
+	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
 	winScreen = app->tex->Load("Assets/textures/winscreen1.png");
-	//app->audio->PlayMusic("Assets/audio/music/TitleScreen.ogg", 0.0f);
+
 	return ret;
 }
 
@@ -60,13 +61,12 @@ bool WinScreen::PreUpdate()
 bool WinScreen::Update(float dt)
 {
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	//rect = { 0, -500, 640, 480 };
 	app->render->DrawTexture(winScreen, 0, 350, &rect);
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		//app->map->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 30.0f);
+		app->fadeScreen->active = true;
+		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 100.0f);
 	}
 	return true;
 }
@@ -85,7 +85,7 @@ bool WinScreen::PostUpdate()
 bool WinScreen::CleanUp()
 {
 	LOG("Freeing scene");
-	active = false;
+	
 	app->tex->UnLoad(winScreen);
 
 	return true;

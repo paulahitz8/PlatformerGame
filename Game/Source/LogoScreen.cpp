@@ -58,6 +58,7 @@ bool LogoScreen::Start()
 	app->titleScreen->active = false;
 	app->winScreen->active = false;
 	app->deathScreen->active = false;
+	
 	return ret;
 }
 

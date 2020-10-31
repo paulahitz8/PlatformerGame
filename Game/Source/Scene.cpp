@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "LogoScreen.h"
 #include "TitleScreen.h"
+#include "WinScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -46,7 +47,7 @@ bool Scene::Start()
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
 	//app->titleScreen->active = false;
-	if (app->logoScreen->active == false) app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
+	if (app->logoScreen->active == false || app->winScreen->active == false) app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
 
 	app->player->Enable();
 
@@ -140,6 +141,7 @@ bool Scene::CleanUp()
 	app->player->Disable();
 	app->map->Disable();
 
+	active = false;
 
 	return true;
 }

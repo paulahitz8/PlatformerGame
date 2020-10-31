@@ -42,10 +42,11 @@ bool DeathScreen::Awake()
 bool DeathScreen::Start()
 {
 	bool ret = true;
-
-	app->render->SetBackgroundColor({ 0,0,0,0 });
+	app->scene->active = false;
+	app->render->camera.x = 0;
 	deathScreen = app->tex->Load("Assets/textures/gameover1.png");
-	//app->audio->PlayMusic("Assets/audio/music/TitleScreen.ogg", 0.0f);
+	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
+
 	return ret;
 }
 
@@ -59,12 +60,13 @@ bool DeathScreen::PreUpdate()
 bool DeathScreen::Update(float dt)
 {
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	//rect = { 0, -500, 640, 480 };
 	app->render->DrawTexture(deathScreen, 0, 350, &rect);
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
+		app->fadeScreen->active = true;
 		app->map->active = true;
+		app->scene->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 30.0f);
 	}
 	return true;

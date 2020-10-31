@@ -67,7 +67,7 @@ bool TitleScreen::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		app->map->active = true;
-		app->logoScreen->active = false;
+	//	app->logoScreen->active = false;
 		app->fadeScreen->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 100.0f);
 	}

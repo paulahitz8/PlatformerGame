@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Collisions.h"
 #include "FadeScreen.h"
+#include "WinScreen.h"
 
 Player::Player() 
 {
@@ -323,8 +324,12 @@ bool Player::Update(float dt)
 
 
 
+			if (playerPos.x == 9300)
+			{
 
-
+				app->fadeScreen->active = true;
+				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
+			}
 
 		}
 
@@ -335,7 +340,7 @@ bool Player::Update(float dt)
 			if (currentAnimation->HasFinished())
 			{
 				app->fadeScreen->active = true;
-				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 200.0f);
+				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
 			}
 		}
 	}
