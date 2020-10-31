@@ -94,10 +94,10 @@ bool LogoScreen::PostUpdate()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
-	if (timer == 400) 
+	if (timer == 200) 
 	{
 		app->fadeScreen->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 250.0f);
+		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 100.0f);
 	}
 
 
