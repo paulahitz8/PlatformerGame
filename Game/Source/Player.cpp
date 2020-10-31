@@ -127,6 +127,7 @@ bool Player::Start()
 	isJumping = false;
 
 	//Collider
+	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
 
 	//Audios
 	
@@ -316,6 +317,15 @@ bool Player::Update(float dt)
 			
 			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
 			
+			//collisions
+
+
+
+
+
+
+
+
 		}
 
 		if (isDead)
@@ -330,6 +340,8 @@ bool Player::Update(float dt)
 		}
 	}
 	currentAnimation->Update();
+
+	playerCollider->SetPos(playerPos.x, playerPos.y);
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
@@ -391,3 +403,59 @@ bool Player::Save(pugi::xml_node&)
 
 
 //FALTAN COLLIDERS Y TODO LO DE TILES
+
+int Player::GetTileProperty(int x, int y, const char* property, bool notMovCollision, bool isObject) const
+{
+	int ret;
+	// MapLayer
+	ListItem <MapLayer*>* ML = app->map->data.layers.start;
+	SString layerName;
+	if (isObject)
+	{
+		layerName = "Base";
+	}
+	else
+	{
+		layerName = "Collisions";
+	}
+	while (ML != NULL)
+	{
+		if (ML->data->name == layerName)
+		{
+			break;
+		}
+		ML = ML->next;
+	}
+
+	// TileSet
+	ListItem <TileSet*>* T = app->map->data.tilesets.start;
+	SString tileSetName;
+	if (notMovCollision)
+	{
+		tileSetName = "Snowww";
+	}
+	else
+	{
+		tileSetName = "Collisions";
+	}
+	while (T != NULL)
+	{
+		if (T->data->name == tileSetName)
+		{
+			break;
+		}
+		T = T->next;
+	}
+
+	// Gets CollisionId
+	int id = (int)(ML->data->Get(x, y) - T->data->firstgId);
+	if (id < 0)
+	{
+		ret = 0;
+		return ret;
+	}
+	Tile* currentTile = T->data->GetPropList(id);
+	ret = currentTile->properties.GetProperty(property, 0);
+	return ret;
+}
+

@@ -67,6 +67,7 @@ private:
 
 	fPoint speed;
 	Physics playerPhysics;
+	Collider* playerCollider = nullptr;
 
 	bool ground = false;
 	bool platform = false;
@@ -91,6 +92,10 @@ private:
 
 	bool resetLives = false;
 	int lifeCount = 3;
+
+	int GetTileProperty(int x, int y, const char* property, bool notMovCollision = false, bool isObject = false) const;
+	CollisionType GetCollisionType(int A, int B) const;
+
 };
 
 #endif // __PLAYER_H__

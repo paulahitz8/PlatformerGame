@@ -22,47 +22,6 @@ void Map::Init()
 	active = false;
 }
 
-// L06: TODO 7: Ask for the value of a custom property
-//int Properties::GetProperty(const char* value, int defaultValue) const
-//{
-//	//...
-//	ListItem<Property*>* listProp;
-//	listProp = list.start;
-//
-//	SString prop = value;
-//
-//	while (listProp != NULL)
-//	{
-//		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
-//		if (listProp->data->name == prop)
-//		{
-//			return listProp->data->value;
-//		}
-//		listProp = listProp->next;
-//	}
-//	return defaultValue;
-//}
-
-int Properties::GetProperty(const char* value, int defaultValue) const
-{
-	//...
-	ListItem<Property*>* property = list.start;
-	while (property != NULL)
-	{
-		if (property->data->name == value)
-		{
-			return property->data->value;
-		}
-
-		property = property->next;
-	}
-
-	return defaultValue;
-}
-
-
-
-
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -79,10 +38,6 @@ void Map::Draw()
 {
 	if (mapLoaded == false) return;
 
-	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
-	/*MapLayer* layer = data.layers.start->data;*/
-
-	//ListItem<TileSet*>* tileset = data.tilesets.start;
 
 	ListItem<MapLayer*>* layer = data.layers.start;
 
@@ -90,41 +45,28 @@ void Map::Draw()
 	{
 		//if (layer->data->properties.GetProperty("Drawable") == 1)
 		//{
-			for (int y = 0; y < data.height; y++)
+		for (int y = 0; y < data.height; y++)
+		{
+			for (int x = 0; x < data.width; x++)
 			{
-				for (int x = 0; x < data.width; x++)
+				int tileId = layer->data->Get(x, y);
+				if (tileId > 0)
 				{
-					int tileId = layer->data->Get(x, y);
-					if (tileId > 0)
-					{
-						// L04: TODO 9: Complete the draw function
-						TileSet* tileset;
-						tileset = GetTilesetFromTileId(tileId);
-						SDL_Rect tileRect = tileset->GetTileRect(tileId);
-						iPoint pos = MapToWorld(x, y);
-						app->render->DrawTexture(tileset->texture, pos.x, pos.y, &tileRect);
-					}
+					// L04: TODO 9: Complete the draw function
+					TileSet* tileset;
+					tileset = GetTilesetFromTileId(tileId);
+					SDL_Rect tileRect = tileset->GetTileRect(tileId);
+					iPoint pos = MapToWorld(x, y);
+					app->render->DrawTexture(tileset->texture, pos.x, pos.y, &tileRect);
 				}
 			}
+		}
 
-			
-	//	}
+
+		//	}
 		layer = layer->next;
 	}
 
-
-	/*for (int y = 0; y < data.height; y++)
-	{
-		for (int x = 0; x < data.width; x++)
-		{
-			iPoint pos = MapToWorld(x, y);
-			uint gid = layer->data->Get(x, y);
-			if (gid != 0) app->render->DrawTexture(tileset->data->texture, pos.x, pos.y, &tileset->data->GetTileRect(gid));
-		}
-	}
-
-	tileset = tileset->next;
-	layer = layer->next;*/
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
@@ -166,88 +108,6 @@ iPoint Map::WorldToMap(int x, int y) const
 
 	return ret;
 }
-
-// L06: TODO 3: Pick the right Tileset based on a tile id
-TileSet* Map::GetTilesetFromTileId(int id) const
-{
-	ListItem<TileSet*>* item = data.tilesets.start;
-	TileSet* set = item->data;
-
-	while (item)
-	{
-		if (id < item->data->firstgid)
-		{
-			set = item->prev->data;
-			break;
-		}
-		set = item->data;
-		item = item->next;
-	}
-
-	return set;
-}
-
-//// L06: TODO 3: Pick the right Tileset based on a tile id
-//TileSet* Map::GetTilesetFromTileId(int id) const
-//{
-//	ListItem<TileSet*>* item = data.tilesets.start;
-//	TileSet* set = item->data;
-//
-//	//...
-//	while (item != NULL)
-//	{
-//		if (item->next == nullptr)
-//		{
-//			set = item->data;
-//			break;
-//		}
-//		else if (id < item->next->data->firstgid)
-//		{
-//			set = item->data;
-//			break;
-//		}
-//
-//		item = item->next;
-//	}
-//
-//	return set;
-//}
-
-
-
-SDL_Rect TileSet::GetTileRect(int id) const
-{
-	SDL_Rect rect = { 0 };
-
-	// L04: DONE 7: Get relative Tile rectangle
-
-	// WARNING: You were not considering firstgid
-	int relativeId = id - firstgid;
-	rect.w = tileWidth;
-	rect.h = tileHeight;
-	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
-	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));
-
-	return rect;
-}
-
-// Get relative Tile rectangle
-//SDL_Rect TileSet::GetTileRect(int id) const
-//{
-//	SDL_Rect rect = { 0 };
-//
-//	// L04: DONE 7: Get relative Tile rectangle
-//
-//	int col = ((id - 1) % numTilesWidth);
-//	int row = ((id - 1) / numTilesWidth);
-//	rect.w = tileWidth;
-//	rect.h = tileHeight;
-//	rect.x = margin + col * tileWidth + (spacing * col);
-//	rect.y = margin + row * tileHeight + (spacing * row);
-//
-//
-//	return rect;
-//}
 
 // Called before quitting
 bool Map::CleanUp()
@@ -360,7 +220,7 @@ bool Map::Load(const char* filename)
 		{
 			LOG("Tileset %d", i + 1);
 			LOG("name: %s", data.tilesets[i]->name.GetString());
-			LOG("first gid: %d", data.tilesets[i]->firstgid);
+			LOG("first gid: %d", data.tilesets[i]->firstgId);
 			LOG("margin: %d", data.tilesets[i]->margin);
 			LOG("spacing: %d", data.tilesets[i]->spacing);
 			LOG("tile width: %d", data.tilesets[i]->tileWidth);
@@ -428,7 +288,7 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	bool ret = true;
 
 	// L03: TODO: Load Tileset attributes
-	set->firstgid = tileset_node.attribute("firstgid").as_int();
+	set->firstgId = tileset_node.attribute("firstgid").as_int();
 	set->tileWidth = tileset_node.attribute("tilewidth").as_int();
 	set->tileHeight = tileset_node.attribute("tileheight").as_int();
 	set->spacing = tileset_node.attribute("spacing").as_int();
@@ -473,6 +333,28 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
+bool Map::LoadTileSetProperties(pugi::xml_node& node, TileSet* set)
+{
+	bool ret = true;
+	for (pugi::xml_node tileNode = node.child("tile"); tileNode && ret; tileNode = tileNode.next_sibling("tile"))
+	{
+		Tile* tileProperties = new Tile;
+		tileProperties->id = tileNode.attribute("id").as_int();
+		ret = LoadProperties(tileNode.child("properties"), tileProperties->properties);
+		set->tileSetPropList.Add(tileProperties);
+	}
+	return ret;
+}
+
+//bool Map::StoreId(pugi::xml_node& node, MapLayer* layer, int index)
+//{
+//	bool ret = true;
+//
+//	layer->data[index] = node.attribute("gid").as_uint(0);
+//
+//	return ret;
+//}
+
 // L04: TODO 3: Create the definition for a function that loads a single layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
@@ -489,7 +371,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	pugi::xml_node tile;
 	int i = 0;
-	for (tile = node.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"),i++)
+	for (tile = node.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"), i++)
 	{
 		layer->data[i] = tile.attribute("gid").as_uint();
 	}
@@ -520,4 +402,144 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	}
 
 	return ret;
+}
+
+// L06: TODO 3: Pick the right Tileset based on a tile id
+TileSet* Map::GetTilesetFromTileId(int id) const
+{
+	ListItem<TileSet*>* item = data.tilesets.start;
+	TileSet* set = item->data;
+
+	while (item)
+	{
+		if (id < item->data->firstgId)
+		{
+			set = item->prev->data;
+			break;
+		}
+		set = item->data;
+		item = item->next;
+	}
+
+	return set;
+}
+
+Tile* TileSet::GetPropList(int id) const
+{
+	ListItem<Tile*>* tile = tileSetPropList.start;
+	Tile* t = tile->data;
+	while (tile != NULL)
+	{
+		t = tile->data;
+		if (t->id == id)
+		{
+			return t;
+		}
+		tile = tile->next;
+	}
+	return t;
+}
+
+int Properties::GetProperty(const char* value, int defaultValue) const
+{
+	//...
+	ListItem<Property*>* property = list.start;
+	while (property != NULL)
+	{
+		if (property->data->name == value)
+		{
+			return property->data->value;
+		}
+
+		property = property->next;
+	}
+
+	return defaultValue;
+}
+
+void Properties::SetProperty(const char* name, int value)
+{
+	ListItem<Property*>* property;
+	property = list.start;
+
+	SString prop = name;
+
+	while (property != NULL)
+	{
+		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
+		if (property->data->name == prop)
+		{
+			property->data->value = value;
+			return;
+		}
+		property = property->next;
+	}
+}
+
+SDL_Rect TileSet::GetTileRect(int id) const
+{
+	SDL_Rect rect = { 0 };
+
+	// L04: DONE 7: Get relative Tile rectangle
+
+	// WARNING: You were not considering firstgid
+	int relativeId = id - firstgId;
+	rect.w = tileWidth;
+	rect.h = tileHeight;
+	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
+	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));
+
+	return rect;
+}
+
+void Map::SetTileProperty(int x, int y, const char* property, int value, bool notMovCollision, bool isObject)
+{
+	// MapLayer
+	ListItem <MapLayer*>* ML = data.layers.start;
+	SString layerName;
+	if (isObject)
+	{
+		layerName = "Base";
+	}
+	else
+	{
+		layerName = "Collisions";
+	}
+	while (ML != NULL)
+	{
+		if (ML->data->name == layerName)
+		{
+			break;
+		}
+		ML = ML->next;
+	}
+
+	// TileSet
+	ListItem <TileSet*>* T = data.tilesets.start;
+	SString tileSetName;
+	if (notMovCollision)
+	{
+		tileSetName = "Snowww";
+	}
+	else
+	{
+		tileSetName = "Collisions";
+	}
+	while (T != NULL)
+	{
+		if (T->data->name == tileSetName)
+		{
+			break;
+		}
+		T = T->next;
+	}
+
+	// Gets CollisionId
+	int id = (int)(ML->data->Get(x, y) - T->data->firstgId);
+	if (id < 0)
+	{
+		return;
+	}
+	Tile* currentTile = T->data->GetPropList(id);
+	currentTile->properties.SetProperty(property, value);
 }
