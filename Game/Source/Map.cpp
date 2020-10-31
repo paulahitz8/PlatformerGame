@@ -144,7 +144,7 @@ bool Map::CleanUp()
 	return true;
 }
 
-// Load new map
+ //Load new map
 bool Map::Load(const char* filename)
 {
 	bool ret = true;
@@ -348,14 +348,7 @@ bool Map::LoadTileSetProperties(pugi::xml_node& node, TileSet* set)
 	return ret;
 }
 
-//bool Map::StoreId(pugi::xml_node& node, MapLayer* layer, int index)
-//{
-//	bool ret = true;
-//
-//	layer->data[index] = node.attribute("gid").as_uint(0);
-//
-//	return ret;
-//}
+//--------------
 
 // L04: TODO 3: Create the definition for a function that loads a single layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
