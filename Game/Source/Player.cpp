@@ -316,11 +316,8 @@ bool Player::Update(float dt)
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
 			}
 			
-			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
+			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
 			
-			
-
-
 
 			if (GetTileProperty(playerPos.x, playerPos.y+25, "CollisionId") == Collider::Type::GROUND)
 			{
