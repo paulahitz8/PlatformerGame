@@ -329,6 +329,10 @@ bool Player::Update(float dt)
 	}
 	currentAnimation->Update();
 
+	//Drawing the player
+	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
+
 	return true;
 
 }
@@ -357,9 +361,7 @@ bool Player::PostUpdate()
 	
 
 
-	//Drawing the player
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
+	
 
 	return true;
 }

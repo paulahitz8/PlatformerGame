@@ -5,6 +5,8 @@
 #include "Render.h"
 #include "Window.h"
 #include "TitleScreen.h"
+#include "LogoScreen.h"
+#include "Map.h"
 #include "FadeScreen.h"
 #include "Scene.h"
 
@@ -43,7 +45,7 @@ bool TitleScreen::Start()
 	bool ret = true;
 
 	app->render->SetBackgroundColor({ 0,0,0,0 });
-	titleScreen = app->tex->Load("Assets/textures/winscreen.png");
+	titleScreen = app->tex->Load("Assets/textures/titlescreen.png");
 	//app->audio->PlayMusic("Assets/audio/music/TitleScreen.ogg", 0.0f);
 	return ret;
 }
@@ -57,8 +59,14 @@ bool TitleScreen::PreUpdate()
 // Called each loop iteration
 bool TitleScreen::Update(float dt)
 {
+	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
+	//rect = { 0, -500, 640, 480 };
+	app->render->DrawTexture(titleScreen, 0, 350, &rect);
+
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
+		app->map->active = true;
+		app->logoScreen->active = false;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 30.0f);
 	}
 	return true;
@@ -68,12 +76,8 @@ bool TitleScreen::Update(float dt)
 bool TitleScreen::PostUpdate()
 {
 	bool ret = true;
-	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() };
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
-
-	app->render->DrawTexture(titleScreen, NULL, NULL, &rect);
-
 
 	return ret;
 }

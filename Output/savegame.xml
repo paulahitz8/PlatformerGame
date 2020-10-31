@@ -4,13 +4,13 @@
 	<window />
 	<textures />
 	<audio />
-	<fadeScreen />
 	<LogoScreen />
 	<TitleScreen />
-	<scene />
 	<map />
-	<:anonymous />
-	<Collisions />
+	<scene />
+	<fadeScreen />
+	<player />
+	<collisions />
 	<renderer>
 		<camera x="0" y="-500" />
 	</renderer>

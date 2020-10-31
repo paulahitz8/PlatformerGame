@@ -22,6 +22,8 @@ class Map;
 class FadeScreen;
 class Player;
 class Collisions;
+class DeathScreen;
+class WinScreen;
 
 class App
 {
@@ -90,12 +92,14 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
-	TitleScreen* titleS;
+	TitleScreen* titleScreen;
 	LogoScreen* logoScreen;
 	Map* map;
 	FadeScreen* fadeScreen;
 	Player* player;
 	Collisions* collisions;
+	DeathScreen* deathScreen;
+	WinScreen* winScreen;
 
 private:
 

@@ -6,7 +6,12 @@
 #include "Window.h"
 #include "FadeScreen.h"
 #include "LogoScreen.h"
+#include "TitleScreen.h"
+#include "WinScreen.h"
+#include "DeathScreen.h"
 #include "Scene.h"
+#include "Map.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -42,8 +47,15 @@ bool LogoScreen::Start()
 {
 	bool ret = true;
 
-	app->render->SetBackgroundColor({ 0,0,0,0 });
+	//app->render->SetBackgroundColor({ 0,0,0,0 });
 	logoScreen = app->tex->Load("Assets/textures/logoscreen.png");
+
+	app->map->active = false;
+	app->player->active = false;
+	app->scene->active = false;
+	app->titleScreen->active = false;
+	app->winScreen->active = false;
+	app->deathScreen->active = false;
 	return ret;
 }
 
@@ -56,10 +68,15 @@ bool LogoScreen::PreUpdate()
 // Called each loop iteration
 bool LogoScreen::Update(float dt)
 {
+	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight()+300 };
+	//rect = { 0, -500, 640, 480 };
+	app->render->DrawTexture(logoScreen, 0,300, &rect);
+
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		app->fadeScreen->FadeToBlack(this, (Module*)app->titleS, 30.0f);
+		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 30.0f);
 	}
+
 	return true;
 }
 
@@ -67,11 +84,11 @@ bool LogoScreen::Update(float dt)
 bool LogoScreen::PostUpdate()
 {
 	bool ret = true;
-	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() };
+
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
-	app->render->DrawTexture(logoScreen, NULL, NULL, &rect);
+	
 
 
 	return ret;

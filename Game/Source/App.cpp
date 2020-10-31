@@ -11,6 +11,8 @@
 #include "FadeScreen.h"
 #include "Player.h"
 #include "Collisions.h"
+#include "DeathScreen.h"
+#include "WinScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -29,26 +31,35 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	scene = new Scene();
-	titleS = new TitleScreen();
+	titleScreen = new TitleScreen();
 	logoScreen = new LogoScreen();
 	map = new Map();
 	fadeScreen = new FadeScreen();
 	player = new Player();
 	collisions = new Collisions();
+	deathScreen = new DeathScreen();
+	winScreen = new WinScreen();
 
 	// Ordered for awake / Start / Update
+	// Reverse order of CleanUp
+// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(fadeScreen);
-	AddModule(logoScreen);
-	AddModule(titleS);
+
+	// WARNING
 	AddModule(scene);
+	AddModule(logoScreen);
+	AddModule(titleScreen);
 	AddModule(map);
+	
+	AddModule(fadeScreen);
 	AddModule(player);
 	AddModule(collisions);
+	AddModule(deathScreen);
+	AddModule(winScreen);
 
 	// Render last to swap buffer
 	AddModule(render);

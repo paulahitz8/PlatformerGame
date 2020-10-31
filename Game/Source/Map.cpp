@@ -88,8 +88,8 @@ void Map::Draw()
 
 	while (layer != NULL)
 	{
-		if (layer->data->properties.GetProperty("Drawable") == 1)
-		{
+		//if (layer->data->properties.GetProperty("Drawable") == 1)
+		//{
 			for (int y = 0; y < data.height; y++)
 			{
 				for (int x = 0; x < data.width; x++)
@@ -108,7 +108,7 @@ void Map::Draw()
 			}
 
 			
-		}
+	//	}
 		layer = layer->next;
 	}
 
@@ -138,8 +138,8 @@ iPoint Map::MapToWorld(int x, int y) const
 	}
 	else if (data.type == MAPTYPE_ISOMETRIC)
 	{
-		ret.x = (x - y) * (data.tileWidth * 0.5f);
-		ret.y = (x - y) * (data.tileHeight * 0.5f);
+		ret.x = (x - y) * (data.tileWidth * 2);
+		ret.y = (x - y) * (data.tileHeight * 2);
 	}
 
 	// L05: TODO 1: Add isometric map to world coordinates
@@ -167,51 +167,87 @@ iPoint Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-
 // L06: TODO 3: Pick the right Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int id) const
 {
 	ListItem<TileSet*>* item = data.tilesets.start;
 	TileSet* set = item->data;
 
-	//...
-	while (item != NULL)
+	while (item)
 	{
-		if (item->next == nullptr)
+		if (id < item->data->firstgid)
 		{
-			set = item->data;
+			set = item->prev->data;
 			break;
 		}
-		else if (id < item->next->data->firstgid)
-		{
-			set = item->data;
-			break;
-		}
-
+		set = item->data;
 		item = item->next;
 	}
 
 	return set;
 }
 
+//// L06: TODO 3: Pick the right Tileset based on a tile id
+//TileSet* Map::GetTilesetFromTileId(int id) const
+//{
+//	ListItem<TileSet*>* item = data.tilesets.start;
+//	TileSet* set = item->data;
+//
+//	//...
+//	while (item != NULL)
+//	{
+//		if (item->next == nullptr)
+//		{
+//			set = item->data;
+//			break;
+//		}
+//		else if (id < item->next->data->firstgid)
+//		{
+//			set = item->data;
+//			break;
+//		}
+//
+//		item = item->next;
+//	}
+//
+//	return set;
+//}
 
-// Get relative Tile rectangle
+
+
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	SDL_Rect rect = { 0 };
 
 	// L04: DONE 7: Get relative Tile rectangle
 
-	int col = ((id - 1) % numTilesWidth);
-	int row = ((id - 1) / numTilesWidth);
+	// WARNING: You were not considering firstgid
+	int relativeId = id - firstgid;
 	rect.w = tileWidth;
 	rect.h = tileHeight;
-	rect.x = margin + col * tileWidth + (spacing * col);
-	rect.y = margin + row * tileHeight + (spacing * row);
-
+	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
+	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));
 
 	return rect;
 }
+
+// Get relative Tile rectangle
+//SDL_Rect TileSet::GetTileRect(int id) const
+//{
+//	SDL_Rect rect = { 0 };
+//
+//	// L04: DONE 7: Get relative Tile rectangle
+//
+//	int col = ((id - 1) % numTilesWidth);
+//	int row = ((id - 1) / numTilesWidth);
+//	rect.w = tileWidth;
+//	rect.h = tileHeight;
+//	rect.x = margin + col * tileWidth + (spacing * col);
+//	rect.y = margin + row * tileHeight + (spacing * row);
+//
+//
+//	return rect;
+//}
 
 // Called before quitting
 bool Map::CleanUp()

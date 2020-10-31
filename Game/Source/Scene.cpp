@@ -7,12 +7,10 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Player.h"
+#include "LogoScreen.h"
 
 #include "Defs.h"
 #include "Log.h"
-
-
-
 
 
 Scene::Scene() : Module()
@@ -46,7 +44,9 @@ bool Scene::Start()
 	img = app->tex->Load("Assets/textures/5.png");
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
-	app->audio->PlayMusic("Assets/audio/music/Snowland Loop.wav");
+
+	if (app->logoScreen->active == false) app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
+
 	app->player->Enable();
 
 	return true;
@@ -68,23 +68,42 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
 
-
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	// Camera controls
+	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		app->render->camera.y += 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		app->render->camera.x -= 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 1;
 
-	//app->render->DrawTexture(img, 380, 100);
+	// Camera: follow the player
+	if (app->player->playerPos.x >= 500)
+	{
+		app->render->camera.x = -(app->player->playerPos.x - 500);
+		app->render->camera.y = -(app->player->playerPos.y - 500);
+	}
+
+	// Camera limits
+	if (app->render->camera.x > 0) { app->render->camera.x--; }
+
+	// Draw background
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+	uint wmb, hmb;
+	app->tex->GetSize(img, wmb, hmb);
+	for (int i = 0; (wmb * i) <= (w - app->render->camera.x); i++)
+	{
+		app->render->DrawTexture(img, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
+	}
 
 	// Draw map
-	app->map->Draw();
+	if (app->map->active == true) app->map->Draw();
+	
 
 	// L03: DONE 7: Set the window title with map/tileset info
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
@@ -102,35 +121,8 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-
-	//Camera
-	//Follow the player
-	if (app->player->playerPos.x >= 500) {
-
-		app->render->camera.x = -(app->player->playerPos.x - 500);
-		app->render->camera.y = -(app->player->playerPos.y - 500);
-
-	}
-
-
-	//Limits
-	if (app->render->camera.x > 0) { app->render->camera.x--; }
-
-
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-
-	uint w, h;
-	app->win->GetWindowSize(w, h);
-	uint wmb, hmb;
-	app->tex->GetSize(img, wmb, hmb);
-	for (int i = 0; (wmb * i) <= (w - app->render->camera.x); i++)
-	{
-		app->render->DrawTexture(img, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
-		}
-
-
-	app->map->Draw();
 
 	return ret;
 }
