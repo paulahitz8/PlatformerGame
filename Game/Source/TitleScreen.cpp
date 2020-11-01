@@ -69,7 +69,7 @@ bool TitleScreen::Update(float dt)
 		app->map->active = true;
 	//	app->logoScreen->active = false;
 		app->fadeScreen->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 100.0f);
+		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 50.0f);
 	}
 	return true;
 }
