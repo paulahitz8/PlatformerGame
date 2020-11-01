@@ -151,6 +151,13 @@ bool Player::Update(float dt)
 	//	}
 	//}
 
+	// DEBUG Key to start from the beggining of level 1
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		playerPos.x = 100;
+		playerPos.y = 1000;
+	}
+
 	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		isDead = true;
@@ -175,7 +182,7 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				playerPos.x -= 4;
+				playerPos.x -= 8;
 				if (isJumping != true)
 				{
 					//currentAnimation = &leftAnim;
@@ -184,7 +191,7 @@ bool Player::Update(float dt)
 			
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				playerPos.x += 4;
+				playerPos.x += 8;
 				if (isJumping != true)
 				{
 					//currentAnimation = &rightAnim;
@@ -194,12 +201,12 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			{
-				playerPos.y += 4;
+				playerPos.y += 8;
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 			{
-				playerPos.y -= 4;
+				playerPos.y -= 8;
 			}
 
 			// If last movement was left, set the current animation back to left idle
@@ -217,6 +224,14 @@ bool Player::Update(float dt)
 				{
 					//currentAnimation = &rightidleAnim;
 				}
+			}
+
+
+			if (playerPos.x == 9300)
+			{
+
+				app->fadeScreen->active = true;
+				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			}
 
 		}
@@ -301,9 +316,11 @@ bool Player::Update(float dt)
 			}
 
 			//If last movement was jumping, set the current animation back to idle
-			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
+			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
 			{
-				isJumping = false;
+				isJumping = true;
+				
+				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
 				if (currentAnimation == &rightJump)
 				{
 					currentAnimation = &rightIdle;
@@ -314,6 +331,11 @@ bool Player::Update(float dt)
 				}
 				//app->audio->PlayFx(jumpFx);
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
+				playerPos.y = 999;
+				speed.y = -15.0f;
+				
+				
+				
 			}
 			
 			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
@@ -324,10 +346,21 @@ bool Player::Update(float dt)
 				playerPos.y -= 1; 
 			}*/
 
-			if (GetTileProperty(playerPos.x, playerPos.y + 26, "CollisionId") != Collider::Type::GROUND)
-			{
-				playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
-			}
+		/*
+		
+			//if (playerPos.y >= 1050) 
+			//{
+			//	//speed.y = 0;
+			//	//isJumping = false;
+			//	--playerPos.y;
+			///*	SetTileProperty(playerPos.x, playerPos.y, "CollisionId", 1);
+			//	GetTileProperty(playerPos.x, playerPos.y, "CollisionId") == Collider::Type::GROUND;*/
+			//	
+			//}
+			
+
+		
+			
 
 
 		/*	app->collisions->collider->type  = GetCollisionType(GetTileProperty(playerPos.x, playerPos.y, "CollisionId"), GetTileProperty(playerPos.x + 1, playerPos.y + 1, "CollisionId"));
@@ -453,7 +486,7 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 	}
 
 	// Gets CollisionId
-	int id = (int)(57 - T->data->firstgId);
+	int id = (int)(ML->data->Get(x, y) - T->data->firstgId);
 	if (id < 0)
 	{
 		ret = 0;
@@ -463,4 +496,3 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 	ret = currentTile->properties.GetProperty(property, 0);
 	return ret;
 }
-

@@ -13,12 +13,12 @@ public:
             y = y + vy * time + (0.5 * gravity * time * time);
             x = x + vx * time;
 
-			time += 0.7f / 60.0f;
+			time += 2.0f / 60.0f;
      //   }
     }
 
    // bool axisY;
-    float gravity = 1.5f; //estos valores los modificamos vamos viendo
+    float gravity = 20.0f; //estos valores los modificamos vamos viendo
     float time = 1.0f / 60.0f;
 };
 
