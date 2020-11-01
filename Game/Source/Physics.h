@@ -19,11 +19,11 @@ public:
 		}
 		else
 		{			
-			time = 1.0f / 60.0f;
+			time = 2.0f / 60.0f;
 		}
     }
 
-    float gravity = 1.0f; //estos valores los modificamos vamos viendo
+    float gravity = 9.8f; //estos valores los modificamos vamos viendo
     float time = 1.0f / 60.0f;
 };
 

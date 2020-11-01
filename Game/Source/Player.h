@@ -49,9 +49,11 @@ public:
 
 private:
 
-	enum CollisionType {
+	/*enum CollisionType {
 
-	};
+	};*/
+
+	int timer = 0;
 
 	//list of animation
 	Animation* currentAnimation = &rightIdle;
@@ -92,13 +94,12 @@ private:
 	bool godMode;
 	//bool isFalling = false;
 
-	bool resetLives = false;
 	int lifeCount = 3;
 
 	int ppx, ppy;
 
 	int GetTileProperty(int x, int y, const char* property) const;
-	CollisionType GetCollisionType(int A, int B) const;
+	/*CollisionType GetCollisionType(int A, int B) const;*/
 
 };
 

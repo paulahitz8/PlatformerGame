@@ -118,13 +118,6 @@ bool Player::Start()
 	playerPos = {100,1000};
 	/*playerPos = {100,980};*/
 
-
-	if (resetLives == true)
-	{
-		lifeCount = 3;
-		resetLives = false;
-	}
-
 	godMode = false;
 	isDead = false;
 	isJumping = false;
@@ -343,6 +336,7 @@ bool Player::Update(float dt)
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
+				timer++;
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
 					currentAnimation = &rightDeath;
@@ -351,15 +345,20 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftDeath;
 				}
+				//app->audio->PlayFx(deadFx);
+				if (timer == 120)
+				{
+					isDead = true;
+				}
 				playerPos.x = ppx;
 				playerPos.y = ppy;
 				isFalling = false;
 			}
-
+			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling);
 			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
 				isFalling = true;
-				playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling);
+				
 			}
 		
 			ppx = playerPos.x;
@@ -374,13 +373,35 @@ bool Player::Update(float dt)
 
 		if (isDead)
 		{
-			currentAnimation = &rightDeath;
-			//app->audio->PlayFx(deadFx);
-			if (currentAnimation->HasFinished())
-			{
-				app->fadeScreen->active = true;
-				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
-			}
+			//if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+			//{
+			//	currentAnimation = &rightDeath;
+			//}
+			//else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+			//{
+			//	currentAnimation = &leftDeath;
+			//}
+			////app->audio->PlayFx(deadFx);
+			//if (timer == 4)
+			//{
+				lifeCount--;
+				if (lifeCount == 0)
+				{
+					lifeCount = 3;
+					app->fadeScreen->active = true;
+					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
+					timer = 0;
+				}
+				else
+				{
+					playerPos.x = 100;
+					playerPos.y = 1000;
+					app->render->camera.x = 0;
+					currentAnimation = &rightIdle;
+					timer = 0;
+				}
+				isDead = false;
+			/*}*/
 		}
 	}
 	currentAnimation->Update();
