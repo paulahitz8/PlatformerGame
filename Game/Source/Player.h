@@ -41,7 +41,6 @@ public:
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
 	SDL_Rect playerRect = {9,7,22,25};
-	/*SDL_Rect playerRect = {9,7,40,45};*/
 
 	iPoint playerPos;
 
@@ -49,14 +48,11 @@ public:
 
 private:
 
-	/*enum CollisionType {
-
-	};*/
-
 	int timer = 0;
 
 	//list of animation
 	Animation* currentAnimation = &rightIdle;
+	Animation blankAnim;
 	Animation rightIdle;
 	Animation leftIdle;
 	Animation rightWalk;
@@ -92,14 +88,12 @@ private:
 	bool isJumping = false;
 	bool isDead;
 	bool godMode;
-	//bool isFalling = false;
 
 	int lifeCount = 3;
 
 	int ppx, ppy;
 
 	int GetTileProperty(int x, int y, const char* property) const;
-	/*CollisionType GetCollisionType(int A, int B) const;*/
 
 };
 

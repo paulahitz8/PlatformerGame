@@ -21,11 +21,12 @@ Player::~Player() {}
 
 bool Player::Awake(pugi::xml_node&)
 {
+	//blank animation
+	blankAnim.PushBack({ 300, 300, 22, 24 });
+
 	//right idle animations
 	rightIdle.PushBack({ 59, 129, 22, 25 });
 	rightIdle.PushBack({ 91, 129, 22, 25 });
-	/*rightIdle.PushBack({ 508, 392, 40, 45 });
-	rightIdle.PushBack({ 448, 392, 40, 45 });*/
 	rightIdle.speed = 0.008f;
 
 	//left idle animations
@@ -178,7 +179,7 @@ bool Player::Update(float dt)
 					//currentAnimation = &leftAnim;
 				}
 			}
-			
+
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				playerPos.x += 8;
@@ -241,8 +242,8 @@ bool Player::Update(float dt)
 					currentAnimation = &leftJump;
 				}
 				//app->audio->PlayFx(jumpFx);
-				speed.y = -2.0f;
-				
+				speed.y = -28.0f;
+
 			}
 
 			/*if (currentAnimation == &rightJump || currentAnimation == &leftJump)
@@ -306,10 +307,10 @@ bool Player::Update(float dt)
 			}
 
 			//If last movement was jumping, set the current animation back to idle
-			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
+			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
 			{
 				isJumping = false;
-				
+
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
 				if (currentAnimation == &rightJump)
 				{
@@ -325,13 +326,22 @@ bool Player::Update(float dt)
 				speed.y = -15.0f;*/
 			}
 
-			if (GetTileProperty(playerPos.x/64, (playerPos.y + playerRect.h)/64, "CollisionId") == Collider::Type::GROUND)
-			{
+
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM) {
+
 				if (isJumping == false)
 				{
 					speed.y = 0;
 				}
 				isFalling = false;
+			}
+
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
+			{
+				if (isJumping == false) {
+					speed.y = 0;
+					isFalling = false;
+				}
 			}
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
@@ -360,9 +370,9 @@ bool Player::Update(float dt)
 			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
 				isFalling = true;
-				
+
 			}
-		
+
 			ppx = playerPos.x;
 			ppy = playerPos.y;
 
@@ -378,6 +388,7 @@ bool Player::Update(float dt)
 			lifeCount--;
 			if (lifeCount == 0)
 			{
+				currentAnimation = &blankAnim;
 				lifeCount = 3;
 				app->fadeScreen->active = true;
 				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);

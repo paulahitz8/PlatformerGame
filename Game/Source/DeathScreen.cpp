@@ -8,6 +8,7 @@
 #include "FadeScreen.h"
 #include "Scene.h"
 #include "DeathScreen.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
