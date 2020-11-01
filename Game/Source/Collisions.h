@@ -69,7 +69,8 @@ public:
 	// Draws all existing colliders with some transparency
 	void DrawCollider();
 
-	inline uint GetColliderCount() const { 
+	inline uint GetColliderCount() const
+	{ 
 		return colliderCount; 
 	};
 

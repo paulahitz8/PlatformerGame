@@ -143,23 +143,28 @@ bool App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if (input->GetWindowEvent(WE_QUIT) == true) {
+	if (input->GetWindowEvent(WE_QUIT) == true)
+	{
 		ret = false;
 	}
 
-	if (ret == true) {
+	if (ret == true)
+	{
 		ret = PreUpdate();
 	}
 
-	if (ret == true) {
+	if (ret == true)
+	{
 		ret = DoUpdate();
 	}
 
-	if (ret == true) {
+	if (ret == true)
+	{
 		ret = PostUpdate();
 	}
 
 	FinishUpdate();
+
 	return ret;
 }
 
@@ -169,12 +174,15 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 
 	pugi::xml_parse_result result = configFile.load_file(CONFIG_FILENAME);
 
-	if (result == NULL) {
+	if (result == NULL)
+	{
 		LOG("Could not load xml file: %s. pugi error: %s", CONFIG_FILENAME, result.description());
 	}
-	else {
+	else
+	{
 		ret = configFile.child("config");
 	}
+
 	return ret;
 }
 
@@ -183,11 +191,13 @@ void App::PrepareUpdate(){}
 void App::FinishUpdate()
 {
 	// This is a good place to call Load / Save functions
-	if (loadRequest) {
+	if (loadRequest)
+	{
 		LoadGame();
 	}
 
-	if (saveRequest) {
+	if (saveRequest)
+	{
 		SaveGame();
 	}
 }
@@ -204,7 +214,8 @@ bool App::PreUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
+		{
 			continue;
 		}
 
@@ -226,10 +237,10 @@ bool App::DoUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
+		{
 			continue;
 		}
-
 		ret = item->data->Update(dt);
 	}
 
@@ -247,10 +258,10 @@ bool App::PostUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
+		{
 			continue;
 		}
-
 		ret = item->data->PostUpdate();
 	}
 
@@ -280,11 +291,13 @@ int App::GetArgc() const
 
 const char* App::GetArgv(int index) const
 {
-	if (index < argc) {
+	if (index < argc)
+	{
 		return args[index];
 	}
 
-	else {
+	else
+	{
 		return NULL;
 	}
 

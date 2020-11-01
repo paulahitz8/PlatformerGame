@@ -36,6 +36,7 @@ private:
 		TO_BLACK,
 		FROM_BLACK
 	}
+
 	currentStep = Fade_Step::NONE;
 
 	// A frame count system to handle the fade time and ratio
@@ -48,7 +49,6 @@ private:
 	// The modules that should be switched after the first step
 	Module* moduleToEnable = nullptr;
 	Module* moduleToDisable = nullptr;
-
 };
 
 #endif  //__FADESCREEN_H__

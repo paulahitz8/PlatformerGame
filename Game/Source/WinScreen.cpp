@@ -44,8 +44,8 @@ bool WinScreen::Start()
 	bool ret = true;
 	app->scene->active = false;
 	app->render->camera.x = 0;
-	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
-	winScreen = app->tex->Load("Assets/textures/winscreen1.png");
+	app->audio->PlayMusic("Assets/audio/music/titleScreenMusic.ogg", 0.0f);
+	winScreen = app->tex->Load("Assets/textures/winScreen.png");
 
 	return ret;
 }

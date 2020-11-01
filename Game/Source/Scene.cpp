@@ -42,18 +42,11 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	app->map->Load("map.tmx");
-	image = app->tex->Load("Assets/textures/5.png");
-	//app->map->Load("hello2.tmx");
-	//img = app->tex->Load("Assets/textures/test.png");
-	//app->titleScreen->active = false;
+	image = app->tex->Load("Assets/textures/background.png");
+
 	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
 	{
-		//app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
-	}
-	image = app->tex->Load("Assets/textures/5.png");
-	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
-	{
-		app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
+		app->audio->PlayMusic("Assets/audio/music/snowMusic.ogg");
 	}
 
 	app->player->Enable();

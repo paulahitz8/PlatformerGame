@@ -35,6 +35,7 @@ public:
 	bool CleanUp();
 
 private:
+
 	SDL_Texture* logoScreen;
 	SDL_Rect rect;
 	int timer = 0;

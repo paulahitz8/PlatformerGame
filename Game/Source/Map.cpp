@@ -14,8 +14,7 @@ Map::Map() : Module(), mapLoaded(false)
 }
 
 // Destructor
-Map::~Map()
-{}
+Map::~Map() {}
 
 void Map::Init()
 {
@@ -36,7 +35,8 @@ bool Map::Awake(pugi::xml_node& config)
 // Draw the map (all requried layers)
 void Map::Draw()
 {
-	if (mapLoaded == false) {
+	if (mapLoaded == false) 
+	{
 		return;
 	}
 
@@ -186,7 +186,6 @@ bool Map::Load(const char* filename)
 		{
 			LOG("orientation: isometric");
 		}
-
 		for (int i = 0; i < data.tilesets.count(); i++)
 		{
 			LOG("Tileset %d", i + 1);
@@ -200,7 +199,6 @@ bool Map::Load(const char* filename)
 			LOG("width: %d", data.tilesets[i]->texWidth);
 			LOG("height: %d", data.tilesets[i]->texHeight);
 		}
-
 		for (int i = 0; i < data.layers.count(); i++)
 		{
 			LOG("Layer %d", i + 1);
@@ -209,7 +207,6 @@ bool Map::Load(const char* filename)
 			LOG("height: %d", data.layers[i]->height);
 		}
 	}
-
 	mapLoaded = ret;
 
 	return ret;
@@ -233,16 +230,20 @@ bool Map::LoadMap()
 		data.tileHeight = map.attribute("tileheight").as_int();
 
 		SString orientation(map.attribute("orientation").as_string());
-		if (orientation == "orthogonal") {
+		if (orientation == "orthogonal")
+		{
 			data.type = MAPTYPE_ORTHOGONAL;
 		}
-		else if (orientation == "isometric") {
+		else if (orientation == "isometric")
+		{
 			data.type = MAPTYPE_ISOMETRIC;
 		}
-		else if (orientation == "staggered") {
+		else if (orientation == "staggered")
+		{
 			data.type = MAPTYPE_STAGGERED;
 		}
-		else {
+		else
+		{
 			data.type = MAPTYPE_UNKNOWN;
 		}
 	}
@@ -279,7 +280,6 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-
 		SString tmp("%s%s", folder.GetString(), image.attribute("source").as_string());
 		set->texture = app->tex->Load(tmp.GetString());
 		set->texWidth = image.attribute("width").as_int();
@@ -304,6 +304,7 @@ bool Map::LoadTileSetProperties(pugi::xml_node& node, TileSet* set)
 		ret = LoadProperties(tileNode.child("properties"), tileProperties->properties);
 		set->tileSetPropList.Add(tileProperties);
 	}
+
 	return ret;
 }
 

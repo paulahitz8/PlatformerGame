@@ -19,8 +19,7 @@ DeathScreen::DeathScreen() : Module()
 }
 
 // Destructor
-DeathScreen::~DeathScreen()
-{}
+DeathScreen::~DeathScreen() {}
 
 void DeathScreen::Init()
 {
@@ -43,8 +42,8 @@ bool DeathScreen::Start()
 	bool ret = true;
 	app->scene->active = false;
 	app->render->camera.x = 0;
-	deathScreen = app->tex->Load("Assets/textures/gameover1.png");
-	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
+	deathScreen = app->tex->Load("Assets/textures/deathScreen.png");
+	app->audio->PlayMusic("Assets/audio/music/titleScreenMusic.ogg", 0.0f);
 
 	return ret;
 }
@@ -66,6 +65,7 @@ bool DeathScreen::Update(float dt)
 		app->fadeScreen->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 100.0f);
 	}
+
 	return true;
 }
 
@@ -73,8 +73,10 @@ bool DeathScreen::Update(float dt)
 bool DeathScreen::PostUpdate()
 {
 	bool ret = true;
-
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		ret = false;
+	}
 
 	return ret;
 }
@@ -83,7 +85,6 @@ bool DeathScreen::PostUpdate()
 bool DeathScreen::CleanUp()
 {
 	LOG("Freeing scene");
-
 	app->tex->UnLoad(deathScreen);
 
 	return true;

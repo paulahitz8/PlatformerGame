@@ -35,6 +35,7 @@ public:
 	bool CleanUp();
 
 private:
+
 	SDL_Texture* deathScreen;
 	SDL_Rect rect;
 };

@@ -14,8 +14,7 @@ FadeScreen::FadeScreen() : Module()
 }
 
 // Destructor
-FadeScreen::~FadeScreen()
-{}
+FadeScreen::~FadeScreen() {}
 
 // Called before render is available
 bool FadeScreen::Awake()
@@ -28,8 +27,7 @@ bool FadeScreen::Start()
 {
 	LOG("Preparing Fade Screen");
 
-	screenRect = { 0, 0, (int)app->win->GetWidth(), (int)app->win->GetHeight()};
-
+	screenRect = { 0, 0, (int)app->win->GetWidth(), (int)app->win->GetHeight() };
 	// Enable blending mode for transparency
 	SDL_SetRenderDrawBlendMode(app->render->renderer, SDL_BLENDMODE_BLEND);
 	
@@ -73,9 +71,9 @@ bool FadeScreen::Update(float dt)
 // Called each loop iteration
 bool FadeScreen::PostUpdate()
 {
-
 	// Exit this function if we are not performing a fade
-	if (currentStep == Fade_Step::NONE) {
+	if (currentStep == Fade_Step::NONE)
+	{
 		return true;
 	}
 
@@ -90,7 +88,6 @@ bool FadeScreen::PostUpdate()
 
 bool FadeScreen::FadeToBlack(Module* moduleToDisable, Module* moduleToEnable, float frames)
 {
-
 	// If we are already in a fade process, ignore this call
 	if (currentStep == Fade_Step::NONE)
 	{

@@ -12,6 +12,7 @@ struct SDL_Texture;
 class Player : public Module
 {
 public:
+
 	Player();
 
 	void Init();
@@ -70,15 +71,6 @@ private:
 	unsigned int walkingFx;
 	unsigned int deadFx;
 	unsigned int jumpFx;
-
-	//int jumpTimer = 0;
-	//int gravity = 1;
-	//int speedx = 1;
-	//int speedy = 1;
-	//int currenty;
-	//int startingy;
-	//int jumpingspeedy = 6;
-	//float jumpingspeedx = 0.3;
 
 	bool isJumping = false;
 	bool isDead;

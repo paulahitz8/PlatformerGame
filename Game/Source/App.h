@@ -75,7 +75,6 @@ private:
 
 	bool PostUpdate();
 
-	// Load / Save
 	bool LoadGame();
 	bool SaveGame();
 

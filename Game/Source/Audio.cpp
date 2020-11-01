@@ -56,7 +56,8 @@ bool Audio::Awake(pugi::xml_node& config)
 // Called before quitting
 bool Audio::CleanUp()
 {
-	if (!active) {
+	if (!active)
+	{
 		return true;
 	}
 
@@ -68,7 +69,8 @@ bool Audio::CleanUp()
 	}
 
 	ListItem<Mix_Chunk*>* item;
-	for (item = fx.start; item != NULL; item = item->next) {
+	for (item = fx.start; item != NULL; item = item->next)
+	{
 		Mix_FreeChunk(item->data);
 	}
 
@@ -86,7 +88,8 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 
-	if (!active) {
+	if (!active)
+	{
 		return false;
 	}
 
@@ -141,8 +144,10 @@ unsigned int Audio::LoadFx(const char* path)
 {
 	unsigned int ret = 0;
 
-	if(!active)
+	if (!active)
+	{
 		return 0;
+	}
 
 	Mix_Chunk* chunk = Mix_LoadWAV(path);
 
@@ -164,8 +169,10 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 {
 	bool ret = false;
 
-	if(!active)
+	if (!active)
+	{
 		return false;
+	}
 
 	if(id > 0 && id <= fx.count())
 	{
