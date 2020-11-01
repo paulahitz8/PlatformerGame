@@ -45,6 +45,8 @@ bool LogoScreen::Start()
 
 	logoScreen = app->tex->Load("Assets/textures/logoscreen.png");
 
+	app->audio->PlayMusic("Assets/audio/music/LogoScreenMusic.ogg");
+
 	app->map->active = false;
 	app->player->active = false;
 	app->scene->active = false;
@@ -82,7 +84,7 @@ bool LogoScreen::PostUpdate()
 		ret = false;
 	}
 
-	if (timer == 200) 
+	if (timer == 190) 
 	{
 		app->fadeScreen->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 50.0f);

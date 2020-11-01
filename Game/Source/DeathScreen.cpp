@@ -43,7 +43,7 @@ bool DeathScreen::Start()
 	app->scene->active = false;
 	app->render->camera.x = 0;
 	deathScreen = app->tex->Load("Assets/textures/deathScreen.png");
-	app->audio->PlayMusic("Assets/audio/music/titleScreenMusic.ogg", 0.0f);
+	app->audio->PlayMusic("Assets/audio/music/DeathScreenMusic.ogg", 0.0f);
 
 	return ret;
 }
