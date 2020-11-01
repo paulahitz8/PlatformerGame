@@ -344,6 +344,16 @@ bool Player::Update(float dt)
 				}
 			}
 
+			if (GetTileProperty((playerPos.x + playerRect.w) / 64, (playerPos.y + playerRect.h - 64) / 64, "CollisionId") == Collider::Type::GROUND)
+			{
+				playerPos.x = ppx;
+			}
+
+			if (GetTileProperty((playerPos.x - 1) / 64, (playerPos.y + playerRect.h - 64) / 64, "CollisionId") == Collider::Type::GROUND)
+			{
+				playerPos.x = ppx;
+			}
+
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
 				timer++;
