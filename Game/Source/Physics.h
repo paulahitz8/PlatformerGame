@@ -19,12 +19,12 @@ public:
 		}
 		else
 		{			
-			time = 2.0f / 60.0f;
+			time = 10.0f / 60.0f;
 		}
     }
 
-    float gravity = 9.8f; //estos valores los modificamos vamos viendo
-    float time = 1.0f / 60.0f;
+    float gravity = 50.0f; //estos valores los modificamos vamos viendo
+    float time = 10.0f / 60.0f;
 };
 
 #endif // !__PHYSICS_H__

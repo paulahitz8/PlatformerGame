@@ -354,7 +354,9 @@ bool Player::Update(float dt)
 				playerPos.y = ppy;
 				isFalling = false;
 			}
+
 			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling);
+
 			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
 				isFalling = true;
@@ -373,35 +375,23 @@ bool Player::Update(float dt)
 
 		if (isDead)
 		{
-			//if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
-			//{
-			//	currentAnimation = &rightDeath;
-			//}
-			//else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
-			//{
-			//	currentAnimation = &leftDeath;
-			//}
-			////app->audio->PlayFx(deadFx);
-			//if (timer == 4)
-			//{
-				lifeCount--;
-				if (lifeCount == 0)
-				{
-					lifeCount = 3;
-					app->fadeScreen->active = true;
-					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
-					timer = 0;
-				}
-				else
-				{
-					playerPos.x = 100;
-					playerPos.y = 1000;
-					app->render->camera.x = 0;
-					currentAnimation = &rightIdle;
-					timer = 0;
-				}
-				isDead = false;
-			/*}*/
+			lifeCount--;
+			if (lifeCount == 0)
+			{
+				lifeCount = 3;
+				app->fadeScreen->active = true;
+				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
+				timer = 0;
+			}
+			else
+			{
+				playerPos.x = 100;
+				playerPos.y = 1000;
+				app->render->camera.x = 0;
+				currentAnimation = &rightIdle;
+				timer = 0;
+			}
+			isDead = false;
 		}
 	}
 	currentAnimation->Update();

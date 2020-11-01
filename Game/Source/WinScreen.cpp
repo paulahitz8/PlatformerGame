@@ -66,7 +66,7 @@ bool WinScreen::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		app->fadeScreen->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 100.0f);
+		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 100.0f);
 	}
 	return true;
 }
