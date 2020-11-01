@@ -82,6 +82,7 @@ bool Player::Awake(pugi::xml_node&)
 	rightDeath.PushBack({ 90, 277, 22, 25 });
 	rightDeath.PushBack({ 114, 277, 22, 25 });
 	rightDeath.PushBack({ 138, 277, 22, 25 });
+	rightDeath.speed = 0.05f;
 
 	//left death animations
 	leftDeath.PushBack({ 162, 229, 22, 25 });
@@ -90,6 +91,7 @@ bool Player::Awake(pugi::xml_node&)
 	leftDeath.PushBack({ 90, 277, 22, 25 });
 	leftDeath.PushBack({ 114, 277, 22, 25 });
 	leftDeath.PushBack({ 138, 277, 22, 25 });
+	leftDeath.speed = 0.05f;
 
 	////shooting to the right animations
 	//rightShoot.PushBack({ 155, 65, 22, 25 });
@@ -156,12 +158,14 @@ bool Player::Update(float dt)
 	{
 		playerPos.x = 100;
 		playerPos.y = 1000;
+		app->render->camera.x = 0;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		playerPos.x = 100;
 		playerPos.y = 1000;
+		app->render->camera.x = 0;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
@@ -244,7 +248,7 @@ bool Player::Update(float dt)
 					currentAnimation = &leftJump;
 				}
 				//app->audio->PlayFx(jumpFx);
-				//speed.y = -2.0f;
+				speed.y = -2.0f;
 				
 			}
 
@@ -311,7 +315,7 @@ bool Player::Update(float dt)
 			//If last movement was jumping, set the current animation back to idle
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
 			{
-				isJumping = true;
+				isJumping = false;
 				
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
 				if (currentAnimation == &rightJump)
@@ -326,56 +330,46 @@ bool Player::Update(float dt)
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
 				/*playerPos.y = 999;
 				speed.y = -15.0f;*/
-				
-				
-				
 			}
-			
-			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
-			
-		//	int coll = GetTileProperty(playerPos.x, playerPos.y + 26, "CollisionId"); 
-		/*	if (GetTileProperty(playerPos.x, playerPos.y + 25, "CollisionId") == Collider::Type::GROUND)
-			{
-				playerPos.y -= 1; 
-			}*/
 
 			if (GetTileProperty(playerPos.x/64, (playerPos.y + playerRect.h)/64, "CollisionId") == Collider::Type::GROUND)
 			{
-				playerPos.y = 500;
-				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
+				if (isJumping == false)
+				{
+					speed.y = 0;
+				}
+				isFalling = false;
 			}
-		/*
-		
-			//if (playerPos.y >= 1050) 
-			//{
-			//	//speed.y = 0;
-			//	//isJumping = false;
-			//	--playerPos.y;
-			///*	SetTileProperty(playerPos.x, playerPos.y, "CollisionId", 1);
-			//	GetTileProperty(playerPos.x, playerPos.y, "CollisionId") == Collider::Type::GROUND;*/
-			//	
-			//}
-			
 
-		
-			
-
-
-		/*	app->collisions->collider->type  = GetCollisionType(GetTileProperty(playerPos.x, playerPos.y, "CollisionId"), GetTileProperty(playerPos.x + 1, playerPos.y + 1, "CollisionId"));
-			if (collisionType == CollisionType::GROUND)
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
-				playerPos.y++;
-			}*/
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightDeath;
+				}
+				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftDeath;
+				}
+				playerPos.x = ppx;
+				playerPos.y = ppy;
+				isFalling = false;
+			}
 
-
+			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
+			{
+				isFalling = true;
+				playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling);
+			}
+		
+			ppx = playerPos.x;
+			ppy = playerPos.y;
 
 			if (playerPos.x == 9300)
 			{
-
 				app->fadeScreen->active = true;
 				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			}
-
 		}
 
 		if (isDead)

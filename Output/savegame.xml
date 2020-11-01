@@ -9,11 +9,13 @@
 	<TitleScreen />
 	<map />
 	<fadeScreen />
-	<player />
+	<player>
+		<player x="1028" y="932" />
+	</player>
 	<collisions />
 	<DeathScreen />
 	<WinScreen />
 	<renderer>
-		<camera x="0" y="-500" />
+		<camera x="-528" y="-500" />
 	</renderer>
 </save_state>
