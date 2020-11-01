@@ -22,8 +22,7 @@ Scene::Scene() : Module()
 }
 
 // Destructor
-Scene::~Scene()
-{}
+Scene::~Scene() {}
 
 void Scene::Init()
 {
@@ -42,7 +41,6 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-
 	app->map->Load("map.tmx");
 	image = app->tex->Load("Assets/textures/5.png");
 	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)

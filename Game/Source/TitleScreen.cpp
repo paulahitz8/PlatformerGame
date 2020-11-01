@@ -20,8 +20,7 @@ TitleScreen::TitleScreen() : Module()
 }
 
 // Destructor
-TitleScreen::~TitleScreen()
-{}
+TitleScreen::~TitleScreen() {}
 
 void TitleScreen::Init()
 {
