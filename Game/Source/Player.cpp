@@ -117,7 +117,6 @@ bool Player::Start()
 	currentAnimation = &rightIdle;
 
 	playerPos = {100,1000};
-	/*playerPos = {100,980};*/
 
 	godMode = false;
 	isDead = false;
@@ -127,6 +126,8 @@ bool Player::Start()
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
 
 	//Audios
+	//walkingFx = app->audio->LoadFx("Assets/audio/fx/walkingFx.wav");
+	walkingFx = app->audio->LoadFx("Assets/audio/fx/walkingFxIce.wav");
 	
 	return true;
 }
@@ -138,15 +139,6 @@ bool Player::PreUpdate()
 
 bool Player::Update(float dt)
 {
-
-	//if (godmode == false)
-	//{
-	//	if (position.x == 100) esto era para ganar pero ahora usariamos Tiled
-	//	{
-	//		app->fade->FadeToBlack((Module*)App->lvl2, (Module*)App->winningscreen, 0);
-	//	}
-	//}
-
 	// DEBUG Key to start from the beggining of level 1
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
@@ -161,11 +153,11 @@ bool Player::Update(float dt)
 		playerPos.y = 1000;
 		app->render->camera.x = 0;
 	}
+
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		godMode = !godMode;
 	}
-
 
 	if (isDead == false)
 	{
@@ -274,6 +266,7 @@ bool Player::Update(float dt)
 					{
 						currentAnimation = &leftWalk;
 					}
+					app->audio->PlayFx(walkingFx);
 				}
 			}
 
@@ -285,6 +278,7 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &rightWalk;
 				}
+				app->audio->PlayFx(walkingFx);
 			}
 
 			//Walking to the right
@@ -295,6 +289,7 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftWalk;
 				}
+				app->audio->PlayFx(walkingFx);
 			}
 
 			//If last movement was left, set the current animation back to left idle
@@ -424,6 +419,7 @@ bool Player::Update(float dt)
 			isDead = false;
 		}
 	}
+
 	currentAnimation->Update();
 
 	playerCollider->SetPos(playerPos.x, playerPos.y);
@@ -433,42 +429,39 @@ bool Player::Update(float dt)
 	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
 
 	return true;
-
 }
 
 bool Player::PostUpdate()
 {
-
 	// Map Limits
 	if (playerPos.x <= 0) 
 	{ 
 		playerPos.x = 0; 
 	}
+
 	if ((playerPos.x + playerRect.x) > (app->map->data.width * app->map->data.tileWidth)) 
 	{ 
 		--playerPos.x; 
 	}
+
 	//In case of godmode on
 	if (playerPos.y <= 0) 
 	{ 
 		playerPos.y = 0; 
 	}
+
 	if ((playerPos.y + playerRect.y) > (app->map->data.height * app->map->data.tileHeight))
 	{ 
 		--playerPos.y; 
 	}
 	
-
-
-	
-
 	return true;
 }
 
 bool Player::CleanUp()
 {
 	//Unload the audios
-	//app->audio->UnloadFx(deadFx); asi con todos
+	app->audio->UnloadFx(walkingFx);
 
 	app->tex->UnLoad(playerTexture);
 

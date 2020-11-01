@@ -21,8 +21,7 @@ WinScreen::WinScreen() : Module()
 }
 
 // Destructor
-WinScreen::~WinScreen()
-{}
+WinScreen::~WinScreen() {}
 
 void WinScreen::Init()
 {

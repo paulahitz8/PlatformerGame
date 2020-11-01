@@ -22,8 +22,7 @@ Scene::Scene() : Module()
 }
 
 // Destructor
-Scene::~Scene()
-{}
+Scene::~Scene() {}
 
 void Scene::Init()
 {
@@ -42,8 +41,15 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-
 	app->map->Load("map.tmx");
+	image = app->tex->Load("Assets/textures/5.png");
+	//app->map->Load("hello2.tmx");
+	//img = app->tex->Load("Assets/textures/test.png");
+	//app->titleScreen->active = false;
+	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
+	{
+		//app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
+	}
 	image = app->tex->Load("Assets/textures/5.png");
 	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
 	{

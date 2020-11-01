@@ -20,8 +20,7 @@ TitleScreen::TitleScreen() : Module()
 }
 
 // Destructor
-TitleScreen::~TitleScreen()
-{}
+TitleScreen::~TitleScreen() {}
 
 void TitleScreen::Init()
 {
@@ -43,7 +42,8 @@ bool TitleScreen::Start()
 	bool ret = true;
 
 	titleScreen = app->tex->Load("Assets/textures/titlescreen.png");
-	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
+
+	//app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
 	
 	return ret;
 }

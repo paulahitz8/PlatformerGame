@@ -4,7 +4,8 @@
 #include "Point.h"
 #include "SDL/include/SDL.h"
 
-struct Physics {
+struct Physics 
+{
 public:
     void DoPhysics(int& x, int& y, float& vx, float& vy, bool isFalling)
 	{

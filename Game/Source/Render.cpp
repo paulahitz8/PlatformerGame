@@ -56,7 +56,7 @@ bool Render::Awake(pugi::xml_node& config)
 bool Render::Start()
 {
 	LOG("render start");
-	// back background
+	// background
 	SDL_RenderGetViewport(renderer, &viewport);
 
 	return true;
@@ -210,10 +210,14 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
 	int result = -1;
 
-	if(use_camera)
+	if (use_camera) 
+	{
 		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
-	else
+	}
+
+	else {
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
+	}
 
 	if(result != 0)
 	{
