@@ -71,6 +71,10 @@ bool Scene::Update(float dt)
 	{
 		app->SaveGameRequest();
 	}
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		app->map->ChangePropertyOfLayer("Collisions", "Drawable", 1);
+	}
 
 	// Camera: follow the player
 	if (app->player->playerPos.x >= 500 && app->player->playerPos.x < 8820)

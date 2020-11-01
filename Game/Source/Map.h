@@ -147,6 +147,8 @@ public:
 	// Changes property to value assigned
 	void SetTileProperty(int x, int y, const char* property, int value);
 
+	void ChangePropertyOfLayer(SString layerName, SString propertyName, int value);
+
 	MapData data;
 
 private:
