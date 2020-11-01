@@ -64,7 +64,7 @@ bool TitleScreen::Update(float dt)
 	//rect = { 0, -500, 640, 480 };
 	app->render->DrawTexture(titleScreen, 0, 350, &rect);
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		app->map->active = true;
 	//	app->logoScreen->active = false;
