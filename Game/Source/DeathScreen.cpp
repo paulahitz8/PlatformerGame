@@ -13,8 +13,6 @@
 #include "Defs.h"
 #include "Log.h"
 
-
-
 DeathScreen::DeathScreen() : Module()
 {
 	name.Create("DeathScreen");

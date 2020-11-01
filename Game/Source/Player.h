@@ -3,8 +3,6 @@
 
 #include "Module.h"
 #include "Animation.h"
-//#include "SDL_Rect.h"
-//#include "Point.h"
 #include "Physics.h"
 
 #include "SDL/include/SDL.h"
@@ -43,14 +41,11 @@ public:
 	SDL_Rect playerRect = {9,7,22,25};
 
 	iPoint playerPos;
-
 	bool isFalling;
 
 private:
 
-	int timer = 0;
-
-	//list of animation
+	//list of animations
 	Animation* currentAnimation = &rightIdle;
 	Animation blankAnim;
 	Animation rightIdle;
@@ -64,7 +59,6 @@ private:
 	//Animation rightShoot;
 	//Animation leftShoot;
 	
-
 	fPoint speed;
 	Physics playerPhysics;
 	Collider* playerCollider = nullptr;
@@ -90,12 +84,11 @@ private:
 	bool isDead;
 	bool godMode;
 
+	int timer = 0;
 	int lifeCount = 3;
-
 	int ppx, ppy;
 
 	int GetTileProperty(int x, int y, const char* property) const;
-
 };
 
 #endif // __PLAYER_H__

@@ -16,8 +16,6 @@
 #include "Defs.h"
 #include "Log.h"
 
-
-
 LogoScreen::LogoScreen() : Module()
 {
 	name.Create("LogoScreen");
@@ -47,10 +45,7 @@ bool LogoScreen::Start()
 {
 	bool ret = true;
 
-	//app->render->SetBackgroundColor({ 0,0,0,0 });
 	logoScreen = app->tex->Load("Assets/textures/logoscreen.png");
-	//logoFx = app->audio->LoadFx("Assets/audio/fx/logo.wav");
-	//app->audio->SetFxVolume(logoFx);
 
 	app->map->active = false;
 	app->player->active = false;
@@ -72,16 +67,7 @@ bool LogoScreen::PreUpdate()
 bool LogoScreen::Update(float dt)
 {
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight()+300 };
-	//rect = { 0, -500, 640, 480 };
 	app->render->DrawTexture(logoScreen, 0,300, &rect);
-
-	
-
-	//if (timer == 50)
-	//{
-	//	//app->audio->PlayFx(logoFx);
-	//}
-
 	timer++;
 
 	return true;

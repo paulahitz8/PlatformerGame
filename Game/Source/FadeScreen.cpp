@@ -28,7 +28,7 @@ bool FadeScreen::Start()
 {
 	LOG("Preparing Fade Screen");
 
-	screenRect = { 0, 0, (int)app->win->GetWidth(), (int)app->win->GetHeight() };
+	screenRect = { 0, 0, (int)app->win->GetWidth(), (int)app->win->GetHeight()};
 
 	// Enable blending mode for transparency
 	SDL_SetRenderDrawBlendMode(app->render->renderer, SDL_BLENDMODE_BLEND);
@@ -53,7 +53,6 @@ bool FadeScreen::Update(float dt)
 		++frameCount;
 		if (frameCount >= maxFadeFrames)
 		{
-
 			moduleToDisable->Disable();
 			moduleToEnable->Enable();
 
@@ -76,7 +75,9 @@ bool FadeScreen::PostUpdate()
 {
 
 	// Exit this function if we are not performing a fade
-	if (currentStep == Fade_Step::NONE) return true;
+	if (currentStep == Fade_Step::NONE) {
+		return true;
+	}
 
 	float fadeRatio = (float)frameCount / (float)maxFadeFrames;
 

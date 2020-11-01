@@ -44,12 +44,6 @@ public:
 	// Destructor
 	virtual ~Collisions();
 
-	// Called before player is available
-	//bool Awake(pugi::xml_node& conf);
-
-	// Called before the first frame
-	//bool Start();
-
 	// Called at the beginning of the application loop
 	// Removes all colliders pending to delete
 	// Checks for new collisions and calls its listeners
@@ -75,7 +69,9 @@ public:
 	// Draws all existing colliders with some transparency
 	void DrawCollider();
 
-	inline uint GetColliderCount() const { return colliderCount; };
+	inline uint GetColliderCount() const { 
+		return colliderCount; 
+	};
 
 	Collider* collider;
 

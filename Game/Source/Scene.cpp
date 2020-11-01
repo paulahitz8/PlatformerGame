@@ -48,6 +48,7 @@ bool Scene::Start()
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
 	//app->titleScreen->active = false;
+
 	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
 	{
 		//app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
@@ -67,34 +68,41 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	// L02: DONE 3: Request Load / Save when pressing L/S
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
-
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	{
+		app->LoadGameRequest();
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		app->SaveGameRequest();
+	}
 
 	// Camera: follow the player
-	if (app->player->playerPos.x >= 500 && app->player->playerPos.x < 8820) app->render->camera.x = -(app->player->playerPos.x - 500);
+	if (app->player->playerPos.x >= 500 && app->player->playerPos.x < 8820)
+	{
+		app->render->camera.x = -(app->player->playerPos.x - 500);
+	}
 
 	// Camera limits
-	if (app->render->camera.x > 0) app->render->camera.x--; 
+	if (app->render->camera.x > 0)
+	{
+		app->render->camera.x--;
+	}
 	
-
-
 	// Draw background
 	uint w, h;
 	app->win->GetWindowSize(w, h);
 	uint wmb, hmb;
-	app->tex->GetSize(img, wmb, hmb);
+	app->tex->GetSize(image, wmb, hmb);
+
 	for (int i = 0; (wmb * i) <= (w - app->render->camera.x); i++)
 	{
-		app->render->DrawTexture(img, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
+		app->render->DrawTexture(image, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
 	}
 
 	// Draw map
 	if (app->map->active == true) app->map->Draw();
-	
 
-	// L03: DONE 7: Set the window title with map/tileset info
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 		app->map->data.width, app->map->data.height,
 		app->map->data.tileWidth, app->map->data.tileHeight,
@@ -111,7 +119,9 @@ bool Scene::PostUpdate()
 	bool ret = true;
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
 		ret = false;
+	}
 
 	return ret;
 }
@@ -121,10 +131,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	//app->render->camera.x = 0;
-	//app->render->camera.y = 0;
-
-	app->tex->UnLoad(img);
+	app->tex->UnLoad(image);
 	app->player->Disable();
 	app->map->Disable();
 

@@ -4,13 +4,8 @@
 #include "Defs.h"
 #include "Log.h"
 
-// NOTE: Recommended using: Additional Include Directories,
-// instead of 'hardcoding' library location path in code logic
 #include "SDL/include/SDL.h"
 #include "SDL_mixer/include/SDL_mixer.h"
-
-// NOTE: Library linkage is configured in Linker Options
-//#pragma comment(lib, "../Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib")
 
 Audio::Audio() : Module()
 {
@@ -61,8 +56,9 @@ bool Audio::Awake(pugi::xml_node& config)
 // Called before quitting
 bool Audio::CleanUp()
 {
-	if(!active)
+	if (!active) {
 		return true;
+	}
 
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
@@ -72,8 +68,9 @@ bool Audio::CleanUp()
 	}
 
 	ListItem<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
+	for (item = fx.start; item != NULL; item = item->next) {
 		Mix_FreeChunk(item->data);
+	}
 
 	fx.Clear();
 
@@ -89,8 +86,9 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 
-	if(!active)
+	if (!active) {
 		return false;
+	}
 
 	if(music != NULL)
 	{

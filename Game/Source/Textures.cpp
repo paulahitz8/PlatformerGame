@@ -6,7 +6,7 @@
 #include "Log.h"
 
 #include "SDL_image/include/SDL_image.h"
-//#pragma comment(lib, "../Game/Source/External/SDL_image/libx86/SDL2_image.lib")
+
 
 Textures::Textures() : Module()
 {
@@ -41,6 +41,7 @@ bool Textures::Start()
 {
 	LOG("start textures");
 	bool ret = true;
+
 	return ret;
 }
 
@@ -57,6 +58,7 @@ bool Textures::CleanUp()
 
 	textures.Clear();
 	IMG_Quit();
+
 	return true;
 }
 
