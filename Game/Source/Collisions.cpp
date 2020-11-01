@@ -6,9 +6,6 @@
 #include "SDL/include/SDL_scancode.h"
 #include "Log.h"
 
-
-
-
 Collisions::Collisions() : Module() {
 	name.Create("collisions");
 
@@ -20,18 +17,15 @@ Collisions::Collisions() : Module() {
 	matrix[Collider::Type::GROUND][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::PLATFORM] = false;
 
-
 	matrix[Collider::Type::WATER][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::WATER][Collider::Type::WATER] = false;
 	matrix[Collider::Type::WATER][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::WATER][Collider::Type::PLATFORM] = false;
 
-
 	matrix[Collider::Type::PLAYER][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WATER] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLATFORM] = true;
-
 
 	matrix[Collider::Type::PLATFORM][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::PLATFORM][Collider::Type::WATER] = false;
@@ -42,6 +36,7 @@ Collisions::Collisions() : Module() {
 Collisions::~Collisions() {}
 
 bool Collisions::PreUpdate() {
+
 	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
 		if (colliders[i] != nullptr && colliders[i]->pendingToDelete == true) {
@@ -83,15 +78,18 @@ bool Collisions::PreUpdate() {
 }
 
 bool Collisions::Update(float dt) {
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
 		debug = !debug;
+	}
 
 	return true;
 }
 
 bool Collisions::PostUpdate() {
-	if (debug)
+	if (debug) {
 		DrawCollider();
+	}
 
 	return true;
 }
@@ -99,8 +97,9 @@ bool Collisions::PostUpdate() {
 void Collisions::DrawCollider() {
 	Uint8 alpha = 80;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
-		if (colliders[i] == nullptr)
+		if (colliders[i] == nullptr) {
 			continue;
+		}
 
 		switch (colliders[i]->type) {
 		case Collider::Type::NONE: // Purple
