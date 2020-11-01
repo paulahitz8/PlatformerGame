@@ -158,21 +158,14 @@ bool Player::Update(float dt)
 		playerPos.y = 1000;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		isDead = true;
+		playerPos.x = 100;
+		playerPos.y = 1000;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		godMode = !godMode;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-	{
-		//app->fade->FadeToBlackk((Module*)app->lvl2, (Module*)app->gameover,0);
-	}
-	if (app->input->GetKey(SDL_SCANCODE_F12) == KEY_DOWN)
-	{
-		//app->fade->FadeToBlackk((Module*)app->lvl2, (Module*)app->winning,0);
 	}
 
 
@@ -331,8 +324,8 @@ bool Player::Update(float dt)
 				}
 				//app->audio->PlayFx(jumpFx);
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
-				playerPos.y = 999;
-				speed.y = -15.0f;
+				/*playerPos.y = 999;
+				speed.y = -15.0f;*/
 				
 				
 				
@@ -447,13 +440,21 @@ bool Player::CleanUp()
 	return true;
 }
 
-bool Player::Load(pugi::xml_node&)
+bool Player::LoadState(pugi::xml_node& data)
 {
+	playerPos.x = data.child("player").attribute("x").as_int();
+	playerPos.y = data.child("player").attribute("y").as_int();
+
 	return true;
 }
 
-bool Player::Save(pugi::xml_node&)
+bool Player::SaveState(pugi::xml_node& data)
 {
+	pugi::xml_node player = data.append_child("player");
+
+	player.append_attribute("x") = playerPos.x;
+	player.append_attribute("y") = playerPos.y;
+
 	return true;
 }
 

@@ -64,9 +64,9 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	// L02: DONE 3: Request Load / Save when pressing L/S
-	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) app->LoadGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN) app->SaveGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
 
 	// Camera: follow the player
 	if (app->player->playerPos.x >= 500 && app->player->playerPos.x < 8820) app->render->camera.x = -(app->player->playerPos.x - 500);

@@ -325,7 +325,7 @@ bool App::LoadGame()
 {
 	bool ret = true;
 	pugi::xml_document saveDoc;
-	pugi::xml_parse_result result = saveDoc.load_file(saveFile.GetString());
+	pugi::xml_parse_result result = saveDoc.load_file("savegame.xml");
 	
 	//Check loading errors
 	if (result == NULL) 

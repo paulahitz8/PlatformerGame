@@ -35,8 +35,8 @@ public:
 	// Called before quitting
 	bool CleanUp(); 
 
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&);
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&);
 
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
