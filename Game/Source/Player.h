@@ -45,6 +45,8 @@ public:
 
 	iPoint playerPos;
 
+	bool isFalling;
+
 private:
 
 	enum CollisionType {
@@ -92,6 +94,8 @@ private:
 
 	bool resetLives = false;
 	int lifeCount = 3;
+
+	int ppx, ppy;
 
 	int GetTileProperty(int x, int y, const char* property) const;
 	CollisionType GetCollisionType(int A, int B) const;

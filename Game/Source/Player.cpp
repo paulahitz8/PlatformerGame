@@ -156,12 +156,14 @@ bool Player::Update(float dt)
 	{
 		playerPos.x = 100;
 		playerPos.y = 1000;
+		app->render->camera.x = 0;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		playerPos.x = 100;
 		playerPos.y = 1000;
+		app->render->camera.x = 0;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
@@ -244,7 +246,7 @@ bool Player::Update(float dt)
 					currentAnimation = &leftJump;
 				}
 				//app->audio->PlayFx(jumpFx);
-				//speed.y = -2.0f;
+				speed.y = -2.0f;
 				
 			}
 
@@ -311,7 +313,7 @@ bool Player::Update(float dt)
 			//If last movement was jumping, set the current animation back to idle
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
 			{
-				isJumping = true;
+				isJumping = false;
 				
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
 				if (currentAnimation == &rightJump)
@@ -330,52 +332,33 @@ bool Player::Update(float dt)
 				
 				
 			}
-			
-			//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
-			
-		//	int coll = GetTileProperty(playerPos.x, playerPos.y + 26, "CollisionId"); 
-		/*	if (GetTileProperty(playerPos.x, playerPos.y + 25, "CollisionId") == Collider::Type::GROUND)
-			{
-				playerPos.y -= 1; 
-			}*/
 
 			if (GetTileProperty(playerPos.x/64, (playerPos.y + playerRect.h)/64, "CollisionId") == Collider::Type::GROUND)
 			{
-				playerPos.y = 500;
-				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
+				/*playerPos.x = ppx;
+				playerPos.y = ppy;*/
+				if (isJumping == false)
+				{
+					speed.y = 0;
+				}
+				isFalling = false;
 			}
-		/*
-		
-			//if (playerPos.y >= 1050) 
-			//{
-			//	//speed.y = 0;
-			//	//isJumping = false;
-			//	--playerPos.y;
-			///*	SetTileProperty(playerPos.x, playerPos.y, "CollisionId", 1);
-			//	GetTileProperty(playerPos.x, playerPos.y, "CollisionId") == Collider::Type::GROUND;*/
-			//	
-			//}
-			
-
-		
-			
 
 
-		/*	app->collisions->collider->type  = GetCollisionType(GetTileProperty(playerPos.x, playerPos.y, "CollisionId"), GetTileProperty(playerPos.x + 1, playerPos.y + 1, "CollisionId"));
-			if (collisionType == CollisionType::GROUND)
+			if (isJumping == true || GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND)
 			{
-				playerPos.y++;
-			}*/
-
-
+				isFalling = true;
+				playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling);
+			}
+		
+			/*ppx = playerPos.x;
+			ppy = playerPos.y;*/
 
 			if (playerPos.x == 9300)
 			{
-
 				app->fadeScreen->active = true;
 				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			}
-
 		}
 
 		if (isDead)
