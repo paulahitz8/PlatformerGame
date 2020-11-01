@@ -73,8 +73,9 @@ private:
 	bool platform = false;
 	bool water = false;
 
-	/*unsigned int deadFx;
-	unsigned int jumpFx;*/
+	unsigned int walkingFx;
+	unsigned int deadFx;
+	unsigned int jumpFx;
 
 	//int jumpTimer = 0;
 	//int gravity = 1;

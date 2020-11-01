@@ -48,7 +48,10 @@ bool Scene::Start()
 	//app->map->Load("hello2.tmx");
 	//img = app->tex->Load("Assets/textures/test.png");
 	//app->titleScreen->active = false;
-	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false) app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
+	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
+	{
+		//app->audio->PlayMusic("Assets/audio/music/SnowMusic.ogg");
+	}
 
 	app->player->Enable();
 

@@ -46,8 +46,7 @@ bool TitleScreen::Start()
 
 	app->render->SetBackgroundColor({ 0,0,0,0 });
 	titleScreen = app->tex->Load("Assets/textures/titlescreen.png");
-	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
-	//titleFx = app->audio->LoadFx("Assets/audio/music/TitleScreenMusic.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
 	return ret;
 }
 
