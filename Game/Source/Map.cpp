@@ -363,16 +363,54 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	size_t size = layer->width * layer->height * sizeof(uint);
 	layer->data = new uint[size]();
 	memset(layer->data, 0, size);
+	uint test;
 
 	pugi::xml_node tile;
 	int i = 0;
 	for (tile = node.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"), i++)
 	{
-		layer->data[i] = tile.attribute("gid").as_uint();
+		test = tile.attribute("gid").as_uint();
+		if (test != NULL)
+		{
+			layer->data[i] = tile.attribute("gid").as_uint();
+		}
 	}
 
 	return ret;
 }
+//bool Map::StoreId(pugi::xml_node& node, MapLayer* layer, int index)
+//{
+//	bool ret = true;
+//
+//	layer->data[index] = node.attribute("gid").as_uint(0);
+//
+//	return ret;
+//}
+//
+//bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
+//{
+//	bool ret = true;
+//
+//	layer->name = node.attribute("name").as_string();
+//	layer->width = node.attribute("width").as_int();
+//	layer->height = node.attribute("height").as_int();
+//	layer->data = new uint[(data.width * data.height * sizeof(uint))];
+//	memset(layer->data, 0, size_t(data.width * data.height * sizeof(uint)));
+//	pugi::xml_node gidNode;
+//
+//	int i = 0;
+//	for (gidNode = node.child("data").child("tile"); gidNode && ret; gidNode = gidNode.next_sibling("tile"))
+//	{
+//		if (ret == true) ret = StoreId(gidNode, layer, i);
+//		++i;
+//	}
+//
+//	LOG("Layer <<%s>> has loaded %d tiles", layer->name.GetString(), i);
+//
+//	ret = LoadProperties(node.child("properties"), layer->properties);
+//
+//	return ret;
+//}
 
 // L06: TODO 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)

@@ -346,9 +346,9 @@ bool Player::Update(float dt)
 				playerPos.y -= 1; 
 			}*/
 
-			if (GetTileProperty(playerPos.x, playerPos.y + playerRect.h, "CollisionId") != Collider::Type::GROUND)
+			if (GetTileProperty(playerPos.x/64, (playerPos.y + playerRect.h)/64, "CollisionId") == Collider::Type::WATER)
 			{
-				playerPos.y += 2;
+				playerPos.y -= 2;
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
 			}
 		/*
