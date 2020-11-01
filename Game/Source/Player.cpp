@@ -18,7 +18,6 @@ Player::Player()
 
 Player::~Player() {}
 
-
 bool Player::Awake(pugi::xml_node&)
 {
 	//blank animation
@@ -94,18 +93,6 @@ bool Player::Awake(pugi::xml_node&)
 	leftDeath.PushBack({ 138, 277, 22, 25 });
 	leftDeath.speed = 0.05f;
 
-	////shooting to the right animations
-	//rightShoot.PushBack({ 155, 65, 22, 25 });
-	//rightShoot.PushBack({ 186, 65, 22, 25 });
-	//rightShoot.PushBack({ 216, 65, 22, 25 });
-	//rightShoot.PushBack({ 284, 65, 22, 25 });
-
-	////shooting to the left animations
-	//leftShoot.PushBack({ 193, 165, 22, 25 });
-	//leftShoot.PushBack({ 162, 165, 22, 25 });
-	//leftShoot.PushBack({ 132, 165, 22, 25 });
-	//leftShoot.PushBack({ 64, 165, 22, 25 });
-
 	return true;
 }
 
@@ -113,7 +100,7 @@ bool Player::Awake(pugi::xml_node&)
 bool Player::Start()
 {
 	LOG("Loading player textures");
-	playerTexture = app->tex->Load("Assets/textures/Assets Player Dev.png");
+	playerTexture = app->tex->Load("Assets/textures/playerSprites.png");
 	currentAnimation = &rightIdle;
 
 	playerPos = {100,1000};
@@ -126,7 +113,6 @@ bool Player::Start()
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
 
 	//Audios
-	//walkingFx = app->audio->LoadFx("Assets/audio/fx/walkingFx.wav");
 	walkingFx = app->audio->LoadFx("Assets/audio/fx/walkingFxIce.wav");
 	
 	return true;
@@ -161,7 +147,7 @@ bool Player::Update(float dt)
 
 	if (isDead == false)
 	{
-		if (godMode) //left + right + up + down
+		if (godMode)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
@@ -194,7 +180,6 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &rightWalk;
 				}
-
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -225,16 +210,14 @@ bool Player::Update(float dt)
 				}
 			}
 
-
 			if (playerPos.x == 9300)
 			{
 				app->fadeScreen->active = true;
 				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			}
-
 		}
 
-		else //left + right + jump
+		else
 		{
 			//Jump
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -248,9 +231,7 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftJump;
 				}
-				//app->audio->PlayFx(jumpFx);
 				speed.y = -28.0f;
-
 			}
 
 			//In case of both keys pressed
@@ -311,14 +292,13 @@ bool Player::Update(float dt)
 			}
 
 			//If last movement was jumping, set the current animation back to idle
-			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
+			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP))
 			{
 				isJumping = false;
 			}
 
-
-			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM) {
-
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
+			{
 				if (isJumping == false)
 				{
 					speed.y = 0;
@@ -328,7 +308,8 @@ bool Player::Update(float dt)
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
 			{
-				if (isJumping == false) {
+				if (isJumping == false)
+				{
 					if (currentAnimation == &rightJump)
 					{
 						currentAnimation = &rightIdle;
@@ -337,7 +318,6 @@ bool Player::Update(float dt)
 					{
 						currentAnimation = &leftIdle;
 					}
-
 					speed.y = 0;
 					isFalling = false;
 				}
@@ -356,24 +336,29 @@ bool Player::Update(float dt)
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
 
-				if (isJumping == false) {
+				if (isJumping == false)
+				{
 					speed.y = 0;
 					isFalling = false;
 				}
+
 				timer++;
+
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
 					currentAnimation = &rightDeath;
 				}
+
 				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
 				{
 					currentAnimation = &leftDeath;
 				}
-				//app->audio->PlayFx(deadFx);
+				
 				if (timer == 120)
 				{
 					isDead = true;
 				}
+
 				playerPos.x = ppx;
 				playerPos.y = ppy;
 				isFalling = false;
@@ -384,7 +369,6 @@ bool Player::Update(float dt)
 			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
 				isFalling = true;
-
 			}
 
 			ppx = playerPos.x;
@@ -434,25 +418,25 @@ bool Player::Update(float dt)
 bool Player::PostUpdate()
 {
 	// Map Limits
-	if (playerPos.x <= 0) 
-	{ 
-		playerPos.x = 0; 
+	if (playerPos.x <= 0)
+	{
+		playerPos.x = 0;
 	}
 
-	if ((playerPos.x + playerRect.x) > (app->map->data.width * app->map->data.tileWidth)) 
-	{ 
-		--playerPos.x; 
+	if ((playerPos.x + playerRect.x) > (app->map->data.width * app->map->data.tileWidth))
+	{
+		--playerPos.x;
 	}
 
 	//In case of godmode on
-	if (playerPos.y <= 0) 
-	{ 
-		playerPos.y = 0; 
+	if (playerPos.y <= 0)
+	{
+		playerPos.y = 0;
 	}
 
 	if ((playerPos.y + playerRect.y) > (app->map->data.height * app->map->data.tileHeight))
-	{ 
-		--playerPos.y; 
+	{
+		--playerPos.y;
 	}
 	
 	return true;
@@ -486,10 +470,6 @@ bool Player::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-
-
-//FALTAN COLLIDERS Y TODO LO DE TILES
-
 int Player::GetTileProperty(int x, int y, const char* property) const
 {
 	int ret;
@@ -509,7 +489,6 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 	ListItem <TileSet*>* T = app->map->data.tilesets.start;
 	SString tileSetName = "Collisions";
 	
-
 	while (T != NULL)
 	{
 		if (T->data->name == tileSetName)

@@ -17,8 +17,7 @@ Render::Render() : Module()
 }
 
 // Destructor
-Render::~Render()
-{}
+Render::~Render() {}
 
 // Called before render is available
 bool Render::Awake(pugi::xml_node& config)
