@@ -14,7 +14,6 @@
 #include "Log.h"
 
 
-
 TitleScreen::TitleScreen() : Module()
 {
 	name.Create("TitleScreen");
@@ -28,7 +27,6 @@ void TitleScreen::Init()
 {
 	active = false;
 }
-
 
 // Called before render is available
 bool TitleScreen::Awake()
@@ -44,10 +42,9 @@ bool TitleScreen::Start()
 {
 	bool ret = true;
 
-	app->render->SetBackgroundColor({ 0,0,0,0 });
 	titleScreen = app->tex->Load("Assets/textures/titlescreen.png");
 	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg", 0.0f);
-	//titleFx = app->audio->LoadFx("Assets/audio/music/TitleScreenMusic.ogg");
+	
 	return ret;
 }
 
@@ -61,16 +58,15 @@ bool TitleScreen::PreUpdate()
 bool TitleScreen::Update(float dt)
 {
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	//rect = { 0, -500, 640, 480 };
 	app->render->DrawTexture(titleScreen, 0, 350, &rect);
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		app->map->active = true;
-	//	app->logoScreen->active = false;
 		app->fadeScreen->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 50.0f);
 	}
+
 	return true;
 }
 
@@ -79,7 +75,10 @@ bool TitleScreen::PostUpdate()
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		ret = false;
+	}
 
 	return ret;
 }
@@ -91,7 +90,6 @@ bool TitleScreen::CleanUp()
 	
 	app->tex->UnLoad(titleScreen);
 	
-
 	return true;
 }
 

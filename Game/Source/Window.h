@@ -32,8 +32,6 @@ public:
 	uint GetWidth() const;
 	uint GetHeight() const;
 
-
-
 public:
 
 	// The window we'll be rendering to

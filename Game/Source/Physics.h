@@ -6,24 +6,21 @@
 
 struct Physics {
 public:
-    void DoPhysics(int& x, int& y, float& vx, float& vy, bool isFalling) 
+    void DoPhysics(int& x, int& y, float& vx, float& vy, bool isFalling)
 	{
 		if (isFalling == true)
 		{
-
-			//   x = x + vx * time + (0.5 * gravity * time * time);
 			y = y + vy * time + (0.5 * gravity * time * time);
 			x = x + vx * time;
 
 			time += 2.0f / 60.0f;
 		}
 		else
-		{			
+		{
 			time = 10.0f / 60.0f;
 		}
     }
-
-    float gravity = 50.0f; //estos valores los modificamos vamos viendo
+    float gravity = 50.0f;
     float time = 10.0f / 60.0f;
 };
 

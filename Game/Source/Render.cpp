@@ -2,7 +2,6 @@
 #include "Window.h"
 #include "Render.h"
 
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -59,6 +58,7 @@ bool Render::Start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+
 	return true;
 }
 
@@ -66,6 +66,7 @@ bool Render::Start()
 bool Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
+
 	return true;
 }
 
@@ -78,6 +79,7 @@ bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
+
 	return true;
 }
 
@@ -89,7 +91,6 @@ bool Render::CleanUp()
 	return true;
 }
 
-// L02: DONE 6: Implement a method to load the state, for now load camera's x and y
 // Load Game State
 bool Render::LoadState(pugi::xml_node& data)
 {
@@ -102,7 +103,6 @@ bool Render::LoadState(pugi::xml_node& data)
 	return ret;
 }
 
-// L02: DONE 8: Create a method to save the state of the renderer
 // Save Game State
 bool Render::SaveState(pugi::xml_node& data)
 {

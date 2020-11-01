@@ -14,6 +14,8 @@ public:
 	// Destructor
 	virtual ~Scene();
 
+	void Init();
+
 	// Called before render is available
 	bool Awake();
 
@@ -32,10 +34,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void Init();
-
 private:
-	SDL_Texture* img;
+
+	SDL_Texture* image;
 };
 
 #endif // __SCENE_H__
