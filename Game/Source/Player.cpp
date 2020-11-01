@@ -82,6 +82,7 @@ bool Player::Awake(pugi::xml_node&)
 	rightDeath.PushBack({ 90, 277, 22, 25 });
 	rightDeath.PushBack({ 114, 277, 22, 25 });
 	rightDeath.PushBack({ 138, 277, 22, 25 });
+	rightDeath.speed = 0.05f;
 
 	//left death animations
 	leftDeath.PushBack({ 162, 229, 22, 25 });
@@ -90,6 +91,7 @@ bool Player::Awake(pugi::xml_node&)
 	leftDeath.PushBack({ 90, 277, 22, 25 });
 	leftDeath.PushBack({ 114, 277, 22, 25 });
 	leftDeath.PushBack({ 138, 277, 22, 25 });
+	leftDeath.speed = 0.05f;
 
 	////shooting to the right animations
 	//rightShoot.PushBack({ 155, 65, 22, 25 });
@@ -328,15 +330,10 @@ bool Player::Update(float dt)
 				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
 				/*playerPos.y = 999;
 				speed.y = -15.0f;*/
-				
-				
-				
 			}
 
 			if (GetTileProperty(playerPos.x/64, (playerPos.y + playerRect.h)/64, "CollisionId") == Collider::Type::GROUND)
 			{
-				/*playerPos.x = ppx;
-				playerPos.y = ppy;*/
 				if (isJumping == false)
 				{
 					speed.y = 0;
@@ -344,15 +341,29 @@ bool Player::Update(float dt)
 				isFalling = false;
 			}
 
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
+			{
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightDeath;
+				}
+				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftDeath;
+				}
+				playerPos.x = ppx;
+				playerPos.y = ppy;
+				isFalling = false;
+			}
 
-			if (isJumping == true || GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND)
+			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
 				isFalling = true;
 				playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling);
 			}
 		
-			/*ppx = playerPos.x;
-			ppy = playerPos.y;*/
+			ppx = playerPos.x;
+			ppy = playerPos.y;
 
 			if (playerPos.x == 9300)
 			{
