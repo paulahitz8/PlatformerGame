@@ -332,8 +332,8 @@ bool Player::Update(float dt)
 				if (isJumping == false)
 				{
 					speed.y = 0;
+					isFalling = false;
 				}
-				isFalling = false;
 			}
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
@@ -346,6 +346,11 @@ bool Player::Update(float dt)
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
+
+				if (isJumping == false) {
+					speed.y = 0;
+					isFalling = false;
+				}
 				timer++;
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
