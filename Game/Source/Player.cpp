@@ -324,9 +324,10 @@ bool Player::Update(float dt)
 				playerPos.y -= 1; 
 			}*/
 
-			if (GetTileProperty(playerPos.x, playerPos.y + 26, "CollisionId") != Collider::Type::GROUND)
+			if (GetTileProperty(playerPos.x, playerPos.y + playerRect.h, "CollisionId") != Collider::Type::GROUND)
 			{
-				playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);
+				playerPos.y += 2;
+				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
 			}
 
 
@@ -453,7 +454,7 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 	}
 
 	// Gets CollisionId
-	int id = (int)(57 - T->data->firstgId);
+	int id = (int)(ML->data->Get(x,y) - T->data->firstgId);
 	if (id < 0)
 	{
 		ret = 0;

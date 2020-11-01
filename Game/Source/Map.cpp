@@ -218,7 +218,7 @@ bool Map::Load(const char* filename)
 			LOG("orientation: isometric");
 		}
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < data.tilesets.count(); i++)
 		{
 			LOG("Tileset %d", i + 1);
 			LOG("name: %s", data.tilesets[i]->name.GetString());
@@ -234,7 +234,7 @@ bool Map::Load(const char* filename)
 
 
 		// L04: TODO 4: LOG the info for each loaded layer
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < data.layers.count(); i++)
 		{
 			LOG("Layer %d", i + 1);
 			LOG("name: %s", data.layers[i]->name.GetString());
