@@ -41,6 +41,8 @@ bool TitleScreen::Start()
 {
 	bool ret = true;
 
+	app->audio->PlayMusic("Assets/audio/music/TitleScreenMusic.ogg");
+
 	titleScreen = app->tex->Load("Assets/textures/titleScreen.png");
 	
 	return ret;

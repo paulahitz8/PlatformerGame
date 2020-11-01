@@ -70,7 +70,8 @@ private:
 
 	unsigned int walkingFx;
 	unsigned int deadFx;
-	unsigned int jumpFx;
+	unsigned int jumpingFx;
+	unsigned int splashFx;
 
 	bool isJumping = false;
 	bool isDead;

@@ -73,7 +73,7 @@ bool Player::Awake(pugi::xml_node&)
 	leftJump.PushBack({ 258, 197, 22, 25 });
 	leftJump.PushBack({ 258, 162, 22, 25 });
 	leftJump.PushBack({ 225, 165, 22, 25 });
-	leftJump.speed = 0.09f;
+	leftJump.speed = 0.02f;
 
 	//right death animations
 	rightDeath.PushBack({ 187, 129, 22, 25 });
@@ -82,7 +82,7 @@ bool Player::Awake(pugi::xml_node&)
 	rightDeath.PushBack({ 90, 277, 22, 25 });
 	rightDeath.PushBack({ 114, 277, 22, 25 });
 	rightDeath.PushBack({ 138, 277, 22, 25 });
-	rightDeath.speed = 0.09f;
+	rightDeath.speed = 0.05f;
 
 	//left death animations
 	leftDeath.PushBack({ 162, 229, 22, 25 });
@@ -113,7 +113,11 @@ bool Player::Start()
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
 
 	//Audios
-	walkingFx = app->audio->LoadFx("Assets/audio/fx/walkingFxIce.wav");
+	walkingFx = app->audio->LoadFx("Assets/audio/fx/walkingFx.wav");
+	deadFx = app->audio->LoadFx("Assets/audio/fx/deadFx.wav");
+	jumpingFx = app->audio->LoadFx("Assets/audio/fx/jumpingFx.wav");
+	splashFx = app->audio->LoadFx("Assets/audio/fx/splashFx.wav");
+
 	
 	return true;
 }
@@ -219,6 +223,21 @@ bool Player::Update(float dt)
 
 		else
 		{
+			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
+			{
+				app->audio->PlayFx(jumpingFx);
+			}
+
+			else if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT))
+			{
+				app->audio->PlayFx(jumpingFx);
+			}
+
+			else if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (app->input->GetKey(SDL_SCANCODE_W) != KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) != KEY_DOWN))
+			{
+				app->audio->PlayFx(walkingFx);
+			}
+
 			//Jump
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
@@ -247,7 +266,6 @@ bool Player::Update(float dt)
 					{
 						currentAnimation = &leftWalk;
 					}
-					app->audio->PlayFx(walkingFx);
 				}
 			}
 
@@ -259,7 +277,6 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &rightWalk;
 				}
-				app->audio->PlayFx(walkingFx);
 			}
 
 			//Walking to the right
@@ -270,7 +287,6 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftWalk;
 				}
-				app->audio->PlayFx(walkingFx);
 			}
 
 			//If last movement was left, set the current animation back to left idle
@@ -334,8 +350,17 @@ bool Player::Update(float dt)
 			}
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
-			{
+			{	
+				if (timer == 5)
+				{
+					app->audio->PlayFx(splashFx);
+				}
 
+				else if (timer == 50)
+				{
+					app->audio->PlayFx(deadFx);
+				}
+				
 				if (isJumping == false)
 				{
 					speed.y = 0;
@@ -353,7 +378,7 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftDeath;
 				}
-				
+
 				if (timer == 120)
 				{
 					isDead = true;
@@ -446,6 +471,9 @@ bool Player::CleanUp()
 {
 	//Unload the audios
 	app->audio->UnloadFx(walkingFx);
+	app->audio->UnloadFx(jumpingFx);
+	app->audio->UnloadFx(deadFx);
+	app->audio->UnloadFx(splashFx);
 
 	app->tex->UnLoad(playerTexture);
 
