@@ -32,9 +32,9 @@ Animal Rush is a platform game created by TNT Cat, where the player, each level,
 
 ## Developers
 
- - Paula Hitz - lead collider creator
- - María Calle - lead physics creator
- - Irene Hernández - lead animator
+ - Paula Hitz - lead collider creator (https://github.com/paulahitz8)
+ - María Calle - lead physics creator (https://github.com/mav006)
+ - Irene Hernández - lead animator (https://github.com/ihedud)
 
 Disclamer: we all worked in everything and equally as hard.
 
