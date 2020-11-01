@@ -83,7 +83,7 @@ bool Collisions::PreUpdate() {
 }
 
 bool Collisions::Update(float dt) {
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		debug = !debug;
 
 	return true;
