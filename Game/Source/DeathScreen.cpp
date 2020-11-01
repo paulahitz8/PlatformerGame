@@ -66,9 +66,7 @@ bool DeathScreen::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		app->fadeScreen->active = true;
-		app->map->active = true;
-		app->scene->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 30.0f);
+		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 100.0f);
 	}
 	return true;
 }
@@ -87,7 +85,7 @@ bool DeathScreen::PostUpdate()
 bool DeathScreen::CleanUp()
 {
 	LOG("Freeing scene");
-	active = false;
+
 	app->tex->UnLoad(deathScreen);
 
 	return true;
