@@ -42,20 +42,29 @@ void Map::Draw()
 
 	ListItem<MapLayer*>* layer = data.layers.start;
 
-	for (int y = 0; y < data.height; y++)
+	while (layer != NULL)
 	{
-		for (int x = 0; x < data.width; x++)
+		if (layer->data->properties.GetProperty("Drawable") == 1)
 		{
-			int tileId = layer->data->Get(x, y);
-			if (tileId > 0)
+			for (int y = 0; y < data.height; ++y)
 			{
-				TileSet* tileset;
-				tileset = GetTilesetFromTileId(tileId);
-				SDL_Rect tileRect = tileset->GetTileRect(tileId);
-				iPoint pos = MapToWorld(x, y);
-				app->render->DrawTexture(tileset->texture, pos.x, pos.y, &tileRect);
+				for (int x = 0; x < data.width; ++x)
+				{
+					int tileId = layer->data->Get(x, y);
+					if (tileId > 0)
+					{
+						// Complete the draw function
+						TileSet* tileset;
+						tileset = GetTilesetFromTileId(tileId);
+						SDL_Rect tileRect = tileset->GetTileRect(tileId);
+						iPoint pos = MapToWorld(x, y);
+						app->render->DrawTexture(tileset->texture, pos.x, pos.y, &tileRect);
+					}
+				}
 			}
 		}
+
+		layer = layer->next;
 	}
 }
 
@@ -166,7 +175,7 @@ bool Map::Load(const char* filename)
 
 		ret = LoadLayer(layerNode, layer);
 
-		ret = LoadProperties(layerNode, layer->properties);
+		ret = LoadProperties(layerNode.child("properties"), layer->properties);
 
 		if (ret == true) data.layers.Add(layer);
 	}
@@ -342,6 +351,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 
 	pugi::xml_node property;
 
+//	for (property = node.child("properties").child("property"); property; property = property.next_sibling("property"))
 	for (property = node.child("property"); property; property = property.next_sibling("property"))
 	{
 		Properties::Property* prop = new Properties::Property();
@@ -419,6 +429,27 @@ void Properties::SetProperty(const char* name, int value)
 			return;
 		}
 		property = property->next;
+	}
+}
+
+void Map::ChangePropertyOfLayer(SString layerName, SString propertyName, int value)
+{
+	ListItem<MapLayer*>* layer = data.layers.start;
+	while (layer != NULL)
+	{
+		if (layer->data->name == layerName)
+		{
+			if (layer->data->properties.GetProperty(propertyName.GetString()) == 0)
+			{
+				layer->data->properties.SetProperty(propertyName.GetString(), 1);
+			}
+			else if (layer->data->properties.GetProperty(propertyName.GetString()) == 1)
+			{
+				layer->data->properties.SetProperty(propertyName.GetString(), 0);
+			}
+		}
+
+		layer = layer->next;
 	}
 }
 
