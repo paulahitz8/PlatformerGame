@@ -19,8 +19,7 @@ DeathScreen::DeathScreen() : Module()
 }
 
 // Destructor
-DeathScreen::~DeathScreen()
-{}
+DeathScreen::~DeathScreen() {}
 
 void DeathScreen::Init()
 {
@@ -66,6 +65,7 @@ bool DeathScreen::Update(float dt)
 		app->fadeScreen->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->scene, 100.0f);
 	}
+
 	return true;
 }
 
@@ -73,8 +73,10 @@ bool DeathScreen::Update(float dt)
 bool DeathScreen::PostUpdate()
 {
 	bool ret = true;
-
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		ret = false;
+	}
 
 	return ret;
 }
@@ -83,7 +85,6 @@ bool DeathScreen::PostUpdate()
 bool DeathScreen::CleanUp()
 {
 	LOG("Freeing scene");
-
 	app->tex->UnLoad(deathScreen);
 
 	return true;

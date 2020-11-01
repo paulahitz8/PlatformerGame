@@ -43,23 +43,28 @@ public:
 			++loopCount;
 
 			if (pingpong)
+			{
 				pingpongDirection = -pingpongDirection;
+			}
 		}
 	}
 
 	const SDL_Rect& GetCurrentFrame() const
 	{
 		int actualFrame = currentFrame;
-		if (pingpongDirection == -1) {
+		if (pingpongDirection == -1)
+		{
 			actualFrame = totalFrames - currentFrame;
 		}
 
 		return frames[actualFrame];
 	}
+
 	int GetFrame() const
 	{
 		return currentFrame;
 	}
+
 	int GetTotal() const
 	{
 		return totalFrames;

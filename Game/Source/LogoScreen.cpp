@@ -22,14 +22,12 @@ LogoScreen::LogoScreen() : Module()
 }
 
 // Destructor
-LogoScreen::~LogoScreen()
-{}
+LogoScreen::~LogoScreen() {}
 
 void LogoScreen::Init()
 {
 	active = true;
 }
-
 
 // Called before render is available
 bool LogoScreen::Awake()
@@ -66,8 +64,8 @@ bool LogoScreen::PreUpdate()
 // Called each loop iteration
 bool LogoScreen::Update(float dt)
 {
-	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight()+300 };
-	app->render->DrawTexture(logoScreen, 0,300, &rect);
+	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
+	app->render->DrawTexture(logoScreen, 0, 300, &rect);
 	timer++;
 
 	return true;
@@ -79,15 +77,16 @@ bool LogoScreen::PostUpdate()
 	bool ret = true;
 
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		ret = false;
+	}
 
 	if (timer == 200) 
 	{
 		app->fadeScreen->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 50.0f);
 	}
-
-
 	return ret;
 }
 
