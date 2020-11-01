@@ -47,7 +47,7 @@ bool Player::Awake(pugi::xml_node&)
 	rightWalk.PushBack({ 185, 97, 22, 25 });
 	rightWalk.PushBack({ 151, 97, 22, 25 });
 	rightWalk.PushBack({ 121, 97, 22, 25 });
-	rightWalk.speed = 0.05f;
+	rightWalk.speed = 0.15f;
 
 	//walking to the left animations
 	leftWalk.PushBack({ 290, 197, 22, 25 });
@@ -62,19 +62,19 @@ bool Player::Awake(pugi::xml_node&)
 	leftWalk.PushBack({ 163, 197, 22, 25 });
 	leftWalk.PushBack({ 195, 197, 22, 25 });
 	leftWalk.PushBack({ 227, 197, 22, 25 });
-	leftWalk.speed = 0.05f;
+	leftWalk.speed = 0.15f;
 
 	//jumping to the right animations
-	rightJump.PushBack({ 58, 64, 22, 25 });
 	rightJump.PushBack({ 89, 97, 22, 25 });
 	rightJump.PushBack({ 91, 62, 22, 25 });
 	rightJump.PushBack({ 123, 64, 22, 25 });
+	rightJump.speed = 0.02f;
 
 	//jumping to the left animations
-	leftJump.PushBack({ 289, 165, 22, 25 });
 	leftJump.PushBack({ 258, 197, 22, 25 });
 	leftJump.PushBack({ 258, 162, 22, 25 });
 	leftJump.PushBack({ 225, 165, 22, 25 });
+	leftJump.speed = 0.09f;
 
 	//right death animations
 	rightDeath.PushBack({ 187, 129, 22, 25 });
@@ -83,7 +83,7 @@ bool Player::Awake(pugi::xml_node&)
 	rightDeath.PushBack({ 90, 277, 22, 25 });
 	rightDeath.PushBack({ 114, 277, 22, 25 });
 	rightDeath.PushBack({ 138, 277, 22, 25 });
-	rightDeath.speed = 0.05f;
+	rightDeath.speed = 0.09f;
 
 	//left death animations
 	leftDeath.PushBack({ 162, 229, 22, 25 });
@@ -171,12 +171,27 @@ bool Player::Update(float dt)
 	{
 		if (godMode) //left + right + up + down
 		{
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				if (isJumping != true)
+				{
+					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
+					{
+						currentAnimation = &rightWalk;
+					}
+					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+					{
+						currentAnimation = &leftWalk;
+					}
+				}
+			}
+
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
 				playerPos.x -= 8;
 				if (isJumping != true)
 				{
-					//currentAnimation = &leftAnim;
+					currentAnimation = &leftWalk;
 				}
 			}
 
@@ -185,7 +200,7 @@ bool Player::Update(float dt)
 				playerPos.x += 8;
 				if (isJumping != true)
 				{
-					//currentAnimation = &rightAnim;
+					currentAnimation = &rightWalk;
 				}
 
 			}
@@ -205,22 +220,22 @@ bool Player::Update(float dt)
 			{
 				if (isJumping != true)
 				{
-					//currentAnimation = &leftidleAnim;
+					currentAnimation = &leftIdle;
 				}
 			}
+
 			// If last movement was right, set the current animation back to right idle
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
 				if (isJumping != true)
 				{
-					//currentAnimation = &rightidleAnim;
+					currentAnimation = &rightIdle;
 				}
 			}
 
 
 			if (playerPos.x == 9300)
 			{
-
 				app->fadeScreen->active = true;
 				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			}
@@ -245,12 +260,6 @@ bool Player::Update(float dt)
 				speed.y = -28.0f;
 
 			}
-
-			/*if (currentAnimation == &rightJump || currentAnimation == &leftJump)
-			{
-				playerPhysics.DoPhysics(playerPos.x, playerPos.y);
-				time++;
-			}*/
 
 			//In case of both keys pressed
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -310,20 +319,6 @@ bool Player::Update(float dt)
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)/* && currentAnimation->GetCurrentFrame() == {123, 64, 22, 25)*/)
 			{
 				isJumping = false;
-
-				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y);*/
-				if (currentAnimation == &rightJump)
-				{
-					currentAnimation = &rightIdle;
-				}
-				else if (currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftIdle;
-				}
-				//app->audio->PlayFx(jumpFx);
-				/*playerPhysics.DoPhysics(playerPos.x, playerPos.y);*/
-				/*playerPos.y = 999;
-				speed.y = -15.0f;*/
 			}
 
 
@@ -339,6 +334,15 @@ bool Player::Update(float dt)
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
 			{
 				if (isJumping == false) {
+					if (currentAnimation == &rightJump)
+					{
+						currentAnimation = &rightIdle;
+					}
+					else if (currentAnimation == &leftJump)
+					{
+						currentAnimation = &leftIdle;
+					}
+
 					speed.y = 0;
 					isFalling = false;
 				}
