@@ -41,8 +41,8 @@ void Map::Draw()
 
 	ListItem<MapLayer*>* layer = data.layers.start;
 
-	while (layer != NULL)
-	{
+	//while (layer != NULL)
+//	{
 		//if (layer->data->properties.GetProperty("Drawable") == 1)
 		//{
 		for (int y = 0; y < data.height; y++)
@@ -64,8 +64,8 @@ void Map::Draw()
 
 
 		//	}
-		layer = layer->next;
-	}
+	//	layer = layer->next;
+//	}
 
 }
 
