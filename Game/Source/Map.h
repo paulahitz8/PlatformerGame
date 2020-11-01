@@ -108,10 +108,14 @@ struct MapLayer
 	// L04: DONE 6: Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
-		uint result = data[(y * width) + x];
-		if (result == NULL)
+		uint result;
+		if (data[(y * width) + x] == NULL)
 		{
 			result = 62;
+		}
+		else
+		{
+			result = data[(y * width) + x];
 		}
 		return result; 
 	}
@@ -182,7 +186,7 @@ private:
 	TileSet* GetTilesetFromTileId(int id) const;
 
 	//lol
-	//bool StoreId(pugi::xml_node& node, MapLayer* layer, int index);
+	bool StoreId(pugi::xml_node& node, MapLayer* layer, int index);
 	pugi::xml_document mapFile;
 	SString folder;
 	bool mapLoaded;
