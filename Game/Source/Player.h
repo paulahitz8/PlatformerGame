@@ -86,8 +86,8 @@ private:
 	//attackFx
 
 	bool isJumping = false;
-	bool isDead;
-	bool godMode;
+	bool isDead = false;
+	bool godMode = false;
 	bool isFalling = false;
 	bool isShooting = false;
 	bool shootRight = false;
@@ -99,6 +99,7 @@ private:
 	int ppx, ppy;
 
 	int GetTileProperty(int x, int y, const char* property) const;
+	void OnCollision(Collider* c1, Collider* c2) override;
 };
 
 #endif // __PLAYER_H__

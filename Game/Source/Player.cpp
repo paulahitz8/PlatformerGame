@@ -306,6 +306,16 @@ bool Player::Update(float dt)
 				isShooting = true;
 			}
 
+			if (timerShoot == 65)
+			{
+				if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
+				{
+					snowballPos = playerPos;
+					currentSnowballAnimation = &snowballAnim;
+					timerShoot = 0;
+				}
+			}
+
 			if (timerShoot % 65 == 0)
 			{
 				if (currentAnimation == &rightShoot)
@@ -316,12 +326,6 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftIdle;
 				}
-			}
-
-			if (timerShoot == 65)
-			{
-				currentSnowballAnimation = &snowballAnim;
-				timerShoot = 0;
 			}
 
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
@@ -425,34 +429,14 @@ bool Player::Update(float dt)
 					app->audio->PlayFx(splashFx);
 				}
 
-				else if (timer == 50)
-				{
-					app->audio->PlayFx(deadFx);
-				}
-
 				if (isJumping == false)
 				{
 					speed.y = 0;
 					isFalling = false;
 				}
-
-				timer++;
-
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
-				{
-					currentAnimation = &rightDeath;
-				}
-
-				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftDeath;
-				}
-
-				if (timer == 120)
-				{
-					isDead = true;
-				}
-
+				
+				isDead = true;
+				
 				playerPos.x = ppx;
 				playerPos.y = ppy;
 				isFalling = false;
@@ -572,28 +556,53 @@ bool Player::Update(float dt)
 			}
 		}
 
-		if (isDead)
-		{
-			lifeCount--;
-			if (lifeCount == 0)
-			{
-				currentAnimation = &blankAnim;
-				app->fadeScreen->active = true;
-				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
-				timer = 0;
-			}
-			else
-			{
-				playerPos.x = 100;
-				playerPos.y = 1000;
-				app->render->camera.x = 0;
-				currentAnimation = &rightIdle;
-				timer = 0;
-			}
-			isDead = false;
-		}
+	
 	}
 
+	if (isDead)
+	{
+		if (!godMode)
+		{
+
+			if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+			{
+				currentAnimation = &rightDeath;
+			}
+
+			else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+			{
+				currentAnimation = &leftDeath;
+			}
+
+			if (timer == 50)
+			{
+				app->audio->PlayFx(deadFx);
+			}
+
+			if (timer == 118)
+			{
+				lifeCount--;
+				if (lifeCount == 0)
+				{
+					currentAnimation = &blankAnim;
+					app->fadeScreen->active = true;
+					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
+					timer = 0;
+				}
+				else
+				{
+					playerPos.x = 100;
+					playerPos.y = 1000;
+					app->render->camera.x = 0;
+					currentAnimation = &rightIdle;
+					timer = 0;
+				}
+			}
+			timer++;
+			isDead = false;
+		}
+		
+	}
 	if (isShooting == true)
 	{
 		if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
@@ -714,6 +723,8 @@ bool Player::CleanUp()
 	app->audio->UnloadFx(splashFx);
 
 	app->tex->UnLoad(playerTexture);
+	//app->tex->UnLoad(redHeartTexture);
+	//app->tex->UnLoad(grayHeartTexture);
 
 	return true;
 }
@@ -774,4 +785,24 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 	Tile* currentTile = T->data->GetPropList(id);
 	ret = currentTile->properties.GetProperty(property, 0);
 	return ret;
+}
+
+void Player::OnCollision(Collider* c1, Collider* c2)
+{
+	if (!godMode)
+	{
+		if (c2->type == Collider::Type::ENEMY)
+		{
+			if (isJumping == false)
+			{
+				speed.y = 0;
+				isFalling = false;
+			}
+
+			playerPos.x = ppx;
+			playerPos.y = ppy;
+			isFalling = false;
+			isDead = true;
+		}
+	}	
 }
