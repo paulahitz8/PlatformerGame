@@ -7,13 +7,15 @@
 struct Physics 
 {
 public:
-    void DoPhysics(int& x, int& y, float& vx, float& vy, bool isFalling)
+    void DoPhysics(int& x, int& y0, float& vx, float& vy, bool isFalling, int& vel)
 	{
+		int y; 
 		if (isFalling == true)
 		{
-			y = y + vy * time + (0.5 * gravity * time * time);
+			y = y0 + vy * time + (0.5 * gravity * time * time);
 			x = x + vx * time;
-
+			vel = (y-y0) / time; 
+			y0 = y; 
 			time += 2.0f / 60.0f;
 		}
 		else

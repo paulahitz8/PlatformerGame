@@ -314,8 +314,9 @@ bool Player::Update(float dt)
 			{
 				isJumping = false;
 			}
-
-			if (playerPos.y > ppy)
+			int speed_p = 0;
+			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speed_p);
+			if (speed_p > 0)
 			{
 				if (GetTileProperty((playerPos.x + playerRect.w / 2) / 64, (playerPos.y + playerRect.h - 1) / 64, "CollisionId") == Collider::Type::PLATFORM)
 				{
@@ -357,7 +358,6 @@ bool Player::Update(float dt)
 					}
 				}
 			}
-
 		
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
 			{
@@ -448,8 +448,7 @@ bool Player::Update(float dt)
 				playerPos.y = ppy;
 				isFalling = false;
 			}
-
-			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling);
+			
 
 			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
