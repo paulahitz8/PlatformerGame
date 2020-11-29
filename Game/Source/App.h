@@ -24,6 +24,7 @@ class Player;
 class Collisions;
 class DeathScreen;
 class WinScreen;
+class Enemies;
 
 class App
 {
@@ -95,6 +96,7 @@ public:
 	Collisions* collisions;
 	DeathScreen* deathScreen;
 	WinScreen* winScreen;
+	Enemies* enemies;
 
 private:
 

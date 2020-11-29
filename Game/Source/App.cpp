@@ -13,6 +13,7 @@
 #include "Collisions.h"
 #include "DeathScreen.h"
 #include "WinScreen.h"
+#include "Enemies.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -39,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions();
 	deathScreen = new DeathScreen();
 	winScreen = new WinScreen();
+	enemies = new Enemies();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -54,6 +56,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(fadeScreen);
 	AddModule(player);
+	AddModule(enemies);
 	AddModule(collisions);
 	//AddModule(deathScreen);
 	//AddModule(winScreen);

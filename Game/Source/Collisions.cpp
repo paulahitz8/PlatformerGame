@@ -19,21 +19,31 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::GROUND][Collider::Type::WATER] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::PLATFORM] = false;
+	matrix[Collider::Type::GROUND][Collider::Type::ENEMY] = true;
 
 	matrix[Collider::Type::WATER][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::WATER][Collider::Type::WATER] = false;
 	matrix[Collider::Type::WATER][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::WATER][Collider::Type::PLATFORM] = false;
+	matrix[Collider::Type::WATER][Collider::Type::ENEMY] = true;
 
 	matrix[Collider::Type::PLAYER][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WATER] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLATFORM] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
 
 	matrix[Collider::Type::PLATFORM][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::PLATFORM][Collider::Type::WATER] = false;
 	matrix[Collider::Type::PLATFORM][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::PLATFORM][Collider::Type::PLATFORM] = false;
+	matrix[Collider::Type::PLATFORM][Collider::Type::ENEMY] = true;
+
+	matrix[Collider::Type::ENEMY][Collider::Type::GROUND] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::WATER] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::PLATFORM] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
 }
 
 Collisions::~Collisions() {}
@@ -122,8 +132,8 @@ void Collisions::DrawCollider()
 
 		switch (colliders[i]->type)
 		{
-		case Collider::Type::NONE: // Purple
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+		case Collider::Type::NONE: 
+			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 255, alpha);
 			break;
 		case Collider::Type::GROUND: // Green
 			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 0, alpha);
@@ -137,6 +147,8 @@ void Collisions::DrawCollider()
 		case Collider::Type::PLATFORM: // Yellow
 			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 0, alpha);
 			break;
+		case Collider::Type::ENEMY: //Who kows
+			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 		}
 	}
 }

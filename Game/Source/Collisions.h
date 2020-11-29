@@ -16,6 +16,7 @@ struct Collider
 		GROUND,
 		WATER,
 		PLATFORM,
+		ENEMY,
 		MAX
 	};
 
