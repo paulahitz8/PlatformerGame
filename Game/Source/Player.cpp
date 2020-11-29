@@ -104,8 +104,6 @@ bool Player::Start()
 	currentAnimation = &rightIdle;
 
 	playerPos = {100,1000};
-	ppy = playerPos.y;
-	ppx = playerPos.x;
 
 	godMode = false;
 	isDead = false;
@@ -314,9 +312,54 @@ bool Player::Update(float dt)
 			{
 				isJumping = false;
 			}
-			int speed_p = 0;
-			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speed_p);
-			if (speed_p > 0)
+
+
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
+			{
+				//isFalling = false;
+
+				if (timer == 5)
+				{
+					app->audio->PlayFx(splashFx);
+				}
+
+				else if (timer == 50)
+				{
+					app->audio->PlayFx(deadFx);
+				}
+
+				if (isJumping == false)
+				{
+					speed.y = 0;
+					isFalling = false;
+				}
+
+				timer++;
+
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightDeath;
+				}
+
+				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftDeath;
+				}
+
+				if (timer == 120)
+				{
+					isDead = true;
+				}
+
+				playerPos.x = ppx;
+				playerPos.y = ppy;
+				isFalling = false;
+			}
+
+
+			int speedP = 0;
+			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
+			if (speedP > 0)
 			{
 				if (GetTileProperty((playerPos.x + playerRect.w / 2) / 64, (playerPos.y + playerRect.h - 1) / 64, "CollisionId") == Collider::Type::PLATFORM)
 				{
@@ -409,45 +452,7 @@ bool Player::Update(float dt)
 				playerPos.x = ppx;
 			}
 
-			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
-			{	
-				if (timer == 5)
-				{
-					app->audio->PlayFx(splashFx);
-				}
 
-				else if (timer == 50)
-				{
-					app->audio->PlayFx(deadFx);
-				}
-				
-				if (isJumping == false)
-				{
-					speed.y = 0;
-					isFalling = false;
-				}
-
-				timer++;
-
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
-				{
-					currentAnimation = &rightDeath;
-				}
-
-				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftDeath;
-				}
-
-				if (timer == 120)
-				{
-					isDead = true;
-				}
-
-				playerPos.x = ppx;
-				playerPos.y = ppy;
-				isFalling = false;
-			}
 			
 
 			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
@@ -455,8 +460,8 @@ bool Player::Update(float dt)
 				isFalling = true;
 			}
 
-			//ppx = playerPos.x;
-			//ppy = playerPos.y;
+			ppx = playerPos.x;
+			ppy = playerPos.y;
 
 			if (playerPos.x == 9300)
 			{
@@ -490,8 +495,8 @@ bool Player::Update(float dt)
 
 	}
 
-	ppx = playerPos.x;
-	ppy = playerPos.y;
+	//ppx = playerPos.x;
+	//ppy = playerPos.y;
 
 	currentAnimation->Update();
 
