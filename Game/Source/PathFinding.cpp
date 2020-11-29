@@ -67,10 +67,9 @@ iPoint PathFinding::NextMove(std::unordered_map<iPoint, iPoint> cameFrom, iPoint
 
 	while (cameFrom[current] != start)
 	{
-		iPoint previous = cameFrom[current];
-		previous = current;
-
+		current = cameFrom[current];
 	}
+	return current; 
 }
 
 iPoint PathFinding::Path(iPoint start, int speed) 
@@ -107,6 +106,7 @@ iPoint PathFinding::Path(iPoint start, int speed)
 		}
 	}
 
+	return NextMove(came_from, end, start);
 
 }
 
