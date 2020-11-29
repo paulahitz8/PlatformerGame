@@ -313,7 +313,7 @@ bool Player::Update(float dt)
 				isJumping = false;
 			}
 
-			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
+			if (GetTileProperty((playerPos.x + playerRect.w/2) / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
 			{
 				isFalling = false;
 				isJumping = false;
