@@ -10,6 +10,7 @@
 #include "Collisions.h"
 #include "FadeScreen.h"
 #include "WinScreen.h"
+#include "Enemies.h"
 
 Player::Player() 
 {
@@ -586,6 +587,7 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &blankAnim;
 					app->fadeScreen->active = true;
+					app->enemies->Disable();
 					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
 					timer = 0;
 				}
@@ -723,8 +725,8 @@ bool Player::CleanUp()
 	app->audio->UnloadFx(splashFx);
 
 	app->tex->UnLoad(playerTexture);
-	//app->tex->UnLoad(redHeartTexture);
-	//app->tex->UnLoad(grayHeartTexture);
+	app->tex->UnLoad(redHeartTexture);
+	app->tex->UnLoad(grayHeartTexture);
 
 	return true;
 }
