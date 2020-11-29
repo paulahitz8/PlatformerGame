@@ -82,7 +82,7 @@ bool Enemies::CleanUp()
 {
 	//Unload the audios
 	//app->audio->UnloadFx(walkingFx);
-	//app->tex->UnLoad(enemyTexture);
+	app->tex->UnLoad(enemyTexture);
 
 	return true;
 }

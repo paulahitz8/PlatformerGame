@@ -41,14 +41,21 @@ public:
 	SDL_Texture* playerTexture;
 	SDL_Rect playerRect = {9,7,22,25};
 
+	SDL_Texture* redHeartTexture;
+	SDL_Texture* grayHeartTexture;
+
 	iPoint playerPos;
 	iPoint snowballPos;
+
 
 private:
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;
 	Animation* currentSnowballAnimation = &blankAnim;
+	Animation* currentHeart1 = &redHeart;
+	Animation* currentHeart2 = &redHeart;
+	Animation* currentHeart3 = &redHeart;
 	Animation blankAnim;
 	Animation rightIdle;
 	Animation leftIdle;
@@ -61,6 +68,7 @@ private:
 	Animation rightShoot;
 	Animation leftShoot;
 	Animation snowballAnim;
+	Animation redHeart;
 	
 	fPoint speed;
 	Physics playerPhysics;
@@ -78,10 +86,12 @@ private:
 	//attackFx
 
 	bool isJumping = false;
-	bool isDead;
-	bool godMode;
+	bool isDead = false;
+	bool godMode = false;
 	bool isFalling = false;
 	bool isShooting = false;
+	bool shootRight = false;
+	bool shootLeft = false;
 
 	int timer = 0;
 	int timerShoot = 0;
@@ -89,6 +99,7 @@ private:
 	int ppx, ppy;
 
 	int GetTileProperty(int x, int y, const char* property) const;
+	void OnCollision(Collider* c1, Collider* c2);
 };
 
 #endif // __PLAYER_H__
