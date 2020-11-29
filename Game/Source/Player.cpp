@@ -238,20 +238,6 @@ bool Player::Update(float dt)
 				app->audio->PlayFx(walkingFx);
 			}
 
-			//Jump
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			{
-				isJumping = true;
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
-				{
-					currentAnimation = &rightJump;
-				}
-				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-				{
-					currentAnimation = &leftJump;
-				}
-				speed.y = -28.0f;
-			}
 
 			//In case of both keys pressed
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -273,7 +259,7 @@ bool Player::Update(float dt)
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				playerPos.x += 4;
-				if (isJumping != true)
+				if (isFalling == false)
 				{
 					currentAnimation = &rightWalk;
 				}
@@ -283,7 +269,7 @@ bool Player::Update(float dt)
 			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
 				playerPos.x -= 4;
-				if (isJumping != true)
+				if (isFalling == false)
 				{
 					currentAnimation = &leftWalk;
 				}
@@ -292,7 +278,7 @@ bool Player::Update(float dt)
 			//If last movement was left, set the current animation back to left idle
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 			{
-				if (isJumping != true)
+				if (isFalling == false)
 				{
 					currentAnimation = &leftIdle;
 				}
@@ -301,7 +287,7 @@ bool Player::Update(float dt)
 			//If last movement was right, set the current animation back to right idle
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
-				if (isJumping != true)
+				if (isFalling == false)
 				{
 					currentAnimation = &rightIdle;
 				}
@@ -311,6 +297,21 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 			{
 				isJumping = false;
+			}
+
+			//Jump
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			{
+				isJumping = true;
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
+				{
+					currentAnimation = &rightJump;
+				}
+				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+				{
+					currentAnimation = &leftJump;
+				}
+				speed.y = -28.0f;
 			}
 
 
