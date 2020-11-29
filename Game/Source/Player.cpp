@@ -316,7 +316,12 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftIdle;
 				}
+			}
+
+			if (timerShoot == 65)
+			{
 				currentSnowballAnimation = &snowballAnim;
+				timerShoot = 0;
 			}
 
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
