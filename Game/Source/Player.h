@@ -99,7 +99,7 @@ private:
 	int ppx, ppy;
 
 	int GetTileProperty(int x, int y, const char* property) const;
-	void OnCollision(Collider* c1, Collider* c2) override;
+	void OnCollision(Collider* c1, Collider* c2);
 };
 
 #endif // __PLAYER_H__
