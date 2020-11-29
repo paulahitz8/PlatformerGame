@@ -108,9 +108,14 @@ bool Player::Awake(pugi::xml_node&)
 	rightShoot.speed = 0.1f;
 
 	//snowball animation
-	snowballAnim.PushBack({203, 44, 5, 5});
-	snowballAnim.PushBack({216, 44, 5, 5});
-	snowballAnim.speed = 0.5f;
+	snowballAnim.PushBack({203, 44, 6, 6});
+	snowballAnim.PushBack({219, 44, 6, 6});
+	snowballAnim.speed = 0.1f;
+
+	//red heart animation
+	redHeart.PushBack({ 0, 0, 34, 29 });
+	redHeart.PushBack({ 34, 0, 34, 29 });
+	redHeart.speed = 0.03f;
 
 	return true;
 }
@@ -120,19 +125,25 @@ bool Player::Start()
 {
 	LOG("Loading player textures");
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
+	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
+	grayHeartTexture = app->tex->Load("Assets/GUI/gray_heart.png");
+	
 	currentAnimation = &rightIdle;
 	currentSnowballAnimation = &blankAnim;
+	currentHeart1 = &redHeart;
+	currentHeart2 = &redHeart;
+	currentHeart3 = &redHeart;
 
 	playerPos = {100,1000};
-	snowballPos = { 100,1000 };
 
+	lifeCount = 3;
 	godMode = false;
 	isDead = false;
 	isJumping = false;
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
-	snowballCollider = app->collisions->AddCollider({snowballPos.x, snowballPos.y, 5, 5}, Collider::Type::SNOWBALL, this);
+	snowballCollider = app->collisions->AddCollider({snowballPos.x, snowballPos.y, 6, 6}, Collider::Type::SNOWBALL, this);
 
 	//Audios
 	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
@@ -177,20 +188,35 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
-				//isShooting = true;
+				isShooting = false;
+				shootRight = false;
+				shootLeft = false;
+				snowballPos = playerPos;
+
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
 					currentAnimation = &rightShoot;
-					currentSnowballAnimation = &snowballAnim;
-					snowballPos.x += 5;
 				}
 				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
 				{
 					currentAnimation = &leftShoot;
-					currentSnowballAnimation = &snowballAnim;
-					snowballPos.x -= 5;
 				}
+				isShooting = true;
 			}
+
+			if (timerShoot % 65 == 0)
+			{
+				if (currentAnimation == &rightShoot)
+				{
+					currentAnimation = &rightIdle;
+				}
+				if (currentAnimation == &leftShoot)
+				{
+					currentAnimation = &leftIdle;
+				}
+				currentSnowballAnimation = &snowballAnim;
+			}
+
 
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
@@ -264,20 +290,33 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
-				//isShooting = true;
+				isShooting = false;
+				shootRight = false;
+				shootLeft = false;
+				snowballPos = playerPos;
+			
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
 					currentAnimation = &rightShoot;
-					currentSnowballAnimation = &snowballAnim;
-					snowballPos.x += 5;
 				}
 				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
 				{
 					currentAnimation = &leftShoot;
-					currentSnowballAnimation = &snowballAnim;
-					snowballPos.x -= 5;
 				}
-				timerShoot++;
+				isShooting = true;
+			}
+
+			if (timerShoot % 65 == 0)
+			{
+				if (currentAnimation == &rightShoot)
+				{
+					currentAnimation = &rightIdle;
+				}
+				if (currentAnimation == &leftShoot)
+				{
+					currentAnimation = &leftIdle;
+				}
+				currentSnowballAnimation = &snowballAnim;
 			}
 
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
@@ -534,7 +573,6 @@ bool Player::Update(float dt)
 			if (lifeCount == 0)
 			{
 				currentAnimation = &blankAnim;
-				lifeCount = 3;
 				app->fadeScreen->active = true;
 				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
 				timer = 0;
@@ -549,15 +587,40 @@ bool Player::Update(float dt)
 			}
 			isDead = false;
 		}
+	}
 
+	if (isShooting == true)
+	{
+		if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+		{
+			shootRight = true;
+		}
+		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+		{
+			shootLeft = true;
+		}
+	}
 
+	if (shootRight)
+	{
+		snowballPos.x += 5;
+		isShooting = false;
+	}
+	if (shootLeft)
+	{
+		isShooting = false;
+		snowballPos.x -= 5;
 	}
 
 	//ppx = playerPos.x;
 	//ppy = playerPos.y;
+	timerShoot++;
 
 	currentAnimation->Update();
 	currentSnowballAnimation->Update();
+	currentHeart1->Update();
+	currentHeart2->Update();
+	currentHeart3->Update();
 
 	playerCollider->SetPos(playerPos.x, playerPos.y);
 	snowballCollider->SetPos(snowballPos.x, snowballPos.y);
@@ -569,6 +632,43 @@ bool Player::Update(float dt)
 	//Drawing the snowball
 	SDL_Rect rect2 = currentSnowballAnimation->GetCurrentFrame();
 	app->render->DrawTexture(playerTexture, snowballPos.x, snowballPos.y, &rect2);
+
+	//Drawing the hearts
+	SDL_Rect grayRect = { 0, 0, 34, 29 };
+
+	if (lifeCount == 3)
+	{
+		SDL_Rect rect3 = currentHeart1->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1000), app->render->camera.y + 1050, &rect3);
+
+		SDL_Rect rect4 = currentHeart2->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1035), app->render->camera.y + 1050, &rect4);
+
+		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1070), app->render->camera.y + 1050, &rect5);
+	}
+
+	if (lifeCount == 2)
+	{
+		app->render->DrawTexture(grayHeartTexture, -(app->render->camera.x - 1000), app->render->camera.y + 1050, &grayRect);
+
+		SDL_Rect rect4 = currentHeart2->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1035), app->render->camera.y + 1050, &rect4);
+
+		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1070), app->render->camera.y + 1050, &rect5);
+	}
+
+	if (lifeCount == 1)
+	{
+		app->render->DrawTexture(grayHeartTexture, -(app->render->camera.x - 1000), app->render->camera.y + 1050, &grayRect);
+
+		app->render->DrawTexture(grayHeartTexture, -(app->render->camera.x - 1035), app->render->camera.y + 1050, &grayRect);
+
+		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1070), app->render->camera.y + 1050, &rect5);
+	}
+
 
 	return true;
 }

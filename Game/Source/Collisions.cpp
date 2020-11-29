@@ -162,8 +162,8 @@ void Collisions::DrawCollider()
 		case Collider::Type::ENEMY: // Purple
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
-		case Collider::Type::SNOWBALL: //Who knows
-			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 10, alpha);
+		case Collider::Type::SNOWBALL: // Red
+			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		}
 	}
