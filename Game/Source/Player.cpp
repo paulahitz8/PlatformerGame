@@ -104,6 +104,8 @@ bool Player::Start()
 	currentAnimation = &rightIdle;
 
 	playerPos = {100,1000};
+	ppy = playerPos.y;
+	ppx = playerPos.x;
 
 	godMode = false;
 	isDead = false;
@@ -313,34 +315,14 @@ bool Player::Update(float dt)
 				isJumping = false;
 			}
 
-			if (GetTileProperty((playerPos.x + playerRect.w/2) / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
-			{
-				isFalling = false;
-				isJumping = false;
-				if (currentAnimation == &rightJump)
+			//if (playerPos.y > ppy)
+			//{
+
+				if (GetTileProperty((playerPos.x + playerRect.w / 2) / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
 				{
-					currentAnimation = &rightIdle;
-				}
-				else if (currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftIdle;
-				}
-				if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
-				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-				{
-					isFalling = true;
-					isJumping = true;
-					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
-					{
-						currentAnimation = &rightJump;
-					}
-					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-					{
-						currentAnimation = &leftJump;
-					}
-				}
-				if (isJumping == false)
-				{
+
+					isFalling = false;
+					isJumping = false;
 					if (currentAnimation == &rightJump)
 					{
 						currentAnimation = &rightIdle;
@@ -349,10 +331,36 @@ bool Player::Update(float dt)
 					{
 						currentAnimation = &leftIdle;
 					}
-					speed.y = 0;
+					if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
+					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+					{
+						isFalling = true;
+						isJumping = true;
+						if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
+						{
+							currentAnimation = &rightJump;
+						}
+						else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+						{
+							currentAnimation = &leftJump;
+						}
+					}
+					if (isJumping == false)
+					{
+						if (currentAnimation == &rightJump)
+						{
+							currentAnimation = &rightIdle;
+						}
+						else if (currentAnimation == &leftJump)
+						{
+							currentAnimation = &leftIdle;
+						}
+						speed.y = 0;
+					}
 				}
-			}
+			//}
 
+		
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
 			{
 				isFalling = false;
@@ -450,8 +458,8 @@ bool Player::Update(float dt)
 				isFalling = true;
 			}
 
-			ppx = playerPos.x;
-			ppy = playerPos.y;
+			//ppx = playerPos.x;
+			//ppy = playerPos.y;
 
 			if (playerPos.x == 9300)
 			{
@@ -481,7 +489,12 @@ bool Player::Update(float dt)
 			}
 			isDead = false;
 		}
+
+
 	}
+
+	ppx = playerPos.x;
+	ppy = playerPos.y;
 
 	currentAnimation->Update();
 

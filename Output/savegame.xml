@@ -5,16 +5,12 @@
 	<textures />
 	<audio />
 	<scene />
-	<LogoScreen />
-	<TitleScreen />
 	<map />
 	<fadeScreen />
 	<player>
 		<player x="100" y="1000" />
 	</player>
 	<collisions />
-	<DeathScreen />
-	<WinScreen />
 	<renderer>
 		<camera x="0" y="-500" />
 	</renderer>
