@@ -316,27 +316,68 @@ bool Player::Update(float dt)
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
 			{
 				isFalling = false;
+				isJumping = false;
+				if (currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightIdle;
+				}
+				else if (currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftIdle;
+				}
 				if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
 				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 				{
 					isFalling = true;
 					isJumping = true;
+					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
+					{
+						currentAnimation = &rightJump;
+					}
+					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+					{
+						currentAnimation = &leftJump;
+					}
 				}
 				if (isJumping == false)
 				{
+					if (currentAnimation == &rightJump)
+					{
+						currentAnimation = &rightIdle;
+					}
+					else if (currentAnimation == &leftJump)
+					{
+						currentAnimation = &leftIdle;
+					}
 					speed.y = 0;
-					
 				}
 			}
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
 			{
 				isFalling = false;
+				isJumping = false;
+				if (currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightIdle;
+				}
+				else if (currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftIdle;
+				}
 				if(playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
 				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 				{
 					isFalling = true;
 					isJumping = true;
+					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
+					{
+						currentAnimation = &rightJump;
+					}
+					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+					{
+						currentAnimation = &leftJump;
+					}
 				}
 				if (isJumping == false)
 				{
