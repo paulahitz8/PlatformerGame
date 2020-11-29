@@ -93,6 +93,25 @@ bool Player::Awake(pugi::xml_node&)
 	leftDeath.PushBack({ 138, 277, 22, 25 });
 	leftDeath.speed = 0.05f;
 
+	//left shoot animation
+	leftShoot.PushBack({ 193, 165, 22, 25 });
+	leftShoot.PushBack({ 162, 165, 22, 25 });
+	leftShoot.PushBack({ 132, 165, 22, 25 });
+	leftShoot.PushBack({ 162, 165, 22, 25 });
+	leftShoot.speed = 0.1f;
+
+	//right shoot animation
+	rightShoot.PushBack({ 155, 65, 22, 25 });
+	rightShoot.PushBack({ 186, 65, 22, 25 });
+	rightShoot.PushBack({ 216, 65, 22, 25 });
+	rightShoot.PushBack({ 186, 65, 22, 25 });
+	rightShoot.speed = 0.1f;
+
+	//snowball animation
+	snowballAnim.PushBack({203, 44, 5, 5});
+	snowballAnim.PushBack({216, 44, 5, 5});
+	snowballAnim.speed = 0.5f;
+
 	return true;
 }
 
@@ -102,8 +121,10 @@ bool Player::Start()
 	LOG("Loading player textures");
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	currentAnimation = &rightIdle;
+	currentSnowballAnimation = &blankAnim;
 
 	playerPos = {100,1000};
+	snowballPos = { 100,1000 };
 
 	godMode = false;
 	isDead = false;
@@ -111,14 +132,15 @@ bool Player::Start()
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
+	snowballCollider = app->collisions->AddCollider({snowballPos.x, snowballPos.y, 5, 5}, Collider::Type::SNOWBALL, this);
 
 	//Audios
 	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
 	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
 	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
+	//attackFx
 
-	
 	return true;
 }
 
@@ -153,6 +175,23 @@ bool Player::Update(float dt)
 	{
 		if (godMode)
 		{
+			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			{
+				//isShooting = true;
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightShoot;
+					currentSnowballAnimation = &snowballAnim;
+					snowballPos.x += 5;
+				}
+				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftShoot;
+					currentSnowballAnimation = &snowballAnim;
+					snowballPos.x -= 5;
+				}
+			}
+
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				if (isJumping != true)
@@ -223,6 +262,24 @@ bool Player::Update(float dt)
 
 		else
 		{
+			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			{
+				//isShooting = true;
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightShoot;
+					currentSnowballAnimation = &snowballAnim;
+					snowballPos.x += 5;
+				}
+				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftShoot;
+					currentSnowballAnimation = &snowballAnim;
+					snowballPos.x -= 5;
+				}
+				timerShoot++;
+			}
+
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
 				app->audio->PlayFx(jumpingFx);
@@ -500,12 +557,18 @@ bool Player::Update(float dt)
 	//ppy = playerPos.y;
 
 	currentAnimation->Update();
+	currentSnowballAnimation->Update();
 
 	playerCollider->SetPos(playerPos.x, playerPos.y);
+	snowballCollider->SetPos(snowballPos.x, snowballPos.y);
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
+
+	//Drawing the snowball
+	SDL_Rect rect2 = currentSnowballAnimation->GetCurrentFrame();
+	app->render->DrawTexture(playerTexture, snowballPos.x, snowballPos.y, &rect2);
 
 	return true;
 }

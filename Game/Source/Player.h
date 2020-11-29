@@ -42,11 +42,13 @@ public:
 	SDL_Rect playerRect = {9,7,22,25};
 
 	iPoint playerPos;
+	iPoint snowballPos;
 
 private:
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;
+	Animation* currentSnowballAnimation = &blankAnim;
 	Animation blankAnim;
 	Animation rightIdle;
 	Animation leftIdle;
@@ -56,12 +58,14 @@ private:
 	Animation leftJump;
 	Animation rightDeath;
 	Animation leftDeath;
-	//Animation rightShoot;
-	//Animation leftShoot;
+	Animation rightShoot;
+	Animation leftShoot;
+	Animation snowballAnim;
 	
 	fPoint speed;
 	Physics playerPhysics;
 	Collider* playerCollider = nullptr;
+	Collider* snowballCollider = nullptr;
 
 	bool ground = false;
 	bool platform = false;
@@ -71,13 +75,16 @@ private:
 	unsigned int deadFx;
 	unsigned int jumpingFx;
 	unsigned int splashFx;
+	//attackFx
 
 	bool isJumping = false;
 	bool isDead;
 	bool godMode;
 	bool isFalling = false;
+	bool isShooting = false;
 
 	int timer = 0;
+	int timerShoot = 0;
 	int lifeCount = 3;
 	int ppx, ppy;
 
