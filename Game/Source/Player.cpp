@@ -320,6 +320,9 @@ bool Player::Update(float dt)
 
 				if (GetTileProperty((playerPos.x + playerRect.w / 2) / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
 				{
+					if (playerPos.y < (playerPos.y / 64) * 64) {
+
+
 
 					isFalling = false;
 					isJumping = false;
@@ -332,6 +335,7 @@ bool Player::Update(float dt)
 						currentAnimation = &leftIdle;
 					}
 					if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
+					//if (playerPos.y > (playerPos.y / 64) * 64) isFalling = true;
 					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 					{
 						isFalling = true;
@@ -357,6 +361,9 @@ bool Player::Update(float dt)
 						}
 						speed.y = 0;
 					}
+
+					}
+
 				}
 			//}
 
