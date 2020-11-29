@@ -25,6 +25,7 @@ class Collisions;
 class DeathScreen;
 class WinScreen;
 class Enemies;
+class PathFinding;
 
 class App
 {
@@ -97,6 +98,7 @@ public:
 	DeathScreen* deathScreen;
 	WinScreen* winScreen;
 	Enemies* enemies;
+	PathFinding* path;
 
 private:
 
