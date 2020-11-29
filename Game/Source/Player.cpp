@@ -308,22 +308,36 @@ bool Player::Update(float dt)
 			}
 
 			//If last movement was jumping, set the current animation back to idle
-			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP))
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 			{
 				isJumping = false;
 			}
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::PLATFORM)
 			{
+				isFalling = false;
+				if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
+				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+				{
+					isFalling = true;
+					isJumping = true;
+				}
 				if (isJumping == false)
 				{
 					speed.y = 0;
-					isFalling = false;
+					
 				}
 			}
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
 			{
+				isFalling = false;
+				if(playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
+				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+				{
+					isFalling = true;
+					isJumping = true;
+				}
 				if (isJumping == false)
 				{
 					if (currentAnimation == &rightJump)
@@ -335,7 +349,6 @@ bool Player::Update(float dt)
 						currentAnimation = &leftIdle;
 					}
 					speed.y = 0;
-					isFalling = false;
 				}
 			}
 

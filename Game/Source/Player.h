@@ -42,7 +42,6 @@ public:
 	SDL_Rect playerRect = {9,7,22,25};
 
 	iPoint playerPos;
-	bool isFalling;
 
 private:
 
@@ -76,6 +75,7 @@ private:
 	bool isJumping = false;
 	bool isDead;
 	bool godMode;
+	bool isFalling = false;
 
 	int timer = 0;
 	int lifeCount = 3;
