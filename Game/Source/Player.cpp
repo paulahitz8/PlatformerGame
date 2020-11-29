@@ -100,7 +100,7 @@ bool Player::Awake(pugi::xml_node&)
 bool Player::Start()
 {
 	LOG("Loading player textures");
-	playerTexture = app->tex->Load("Assets/textures/playerSprites.png");
+	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	currentAnimation = &rightIdle;
 
 	playerPos = {100,1000};
@@ -113,10 +113,10 @@ bool Player::Start()
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
 
 	//Audios
-	walkingFx = app->audio->LoadFx("Assets/audio/fx/walkingFx.wav");
-	deadFx = app->audio->LoadFx("Assets/audio/fx/deadFx.wav");
-	jumpingFx = app->audio->LoadFx("Assets/audio/fx/jumpingFx.wav");
-	splashFx = app->audio->LoadFx("Assets/audio/fx/splashFx.wav");
+	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
+	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
+	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
+	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
 
 	
 	return true;

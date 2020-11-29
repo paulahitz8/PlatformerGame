@@ -195,7 +195,7 @@ bool Map::Load(const char* filename)
 		{
 			LOG("orientation: isometric");
 		}
-		for (int i = 0; i < data.tilesets.count(); i++)
+		for (int i = 0; i < data.tilesets.Count(); i++)
 		{
 			LOG("Tileset %d", i + 1);
 			LOG("name: %s", data.tilesets[i]->name.GetString());
@@ -208,7 +208,7 @@ bool Map::Load(const char* filename)
 			LOG("width: %d", data.tilesets[i]->texWidth);
 			LOG("height: %d", data.tilesets[i]->texHeight);
 		}
-		for (int i = 0; i < data.layers.count(); i++)
+		for (int i = 0; i < data.layers.Count(); i++)
 		{
 			LOG("Layer %d", i + 1);
 			LOG("name: %s", data.layers[i]->name.GetString());

@@ -43,9 +43,9 @@ bool LogoScreen::Start()
 {
 	bool ret = true;
 
-	logoScreen = app->tex->Load("Assets/textures/logoscreen.png");
+	logoScreen = app->tex->Load("Assets/Screens/logo_screen.png");
 
-	app->audio->PlayMusic("Assets/audio/music/LogoScreenMusic.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/logo_music.ogg");
 
 	app->map->active = false;
 	app->player->active = false;

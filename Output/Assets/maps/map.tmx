@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="150" height="20" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" name="Snowww" tilewidth="64" tileheight="64" tilecount="56" columns="8">
-  <image source="snowtileset.png" width="512" height="449"/>
+  <image source="snow_tileset.png" width="512" height="449"/>
   <terraintypes>
    <terrain name="Ground" tile="19"/>
    <terrain name="Water" tile="29"/>
@@ -64,7 +64,7 @@
   <tile id="54" terrain="0,0,,"/>
  </tileset>
  <tileset firstgid="57" name="Collisions" tilewidth="64" tileheight="64" tilecount="6" columns="2">
-  <image source="colliders.png" width="128" height="192"/>
+  <image source="colliders_tileset.png" width="128" height="192"/>
   <tile id="0">
    <properties>
     <property name="CollisionId" type="int" value="1"/>

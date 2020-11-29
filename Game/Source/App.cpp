@@ -128,9 +128,7 @@ bool App::Start()
 	while(item != NULL && ret == true)
 	{
 		if (item->data->active == true)
-		{
 			ret = item->data->Start();
-		}
 		item = item->next;
 	}
 
@@ -144,24 +142,16 @@ bool App::Update()
 	PrepareUpdate();
 
 	if (input->GetWindowEvent(WE_QUIT) == true)
-	{
 		ret = false;
-	}
 
 	if (ret == true)
-	{
 		ret = PreUpdate();
-	}
 
 	if (ret == true)
-	{
 		ret = DoUpdate();
-	}
 
 	if (ret == true)
-	{
 		ret = PostUpdate();
-	}
 
 	FinishUpdate();
 
@@ -191,15 +181,9 @@ void App::PrepareUpdate(){}
 void App::FinishUpdate()
 {
 	// This is a good place to call Load / Save functions
-	if (loadRequest)
-	{
-		LoadGame();
-	}
+	if (loadRequest) LoadGame();
 
-	if (saveRequest)
-	{
-		SaveGame();
-	}
+	if (saveRequest) SaveGame();
 }
 
 // Call modules before each loop iteration
@@ -214,10 +198,7 @@ bool App::PreUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false)
-		{
-			continue;
-		}
+		if(pModule->active == false) continue;
 
 		ret = item->data->PreUpdate();
 	}
@@ -237,10 +218,7 @@ bool App::DoUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false)
-		{
-			continue;
-		}
+		if(pModule->active == false) continue;
 		ret = item->data->Update(dt);
 	}
 
@@ -258,10 +236,7 @@ bool App::PostUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false)
-		{
-			continue;
-		}
+		if(pModule->active == false) continue;
 		ret = item->data->PostUpdate();
 	}
 
@@ -292,14 +267,10 @@ int App::GetArgc() const
 const char* App::GetArgv(int index) const
 {
 	if (index < argc)
-	{
 		return args[index];
-	}
 
 	else
-	{
 		return NULL;
-	}
 
 }
 

@@ -60,10 +60,7 @@ bool FadeScreen::Update(float dt)
 	else
 	{
 		--frameCount;
-		if (frameCount <= 0)
-		{
-			currentStep = Fade_Step::NONE;
-		}
+		if (frameCount <= 0) currentStep = Fade_Step::NONE;
 	}
 	return true;
 }
@@ -72,10 +69,7 @@ bool FadeScreen::Update(float dt)
 bool FadeScreen::PostUpdate()
 {
 	// Exit this function if we are not performing a fade
-	if (currentStep == Fade_Step::NONE)
-	{
-		return true;
-	}
+	if (currentStep == Fade_Step::NONE) return true;
 
 	float fadeRatio = (float)frameCount / (float)maxFadeFrames;
 
