@@ -58,7 +58,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(enemies);
 	AddModule(player);
 	AddModule(collisions);
-	AddModule(deathScreen);
+	//AddModule(deathScreen);
 	//AddModule(winScreen);
 
 	// Render last to swap buffer
