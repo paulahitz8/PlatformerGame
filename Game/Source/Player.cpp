@@ -10,6 +10,7 @@
 #include "Collisions.h"
 #include "FadeScreen.h"
 #include "WinScreen.h"
+#include "Enemies.h"
 
 Player::Player() 
 {
@@ -93,6 +94,30 @@ bool Player::Awake(pugi::xml_node&)
 	leftDeath.PushBack({ 138, 277, 22, 25 });
 	leftDeath.speed = 0.05f;
 
+	//left shoot animation
+	leftShoot.PushBack({ 193, 165, 22, 25 });
+	leftShoot.PushBack({ 162, 165, 22, 25 });
+	leftShoot.PushBack({ 132, 165, 22, 25 });
+	leftShoot.PushBack({ 162, 165, 22, 25 });
+	leftShoot.speed = 0.1f;
+
+	//right shoot animation
+	rightShoot.PushBack({ 155, 65, 22, 25 });
+	rightShoot.PushBack({ 186, 65, 22, 25 });
+	rightShoot.PushBack({ 216, 65, 22, 25 });
+	rightShoot.PushBack({ 186, 65, 22, 25 });
+	rightShoot.speed = 0.1f;
+
+	//snowball animation
+	snowballAnim.PushBack({203, 44, 6, 6});
+	snowballAnim.PushBack({219, 44, 6, 6});
+	snowballAnim.speed = 0.1f;
+
+	//red heart animation
+	redHeart.PushBack({ 0, 0, 34, 29 });
+	redHeart.PushBack({ 34, 0, 34, 29 });
+	redHeart.speed = 0.03f;
+
 	return true;
 }
 
@@ -101,24 +126,33 @@ bool Player::Start()
 {
 	LOG("Loading player textures");
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
+	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
+	grayHeartTexture = app->tex->Load("Assets/GUI/gray_heart.png");
+	
 	currentAnimation = &rightIdle;
+	currentSnowballAnimation = &blankAnim;
+	currentHeart1 = &redHeart;
+	currentHeart2 = &redHeart;
+	currentHeart3 = &redHeart;
 
 	playerPos = {100,1000};
 
+	lifeCount = 3;
 	godMode = false;
 	isDead = false;
 	isJumping = false;
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
+	snowballCollider = app->collisions->AddCollider({snowballPos.x, snowballPos.y, 6, 6}, Collider::Type::SNOWBALL, this);
 
 	//Audios
 	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
 	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
 	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
+	//attackFx
 
-	
 	return true;
 }
 
@@ -153,6 +187,38 @@ bool Player::Update(float dt)
 	{
 		if (godMode)
 		{
+			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			{
+				isShooting = false;
+				shootRight = false;
+				shootLeft = false;
+				snowballPos = playerPos;
+
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightShoot;
+				}
+				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftShoot;
+				}
+				isShooting = true;
+			}
+
+			if (timerShoot % 65 == 0)
+			{
+				if (currentAnimation == &rightShoot)
+				{
+					currentAnimation = &rightIdle;
+				}
+				if (currentAnimation == &leftShoot)
+				{
+					currentAnimation = &leftIdle;
+				}
+				currentSnowballAnimation = &snowballAnim;
+			}
+
+
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				if (isJumping != true)
@@ -223,6 +289,46 @@ bool Player::Update(float dt)
 
 		else
 		{
+			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			{
+				isShooting = false;
+				shootRight = false;
+				shootLeft = false;
+				snowballPos = playerPos;
+			
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				{
+					currentAnimation = &rightShoot;
+				}
+				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				{
+					currentAnimation = &leftShoot;
+				}
+				isShooting = true;
+			}
+
+			if (timerShoot == 65)
+			{
+				if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
+				{
+					snowballPos = playerPos;
+					currentSnowballAnimation = &snowballAnim;
+					timerShoot = 0;
+				}
+			}
+
+			if (timerShoot % 65 == 0)
+			{
+				if (currentAnimation == &rightShoot)
+				{
+					currentAnimation = &rightIdle;
+				}
+				if (currentAnimation == &leftShoot)
+				{
+					currentAnimation = &leftIdle;
+				}
+			}
+
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
 				app->audio->PlayFx(jumpingFx);
@@ -324,34 +430,14 @@ bool Player::Update(float dt)
 					app->audio->PlayFx(splashFx);
 				}
 
-				else if (timer == 50)
-				{
-					app->audio->PlayFx(deadFx);
-				}
-
 				if (isJumping == false)
 				{
 					speed.y = 0;
 					isFalling = false;
 				}
-
-				timer++;
-
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
-				{
-					currentAnimation = &rightDeath;
-				}
-
-				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftDeath;
-				}
-
-				if (timer == 120)
-				{
-					isDead = true;
-				}
-
+				
+				isDead = true;
+				
 				playerPos.x = ppx;
 				playerPos.y = ppy;
 				isFalling = false;
@@ -471,41 +557,134 @@ bool Player::Update(float dt)
 			}
 		}
 
-		if (isDead)
+	
+	}
+
+	if (isDead)
+	{
+		if (!godMode)
 		{
-			lifeCount--;
-			if (lifeCount == 0)
+
+			if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 			{
-				currentAnimation = &blankAnim;
-				lifeCount = 3;
-				app->fadeScreen->active = true;
-				app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
-				timer = 0;
+				currentAnimation = &rightDeath;
 			}
-			else
+
+			else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
 			{
-				playerPos.x = 100;
-				playerPos.y = 1000;
-				app->render->camera.x = 0;
-				currentAnimation = &rightIdle;
-				timer = 0;
+				currentAnimation = &leftDeath;
 			}
+
+			if (timer == 50)
+			{
+				app->audio->PlayFx(deadFx);
+			}
+
+			if (timer == 118)
+			{
+				lifeCount--;
+				if (lifeCount == 0)
+				{
+					currentAnimation = &blankAnim;
+					app->fadeScreen->active = true;
+					app->enemies->Disable();
+					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
+					timer = 0;
+				}
+				else
+				{
+					playerPos.x = 100;
+					playerPos.y = 1000;
+					app->render->camera.x = 0;
+					currentAnimation = &rightIdle;
+					timer = 0;
+				}
+			}
+			timer++;
 			isDead = false;
 		}
+		
+	}
+	if (isShooting == true)
+	{
+		if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+		{
+			shootRight = true;
+		}
+		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+		{
+			shootLeft = true;
+		}
+	}
 
-
+	if (shootRight)
+	{
+		snowballPos.x += 5;
+		isShooting = false;
+	}
+	if (shootLeft)
+	{
+		isShooting = false;
+		snowballPos.x -= 5;
 	}
 
 	//ppx = playerPos.x;
 	//ppy = playerPos.y;
+	timerShoot++;
 
 	currentAnimation->Update();
+	currentSnowballAnimation->Update();
+	currentHeart1->Update();
+	currentHeart2->Update();
+	currentHeart3->Update();
 
 	playerCollider->SetPos(playerPos.x, playerPos.y);
+	snowballCollider->SetPos(snowballPos.x, snowballPos.y);
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
+
+	//Drawing the snowball
+	SDL_Rect rect2 = currentSnowballAnimation->GetCurrentFrame();
+	app->render->DrawTexture(playerTexture, snowballPos.x, snowballPos.y, &rect2);
+
+	//Drawing the hearts
+	SDL_Rect grayRect = { 0, 0, 34, 29 };
+
+	if (lifeCount == 3)
+	{
+		SDL_Rect rect3 = currentHeart1->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1000), app->render->camera.y + 1050, &rect3);
+
+		SDL_Rect rect4 = currentHeart2->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1035), app->render->camera.y + 1050, &rect4);
+
+		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1070), app->render->camera.y + 1050, &rect5);
+	}
+
+	if (lifeCount == 2)
+	{
+		app->render->DrawTexture(grayHeartTexture, -(app->render->camera.x - 1000), app->render->camera.y + 1050, &grayRect);
+
+		SDL_Rect rect4 = currentHeart2->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1035), app->render->camera.y + 1050, &rect4);
+
+		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1070), app->render->camera.y + 1050, &rect5);
+	}
+
+	if (lifeCount == 1)
+	{
+		app->render->DrawTexture(grayHeartTexture, -(app->render->camera.x - 1000), app->render->camera.y + 1050, &grayRect);
+
+		app->render->DrawTexture(grayHeartTexture, -(app->render->camera.x - 1035), app->render->camera.y + 1050, &grayRect);
+
+		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
+		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1070), app->render->camera.y + 1050, &rect5);
+	}
+
 
 	return true;
 }
@@ -546,6 +725,8 @@ bool Player::CleanUp()
 	app->audio->UnloadFx(splashFx);
 
 	app->tex->UnLoad(playerTexture);
+	app->tex->UnLoad(redHeartTexture);
+	app->tex->UnLoad(grayHeartTexture);
 
 	return true;
 }
@@ -606,4 +787,24 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 	Tile* currentTile = T->data->GetPropList(id);
 	ret = currentTile->properties.GetProperty(property, 0);
 	return ret;
+}
+
+void Player::OnCollision(Collider* c1, Collider* c2)
+{
+	if (!godMode)
+	{
+		if (c2->type == Collider::Type::ENEMY)
+		{
+			if (isJumping == false)
+			{
+				speed.y = 0;
+				isFalling = false;
+			}
+
+			playerPos.x = ppx;
+			playerPos.y = ppy;
+			isFalling = false;
+			isDead = true;
+		}
+	}	
 }

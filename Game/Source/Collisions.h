@@ -16,6 +16,8 @@ struct Collider
 		GROUND,
 		WATER,
 		PLATFORM,
+		ENEMY,
+		SNOWBALL,
 		MAX
 	};
 

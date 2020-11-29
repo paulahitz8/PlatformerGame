@@ -23,6 +23,8 @@
     <ClCompile Include="Source\Collisions.cpp" />
     <ClCompile Include="Source\DeathScreen.cpp" />
     <ClCompile Include="Source\WinScreen.cpp" />
+    <ClCompile Include="Source\Enemies.cpp" />
+    <ClCompile Include="Source\PathFinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -67,6 +69,8 @@
     <ClInclude Include="Source\Collisions.h" />
     <ClInclude Include="Source\WinScreen.h" />
     <ClInclude Include="Source\DeathScreen.h" />
+    <ClInclude Include="Source\Enemies.h" />
+    <ClInclude Include="Source\PathFinding.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
