@@ -4,14 +4,14 @@
 #include "Module.h"
 #include "Defs.h"
 
-class Timer
+class Timer : public Module
 {
 public:
 
 	Timer();
 	~Timer();
 
-	void Start();
+	bool Start();
 	uint32 Read() const;
 	float ReadSec() const;
 

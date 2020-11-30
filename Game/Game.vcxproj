@@ -95,6 +95,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\PathFinding.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
     <ClCompile Include="Source\DeathScreen.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="Source\TitleScreen.cpp" />
     <ClCompile Include="Source\WinScreen.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
+    <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\PathFinding.h" />
     <ClInclude Include="Source\Enemies.h" />
     <ClInclude Include="Source\DeathScreen.h" />

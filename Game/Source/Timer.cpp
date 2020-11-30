@@ -1,18 +1,22 @@
 #include "Timer.h"
 #include "App.h"
-#include "SDL\include\SDL_timer.h"
+
+#include "Defs.h"
+#include "Log.h"
+
+#include "SDL/include/SDL.h"
 
 Timer::Timer()
 {
-	Start();
 	name.Create("timer");
 }
 
 Timer::~Timer() {}
 
-void Timer::Start()
+bool Timer::Start()
 {
 	startTime = SDL_GetTicks();
+	return true;
 }
 
 uint32 Timer::Read() const
