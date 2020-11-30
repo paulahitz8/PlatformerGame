@@ -16,6 +16,7 @@
 #include "Enemies.h"
 #include "PathFinding.h"
 #include "Timer.h"
+#include "Item.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -44,6 +45,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	deathScreen = new DeathScreen();
 	winScreen = new WinScreen();
 	enemies = new Enemies();
+	item = new Item();
 	//path = new PathFinding();
 
 
@@ -59,9 +61,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	//AddModule(logoScreen);
 	//AddModule(titleScreen);
 	AddModule(map);
-	
+
 	AddModule(fadeScreen);
 	AddModule(enemies);
+	AddModule(item);
 	//AddModule(path);
 	AddModule(player);
 	AddModule(collisions);
@@ -78,7 +81,7 @@ App::~App()
 	// Release modules
 	ListItem<Module*>* item = modules.end;
 
-	while(item != NULL)
+	while (item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
@@ -135,7 +138,7 @@ bool App::Start()
 	ListItem<Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		if (item->data->active == true)
 			ret = item->data->Start();
@@ -186,7 +189,7 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 	return ret;
 }
 
-void App::PrepareUpdate(){}
+void App::PrepareUpdate() {}
 
 void App::FinishUpdate()
 {
@@ -204,11 +207,11 @@ bool App::PreUpdate()
 	item = modules.start;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) continue;
+		if (pModule->active == false) continue;
 
 		ret = item->data->PreUpdate();
 	}
@@ -224,11 +227,11 @@ bool App::DoUpdate()
 	item = modules.start;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) continue;
+		if (pModule->active == false) continue;
 		ret = item->data->Update(dt);
 	}
 
@@ -242,11 +245,11 @@ bool App::PostUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) continue;
+		if (pModule->active == false) continue;
 		ret = item->data->PostUpdate();
 	}
 
@@ -260,7 +263,7 @@ bool App::CleanUp()
 	ListItem<Module*>* item;
 	item = modules.end;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
@@ -309,9 +312,9 @@ bool App::LoadGame()
 	bool ret = true;
 	pugi::xml_document saveDoc;
 	pugi::xml_parse_result result = saveDoc.load_file("savegame.xml");
-	
+
 	//Check loading errors
-	if (result == NULL) 
+	if (result == NULL)
 	{
 		LOG("Could not load xml file savegame.xml . pugi error: %s", result.description());
 		ret = false;
@@ -339,7 +342,7 @@ bool App::SaveGame()
 
 	ListItem<Module*>* item;
 	item = modules.start;
-	
+
 	while (item != NULL && ret == true)
 	{
 		saveDoc.child("save_state").append_child(item->data->name.GetString());

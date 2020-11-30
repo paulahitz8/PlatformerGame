@@ -19,6 +19,7 @@ struct Collider
 		ENEMY,
 		CHEKPOINT,
 		SNOWBALL,
+		ITEM,
 		MAX
 	};
 
@@ -73,8 +74,8 @@ public:
 	void DrawCollider();
 
 	inline uint GetColliderCount() const
-	{ 
-		return colliderCount; 
+	{
+		return colliderCount;
 	};
 
 	Collider* collider;
