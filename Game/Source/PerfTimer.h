@@ -18,6 +18,7 @@ public:
 private:
 	uint64 frequency = 0;
 	uint64 startClock;
+
 };
 
 #endif //__PERFTIMER_H__
