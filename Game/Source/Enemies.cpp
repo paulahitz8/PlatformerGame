@@ -57,6 +57,8 @@ bool Enemies::Awake(pugi::xml_node&)
 	rightRoll.PushBack({ 30, 0, 30, 30 });
 	rightRoll.speed = 0.03f;
 
+	
+
 	return true;
 }
 
@@ -67,7 +69,7 @@ bool Enemies::Start()
 	enemyTexture = app->tex->Load("Assets/Characters/seal_sprites.png");
 	currentAnimation = &leftIdle;
 
-	enemyPos = { 300, 1000 };
+	enemyPos = { 300, 995 };
 
 	//Collider
 	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::ENEMY, this);
@@ -91,7 +93,18 @@ bool Enemies::Update(float dt)
 	//int speedP = 0;
 	//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
 			
-
+	if (isDead)
+	{
+		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftRoll)
+		{
+			currentAnimation = &leftDead;
+		}
+		else if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightRoll)
+		{
+			currentAnimation = &rightDead;
+		}
+		//app->audio->LoadFx(deadFx);
+	}
 
 	currentAnimation->Update();
 
@@ -100,19 +113,6 @@ bool Enemies::Update(float dt)
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
-
-	if (isDead)
-	{
-		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-		{
-			currentAnimation = &leftDead;
-		}
-		else
-		{
-			currentAnimation = &rightDead;
-		}
-		//app->audio->LoadFx(deadFx);
-	}
 
 	return true;
 }
