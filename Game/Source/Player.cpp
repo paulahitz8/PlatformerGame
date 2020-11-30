@@ -292,6 +292,7 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
+				
 				isShooting = false;
 				shootRight = false;
 				shootLeft = false;
@@ -305,17 +306,6 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftShoot;
 				}
-				isShooting = true;
-			}
-
-			if (timerShoot == 65)
-			{
-				if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
-				{
-					snowballPos = playerPos;
-					currentSnowballAnimation = &snowballAnim;
-					timerShoot = 0;
-				}
 			}
 
 			if (timerShoot % 65 == 0)
@@ -324,11 +314,27 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &rightIdle;
 				}
-				if (currentAnimation == &leftShoot)
+				else if (currentAnimation == &leftShoot)
 				{
 					currentAnimation = &leftIdle;
 				}
+				timerShoot = 0;
 			}
+
+			if (timerShoot == 64)
+			{
+				if (!shootRight && !shootLeft)
+				{
+					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
+					{
+						snowballPos = playerPos;
+						isShooting = true;
+						currentSnowballAnimation = &snowballAnim;
+					}
+				}
+			}
+
+			timerShoot++;
 
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
@@ -634,7 +640,7 @@ bool Player::Update(float dt)
 
 	//ppx = playerPos.x;
 	//ppy = playerPos.y;
-	timerShoot++;
+	
 
 	currentAnimation->Update();
 	currentSnowballAnimation->Update();
