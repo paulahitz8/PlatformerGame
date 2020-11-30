@@ -99,14 +99,14 @@ bool Player::Awake(pugi::xml_node&)
 	leftShoot.PushBack({ 162, 165, 22, 25 });
 	leftShoot.PushBack({ 132, 165, 22, 25 });
 	leftShoot.PushBack({ 162, 165, 22, 25 });
-	leftShoot.speed = 0.1f;
+	leftShoot.speed = 0.3f;
 
 	//right shoot animation
 	rightShoot.PushBack({ 155, 65, 22, 25 });
 	rightShoot.PushBack({ 186, 65, 22, 25 });
 	rightShoot.PushBack({ 216, 65, 22, 25 });
 	rightShoot.PushBack({ 186, 65, 22, 25 });
-	rightShoot.speed = 0.1f;
+	rightShoot.speed = 0.3f;
 
 	//snowball animation
 	snowballAnim.PushBack({203, 44, 6, 6});
@@ -296,7 +296,6 @@ bool Player::Update(float dt)
 				isShooting = false;
 				shootRight = false;
 				shootLeft = false;
-				snowballPos = playerPos;
 			
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
@@ -306,9 +305,10 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftShoot;
 				}
+				isShooting = true;
 			}
 
-			if (timerShoot % 65 == 0)
+			if (timerShoot == 15)
 			{
 				if (currentAnimation == &rightShoot)
 				{
@@ -321,20 +321,19 @@ bool Player::Update(float dt)
 				timerShoot = 0;
 			}
 
-			if (timerShoot == 64)
+			if (timerShoot == 14)
 			{
 				if (!shootRight && !shootLeft)
 				{
 					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
 					{
 						snowballPos = playerPos;
-						isShooting = true;
 						currentSnowballAnimation = &snowballAnim;
 					}
 				}
 			}
 
-			timerShoot++;
+			
 
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
@@ -625,6 +624,7 @@ bool Player::Update(float dt)
 		{
 			shootLeft = true;
 		}
+		timerShoot++;
 	}
 
 	if (shootRight)
