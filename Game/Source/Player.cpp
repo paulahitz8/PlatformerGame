@@ -136,6 +136,7 @@ bool Player::Start()
 	currentHeart3 = &redHeart;
 
 	playerPos = {100,1000};
+	checkpointPos = { 100, 1000 };
 
 	lifeCount = 3;
 	godMode = false;
@@ -420,6 +421,10 @@ bool Player::Update(float dt)
 				speed.y = -28.0f;
 			}
 
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 1) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
+			{
+				checkpointPos = playerPos;
+			}
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
@@ -593,8 +598,7 @@ bool Player::Update(float dt)
 				}
 				else
 				{
-					playerPos.x = 100;
-					playerPos.y = 1000;
+					playerPos = checkpointPos;
 					app->render->camera.x = 0;
 					currentAnimation = &rightIdle;
 					timer = 0;

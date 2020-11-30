@@ -46,6 +46,7 @@ public:
 
 	iPoint playerPos;
 	iPoint snowballPos;
+	iPoint checkpointPos;
 
 
 private:
