@@ -793,18 +793,28 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (!godMode)
 	{
-		if (c2->type == Collider::Type::ENEMY)
+		if (c1->type == Collider::Type::PLAYER)
 		{
-			if (isJumping == false)
+			if (c2->type == Collider::Type::ENEMY)
 			{
-				speed.y = 0;
-				isFalling = false;
-			}
+				if (isJumping == false)
+				{
+					speed.y = 0;
+					isFalling = false;
+				}
 
-			playerPos.x = ppx;
-			playerPos.y = ppy;
-			isFalling = false;
-			isDead = true;
+				playerPos.x = ppx;
+				playerPos.y = ppy;
+				isFalling = false;
+				isDead = true;
+			}
+		}
+		if (c1->type == Collider::Type::SNOWBALL)
+		{
+			if (c2->type == Collider::Type::ENEMY)
+			{
+				app->enemies->isDead = true;
+			}
 		}
 	}	
 }

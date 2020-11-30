@@ -12,6 +12,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Player.h"
+#include "Enemies.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -49,6 +50,7 @@ bool LogoScreen::Start()
 
 	app->map->active = false;
 	app->player->active = false;
+	app->enemies->active = false;
 	app->scene->active = false;
 	app->titleScreen->active = false;
 	app->winScreen->active = false;
