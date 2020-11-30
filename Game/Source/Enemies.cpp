@@ -77,6 +77,8 @@ bool Enemies::Start()
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
 
+	isDead = false;
+
 	enemyPos = { 300, 995 };
 
 	//Collider

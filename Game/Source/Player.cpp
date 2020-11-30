@@ -138,6 +138,7 @@ bool Player::Start()
 	playerPos = {100,1000};
 	checkpointPos = { 100, 1000 };
 
+	timer = 0;
 	lifeCount = 3;
 	godMode = false;
 	isDead = false;
