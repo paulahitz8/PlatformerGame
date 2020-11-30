@@ -15,6 +15,7 @@
 #include "WinScreen.h"
 #include "Enemies.h"
 #include "PathFinding.h"
+#include "Timer.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -32,6 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
+	timer = new Timer();
 	scene = new Scene();
 	titleScreen = new TitleScreen();
 	logoScreen = new LogoScreen();
@@ -44,12 +46,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	enemies = new Enemies();
 	//path = new PathFinding();
 
+
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(timer);
 
 	AddModule(scene);
 	AddModule(logoScreen);
