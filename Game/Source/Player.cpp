@@ -592,9 +592,11 @@ bool Player::Update(float dt)
 
 			if (timer == 118)
 			{
+				
 				lifeCount--;
 				if (lifeCount == 0)
 				{
+					playerCollider->pendingToDelete = true;
 					currentAnimation = &blankAnim;
 					app->fadeScreen->active = true;
 					app->enemies->Disable();
@@ -824,6 +826,8 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			if (c2->type == Collider::Type::ENEMY)
 			{
 				app->enemies->isDead = true;
+
+				c2->pendingToDelete = true;
 			}
 		}
 	}	
