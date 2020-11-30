@@ -21,6 +21,8 @@ Enemies::~Enemies() {}
 bool Enemies::Awake(pugi::xml_node&)
 {
 	//animations
+	blankAnim.PushBack({ 0, 30, 2, 2 });
+
 	leftIdle.PushBack({ 120, 30, 30, 30 });
 	leftIdle.PushBack({ 150, 30, 30, 30 });
 	leftIdle.speed = 0.03f;
@@ -57,7 +59,11 @@ bool Enemies::Awake(pugi::xml_node&)
 	rightRoll.PushBack({ 30, 0, 30, 30 });
 	rightRoll.speed = 0.03f;
 
-	
+	deadAnim.PushBack({ 66, 277, 22, 25 });
+	deadAnim.PushBack({ 90, 277, 22, 25 });
+	deadAnim.PushBack({ 114, 277, 22, 25 });
+	deadAnim.PushBack({ 138, 277, 22, 25 });
+	deadAnim.speed = 0.08f;
 
 	return true;
 }
@@ -67,7 +73,9 @@ bool Enemies::Start()
 {
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/seal_sprites.png");
+	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	currentAnimation = &leftIdle;
+	currentDeadAnimation = &blankAnim;
 
 	enemyPos = { 300, 995 };
 
@@ -77,6 +85,7 @@ bool Enemies::Start()
 	//Audios
 	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
 
+	timer = 0;
 
 	return true;
 }
@@ -104,15 +113,29 @@ bool Enemies::Update(float dt)
 			currentAnimation = &rightDead;
 		}
 		//app->audio->LoadFx(deadFx);
+		if (timer == 60)
+		{
+			currentAnimation = &blankAnim;
+			currentDeadAnimation = &deadAnim;
+		}
+		else if (timer == 110)
+		{
+			currentDeadAnimation = &blankAnim;
+		}
+		timer++;
 	}
 
 	currentAnimation->Update();
+	currentDeadAnimation->Update();
 
 	enemyCollider->SetPos(enemyPos.x, enemyPos.y);
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
+
+	SDL_Rect rectDead = currentDeadAnimation->GetCurrentFrame();
+	app->render->DrawTexture(deadTexture, enemyPos.x + 3, enemyPos.y + 4, &rectDead);
 
 	return true;
 }
@@ -126,8 +149,11 @@ bool Enemies::PostUpdate()
 bool Enemies::CleanUp()
 {
 	//Unload the audios
-	//app->audio->UnloadFx(walkingFx);
+	//app->audio->UnloadFx(deadFx);
+
+	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
+	app->tex->UnLoad(deadTexture);
 
 	return true;
 }

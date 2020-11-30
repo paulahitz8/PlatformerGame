@@ -39,6 +39,7 @@ public:
 
 	//SDL_Rect player;
 	SDL_Texture* enemyTexture;
+	SDL_Texture* deadTexture;
 	SDL_Rect enemyRect = { 9,7,22,25 };
 
 	iPoint enemyPos;
@@ -49,6 +50,8 @@ private:
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;
+	Animation* currentDeadAnimation = &blankAnim;
+	Animation blankAnim;
 	Animation leftIdle;
 	Animation rightIdle;
 	Animation leftWalk;
@@ -57,6 +60,7 @@ private:
 	Animation rightDead;
 	Animation leftRoll;
 	Animation rightRoll;
+	Animation deadAnim;
 
 	fPoint speed;
 	Physics enemyPhysics;
@@ -64,6 +68,8 @@ private:
 
 	unsigned int deadFx;
 	unsigned int attackFx;
+
+	int timer;
 
 	int GetTileProperty(int x, int y, const char* property) const;
 };
