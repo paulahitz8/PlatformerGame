@@ -58,7 +58,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(fadeScreen);
 	AddModule(enemies);
-	AddModule(path);
+	//AddModule(path);
 	AddModule(player);
 	AddModule(collisions);
 	AddModule(deathScreen);
