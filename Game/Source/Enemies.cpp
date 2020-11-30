@@ -63,7 +63,7 @@ bool Enemies::Awake(pugi::xml_node&)
 	deadAnim.PushBack({ 90, 277, 22, 25 });
 	deadAnim.PushBack({ 114, 277, 22, 25 });
 	deadAnim.PushBack({ 138, 277, 22, 25 });
-	deadAnim.speed = 0.05f;
+	deadAnim.speed = 0.08f;
 
 	return true;
 }
@@ -118,7 +118,7 @@ bool Enemies::Update(float dt)
 			currentAnimation = &blankAnim;
 			currentDeadAnimation = &deadAnim;
 		}
-		else if (timer == 140)
+		else if (timer == 110)
 		{
 			currentDeadAnimation = &blankAnim;
 		}
