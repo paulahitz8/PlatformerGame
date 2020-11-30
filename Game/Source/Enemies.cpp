@@ -21,9 +21,41 @@ Enemies::~Enemies() {}
 bool Enemies::Awake(pugi::xml_node&)
 {
 	//animations
-	leftIdle.PushBack({ 660, 99, 27, 25 });
-	leftIdle.PushBack({ 632, 99, 27, 25 });
+	leftIdle.PushBack({ 120, 30, 30, 30 });
+	leftIdle.PushBack({ 150, 30, 30, 30 });
 	leftIdle.speed = 0.03f;
+
+	rightIdle.PushBack({ 120, 0, 30, 30 });
+	rightIdle.PushBack({ 150, 0, 30, 30 });
+	rightIdle.speed = 0.03f;
+
+	leftWalk.PushBack({ 244, 30, 32, 30 });
+	leftWalk.PushBack({ 276, 30, 32, 30 });
+	leftWalk.speed = 0.03f;
+
+	rightWalk.PushBack({ 245, 0, 32, 30 });
+	rightWalk.PushBack({ 277, 0, 32, 30 });
+	rightWalk.speed = 0.03f;
+
+	leftDead.PushBack({ 180, 30, 32, 30 });
+	leftDead.PushBack({ 212, 30, 32, 30 });
+	leftDead.speed = 0.03f;
+
+	rightDead.PushBack({ 181, 0, 32, 30 });
+	rightDead.PushBack({ 213, 0, 32, 30 });
+	rightDead.speed = 0.03f;
+
+	leftRoll.PushBack({ 30, 30, 30, 30 });
+	leftRoll.PushBack({ 0, 30, 30, 30 });
+	leftRoll.PushBack({ 90, 30, 30, 30 });
+	leftRoll.PushBack({ 60, 30, 30, 30 });
+	leftRoll.speed = 0.03f;
+
+	rightRoll.PushBack({ 60, 0, 30, 30 });
+	rightRoll.PushBack({ 90, 0, 30, 30 });
+	rightRoll.PushBack({ 0, 0, 30, 30 });
+	rightRoll.PushBack({ 30, 0, 30, 30 });
+	rightRoll.speed = 0.03f;
 
 	return true;
 }
@@ -68,6 +100,19 @@ bool Enemies::Update(float dt)
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
+
+	if (isDead)
+	{
+		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
+		{
+			currentAnimation = &leftDead;
+		}
+		else
+		{
+			currentAnimation = &rightDead;
+		}
+		//app->audio->LoadFx(deadFx);
+	}
 
 	return true;
 }

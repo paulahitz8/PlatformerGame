@@ -25,6 +25,7 @@
     <ClCompile Include="Source\WinScreen.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
     <ClCompile Include="Source\PathFinding.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Source\DeathScreen.h" />
     <ClInclude Include="Source\Enemies.h" />
     <ClInclude Include="Source\PathFinding.h" />
+    <ClInclude Include="Source\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

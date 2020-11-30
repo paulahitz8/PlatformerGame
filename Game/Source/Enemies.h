@@ -43,14 +43,20 @@ public:
 
 	iPoint enemyPos;
 
+	bool isDead = false;
+
 private:
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;
-	Animation rightIdle;
 	Animation leftIdle;
-	Animation rightWalk;
+	Animation rightIdle;
 	Animation leftWalk;
+	Animation rightWalk;
+	Animation leftDead;
+	Animation rightDead;
+	Animation leftRoll;
+	Animation rightRoll;
 
 	fPoint speed;
 	Physics enemyPhysics;

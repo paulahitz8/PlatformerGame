@@ -15,6 +15,7 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class Timer;
 class Scene;
 class TitleScreen;
 class LogoScreen;
@@ -88,6 +89,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	Timer* timer;
 	Scene* scene;
 	TitleScreen* titleScreen;
 	LogoScreen* logoScreen;
