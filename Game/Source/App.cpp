@@ -42,7 +42,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	deathScreen = new DeathScreen();
 	winScreen = new WinScreen();
 	enemies = new Enemies();
-	path = new PathFinding();
+	//path = new PathFinding();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
