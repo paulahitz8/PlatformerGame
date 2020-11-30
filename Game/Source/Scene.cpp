@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Enemies.h"
+#include "Item.h"
 #include "LogoScreen.h"
 #include "TitleScreen.h"
 #include "WinScreen.h"
@@ -52,6 +53,7 @@ bool Scene::Start()
 
 	app->player->Enable();
 	app->enemies->Enable();
+	app->item->Enable();
 
 	return true;
 }
@@ -122,6 +124,7 @@ bool Scene::CleanUp()
 	app->player->Disable();
 	app->map->Disable();
 	app->enemies->Disable();
+	app->item->Disable();
 
 	active = false;
 
