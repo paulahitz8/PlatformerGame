@@ -11,6 +11,8 @@
 #include "FadeScreen.h"
 #include "WinScreen.h"
 #include "Enemies.h"
+#include "Item.h"
+#include "Life.h"
 
 Player::Player() 
 {
@@ -146,7 +148,13 @@ bool Player::Start()
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
-	snowballCollider = app->collisions->AddCollider({snowballPos.x, snowballPos.y, 6, 6}, Collider::Type::SNOWBALL, this);
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (snowballs[i] != nullptr)
+		{
+			snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
+		}
+	}
 
 	//Audios
 	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
@@ -191,10 +199,94 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				/*for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+				{
+					snowballs[i] = nullptr;
+				}*/
+
+				for (uint i = 0; i < MAX_COLLIDERS; ++i)
+				{
+					if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)
+					{
+						delete snowballs[i];
+						snowballs[i] = nullptr;
+						--snowballCount;
+					}
+				}
+
+			
+
+
+				bool Collisions::DeleteCollider(Collider* collider)
+				{
+					if (collider != nullptr)
+					{
+						for (uint i = 0; i < MAX_COLLIDERS; ++i)
+						{
+							if (colliders[i] == collider)
+							{
+								collider->pendingToDelete = true;
+								break;
+							}
+						}
+					}
+
+					return false;
+				}
+
+				// Collider class
+				Collider::Collider(SDL_Rect rectangle, Type type, Module* listener) : rect(rectangle), type(type), receiver(listener) {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				isShooting = false;
 				shootRight = false;
 				shootLeft = false;
-				snowballPos = playerPos;
+
+				for (uint i = 0; i < MAX_COLLIDERS; ++i)
+				{
+					if (snowballs[i] != nullptr)
+					{
+						snowballs[i]->snowballPos = playerPos;
+					}
+				}
+				
 
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
@@ -567,8 +659,6 @@ bool Player::Update(float dt)
 				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			}
 		}
-
-	
 	}
 
 	if (isDead)
@@ -593,7 +683,6 @@ bool Player::Update(float dt)
 
 			if (timer == 118)
 			{
-				
 				lifeCount--;
 				if (lifeCount == 0)
 				{
@@ -637,8 +726,8 @@ bool Player::Update(float dt)
 	}
 	if (shootLeft)
 	{
-		isShooting = false;
 		snowballPos.x -= 5;
+		isShooting = false;
 	}
 
 	//ppx = playerPos.x;
@@ -652,16 +741,32 @@ bool Player::Update(float dt)
 	currentHeart3->Update();
 
 	playerCollider->SetPos(playerPos.x, playerPos.y);
-	snowballCollider->SetPos(snowballPos.x, snowballPos.y);
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (snowballs[i] != nullptr)
+		{
+			snowballCollider->SetPos(snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y);
+		}
+	}
+	
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
 
 	//Drawing the snowball
-	SDL_Rect rect2 = currentSnowballAnimation->GetCurrentFrame();
-	app->render->DrawTexture(playerTexture, snowballPos.x, snowballPos.y, &rect2);
-
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (snowballs[i] == nullptr)
+		{
+			continue;
+		}
+		else
+		{
+			SDL_Rect rect2 = currentSnowballAnimation->GetCurrentFrame();
+			app->render->DrawTexture(playerTexture, snowballPos.x, snowballPos.y, &rect2);
+		}
+	}
 	//Drawing the hearts
 	SDL_Rect grayRect = { 0, 0, 34, 29 };
 
@@ -831,5 +936,34 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				c2->pendingToDelete = true;
 			}
 		}
+		if (c1->type == Collider::Type::PLAYER)
+		{
+			if (c2->type == Collider::Type::LIFE)
+			{
+				app->life->isPicked = true;
+				if (lifeCount < 3)
+				{
+					lifeCount += 1;
+				}
+				c2->pendingToDelete = true;
+			}
+		}
 	}	
+}
+
+Snowball* Player::AddSnowball(iPoint snowballPos)
+{
+	Snowball* ret = nullptr;
+
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (snowballs[i] == nullptr)
+		{
+			ret = snowballs[i] = new Snowball(snowballPos);
+			++snowballCount;
+			break;
+		}
+	}
+
+	return ret;
 }

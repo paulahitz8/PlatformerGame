@@ -5,9 +5,18 @@
 #include "Animation.h"
 #include "Physics.h"
 
+#define MAX_SNOWBALLS 50
+
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
+
+struct Snowball
+{
+	iPoint snowballPos;
+
+	bool pendingToDelete = false;
+};
 
 class Player : public Module
 {
@@ -37,6 +46,8 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
 
+	Snowball* AddSnowball(iPoint snowballPos);
+
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
 	SDL_Rect playerRect = {9,7,22,25};
@@ -45,11 +56,14 @@ public:
 	SDL_Texture* grayHeartTexture;
 
 	iPoint playerPos;
-	iPoint snowballPos;
+	//iPoint snowballPos;
 	iPoint checkpointPos;
 
 
 private:
+
+	Snowball* snowballs[MAX_SNOWBALLS] = { nullptr };
+	uint snowballCount = 0;
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;
