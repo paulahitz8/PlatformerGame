@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Animation.h"
 #include "Physics.h"
+#include "List.h"
 
 #define MAX_SNOWBALLS 50
 
@@ -62,6 +63,7 @@ public:
 	SDL_Texture* ice3Texture;
 	SDL_Texture* ice4Texture;
 	SDL_Texture* ice5Texture;
+	SDL_Texture* snowmanTexture;
 	
 	SDL_Rect playerRect = {9,7,22,25};
 	SDL_Rect checkpointRect = { 248, 214, 145, 15 };
@@ -71,6 +73,7 @@ public:
 	iPoint checkpointPos;
 
 	int numIce = 0;
+	List<Collider*>checkpointList;
 
 private:
 
@@ -83,6 +86,9 @@ private:
 	Animation* currentHeart1 = &redHeart;
 	Animation* currentHeart2 = &redHeart;
 	Animation* currentHeart3 = &redHeart;
+	Animation* currentSnowmanAnimation = &snowmanIdle;
+	Animation snowmanIdle;
+	Animation snowmanWave;
 	Animation blankAnim;
 	Animation rightIdle;
 	Animation leftIdle;
@@ -121,8 +127,10 @@ private:
 	bool shootRight = false;
 	bool shootLeft = false;
 	bool changePos = false;
+	bool isCheckpoint = false;
 
 	int timer = 0;
+	int timerCheck = 0;
 	int timerShoot = 0;
 	int lifeCount = 3;
 	int ppx, ppy;

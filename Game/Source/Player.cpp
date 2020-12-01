@@ -121,6 +121,15 @@ bool Player::Awake(pugi::xml_node&)
 	redHeart.PushBack({ 34, 0, 34, 29 });
 	redHeart.speed = 0.03f;
 
+	//snowman idle
+	snowmanIdle.PushBack({ 68, 0, 56, 64 });
+
+	//snowman wave
+	snowmanWave.PushBack({146, 0, 56, 64});
+	snowmanIdle.PushBack({ 68, 0, 56, 64 });
+	snowmanWave.PushBack({228, 0, 56, 64});
+	snowmanWave.speed = 0.12f;
+
 	return true;
 }
 
@@ -138,6 +147,7 @@ bool Player::Start()
 	ice3Texture = app->tex->Load("Assets/GUI/ice_three.png");
 	ice4Texture = app->tex->Load("Assets/GUI/ice_four.png");
 	ice5Texture = app->tex->Load("Assets/GUI/ice_five.png");
+	snowmanTexture = app->tex->Load("Assets/Characters/snowman_sprites.png");
 	
 
 	currentAnimation = &rightIdle;
@@ -145,6 +155,7 @@ bool Player::Start()
 	currentHeart1 = &redHeart;
 	currentHeart2 = &redHeart;
 	currentHeart3 = &redHeart;
+	currentSnowballAnimation = &snowmanIdle;
 
 	playerPos = { 100,1000 };
 	checkpointPos = { 100, 1000 };
@@ -159,6 +170,9 @@ bool Player::Start()
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
+	checkpointList.Add(app->collisions->AddCollider({ 2520,500,20,1000 }, Collider::Type::CHEKPOINT));
+	checkpointList.Add(app->collisions->AddCollider({ 4570,500,20,1000 }, Collider::Type::CHEKPOINT));
+	checkpointList.Add(app->collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHEKPOINT));
 
 	//Audios
 	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
@@ -472,7 +486,26 @@ bool Player::Update(float dt)
 				speed.y = -28.0f;
 			}
 
-			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
+			if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+			{
+				int count = 0;
+				for (int i = 0; i < 20; i++)
+				{
+					for (int j = 0; j < 200; j++)
+					{
+						if (GetTileProperty(i/64, j/64, "CollisionId") == Collider::Type::CHEKPOINT)
+						{
+							count++;
+							if (count == 3)
+							{
+								lifeCount = 1;
+							}
+						}
+					}
+				}
+			}
+
+		/*	if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
 			{
 				if (changePos)
 				{
@@ -489,10 +522,36 @@ bool Player::Update(float dt)
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
 			{
 				app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
-			}
-		
+			}*/
 
-			//changePos = false; 
+			if (isCheckpoint == true)
+			{
+				currentSnowmanAnimation = &snowmanWave;
+				if (changePos)
+				{
+					app->audio->PlayFx(checkpointFx);
+					checkpointPos = playerPos;
+					changePos = false;
+				}
+			}
+			else
+			{
+				changePos = true;
+			}
+
+			if (isCheckpoint == true)
+			{
+				app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
+			}
+
+			if (timerCheck % 10 == 0)
+			{
+				isCheckpoint = false;
+				currentSnowmanAnimation = &snowmanIdle;
+			}
+			timerCheck++;
+			
+
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
@@ -731,6 +790,7 @@ bool Player::Update(float dt)
 
 	currentAnimation->Update();
 	currentSnowballAnimation->Update();
+	currentSnowmanAnimation->Update();
 	currentHeart1->Update();
 	currentHeart2->Update();
 	currentHeart3->Update();
@@ -762,6 +822,13 @@ bool Player::Update(float dt)
 			app->render->DrawTexture(playerTexture, snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, &rect2);
 		}
 	}
+	
+	//Drawing the snowmans
+	SDL_Rect rectSnow = currentSnowmanAnimation->GetCurrentFrame();
+	app->render->DrawTexture(snowmanTexture, 2500, 1025, &rectSnow);
+	app->render->DrawTexture(snowmanTexture, 4550, 1025, &rectSnow);
+	app->render->DrawTexture(snowmanTexture, 6980, 1025, &rectSnow);
+
 	//Drawing the hearts
 	SDL_Rect grayRect = { 0, 0, 34, 29 };
 
@@ -977,6 +1044,13 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				app->item->isPicked = true;
 				numIce++;
 				c2->pendingToDelete = true;
+			}
+		}
+		if (c1->type == Collider::Type::PLAYER)
+		{
+			if (c2->type == Collider::Type::CHEKPOINT)
+			{
+				isCheckpoint = true;
 			}
 		}
 	}

@@ -215,6 +215,7 @@ void Collisions::DrawCollider()
 			break;
 		case Collider::Type::CHEKPOINT: // Purple
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+
 			break;
 		case Collider::Type::LIFE: // Purple
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
