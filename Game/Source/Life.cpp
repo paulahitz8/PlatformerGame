@@ -25,7 +25,7 @@ bool Life::Awake(pugi::xml_node&)
 	//animations
 	fishAnim.PushBack({40, 15, 21, 20});
 	fishAnim.PushBack({11, 15, 21, 20});
-	fishAnim.PushBack({ 40, 15, 21, 20 });
+	fishAnim.PushBack({40, 15, 21, 20 });
 	fishAnim.PushBack({70, 15, 21, 20});
 	fishAnim.speed = 0.02f;
 
@@ -53,10 +53,10 @@ bool Life::Start()
 	fishFx = app->audio->LoadFx("Assets/Audio/Fx/bubbles_fx.wav");
 
 	//Collider
-	fish1Collider = app->collisions->AddCollider({ fish1Pos.x, fish1Pos.y, 21, 10 }, Collider::Type::LIFE, this);
-	fish2Collider = app->collisions->AddCollider({ fish2Pos.x, fish2Pos.y, 21, 10 }, Collider::Type::LIFE, this);
-	fish3Collider = app->collisions->AddCollider({ fish3Pos.x, fish3Pos.y, 21, 10 }, Collider::Type::LIFE, this);
-	fish4Collider = app->collisions->AddCollider({ fish4Pos.x, fish4Pos.y, 21, 10 }, Collider::Type::LIFE, this);
+	fish1Collider = app->collisions->AddCollider({ fish1Pos.x, fish1Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+	fish2Collider = app->collisions->AddCollider({ fish2Pos.x, fish2Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+	fish3Collider = app->collisions->AddCollider({ fish3Pos.x, fish3Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+	fish4Collider = app->collisions->AddCollider({ fish4Pos.x, fish4Pos.y, 21, 20 }, Collider::Type::LIFE, this);
 
 	return true;
 }
@@ -94,12 +94,12 @@ bool Life::Update(float dt)
 	fish3Collider->SetPos(fish3Pos.x, fish3Pos.y);
 	fish4Collider->SetPos(fish4Pos.x, fish4Pos.y);
 
-	//Drawing the fishes
 	currentAnimation1->Update();
 	currentAnimation2->Update();
 	currentAnimation3->Update();
 	currentAnimation4->Update();
 
+	//Drawing the fishes
 	SDL_Rect rect1 = currentAnimation1->GetCurrentFrame();
 	SDL_Rect rect2 = currentAnimation2->GetCurrentFrame();
 	SDL_Rect rect3 = currentAnimation3->GetCurrentFrame();

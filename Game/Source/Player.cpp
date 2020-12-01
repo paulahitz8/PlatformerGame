@@ -14,7 +14,7 @@
 #include "Item.h"
 #include "Life.h"
 
-Player::Player() 
+Player::Player()
 {
 	name.Create("player");
 }
@@ -111,8 +111,8 @@ bool Player::Awake(pugi::xml_node&)
 	rightShoot.speed = 0.3f;
 
 	//snowball animation
-	snowballAnim.PushBack({203, 44, 6, 6});
-	snowballAnim.PushBack({219, 44, 6, 6});
+	snowballAnim.PushBack({ 203, 44, 6, 6 });
+	snowballAnim.PushBack({ 219, 44, 6, 6 });
 	snowballAnim.speed = 0.1f;
 
 	//red heart animation
@@ -130,14 +130,14 @@ bool Player::Start()
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
 	grayHeartTexture = app->tex->Load("Assets/GUI/gray_heart.png");
-	
+
 	currentAnimation = &rightIdle;
 	currentSnowballAnimation = &blankAnim;
 	currentHeart1 = &redHeart;
 	currentHeart2 = &redHeart;
 	currentHeart3 = &redHeart;
 
-	playerPos = {100,1000};
+	playerPos = { 100,1000 };
 	checkpointPos = { 100, 1000 };
 
 	timer = 0;
@@ -147,14 +147,7 @@ bool Player::Start()
 	isJumping = false;
 
 	//Collider
-	playerCollider = app->collisions->AddCollider({playerPos.x, playerPos.y, 22, 25}, Collider::Type::PLAYER, this);
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-	{
-		if (snowballs[i] != nullptr)
-		{
-			snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
-		}
-	}
+	playerCollider = app->collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
 
 	//Audios
 	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
@@ -200,11 +193,6 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
 
-				/*for (uint i = 0; i < MAX_SNOWBALLS; ++i)
-				{
-					snowballs[i] = nullptr;
-				}*/
-
 				isShooting = false;
 				shootRight = false;
 				shootLeft = false;
@@ -240,13 +228,14 @@ bool Player::Update(float dt)
 				{
 					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
 					{
-						for (uint i = 0; i < MAX_COLLIDERS; ++i)
+						for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 						{
-							if (snowballs[i] != nullptr)
+							if (snowballs[i] == nullptr)
 							{
+								numSnowball = i;
 								AddSnowball();
 								snowballs[i]->snowballPos = playerPos;
-								currentSnowball.snowballPos = snowballs[i]->snowballPos;
+								snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
 								break;
 							}
 						}
@@ -328,11 +317,11 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
-				
+
 				isShooting = false;
 				shootRight = false;
 				shootLeft = false;
-			
+
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
 					currentAnimation = &rightShoot;
@@ -363,13 +352,14 @@ bool Player::Update(float dt)
 				{
 					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
 					{
-						for (uint i = 0; i < MAX_COLLIDERS; ++i)
+						for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 						{
-							if (snowballs[i] != nullptr)
+							if (snowballs[i] == nullptr)
 							{
+								numSnowball = i;
 								AddSnowball();
 								snowballs[i]->snowballPos = playerPos;
-								currentSnowball.snowballPos = snowballs[i]->snowballPos;
+								snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
 								break;
 							}
 						}
@@ -378,7 +368,7 @@ bool Player::Update(float dt)
 				}
 			}
 
-			
+
 
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
@@ -490,9 +480,9 @@ bool Player::Update(float dt)
 					speed.y = 0;
 					isFalling = false;
 				}
-				
+
 				isDead = true;
-				
+
 				playerPos.x = ppx;
 				playerPos.y = ppy;
 				isFalling = false;
@@ -543,7 +533,7 @@ bool Player::Update(float dt)
 					}
 				}
 			}
-		
+
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
 			{
 				isFalling = false;
@@ -556,7 +546,7 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftIdle;
 				}
-				if(playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
+				if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
 				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 				{
 					isFalling = true;
@@ -663,7 +653,7 @@ bool Player::Update(float dt)
 			timer++;
 			isDead = false;
 		}
-		
+
 	}
 	if (isShooting == true)
 	{
@@ -680,18 +670,18 @@ bool Player::Update(float dt)
 
 	if (shootRight)
 	{
-		currentSnowball.snowballPos.x += 5;
+		snowballs[numSnowball]->snowballPos.x += 5;
 		isShooting = false;
 	}
 	if (shootLeft)
 	{
-		currentSnowball.snowballPos.x -= 5;
+		snowballs[numSnowball]->snowballPos.x -= 5;
 		isShooting = false;
 	}
 
 	//ppx = playerPos.x;
 	//ppy = playerPos.y;
-	
+
 
 	currentAnimation->Update();
 	currentSnowballAnimation->Update();
@@ -700,21 +690,21 @@ bool Player::Update(float dt)
 	currentHeart3->Update();
 
 	playerCollider->SetPos(playerPos.x, playerPos.y);
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 	{
 		if (snowballs[i] != nullptr)
 		{
 			snowballCollider->SetPos(snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y);
 		}
 	}
-	
+
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
 
 	//Drawing the snowball
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 	{
 		if (snowballs[i] == nullptr)
 		{
@@ -789,7 +779,7 @@ bool Player::PostUpdate()
 	{
 		--playerPos.y;
 	}
-	
+
 	return true;
 }
 
@@ -844,7 +834,7 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 	// TileSet
 	ListItem <TileSet*>* T = app->map->data.tilesets.start;
 	SString tileSetName = "Collisions";
-	
+
 	while (T != NULL)
 	{
 		if (T->data->name == tileSetName)
@@ -907,14 +897,14 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				c2->pendingToDelete = true;
 			}
 		}
-	}	
+	}
 }
 
 Snowball* Player::AddSnowball()
 {
 	Snowball* ret = nullptr;
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 	{
 		if (snowballs[i] == nullptr)
 		{

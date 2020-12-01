@@ -20,6 +20,7 @@ struct Collider
 		CHEKPOINT,
 		SNOWBALL,
 		LIFE,
+		ITEM,
 		MAX
 	};
 
