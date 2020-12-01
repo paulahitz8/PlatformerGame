@@ -13,6 +13,7 @@
 #include "TitleScreen.h"
 #include "WinScreen.h"
 #include "DeathScreen.h"
+#include "Life.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -54,6 +55,7 @@ bool Scene::Start()
 	app->player->Enable();
 	app->enemies->Enable();
 	app->item->Enable();
+	app->life->Enable();
 
 	return true;
 }
@@ -125,6 +127,7 @@ bool Scene::CleanUp()
 	app->map->Disable();
 	app->enemies->Disable();
 	app->item->Disable();
+	app->life->Disable();
 
 	active = false;
 

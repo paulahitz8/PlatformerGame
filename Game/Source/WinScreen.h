@@ -36,6 +36,9 @@ public:
 
 private:
 	SDL_Texture* winScreen;
+	SDL_Texture* smallIglooScreen;
+	SDL_Texture* mediumIglooScreen;
+	SDL_Texture* bigIglooScreen;
 	SDL_Rect rect;
 };
 

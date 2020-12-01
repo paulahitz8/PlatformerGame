@@ -43,6 +43,7 @@ bool DeathScreen::Start()
 	app->scene->active = false;
 	app->render->camera.x = 0;
 	deathScreen = app->tex->Load("Assets/Screens/death_screen.png");
+
 	app->audio->PlayMusic("Assets/Audio/Music/death_music.ogg", 0.0f);
 
 	return ret;
@@ -58,7 +59,6 @@ bool DeathScreen::PreUpdate()
 bool DeathScreen::Update(float dt)
 {
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	//if (app->player->numIce == )
 	app->render->DrawTexture(deathScreen, 0, 350, &rect);
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
