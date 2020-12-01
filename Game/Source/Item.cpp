@@ -37,6 +37,10 @@ bool Item::Start()
 	LOG("Loading player textures");
 	fishTexture = app->tex->Load("Assets/GUI/fish.png");
 	currentAnimation = &fishAnim;
+
+	iPoint fishPos = { 150, 1000 };
+
+
 	//fish2Pos = { 300, 995 };
 	//fish3Pos = { 300, 995 };
 	//fish4Pos = { 300, 995 };
