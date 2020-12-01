@@ -427,6 +427,7 @@ bool Player::Update(float dt)
 				}
 			}
 
+			
 			//Walking to the left
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
@@ -682,7 +683,7 @@ bool Player::Update(float dt)
 			if (playerPos.x == 9300)
 			{
 				app->fadeScreen->active = true;
-				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
+				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 20.0f);
 			}
 		}
 	}
