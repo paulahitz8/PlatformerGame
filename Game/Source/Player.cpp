@@ -197,8 +197,8 @@ bool Player::Update(float dt)
 	{
 		if (godMode)
 		{
-			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-			{
+			//if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			//{
 
 
 
@@ -217,45 +217,43 @@ bool Player::Update(float dt)
 
 
 
-				/*for (uint i = 0; i < MAX_SNOWBALLS; ++i)
-				{
-					snowballs[i] = nullptr;
-				}*/
+			//	/*for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+			//	{
+			//		snowballs[i] = nullptr;
+			//	}*/
 
-				for (uint i = 0; i < MAX_COLLIDERS; ++i)
-				{
-					if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)
-					{
-						delete snowballs[i];
-						snowballs[i] = nullptr;
-						--snowballCount;
-					}
-				}
+			//	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+			//	{
+			//		if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)
+			//		{
+			//			delete snowballs[i];
+			//			snowballs[i] = nullptr;
+			//			--snowballCount;
+			//		}
+			//	}
 
-			
-
-
-				bool Collisions::DeleteCollider(Collider* collider)
-				{
-					if (collider != nullptr)
-					{
-						for (uint i = 0; i < MAX_COLLIDERS; ++i)
-						{
-							if (colliders[i] == collider)
-							{
-								collider->pendingToDelete = true;
-								break;
-							}
-						}
-					}
-
-					return false;
-				}
-
-				// Collider class
-				Collider::Collider(SDL_Rect rectangle, Type type, Module* listener) : rect(rectangle), type(type), receiver(listener) {}
+			//
 
 
+			//	bool Collisions::DeleteCollider(Collider* collider)
+			//	{
+			//		if (collider != nullptr)
+			//		{
+			//			for (uint i = 0; i < MAX_COLLIDERS; ++i)
+			//			{
+			//				if (colliders[i] == collider)
+			//				{
+			//					collider->pendingToDelete = true;
+			//					break;
+			//				}
+			//			}
+			//		}
+
+			//		return false;
+			//	}
+
+			//	// Collider class
+			//	Collider::Collider(SDL_Rect rectangle, Type type, Module* listener) : rect(rectangle), type(type), receiver(listener) {}
 
 
 
@@ -275,31 +273,33 @@ bool Player::Update(float dt)
 
 
 
-				isShooting = false;
-				shootRight = false;
-				shootLeft = false;
 
-				for (uint i = 0; i < MAX_COLLIDERS; ++i)
-				{
-					if (snowballs[i] != nullptr)
-					{
-						snowballs[i]->snowballPos = playerPos;
-					}
-				}
-				
 
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
-				{
-					currentAnimation = &rightShoot;
-				}
-				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftShoot;
-				}
-				isShooting = true;
-			}
+			//	isShooting = false;
+			//	shootRight = false;
+			//	shootLeft = false;
 
-			if (timerShoot % 65 == 0)
+			//	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+			//	{
+			//		if (snowballs[i] != nullptr)
+			//		{
+			//			snowballs[i]->snowballPos = playerPos;
+			//		}
+			//	}
+			//	
+
+			//	if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+			//	{
+			//		currentAnimation = &rightShoot;
+			//	}
+			//	if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+			//	{
+			//		currentAnimation = &leftShoot;
+			//	}
+			//	isShooting = true;
+			//}
+
+			/*if (timerShoot % 65 == 0)
 			{
 				if (currentAnimation == &rightShoot)
 				{
@@ -310,7 +310,7 @@ bool Player::Update(float dt)
 					currentAnimation = &leftIdle;
 				}
 				currentSnowballAnimation = &snowballAnim;
-			}
+			}*/
 
 
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -383,7 +383,7 @@ bool Player::Update(float dt)
 
 		else
 		{
-			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			/*if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
 				
 				isShooting = false;
@@ -412,9 +412,9 @@ bool Player::Update(float dt)
 					currentAnimation = &leftIdle;
 				}
 				timerShoot = 0;
-			}
+			}*/
 
-			if (timerShoot == 14)
+			/*if (timerShoot == 14)
 			{
 				if (!shootRight && !shootLeft)
 				{
@@ -424,7 +424,7 @@ bool Player::Update(float dt)
 						currentSnowballAnimation = &snowballAnim;
 					}
 				}
-			}
+			}*/
 
 			
 
@@ -719,7 +719,7 @@ bool Player::Update(float dt)
 		timerShoot++;
 	}
 
-	if (shootRight)
+	/*if (shootRight)
 	{
 		snowballPos.x += 5;
 		isShooting = false;
@@ -728,7 +728,7 @@ bool Player::Update(float dt)
 	{
 		snowballPos.x -= 5;
 		isShooting = false;
-	}
+	}*/
 
 	//ppx = playerPos.x;
 	//ppy = playerPos.y;
@@ -755,7 +755,7 @@ bool Player::Update(float dt)
 	app->render->DrawTexture(playerTexture, playerPos.x, playerPos.y, &rect);
 
 	//Drawing the snowball
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	/*for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (snowballs[i] == nullptr)
 		{
@@ -766,7 +766,7 @@ bool Player::Update(float dt)
 			SDL_Rect rect2 = currentSnowballAnimation->GetCurrentFrame();
 			app->render->DrawTexture(playerTexture, snowballPos.x, snowballPos.y, &rect2);
 		}
-	}
+	}*/
 	//Drawing the hearts
 	SDL_Rect grayRect = { 0, 0, 34, 29 };
 
@@ -951,19 +951,19 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	}	
 }
 
-Snowball* Player::AddSnowball(iPoint snowballPos)
-{
-	Snowball* ret = nullptr;
-
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-	{
-		if (snowballs[i] == nullptr)
-		{
-			ret = snowballs[i] = new Snowball(snowballPos);
-			++snowballCount;
-			break;
-		}
-	}
-
-	return ret;
-}
+//Snowball* Player::AddSnowball(iPoint snowballPos)
+//{
+//	Snowball* ret = nullptr;
+//
+//	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+//	{
+//		if (snowballs[i] == nullptr)
+//		{
+//			ret = snowballs[i] = new Snowball(snowballPos);
+//			++snowballCount;
+//			break;
+//		}
+//	}
+//
+//	return ret;
+//}
