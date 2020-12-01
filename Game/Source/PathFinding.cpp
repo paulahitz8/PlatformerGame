@@ -14,7 +14,6 @@ using namespace std;
 PathFinding::PathFinding() : Module()
 {
 	name.Create("pathfinding");
-
 }
 
 // Destructor
