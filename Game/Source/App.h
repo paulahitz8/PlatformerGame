@@ -28,6 +28,7 @@ class WinScreen;
 class Enemies;
 class Item;
 class PathFinding;
+class Life;
 
 class App
 {
@@ -103,6 +104,7 @@ public:
 	Enemies* enemies;
 	PathFinding* path;
 	Item* item;
+	Life* life;
 
 private:
 

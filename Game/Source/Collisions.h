@@ -19,7 +19,7 @@ struct Collider
 		ENEMY,
 		CHEKPOINT,
 		SNOWBALL,
-		ITEM,
+		LIFE,
 		MAX
 	};
 

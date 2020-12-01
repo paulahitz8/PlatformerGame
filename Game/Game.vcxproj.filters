@@ -27,6 +27,7 @@
     <ClCompile Include="Source\PathFinding.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
+    <ClCompile Include="Source\Life.cpp" />
     <ClCompile Include="Source\Item.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +77,7 @@
     <ClInclude Include="Source\PathFinding.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\PerfTimer.h" />
+    <ClInclude Include="Source\Life.h" />
     <ClInclude Include="Source\Item.h" />
   </ItemGroup>
   <ItemGroup>
