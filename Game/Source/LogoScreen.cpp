@@ -14,6 +14,7 @@
 #include "Player.h"
 #include "Enemies.h"
 #include "Item.h"
+#include "Life.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -57,6 +58,7 @@ bool LogoScreen::Start()
 	app->titleScreen->active = false;
 	app->winScreen->active = false;
 	app->deathScreen->active = false;
+	app->life->active = false;
 	
 	return ret;
 }

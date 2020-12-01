@@ -98,23 +98,28 @@ bool Item::Update(float dt)
 		//	currentAnimation5 = &blankAnim;
 		//}
 
-		if (app->player->playerPos.x  > ice1Pos.x - 20 && app->player->playerPos.x < ice1Pos.x + 20)
+		if (app->player->playerPos.x  > ice1Pos.x - 20 && app->player->playerPos.x < ice1Pos.x + 20
+			&& app->player->playerPos.y  > ice1Pos.y - 20 && app->player->playerPos.y < ice1Pos.y + 20)
 		{
 			currentAnimation1 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice2Pos.x - 20 && app->player->playerPos.x < ice2Pos.x + 20)
+		if (app->player->playerPos.x > ice2Pos.x - 20 && app->player->playerPos.x < ice2Pos.x + 20
+			&& app->player->playerPos.y  > ice2Pos.y - 20 && app->player->playerPos.y < ice2Pos.y + 20)
 		{
 			currentAnimation2 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice3Pos.x - 20 && app->player->playerPos.x < ice3Pos.x + 20)
+		if (app->player->playerPos.x > ice3Pos.x - 20 && app->player->playerPos.x < ice3Pos.x + 20
+			&& app->player->playerPos.y  > ice3Pos.y - 20 && app->player->playerPos.y < ice3Pos.y + 20)
 		{
 			currentAnimation3 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice4Pos.x - 20 && app->player->playerPos.x < ice4Pos.x + 20)
+		if (app->player->playerPos.x > ice4Pos.x - 20 && app->player->playerPos.x < ice4Pos.x + 20
+			&& app->player->playerPos.y  > ice4Pos.y - 20 && app->player->playerPos.y < ice4Pos.y + 20)
 		{
 			currentAnimation4 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice5Pos.x - 20 && app->player->playerPos.x < ice5Pos.x + 20)
+		if (app->player->playerPos.x > ice5Pos.x - 20 && app->player->playerPos.x < ice5Pos.x + 20
+			&& app->player->playerPos.y  > ice5Pos.y - 20 && app->player->playerPos.y < ice5Pos.y + 20)
 		{
 			currentAnimation5 = &blankAnim;
 		}

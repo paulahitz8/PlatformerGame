@@ -46,6 +46,9 @@ bool WinScreen::Start()
 	app->render->camera.x = 0;
 	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg", 0.0f);
 	winScreen = app->tex->Load("Assets/Screens/win_screen.png");
+	smallIglooScreen = app->tex->Load("Assets/Screens/small_igloo.png");
+	mediumIglooScreen = app->tex->Load("Assets/Screens/medium_igloo.png");
+	bigIglooScreen = app->tex->Load("Assets/Screens/big_igloo.png");
 
 	return ret;
 }
@@ -60,7 +63,20 @@ bool WinScreen::PreUpdate()
 bool WinScreen::Update(float dt)
 {
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	app->render->DrawTexture(winScreen, 0, 350, &rect);
+	//app->render->DrawTexture(winScreen, 0, 350, &rect);
+
+	if (app->player->numIce <= 2)
+	{
+		app->render->DrawTexture(smallIglooScreen, 0, 350, &rect);
+	}
+	if (app->player->numIce > 2 && app->player->numIce <= 4)
+	{
+		app->render->DrawTexture(mediumIglooScreen, 0, 350, &rect);
+	}
+	if (app->player->numIce > 4 && app->player->numIce <= 5)
+	{
+		app->render->DrawTexture(bigIglooScreen, 0, 350, &rect);
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
