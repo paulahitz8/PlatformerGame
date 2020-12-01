@@ -114,6 +114,7 @@ private:
 	int lifeCount = 3;
 	int ppx, ppy;
 	int numSnowball;
+	int numIce = 0;
 
 	int GetTileProperty(int x, int y, const char* property) const;
 	void OnCollision(Collider* c1, Collider* c2);

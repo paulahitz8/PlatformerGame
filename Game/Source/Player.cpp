@@ -902,6 +902,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			if (c2->type == Collider::Type::ITEM)
 			{
 				app->item->isPicked = true;
+				numIce++;
 				c2->pendingToDelete = true;
 			}
 		}
