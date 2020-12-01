@@ -460,7 +460,7 @@ bool Player::Update(float dt)
 				speed.y = -28.0f;
 			}
 
-			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 1) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
 			{
 				checkpointPos = playerPos;
 			}
