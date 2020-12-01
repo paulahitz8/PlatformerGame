@@ -151,6 +151,7 @@ bool Player::Start()
 
 	timer = 0;
 	lifeCount = 3;
+	numIce = 0;
 	godMode = false;
 	isDead = false;
 	isJumping = false;
