@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Point.h"
 
 #include "SDL/include/SDL.h"
 
@@ -36,10 +37,10 @@ public:
 	SDL_Texture* fishTexture;
 	SDL_Rect fishRect = { 15, 20, 21, 10 };
 
-	//iPoint fish2Pos;
-	//iPoint fish3Pos;
-	//iPoint fish4Pos;
-	//iPoint fish5Pos;
+	iPoint fish1Pos;
+	iPoint fish2Pos;
+	iPoint fish3Pos;
+	iPoint fish4Pos;
 
 	bool isPicked = false;
 
@@ -49,12 +50,11 @@ private:
 	Collider* fish2Collider = nullptr;
 	Collider* fish3Collider = nullptr;
 	Collider* fish4Collider = nullptr;
-	Collider* fish5Collider = nullptr;
 
 	Animation* currentAnimation = &fishAnim;
 	Animation fishAnim;
 
-	//unsigned int fishFx;
+	unsigned int fishFx;
 };
 
 #endif // __ITEM_H__
