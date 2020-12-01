@@ -825,9 +825,9 @@ bool Player::Update(float dt)
 	
 	//Drawing the snowmans
 	SDL_Rect rectSnow = currentSnowmanAnimation->GetCurrentFrame();
-	app->render->DrawTexture(snowmanTexture, 2500, 1025, &rectSnow);
-	app->render->DrawTexture(snowmanTexture, 4550, 1025, &rectSnow);
-	app->render->DrawTexture(snowmanTexture, 6980, 1025, &rectSnow);
+	app->render->DrawTexture(snowmanTexture, 2500, 1026, &rectSnow);
+	app->render->DrawTexture(snowmanTexture, 4550, 1026, &rectSnow);
+	app->render->DrawTexture(snowmanTexture, 6980, 1026, &rectSnow);
 
 	//Drawing the hearts
 	SDL_Rect grayRect = { 0, 0, 34, 29 };
