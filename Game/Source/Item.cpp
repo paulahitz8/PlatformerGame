@@ -77,27 +77,7 @@ bool Item::Update(float dt)
 	{
 		
 		//app->audio->PlayFx(fishFx);
-		//if (app->player->playerPos.x > 540 && app->player->playerPos.x < 560)
-		//{
-		//	currentAnimation1 = &blankAnim;
-		//}
-		//if (app->player->playerPos.x > 2000 && app->player->playerPos.x < 2013)
-		//{
-		//	currentAnimation2 = &blankAnim;
-		//}
-		//if (app->player->playerPos.x > 3950 && app->player->playerPos.x < 4005)
-		//{
-		//	currentAnimation3 = &blankAnim;
-		//}
-		//if (app->player->playerPos.x > 6320 && app->player->playerPos.x < 6330)
-		//{
-		//	currentAnimation4 = &blankAnim;
-		//}
-		//if (app->player->playerPos.x > 7850 && app->player->playerPos.x < 7860)
-		//{
-		//	currentAnimation5 = &blankAnim;
-		//}
-
+		
 		if (app->player->playerPos.x  > ice1Pos.x - 20 && app->player->playerPos.x < ice1Pos.x + 20
 			&& app->player->playerPos.y  > ice1Pos.y - 20 && app->player->playerPos.y < ice1Pos.y + 20)
 		{
