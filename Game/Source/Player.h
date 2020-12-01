@@ -46,7 +46,7 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
 
-	Snowball* AddSnowball(iPoint snowballPos);
+	Snowball* AddSnowball();
 
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
@@ -63,6 +63,7 @@ public:
 private:
 
 	Snowball* snowballs[MAX_SNOWBALLS] = { nullptr };
+	Snowball currentSnowball;
 	uint snowballCount = 0;
 
 	//list of animations
