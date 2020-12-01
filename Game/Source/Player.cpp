@@ -317,10 +317,9 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
-
-				isShooting = false;
-				shootRight = false;
-				shootLeft = false;
+					isShooting = false;
+					/*shootRight = false;
+					shootLeft = false;*/
 
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
@@ -348,24 +347,24 @@ bool Player::Update(float dt)
 
 			if (timerShoot == 14)
 			{
-				if (!shootRight && !shootLeft)
-				{
+				/*if (!shootRight && !shootLeft)
+				{*/
 					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
 					{
 						for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 						{
 							if (snowballs[i] == nullptr)
 							{
-								numSnowball = i;
-								AddSnowball();
-								snowballs[i]->snowballPos = playerPos;
-								snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
-								break;
+									numSnowball = i;
+									AddSnowball();
+									snowballs[i]->snowballPos = playerPos;
+									snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
+									break;
 							}
 						}
 						currentSnowballAnimation = &snowballAnim;
 					}
-				}
+				/*}*/
 			}
 
 
@@ -659,10 +658,12 @@ bool Player::Update(float dt)
 	{
 		if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 		{
+			snowballs[numSnowball]->right = true;
 			shootRight = true;
 		}
 		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
 		{
+			snowballs[numSnowball]->left = true;
 			shootLeft = true;
 		}
 		timerShoot++;
@@ -670,13 +671,29 @@ bool Player::Update(float dt)
 
 	if (shootRight)
 	{
-		snowballs[numSnowball]->snowballPos.x += 5;
-		isShooting = false;
+		for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+		{
+			if (snowballs[i] != nullptr)
+			{
+				if (snowballs[i]->pendingToDelete == false && snowballs[i]->right == true)
+				{
+					snowballs[i]->snowballPos.x += 5;
+				}
+			}
+		}
 	}
 	if (shootLeft)
 	{
-		snowballs[numSnowball]->snowballPos.x -= 5;
-		isShooting = false;
+		for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+		{
+			if (snowballs[i] != nullptr)
+			{
+				if (snowballs[i]->pendingToDelete == false && snowballs[i]->left == true)
+				{
+					snowballs[i]->snowballPos.x -= 5;
+				}
+			}
+		}
 	}
 
 	//ppx = playerPos.x;

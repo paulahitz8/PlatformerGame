@@ -15,6 +15,9 @@ struct Snowball
 {
 	iPoint snowballPos = { 100, 1000 };
 
+	bool right = false;
+	bool left = false;
+
 	bool pendingToDelete = false;
 };
 
@@ -64,7 +67,6 @@ public:
 private:
 
 	Snowball* snowballs[MAX_SNOWBALLS] = { nullptr };
-	Snowball currentSnowball;
 	uint snowballCount = 0;
 
 	//list of animations
