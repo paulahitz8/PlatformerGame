@@ -13,7 +13,7 @@ struct SDL_Texture;
 
 struct Snowball
 {
-	iPoint snowballPos;
+	iPoint snowballPos = { 100, 1000 };
 
 	bool pendingToDelete = false;
 };
@@ -113,6 +113,7 @@ private:
 	int timerShoot = 0;
 	int lifeCount = 3;
 	int ppx, ppy;
+	int numSnowball;
 
 	int GetTileProperty(int x, int y, const char* property) const;
 	void OnCollision(Collider* c1, Collider* c2);
