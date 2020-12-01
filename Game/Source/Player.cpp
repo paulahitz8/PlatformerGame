@@ -200,93 +200,14 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				/*for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 				{
 					snowballs[i] = nullptr;
 				}*/
 
-				for (uint i = 0; i < MAX_COLLIDERS; ++i)
-				{
-					if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)
-					{
-						delete snowballs[i];
-						snowballs[i] = nullptr;
-						--snowballCount;
-					}
-				}
-
-			
-
-
-				bool Collisions::DeleteCollider(Collider* collider)
-				{
-					if (collider != nullptr)
-					{
-						for (uint i = 0; i < MAX_COLLIDERS; ++i)
-						{
-							if (colliders[i] == collider)
-							{
-								collider->pendingToDelete = true;
-								break;
-							}
-						}
-					}
-
-					return false;
-				}
-
-				// Collider class
-				Collider::Collider(SDL_Rect rectangle, Type type, Module* listener) : rect(rectangle), type(type), receiver(listener) {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				isShooting = false;
 				shootRight = false;
 				shootLeft = false;
-
-				for (uint i = 0; i < MAX_COLLIDERS; ++i)
-				{
-					if (snowballs[i] != nullptr)
-					{
-						snowballs[i]->snowballPos = playerPos;
-					}
-				}
-				
 
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
@@ -296,20 +217,42 @@ bool Player::Update(float dt)
 				{
 					currentAnimation = &leftShoot;
 				}
+
 				isShooting = true;
 			}
 
-			if (timerShoot % 65 == 0)
+			if (timerShoot == 15)
 			{
 				if (currentAnimation == &rightShoot)
 				{
 					currentAnimation = &rightIdle;
 				}
-				if (currentAnimation == &leftShoot)
+				else if (currentAnimation == &leftShoot)
 				{
 					currentAnimation = &leftIdle;
 				}
-				currentSnowballAnimation = &snowballAnim;
+				timerShoot = 0;
+			}
+
+			if (timerShoot == 14)
+			{
+				if (!shootRight && !shootLeft)
+				{
+					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
+					{
+						for (uint i = 0; i < MAX_COLLIDERS; ++i)
+						{
+							if (snowballs[i] != nullptr)
+							{
+								AddSnowball();
+								snowballs[i]->snowballPos = playerPos;
+								currentSnowball.snowballPos = snowballs[i]->snowballPos;
+								break;
+							}
+						}
+						currentSnowballAnimation = &snowballAnim;
+					}
+				}
 			}
 
 
@@ -420,7 +363,16 @@ bool Player::Update(float dt)
 				{
 					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
 					{
-						snowballPos = playerPos;
+						for (uint i = 0; i < MAX_COLLIDERS; ++i)
+						{
+							if (snowballs[i] != nullptr)
+							{
+								AddSnowball();
+								snowballs[i]->snowballPos = playerPos;
+								currentSnowball.snowballPos = snowballs[i]->snowballPos;
+								break;
+							}
+						}
 						currentSnowballAnimation = &snowballAnim;
 					}
 				}
@@ -642,9 +594,6 @@ bool Player::Update(float dt)
 				playerPos.x = ppx;
 			}
 
-
-			
-
 			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
 				isFalling = true;
@@ -658,6 +607,16 @@ bool Player::Update(float dt)
 				app->fadeScreen->active = true;
 				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			}
+		}
+	}
+
+	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+	{
+		if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)
+		{
+			delete snowballs[i];
+			snowballs[i] = nullptr;
+			--snowballCount;
 		}
 	}
 
@@ -721,12 +680,12 @@ bool Player::Update(float dt)
 
 	if (shootRight)
 	{
-		snowballPos.x += 5;
+		currentSnowball.snowballPos.x += 5;
 		isShooting = false;
 	}
 	if (shootLeft)
 	{
-		snowballPos.x -= 5;
+		currentSnowball.snowballPos.x -= 5;
 		isShooting = false;
 	}
 
@@ -764,7 +723,7 @@ bool Player::Update(float dt)
 		else
 		{
 			SDL_Rect rect2 = currentSnowballAnimation->GetCurrentFrame();
-			app->render->DrawTexture(playerTexture, snowballPos.x, snowballPos.y, &rect2);
+			app->render->DrawTexture(playerTexture, snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, &rect2);
 		}
 	}
 	//Drawing the hearts
@@ -951,7 +910,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	}	
 }
 
-Snowball* Player::AddSnowball(iPoint snowballPos)
+Snowball* Player::AddSnowball()
 {
 	Snowball* ret = nullptr;
 
@@ -959,7 +918,7 @@ Snowball* Player::AddSnowball(iPoint snowballPos)
 	{
 		if (snowballs[i] == nullptr)
 		{
-			ret = snowballs[i] = new Snowball(snowballPos);
+			ret = snowballs[i] = new Snowball;
 			++snowballCount;
 			break;
 		}
