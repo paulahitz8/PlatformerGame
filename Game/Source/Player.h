@@ -53,10 +53,18 @@ public:
 
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
-	SDL_Rect playerRect = {9,7,22,25};
-
+	SDL_Texture* checkpointTexture;
 	SDL_Texture* redHeartTexture;
 	SDL_Texture* grayHeartTexture;
+	SDL_Texture* ice0Texture;
+	SDL_Texture* ice1Texture;
+	SDL_Texture* ice2Texture;
+	SDL_Texture* ice3Texture;
+	SDL_Texture* ice4Texture;
+	SDL_Texture* ice5Texture;
+	
+	SDL_Rect playerRect = {9,7,22,25};
+	SDL_Rect checkpointRect = { 248, 214, 145, 15 };
 
 	iPoint playerPos;
 	//iPoint snowballPos;
@@ -102,6 +110,7 @@ private:
 	unsigned int deadFx;
 	unsigned int jumpingFx;
 	unsigned int splashFx;
+	unsigned int checkpointFx;
 	//attackFx
 
 	bool isJumping = false;
@@ -111,6 +120,7 @@ private:
 	bool isShooting = false;
 	bool shootRight = false;
 	bool shootLeft = false;
+	bool changePos = false;
 
 	int timer = 0;
 	int timerShoot = 0;

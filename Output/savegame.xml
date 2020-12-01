@@ -4,11 +4,17 @@
 	<window />
 	<textures />
 	<audio />
+	<timer />
 	<scene />
 	<map />
 	<fadeScreen />
+	<enemies>
+		<enemy x="300" y="995" />
+	</enemies>
+	<life />
+	<Item />
 	<player>
-		<player x="100" y="1000" />
+		<player x="216" y="1000" />
 	</player>
 	<collisions />
 	<renderer>

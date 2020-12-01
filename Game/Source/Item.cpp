@@ -1,5 +1,4 @@
 #include "Item.h"
-#include "Life.h"
 #include "App.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -16,7 +15,7 @@
 
 Item::Item()
 {
-	name.Create("Item");
+	name.Create("item");
 }
 
 Item::~Item() {}
@@ -53,7 +52,8 @@ bool Item::Start()
 	ice5Pos = { 7855, 865 };
 
 	//Audio
-	
+	iceFx = app->audio->LoadFx("Assets/Audio/Fx/ice_fx.wav");
+
 	//Collider
 	ice1Collider = app->collisions->AddCollider({ ice1Pos.x, ice1Pos.y, 16, 24 }, Collider::Type::ITEM, this);
 	ice2Collider = app->collisions->AddCollider({ ice2Pos.x, ice2Pos.y, 16, 24 }, Collider::Type::ITEM, this);
@@ -75,9 +75,8 @@ bool Item::Update(float dt)
 {
 	if (isPicked == true)
 	{
-		
-		//app->audio->PlayFx(fishFx);
-		
+		//app->audio->PlayFx(iceFx);
+
 		if (app->player->playerPos.x  > ice1Pos.x - 20 && app->player->playerPos.x < ice1Pos.x + 20
 			&& app->player->playerPos.y  > ice1Pos.y - 20 && app->player->playerPos.y < ice1Pos.y + 20)
 		{
@@ -145,6 +144,7 @@ bool Item::CleanUp()
 {
 	//Unload the textures
 	app->tex->UnLoad(iceTexture);
+	app->audio->UnloadFx(iceFx);
 
 	return true;
 }

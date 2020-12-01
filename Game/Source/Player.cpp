@@ -13,6 +13,7 @@
 #include "Enemies.h"
 #include "Item.h"
 #include "Life.h"
+#include "Window.h"
 
 Player::Player()
 {
@@ -128,8 +129,16 @@ bool Player::Start()
 {
 	LOG("Loading player textures");
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
+	checkpointTexture = app->tex->Load("Assets/GUI/checkpoint.png");
 	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
 	grayHeartTexture = app->tex->Load("Assets/GUI/gray_heart.png");
+	ice0Texture = app->tex->Load("Assets/GUI/ice_zero.png");
+	ice1Texture = app->tex->Load("Assets/GUI/ice_one.png");
+	ice2Texture = app->tex->Load("Assets/GUI/ice_two.png");
+	ice3Texture = app->tex->Load("Assets/GUI/ice_three.png");
+	ice4Texture = app->tex->Load("Assets/GUI/ice_four.png");
+	ice5Texture = app->tex->Load("Assets/GUI/ice_five.png");
+	
 
 	currentAnimation = &rightIdle;
 	currentSnowballAnimation = &blankAnim;
@@ -145,6 +154,7 @@ bool Player::Start()
 	godMode = false;
 	isDead = false;
 	isJumping = false;
+	changePos = false;
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
@@ -154,6 +164,7 @@ bool Player::Start()
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
 	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
 	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
+	checkpointFx = app->audio->LoadFx("Assets/Audio/Fx/checkpoint_fx.wav");
 	//attackFx
 
 	return true;
@@ -381,7 +392,7 @@ bool Player::Update(float dt)
 
 			else if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (app->input->GetKey(SDL_SCANCODE_W) != KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) != KEY_DOWN))
 			{
-				app->audio->PlayFx(walkingFx);
+				//app->audio->PlayFx(walkingFx);
 			}
 
 
@@ -462,8 +473,25 @@ bool Player::Update(float dt)
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
 			{
-				checkpointPos = playerPos;
+				if (changePos)
+				{
+					app->audio->PlayFx(checkpointFx);
+					checkpointPos = playerPos;
+					changePos = false;
+				}
 			}
+			else
+			{
+				changePos = true;
+			}
+
+			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
+			{
+				app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
+			}
+		
+
+			//changePos = false; 
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
@@ -769,6 +797,31 @@ bool Player::Update(float dt)
 		app->render->DrawTexture(redHeartTexture, -(app->render->camera.x - 1070), app->render->camera.y + 1050, &rect5);
 	}
 
+	SDL_Rect iceRect = { 0, 0, 68, 26 };
+	if (numIce == 0)
+	{
+		app->render->DrawTexture(ice0Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+	}
+	if (numIce == 1)
+	{
+		app->render->DrawTexture(ice1Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+	}
+	if (numIce == 2)
+	{
+		app->render->DrawTexture(ice2Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+	}
+	if (numIce == 3)
+	{
+		app->render->DrawTexture(ice3Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+	}
+	if (numIce == 4)
+	{
+		app->render->DrawTexture(ice4Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+	}
+	if (numIce == 5)
+	{
+		app->render->DrawTexture(ice5Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+	}
 
 	return true;
 }
@@ -807,6 +860,7 @@ bool Player::CleanUp()
 	app->audio->UnloadFx(jumpingFx);
 	app->audio->UnloadFx(deadFx);
 	app->audio->UnloadFx(splashFx);
+	app->audio->UnloadFx(checkpointFx);
 
 	app->tex->UnLoad(playerTexture);
 	app->tex->UnLoad(redHeartTexture);
@@ -918,6 +972,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->type == Collider::Type::ITEM)
 			{
+				app->audio->PlayFx(app->item->iceFx);
 				app->item->isPicked = true;
 				numIce++;
 				c2->pendingToDelete = true;

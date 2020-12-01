@@ -71,6 +71,7 @@ bool Life::Update(float dt)
 	if (isPicked == true)
 	{
 		app->audio->PlayFx(fishFx);
+
 		if (app->player->playerPos.x > 950 && app->player->playerPos.x < 1050)
 		{
 			currentAnimation1 = &blankAnim;
@@ -125,6 +126,7 @@ bool Life::CleanUp()
 {
 	//Unload the textures
 	app->tex->UnLoad(fishTexture);
+	app->audio->UnloadFx(fishFx);
 
 	return true;
 }

@@ -44,6 +44,7 @@ public:
 
 	bool isPicked = false;
 
+	unsigned int iceFx;
 private:
 
 	Collider* ice1Collider = nullptr;
@@ -60,7 +61,6 @@ private:
 	Animation iceAnim;
 	Animation blankAnim;
 
-	unsigned int iceFx;
 
 };
 
