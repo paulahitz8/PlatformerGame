@@ -75,24 +75,46 @@ bool Item::Update(float dt)
 {
 	if (isPicked == true)
 	{
+		
 		//app->audio->PlayFx(fishFx);
-		if (app->player->playerPos.x > 950 && app->player->playerPos.x < 1050)
+		//if (app->player->playerPos.x > 540 && app->player->playerPos.x < 560)
+		//{
+		//	currentAnimation1 = &blankAnim;
+		//}
+		//if (app->player->playerPos.x > 2000 && app->player->playerPos.x < 2013)
+		//{
+		//	currentAnimation2 = &blankAnim;
+		//}
+		//if (app->player->playerPos.x > 3950 && app->player->playerPos.x < 4005)
+		//{
+		//	currentAnimation3 = &blankAnim;
+		//}
+		//if (app->player->playerPos.x > 6320 && app->player->playerPos.x < 6330)
+		//{
+		//	currentAnimation4 = &blankAnim;
+		//}
+		//if (app->player->playerPos.x > 7850 && app->player->playerPos.x < 7860)
+		//{
+		//	currentAnimation5 = &blankAnim;
+		//}
+
+		if (app->player->playerPos.x  > ice1Pos.x - 20 && app->player->playerPos.x < ice1Pos.x + 20)
 		{
 			currentAnimation1 = &blankAnim;
 		}
-		if (app->player->playerPos.x > 2950 && app->player->playerPos.x < 3050)
+		if (app->player->playerPos.x > ice2Pos.x - 20 && app->player->playerPos.x < ice2Pos.x + 20)
 		{
 			currentAnimation2 = &blankAnim;
 		}
-		if (app->player->playerPos.x > 4050 && app->player->playerPos.x < 5050)
+		if (app->player->playerPos.x > ice3Pos.x - 20 && app->player->playerPos.x < ice3Pos.x + 20)
 		{
 			currentAnimation3 = &blankAnim;
 		}
-		if (app->player->playerPos.x > 8000 && app->player->playerPos.x < 8300)
+		if (app->player->playerPos.x > ice4Pos.x - 20 && app->player->playerPos.x < ice4Pos.x + 20)
 		{
 			currentAnimation4 = &blankAnim;
 		}
-		if (app->player->playerPos.x > 9000 && app->player->playerPos.x < 9200)
+		if (app->player->playerPos.x > ice5Pos.x - 20 && app->player->playerPos.x < ice5Pos.x + 20)
 		{
 			currentAnimation5 = &blankAnim;
 		}
@@ -116,13 +138,15 @@ bool Item::Update(float dt)
 	SDL_Rect rect2 = currentAnimation2->GetCurrentFrame();
 	SDL_Rect rect3 = currentAnimation3->GetCurrentFrame();
 	SDL_Rect rect4 = currentAnimation4->GetCurrentFrame();
-	SDL_Rect rect5 = currentAnimation4->GetCurrentFrame();
+	SDL_Rect rect5 = currentAnimation5->GetCurrentFrame();
 
 	app->render->DrawTexture(iceTexture, ice1Pos.x, ice1Pos.y, &rect1);
 	app->render->DrawTexture(iceTexture, ice2Pos.x, ice2Pos.y, &rect2);
 	app->render->DrawTexture(iceTexture, ice3Pos.x, ice3Pos.y, &rect3);
 	app->render->DrawTexture(iceTexture, ice4Pos.x, ice4Pos.y, &rect4);
 	app->render->DrawTexture(iceTexture, ice5Pos.x, ice5Pos.y, &rect5);
+
+	//isPicked = false;
 
 	return true;
 }
