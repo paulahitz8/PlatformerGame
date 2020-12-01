@@ -10,6 +10,7 @@
 #include "Collisions.h"
 #include "FadeScreen.h"
 #include "WinScreen.h"
+#include "PathFinding.h"
 
 Enemies::Enemies()
 {
@@ -129,6 +130,10 @@ bool Enemies::Update(float dt)
 
 	currentAnimation->Update();
 	currentDeadAnimation->Update();
+
+	//iPoint nextMove = app->path->Path(enemyPos, 4);
+	//enemyPos = nextMove;
+
 
 	enemyCollider->SetPos(enemyPos.x, enemyPos.y);
 
