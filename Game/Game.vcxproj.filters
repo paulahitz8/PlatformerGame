@@ -29,6 +29,7 @@
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Life.cpp" />
     <ClCompile Include="Source\Item.cpp" />
+    <ClCompile Include="Source\NodeAstar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Life.h" />
     <ClInclude Include="Source\Item.h" />
+    <ClInclude Include="Source\NodeAstar.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
