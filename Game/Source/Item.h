@@ -34,27 +34,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	SDL_Texture* fishTexture;
-	SDL_Rect fishRect = { 15, 20, 21, 10 };
-
-	iPoint fish1Pos;
-	iPoint fish2Pos;
-	iPoint fish3Pos;
-	iPoint fish4Pos;
-
-	bool isPicked = false;
-
 private:
 
-	Collider* fish1Collider = nullptr;
-	Collider* fish2Collider = nullptr;
-	Collider* fish3Collider = nullptr;
-	Collider* fish4Collider = nullptr;
-
-	Animation* currentAnimation = &fishAnim;
-	Animation fishAnim;
-
-	unsigned int fishFx;
 };
 
 #endif // __ITEM_H__

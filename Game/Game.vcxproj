@@ -96,6 +96,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Item.cpp" />
+    <ClCompile Include="Source\Life.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\PathFinding.cpp" />
     <ClCompile Include="Source\Enemies.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Source\WinScreen.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClInclude Include="Source\Item.h" />
+    <ClInclude Include="Source\Life.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\PathFinding.h" />
     <ClInclude Include="Source\Enemies.h" />

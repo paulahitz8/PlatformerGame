@@ -16,6 +16,7 @@
 #include "Enemies.h"
 #include "PathFinding.h"
 #include "Timer.h"
+#include "Life.h"
 #include "Item.h"
 
 #include "Defs.h"
@@ -46,6 +47,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	winScreen = new WinScreen();
 	enemies = new Enemies();
 	item = new Item();
+	life = new Life();
 	//path = new PathFinding();
 
 
@@ -64,6 +66,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	AddModule(fadeScreen);
 	AddModule(enemies);
+	AddModule(life);
 	AddModule(item);
 	//AddModule(path);
 	AddModule(player);
