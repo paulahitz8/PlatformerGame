@@ -58,6 +58,7 @@ bool DeathScreen::PreUpdate()
 bool DeathScreen::Update(float dt)
 {
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
+	//if (app->player->numIce == )
 	app->render->DrawTexture(deathScreen, 0, 350, &rect);
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
