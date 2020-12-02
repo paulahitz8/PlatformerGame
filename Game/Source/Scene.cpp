@@ -7,7 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Player.h"
-#include "Enemies.h"
+#include "GroundEnemy.h"
 #include "Item.h"
 #include "LogoScreen.h"
 #include "TitleScreen.h"
@@ -53,7 +53,7 @@ bool Scene::Start()
 	}
 
 	app->player->Enable();
-	app->enemies->Enable();
+	app->groundenemy->Enable();
 	app->item->Enable();
 	app->life->Enable();
 
@@ -162,7 +162,7 @@ bool Scene::CleanUp()
 	app->tex->UnLoad(image);
 	app->player->Disable();
 	app->map->Disable();
-	app->enemies->Disable();
+	app->groundenemy->Disable();
 	app->item->Disable();
 	app->life->Disable();
 

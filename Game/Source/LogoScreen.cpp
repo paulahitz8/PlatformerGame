@@ -12,7 +12,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Player.h"
-#include "Enemies.h"
+#include "GroundEnemy.h"
 #include "Item.h"
 #include "Life.h"
 
@@ -52,7 +52,7 @@ bool LogoScreen::Start()
 
 	app->map->active = false;
 	app->player->active = false;
-	app->enemies->active = false;
+	app->groundenemy->active = false;
 	app->item->active = false;
 	app->scene->active = false;
 	app->titleScreen->active = false;

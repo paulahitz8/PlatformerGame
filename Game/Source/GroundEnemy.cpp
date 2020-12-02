@@ -1,4 +1,4 @@
-#include "Enemies.h"
+#include "GroundEnemy.h"
 #include "App.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -14,14 +14,14 @@
 #include "Player.h"
 #include "Math.h"
 
-Enemies::Enemies()
+GroundEnemy::GroundEnemy()
 {
-	name.Create("enemies");
+	name.Create("ground enemies");
 }
 
-Enemies::~Enemies() {}
+GroundEnemy::~GroundEnemy() {}
 
-bool Enemies::Awake(pugi::xml_node&)
+bool GroundEnemy::Awake(pugi::xml_node&)
 {
 	//animations
 	blankAnim.PushBack({ 0, 30, 2, 2 });
@@ -72,7 +72,7 @@ bool Enemies::Awake(pugi::xml_node&)
 }
 
 
-bool Enemies::Start()
+bool GroundEnemy::Start()
 {
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/seal_sprites.png");
@@ -95,12 +95,12 @@ bool Enemies::Start()
 	return true;
 }
 
-bool Enemies::PreUpdate()
+bool GroundEnemy::PreUpdate()
 {
 	return true;
 }
 
-bool Enemies::Update(float dt)
+bool GroundEnemy::Update(float dt)
 {
 	
 
@@ -176,13 +176,13 @@ bool Enemies::Update(float dt)
 	return true;
 }
 
-bool Enemies::PostUpdate()
+bool GroundEnemy::PostUpdate()
 {
 
 	return true;
 }
 
-bool Enemies::CleanUp()
+bool GroundEnemy::CleanUp()
 {
 	//Unload the audios
 	//app->audio->UnloadFx(deadFx);
@@ -194,7 +194,7 @@ bool Enemies::CleanUp()
 	return true;
 }
 
-bool Enemies::LoadState(pugi::xml_node& data)
+bool GroundEnemy::LoadState(pugi::xml_node& data)
 {
 	enemyPos.x = data.child("enemy").attribute("x").as_int();
 	enemyPos.y = data.child("enemy").attribute("y").as_int();
@@ -202,7 +202,7 @@ bool Enemies::LoadState(pugi::xml_node& data)
 	return true;
 }
 
-bool Enemies::SaveState(pugi::xml_node& data)
+bool GroundEnemy::SaveState(pugi::xml_node& data)
 {
 	pugi::xml_node player = data.append_child("enemy");
 
@@ -211,43 +211,3 @@ bool Enemies::SaveState(pugi::xml_node& data)
 
 	return true;
 }
-
-//int Enemies::GetTileProperty(int x, int y, const char* property) const
-//{
-//	int ret;
-//	// MapLayer
-//	ListItem <MapLayer*>* ML = app->map->data.layers.start;
-//	SString layerName = "Collisions";
-//	while (ML != NULL)
-//	{
-//		if (ML->data->name == layerName)
-//		{
-//			break;
-//		}
-//		ML = ML->next;
-//	}
-//
-//	// TileSet
-//	ListItem <TileSet*>* T = app->map->data.tilesets.start;
-//	SString tileSetName = "Collisions";
-//
-//	while (T != NULL)
-//	{
-//		if (T->data->name == tileSetName)
-//		{
-//			break;
-//		}
-//		T = T->next;
-//	}
-//
-//	// Gets CollisionId
-//	int id = (int)(ML->data->Get(x, y) - T->data->firstgId);
-//	if (id < 0)
-//	{
-//		ret = 0;
-//		return ret;
-//	}
-//	Tile* currentTile = T->data->GetPropList(id);
-//	ret = currentTile->properties.GetProperty(property, 0);
-//	return ret;
-//}

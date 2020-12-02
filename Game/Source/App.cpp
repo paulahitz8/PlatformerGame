@@ -13,7 +13,8 @@
 #include "Collisions.h"
 #include "DeathScreen.h"
 #include "WinScreen.h"
-#include "Enemies.h"
+#include "GroundEnemy.h"
+#include "FlyingEnemy.h"
 #include "PathFinding.h"
 //#include "Timer.h"
 #include "Life.h"
@@ -46,7 +47,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions();
 	deathScreen = new DeathScreen();
 	winScreen = new WinScreen();
-	enemies = new Enemies();
+	groundenemy = new GroundEnemy();
+	flyingenemy = new FlyingEnemy();
 	item = new Item();
 	life = new Life();
 	//path = new PathFinding();
@@ -66,7 +68,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 
 	AddModule(fadeScreen);
-	AddModule(enemies);
+	AddModule(groundenemy);
+	AddModule(flyingenemy);
 	AddModule(life);
 	AddModule(item);
 	//AddModule(path);

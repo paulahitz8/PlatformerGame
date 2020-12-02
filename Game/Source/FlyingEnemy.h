@@ -1,5 +1,5 @@
-#ifndef __ENEMIES_H__
-#define __ENEMIES_H__
+#ifndef __FLYINGENEMY_H__
+#define __FLYINGENEMY_H__
 
 #include "Module.h"
 #include "Animation.h"
@@ -9,16 +9,16 @@
 
 struct SDL_Texture;
 
-class Enemies : public Module
+class FlyingEnemy : public Module
 {
 public:
 
-	Enemies();
+	FlyingEnemy();
 
 	void Init();
 
 	// Destructor
-	virtual ~Enemies();
+	virtual ~FlyingEnemy();
 
 	// Called before player is available
 	bool Awake(pugi::xml_node& conf);
@@ -49,13 +49,11 @@ public:
 private:
 
 	//list of animations
-	Animation* currentAnimation = &rightIdle;
+	Animation* currentAnimation = &right;
 	Animation* currentDeadAnimation = &blankAnim;
 	Animation blankAnim;
-	Animation leftIdle;
-	Animation rightIdle;
-	Animation leftWalk;
-	Animation rightWalk;
+	Animation left;
+	Animation right;
 	Animation leftDead;
 	Animation rightDead;
 	Animation leftRoll;
@@ -70,8 +68,6 @@ private:
 	unsigned int attackFx;
 
 	int timer;
-
-	int GetTileProperty(int x, int y, const char* property) const;
 };
 
-#endif // __ENEMIES_H__
+#endif // __FLYINGENEMY_H__

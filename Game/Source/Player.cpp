@@ -10,7 +10,7 @@
 #include "Collisions.h"
 #include "FadeScreen.h"
 #include "WinScreen.h"
-#include "Enemies.h"
+#include "GroundEnemy.h"
 #include "Item.h"
 #include "Life.h"
 #include "Window.h"
@@ -705,7 +705,7 @@ bool Player::Update(float dt)
 					playerCollider->pendingToDelete = true;
 					currentAnimation = &blankAnim;
 					app->fadeScreen->active = true;
-					app->enemies->Disable();
+					app->groundenemy->Disable();
 					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
 					timer = 0;
 				}
@@ -999,7 +999,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->type == Collider::Type::ENEMY)
 			{
-				app->enemies->isDead = true;
+				app->groundenemy->isDead = true;
 
 				c2->pendingToDelete = true;
 			}
