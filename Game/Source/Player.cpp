@@ -11,6 +11,7 @@
 #include "FadeScreen.h"
 #include "WinScreen.h"
 #include "GroundEnemy.h"
+#include "FlyingEnemy.h"
 #include "Item.h"
 #include "Life.h"
 #include "Window.h"
@@ -981,7 +982,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	{
 		if (c1->type == Collider::Type::PLAYER)
 		{
-			if (c2->type == Collider::Type::ENEMY)
+			if (c2->type == Collider::Type::GROUNDENEMY)
 			{
 				if (isJumping == false)
 				{
@@ -997,9 +998,15 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		}
 		if (c1->type == Collider::Type::SNOWBALL)
 		{
-			if (c2->type == Collider::Type::ENEMY)
+			if (c2->type == Collider::Type::GROUNDENEMY)
 			{
 				app->groundenemy->isDead = true;
+
+				c2->pendingToDelete = true;
+			}
+			if (c2->type == Collider::Type::FLYINGENEMY)
+			{
+				app->flyingenemy->isDead = true;
 
 				c2->pendingToDelete = true;
 			}

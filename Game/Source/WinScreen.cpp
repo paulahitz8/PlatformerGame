@@ -65,15 +65,19 @@ bool WinScreen::Update(float dt)
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 	//app->render->DrawTexture(winScreen, 0, 350, &rect);
 
-	if (app->player->numIce <= 2)
+	if (app->player->numIce == 0)
 	{
 		app->render->DrawTexture(smallIglooScreen, 0, 350, &rect);
 	}
-	if (app->player->numIce > 2 && app->player->numIce <= 4)
+	if (app->player->numIce > 0 && app->player->numIce <= 2)
 	{
 		app->render->DrawTexture(mediumIglooScreen, 0, 350, &rect);
 	}
-	if (app->player->numIce > 4 && app->player->numIce <= 5)
+	if (app->player->numIce > 2 && app->player->numIce <= 4)
+	{
+		app->render->DrawTexture(bigIglooScreen, 0, 350, &rect);
+	}
+	if (app->player->numIce == 5)
 	{
 		app->render->DrawTexture(bigIglooScreen, 0, 350, &rect);
 	}
