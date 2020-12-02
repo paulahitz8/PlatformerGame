@@ -2,7 +2,7 @@
 
 ## Description
 
-Animal Rush is a platform game created by TNT Cat, where the player, each level, is a different animal. The goal of the game is to reach their shelter safely. We hope you enjoy the game as much as we enjoyed making it!
+Animal Rush is a platform game created by TNT Cat, where the player, each level, is a different animal. The goal of the game is to reach their shelter safely. We hope you enjoy the game as much as we enjoyed making it! If you are a penguin, remember to collect as much icecubes as possible to make your igloo bigger!
 
 ## Key Features
 
@@ -17,6 +17,16 @@ Animal Rush is a platform game created by TNT Cat, where the player, each level,
  - Ending screen
  - Winning screen
  - DEBUG keys
+ - Walking and flying enemies that can pathfind
+ - Destroy enemies by shooting
+ - Game items to recover health
+ - Game collectable items
+ - Checkpoints with autosave
+ - Map checkpoint teleportation
+ - Player weapon to shoot enemies (snowballs)
+ - Audio feedback
+ - DeltaTime
+ - Stable fps
  
 ## Controls
 
@@ -27,8 +37,10 @@ Animal Rush is a platform game created by TNT Cat, where the player, each level,
  - F2 for starting at the beginning of the current level
  - F5 for saving the current game state
  - F6 for loading the previous state
- - F9 for viewing colliders/logic
+ - F9 for viewing colliders/logic/paths
  - F10 to enter God Mode
+ - F11 to enable/disable FPS cap to 30
+ - C to teleport between checkpoints
 
 ## Developers
 
