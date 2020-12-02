@@ -76,11 +76,11 @@ bool WinScreen::Update(float dt)
 		app->render->DrawTexture(mediumIglooScreen, 0, 350, &rect);
 		if (app->player->numIce == 1)
 		{
-			app->render->DrawTexture(app->player->ice1Texture, 0, 350, &iceRect);
+			app->render->DrawTexture(app->player->ice1Texture, 600, 900, &iceRect);
 		}
 		if (app->player->numIce == 2)
 		{
-			app->render->DrawTexture(app->player->ice2Texture, 0, 350, &iceRect);
+			app->render->DrawTexture(app->player->ice2Texture, 600, 900, &iceRect);
 		}
 	}
 	if (app->player->numIce > 2 && app->player->numIce <= 4)
@@ -88,17 +88,17 @@ bool WinScreen::Update(float dt)
 		app->render->DrawTexture(bigIglooScreen, 0, 350, &rect);
 		if (app->player->numIce == 3)
 		{
-			app->render->DrawTexture(app->player->ice3Texture, 0, 350, &iceRect);
+			app->render->DrawTexture(app->player->ice3Texture, 600, 900, &iceRect);
 		}
 		if (app->player->numIce == 4)
 		{
-			app->render->DrawTexture(app->player->ice4Texture, 0, 350, &iceRect);
+			app->render->DrawTexture(app->player->ice4Texture, 600, 900, &iceRect);
 		}
 	}
 	if (app->player->numIce == 5)
 	{
 		app->render->DrawTexture(bigIglooScreen, 0, 350, &rect);
-		app->render->DrawTexture(app->player->ice5Texture, 0, 350, &iceRect);
+		app->render->DrawTexture(app->player->ice5Texture, 600, 900, &iceRect);
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
