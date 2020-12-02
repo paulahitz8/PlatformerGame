@@ -79,6 +79,7 @@ private:
 
 	Snowball* snowballs[MAX_SNOWBALLS] = { nullptr };
 	uint snowballCount = 0;
+	int i;
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;

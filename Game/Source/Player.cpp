@@ -167,6 +167,7 @@ bool Player::Start()
 	isDead = false;
 	isJumping = false;
 	changePos = false;
+	i = 0;
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
@@ -489,44 +490,19 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 			{
-				int count = 0;
-				for (int i = 0; i < 20; i++)
+				Collider* nextCheckpoint = NULL;
+				nextCheckpoint = checkpointList[i];
+				i++;
+				if (i == 3) i = 0;
+				if (nextCheckpoint != NULL)
 				{
-					for (int j = 0; j < 200; j++)
-					{
-						if (GetTileProperty(i/64, j/64, "CollisionId") == Collider::Type::CHEKPOINT)
-						{
-							count++;
-							if (count == 3)
-							{
-								lifeCount = 1;
-							}
-						}
-					}
+					playerPos = { nextCheckpoint->rect.x, nextCheckpoint->rect.y + 530 };
 				}
 			}
-
-		/*	if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
-			{
-				if (changePos)
-				{
-					app->audio->PlayFx(checkpointFx);
-					checkpointPos = playerPos;
-					changePos = false;
-				}
-			}
-			else
-			{
-				changePos = true;
-			}
-
-			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h - 5) / 64, "CollisionId") == Collider::Type::CHEKPOINT)
-			{
-				app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
-			}*/
 
 			if (isCheckpoint == true)
 			{
+				app->SaveGameRequest();
 				currentSnowmanAnimation = &snowmanWave;
 				if (changePos)
 				{
@@ -687,6 +663,9 @@ bool Player::Update(float dt)
 			}
 		}
 	}
+
+
+
 
 	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 	{

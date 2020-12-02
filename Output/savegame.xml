@@ -4,20 +4,23 @@
 	<window />
 	<textures />
 	<audio />
-	<timer />
 	<scene />
+	<LogoScreen />
+	<TitleScreen />
 	<map />
 	<fadeScreen />
 	<enemies>
 		<enemy x="300" y="995" />
 	</enemies>
 	<life />
-	<Item />
+	<item />
 	<player>
-		<player x="216" y="1000" />
+		<player x="4602" y="1065" />
 	</player>
 	<collisions />
+	<DeathScreen />
+	<WinScreen />
 	<renderer>
-		<camera x="0" y="-500" />
+		<camera x="-4098" y="-500" />
 	</renderer>
 </save_state>
