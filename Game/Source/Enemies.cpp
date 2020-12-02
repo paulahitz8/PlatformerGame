@@ -11,6 +11,8 @@
 #include "FadeScreen.h"
 #include "WinScreen.h"
 #include "PathFinding.h"
+#include "Player.h"
+#include "Math.h"
 
 Enemies::Enemies()
 {
@@ -52,13 +54,13 @@ bool Enemies::Awake(pugi::xml_node&)
 	leftRoll.PushBack({ 0, 30, 30, 30 });
 	leftRoll.PushBack({ 90, 30, 30, 30 });
 	leftRoll.PushBack({ 60, 30, 30, 30 });
-	leftRoll.speed = 0.03f;
+	leftRoll.speed = 0.1f;
 
 	rightRoll.PushBack({ 60, 0, 30, 30 });
 	rightRoll.PushBack({ 90, 0, 30, 30 });
 	rightRoll.PushBack({ 0, 0, 30, 30 });
 	rightRoll.PushBack({ 30, 0, 30, 30 });
-	rightRoll.speed = 0.03f;
+	rightRoll.speed = 0.1f;
 
 	deadAnim.PushBack({ 66, 277, 22, 25 });
 	deadAnim.PushBack({ 90, 277, 22, 25 });
@@ -126,6 +128,33 @@ bool Enemies::Update(float dt)
 			currentDeadAnimation = &blankAnim;
 		}
 		timer++;
+	}
+
+	if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+	{
+		if (app->player->playerPos.x < enemyPos.x) //from the left
+		{
+			enemyPos.x--;
+			currentAnimation = &leftRoll;
+		}
+
+		if (app->player->playerPos.x > enemyPos.x) //from the right
+		{
+			enemyPos.x++;
+			currentAnimation = &rightRoll;
+		}
+
+	}
+	else
+	{
+		if(currentAnimation == &leftRoll)
+		{
+			currentAnimation = &leftIdle;
+		}
+		else if (currentAnimation == &rightRoll)
+		{
+			currentAnimation = &rightIdle;
+		}
 	}
 
 	currentAnimation->Update();
