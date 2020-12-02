@@ -1,5 +1,5 @@
 #include "Timer.h"
-#include "App.h"
+//#include "App.h"
 
 #include "Defs.h"
 #include "Log.h"

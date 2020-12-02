@@ -35,10 +35,7 @@ bool Map::Awake(pugi::xml_node& config)
 // Draw the map (all requried layers)
 void Map::Draw()
 {
-	if (mapLoaded == false) 
-	{
-		return;
-	}
+	if (mapLoaded == false) return;
 
 	ListItem<MapLayer*>* layer = data.layers.start;
 
@@ -239,22 +236,10 @@ bool Map::LoadMap()
 		data.tileHeight = map.attribute("tileheight").as_int();
 
 		SString orientation(map.attribute("orientation").as_string());
-		if (orientation == "orthogonal")
-		{
-			data.type = MAPTYPE_ORTHOGONAL;
-		}
-		else if (orientation == "isometric")
-		{
-			data.type = MAPTYPE_ISOMETRIC;
-		}
-		else if (orientation == "staggered")
-		{
-			data.type = MAPTYPE_STAGGERED;
-		}
-		else
-		{
-			data.type = MAPTYPE_UNKNOWN;
-		}
+		if (orientation == "orthogonal") data.type = MAPTYPE_ORTHOGONAL;
+		else if (orientation == "isometric") data.type = MAPTYPE_ISOMETRIC;
+		else if (orientation == "staggered")data.type = MAPTYPE_STAGGERED;
+		else data.type = MAPTYPE_UNKNOWN;
 	}
 	return ret;
 }
@@ -503,3 +488,46 @@ void Map::SetTileProperty(int x, int y, const char* property, int value)
 	Tile* currentTile = T->data->GetPropList(id);
 	currentTile->properties.SetProperty(property, value);
 }
+
+//bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+//{
+//	bool ret = false;
+//	ListItem<MapLayer*>* item;
+//	item = data.layers.start;
+//
+//	for (item = data.layers.start; item != NULL; item = item->next)
+//	{
+//		MapLayer* layer = item->data;
+//
+//		if (layer->properties.GetProperty("Navigation", 0) == 0)
+//			continue;
+//
+//		uchar* map = new uchar[layer->width * layer->height];
+//		memset(map, 1, layer->width * layer->height);
+//
+//		for (int y = 0; y < data.height; ++y)
+//		{
+//			for (int x = 0; x < data.width; ++x)
+//			{
+//				int i = (y * layer->width) + x;
+//
+//				int tileId = layer->Get(x, y);
+//				TileSet* tileset = (tileId > 0) ? GetTilesetFromTileId(tileId) : NULL;
+//
+//				if (tileset != NULL)
+//				{
+//					map[i] = (tileId - tileset->firstgId) > 0 ? 0 : 1;
+//				}
+//			}
+//		}
+//
+//		*buffer = map;
+//		width = data.width;
+//		height = data.height;
+//		ret = true;
+//
+//		break;
+//	}
+//
+//	return ret;
+//}

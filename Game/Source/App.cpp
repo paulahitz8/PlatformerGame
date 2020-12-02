@@ -15,7 +15,7 @@
 #include "WinScreen.h"
 #include "Enemies.h"
 #include "PathFinding.h"
-#include "Timer.h"
+//#include "Timer.h"
 #include "Life.h"
 #include "Item.h"
 
@@ -28,14 +28,15 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
+	/*frames = 0;*/
+	PERF_START(pTimer);
 
 	input = new Input();
 	win = new Window();
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	timer = new Timer();
+	/*timer = new Timer();*/
 	scene = new Scene();
 	titleScreen = new TitleScreen();
 	logoScreen = new LogoScreen();
@@ -57,7 +58,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(timer);
+	//AddModule(timer);
 
 	AddModule(scene);
 	AddModule(logoScreen);
@@ -76,6 +77,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(render);
+
+	PERF_PEEK(pTimer);
 }
 
 // Destructor
@@ -102,6 +105,8 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
+	PERF_START(pTimer);
+
 	pugi::xml_document configFile;
 	pugi::xml_node config;
 	pugi::xml_node configApp;
@@ -131,12 +136,16 @@ bool App::Awake()
 		}
 	}
 
+	PERF_PEEK(pTimer);
+
 	return ret;
 }
 
 // Called before the first frame
 bool App::Start()
 {
+	PERF_START(pTimer);
+
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.start;
@@ -147,6 +156,8 @@ bool App::Start()
 			ret = item->data->Start();
 		item = item->next;
 	}
+
+	PERF_PEEK(pTimer);
 
 	return ret;
 }
@@ -180,14 +191,8 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 
 	pugi::xml_parse_result result = configFile.load_file(CONFIG_FILENAME);
 
-	if (result == NULL)
-	{
-		LOG("Could not load xml file: %s. pugi error: %s", CONFIG_FILENAME, result.description());
-	}
-	else
-	{
-		ret = configFile.child("config");
-	}
+	if (result == NULL) LOG("Could not load xml file: %s. pugi error: %s", CONFIG_FILENAME, result.description());
+	else ret = configFile.child("config");
 
 	return ret;
 }
@@ -200,6 +205,22 @@ void App::FinishUpdate()
 	if (loadRequest) LoadGame();
 
 	if (saveRequest) SaveGame();
+
+	if (lastSecFrameTime.Read() > 1000)
+	{
+		lastSecFrameTime.Start();
+		prevLastSecFrameCount = lastSecFrameCount;
+		lastSecFrameCount = 0;
+	}
+
+	float averageFps = float(frameCount) / startupTime.ReadSec();
+	float secondsSinceStartup = startupTime.ReadSec();
+	uint32 lastFrameMs = frameTime.Read();
+	uint32 framesOnLastUpdate = prevLastSecFrameCount;
+
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
+		averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
 }
 
 // Call modules before each loop iteration
@@ -207,7 +228,6 @@ bool App::PreUpdate()
 {
 	bool ret = true;
 	ListItem<Module*>* item;
-	item = modules.start;
 	Module* pModule = NULL;
 
 	for (item = modules.start; item != NULL && ret == true; item = item->next)
@@ -227,7 +247,6 @@ bool App::DoUpdate()
 {
 	bool ret = true;
 	ListItem<Module*>* item;
-	item = modules.start;
 	Module* pModule = NULL;
 
 	for (item = modules.start; item != NULL && ret == true; item = item->next)
@@ -284,10 +303,8 @@ const char* App::GetArgv(int index) const
 {
 	if (index < argc)
 		return args[index];
-
 	else
 		return NULL;
-
 }
 
 const char* App::GetTitle() const

@@ -2,6 +2,9 @@
 #define __APP_H__
 
 #include "Module.h"
+#include "PerfTimer.h"
+#include "Timer.h"
+
 #include "List.h"
 
 #include "PugiXml/src/pugixml.hpp"
@@ -15,7 +18,7 @@ class Input;
 class Render;
 class Textures;
 class Audio;
-class Timer;
+//class Timer;
 class Scene;
 class TitleScreen;
 class LogoScreen;
@@ -69,7 +72,6 @@ private:
 	// Load config file
 	pugi::xml_node LoadConfig(pugi::xml_document&) const;
 
-	// Call modules before each loop iteration
 	void PrepareUpdate();
 
 	void FinishUpdate();
@@ -91,7 +93,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	Timer* timer;
+	//Timer* timer;
 	Scene* scene;
 	TitleScreen* titleScreen;
 	LogoScreen* logoScreen;
@@ -115,11 +117,22 @@ private:
 
 	List<Module*> modules;
 
-	uint frames;
-	float dt;
+	/*uint frames;
+	float dt;*/
 
 	bool saveRequest, loadRequest;
 	SString saveFile;
+
+
+	PerfTimer pTimer;
+	uint64 frameCount = 0;
+
+	Timer startupTime;
+	Timer frameTime;
+	Timer lastSecFrameTime;
+	uint32 lastSecFrameCount = 0;
+	uint32 prevLastSecFrameCount = 0;
+	float dt = 0.0f;
 };
 
 extern App* app;

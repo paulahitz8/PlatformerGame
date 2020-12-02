@@ -65,7 +65,6 @@ bool Render::Start()
 bool Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
-
 	return true;
 }
 
@@ -78,7 +77,6 @@ bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
-
 	return true;
 }
 
@@ -127,6 +125,17 @@ void Render::SetViewPort(const SDL_Rect& rect)
 void Render::ResetViewPort()
 {
 	SDL_RenderSetViewport(renderer, &viewport);
+}
+
+iPoint Render::ScreenToWorld(int x, int y) const
+{
+	iPoint ret;
+	int scale = app->win->GetScale();
+
+	ret.x = (x - camera.x / scale);
+	ret.y = (y - camera.y / scale);
+
+	return ret;
 }
 
 // Blit to screen
@@ -211,7 +220,6 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
 	if (use_camera) 
 		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
-
 	else 
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
 

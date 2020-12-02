@@ -63,6 +63,28 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+	/*static iPoint origin;
+	static bool originSelected = false;
+
+	int mouseX, mouseY;
+	app->input->GetMousePosition(mouseX, mouseY);
+	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
+	p = app->map->WorldToMap(p.x, p.y);
+
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (originSelected == true)
+		{
+			app->pathfinding->CreatePath(origin, p);
+			originSelected = false;
+		}
+		else
+		{
+			origin = p;
+			originSelected = true;
+		}
+	}*/
+
 	return true;
 }
 
@@ -102,6 +124,21 @@ bool Scene::Update(float dt)
 		app->map->data.tilesets.Count());
 
 	app->win->SetTitle(title.GetString());
+
+	//app->input->GetMousePosition(mouseX, mouseY);
+	//iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
+	//p = app->map->WorldToMap(p.x, p.y);
+	//p = app->map->MapToWorld(p.x, p.y);
+
+	//app->render->DrawTexture(debugTex, p.x, p.y);
+
+	//const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+
+	//for (uint i = 0; i < path->Count(); ++i)
+	//{
+	//	iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+	//	app->render->DrawTexture(debugTex, pos.x, pos.y);
+	//}
 
 	return true;
 }
