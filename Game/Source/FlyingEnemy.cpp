@@ -46,15 +46,13 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	right.PushBack({ 565, 49, 53, 51 });
 	right.speed = 0.15f;
 
+	leftDead.PushBack({ 40, 188, 64, 50 });
+	
+	rightDead.PushBack({ 615, 175, 59, 47 });
 
-	leftDead.PushBack({ 180, 30, 32, 30 });
-	leftDead.PushBack({ 212, 30, 32, 30 });
-	leftDead.speed = 0.03f;
+	leftFalling.PushBack({ 40, 136, 53, 51 });
 
-	rightDead.PushBack({ 181, 0, 32, 30 });
-	rightDead.PushBack({ 213, 0, 32, 30 });
-	rightDead.speed = 0.03f;
-
+	rightFalling.PushBack({ 615, 116, 53, 51 });
 
 	deadAnim.PushBack({ 66, 277, 22, 25 });
 	deadAnim.PushBack({ 90, 277, 22, 25 });
@@ -76,10 +74,10 @@ bool FlyingEnemy::Start()
 
 	isDead = false;
 
-	enemyPos = { 300, 700 };
+	enemyPos = { 300, 702 };
 
 	//Collider
-	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::ENEMY, this);
+	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 35, 44 }, Collider::Type::FLYINGENEMY, this);
 
 	//Audios
 	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
@@ -103,25 +101,44 @@ bool FlyingEnemy::Update(float dt)
 
 	if (isDead)
 	{
-		if (currentAnimation == &left)
+		if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER)
 		{
-			currentAnimation = &leftDead;
+			if (currentAnimation == &leftFalling)
+			{
+				currentAnimation = &leftDead;
+			}
+			else if (currentAnimation == &rightFalling)
+			{
+				currentAnimation = &rightDead;
+			}
+			if (timer == 60)
+			{
+				currentAnimation = &blankAnim;
+				currentDeadAnimation = &deadAnim;
+			}
+			else if (timer == 110)
+			{
+				currentDeadAnimation = &blankAnim;
+			}
+
+			timer++;
 		}
-		else if (currentAnimation == &right || currentAnimation == &right || currentAnimation == &right)
+		else
 		{
-			currentAnimation = &rightDead;
+			enemyPos.y+=2;
+			if (currentAnimation == &left)
+			{
+				currentAnimation = &leftFalling;
+			}
+			else if (currentAnimation == &right)
+			{
+				currentAnimation = &rightFalling;
+			}
 		}
+
+	
 		//app->audio->LoadFx(deadFx);
-		if (timer == 60)
-		{
-			currentAnimation = &blankAnim;
-			currentDeadAnimation = &deadAnim;
-		}
-		else if (timer == 110)
-		{
-			currentDeadAnimation = &blankAnim;
-		}
-		timer++;
+
 	}
 
 	if (abs(app->player->playerPos.x - enemyPos.x) < 200)
@@ -147,14 +164,14 @@ bool FlyingEnemy::Update(float dt)
 	//enemyPos = nextMove;
 
 
-	enemyCollider->SetPos(enemyPos.x, enemyPos.y);
+	enemyCollider->SetPos(enemyPos.x + 10, enemyPos.y);
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
 
 	SDL_Rect rectDead = currentDeadAnimation->GetCurrentFrame();
-	app->render->DrawTexture(deadTexture, enemyPos.x + 3, enemyPos.y + 4, &rectDead);
+	app->render->DrawTexture(deadTexture, enemyPos.x + 15, enemyPos.y + 6, &rectDead);
 
 	return true;
 }

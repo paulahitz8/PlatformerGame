@@ -85,7 +85,7 @@ bool GroundEnemy::Start()
 	enemyPos = { 300, 995 };
 
 	//Collider
-	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::ENEMY, this);
+	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::GROUNDENEMY, this);
 
 	//Audios
 	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");

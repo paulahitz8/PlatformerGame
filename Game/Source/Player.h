@@ -74,6 +74,8 @@ public:
 
 	int numIce = 0;
 	List<Collider*>checkpointList;
+	int GetTileProperty(int x, int y, const char* property) const;
+
 
 private:
 
@@ -138,7 +140,7 @@ private:
 	int numSnowball;
 	
 
-	int GetTileProperty(int x, int y, const char* property) const;
+
 	void OnCollision(Collider* c1, Collider* c2);
 };
 

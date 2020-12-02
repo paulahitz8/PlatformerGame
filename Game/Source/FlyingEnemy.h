@@ -59,6 +59,8 @@ private:
 	Animation leftRoll;
 	Animation rightRoll;
 	Animation deadAnim;
+	Animation leftFalling;
+	Animation rightFalling;
 
 	fPoint speed;
 	Physics enemyPhysics;
