@@ -35,10 +35,10 @@ public:
 	bool CleanUp();
 
 private:
-	SDL_Texture* winScreen;
-	SDL_Texture* smallIglooScreen;
-	SDL_Texture* mediumIglooScreen;
-	SDL_Texture* bigIglooScreen;
+	SDL_Texture* won0Screen;
+	SDL_Texture* won12Screen;
+	SDL_Texture* won34Screen;
+	SDL_Texture* won5Screen;
 	SDL_Rect rect;
 };
 

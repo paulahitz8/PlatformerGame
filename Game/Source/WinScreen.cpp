@@ -45,10 +45,11 @@ bool WinScreen::Start()
 	app->scene->active = false;
 	app->render->camera.x = 0;
 	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg", 0.0f);
-	winScreen = app->tex->Load("Assets/Screens/win_screen.png");
-	smallIglooScreen = app->tex->Load("Assets/Screens/small_igloo.png");
-	mediumIglooScreen = app->tex->Load("Assets/Screens/medium_igloo.png");
-	bigIglooScreen = app->tex->Load("Assets/Screens/big_igloo.png");
+	//winScreen = app->tex->Load("Assets/Screens/win_screen.png");
+	won0Screen = app->tex->Load("Assets/Screens/won_0.png");
+	won12Screen = app->tex->Load("Assets/Screens/won_12.png");
+	won34Screen = app->tex->Load("Assets/Screens/won_34.png");
+	won5Screen = app->tex->Load("Assets/Screens/won_5.png");
 
 	return ret;
 }
@@ -68,12 +69,12 @@ bool WinScreen::Update(float dt)
 
 	if (app->player->numIce == 0)
 	{
-		app->render->DrawTexture(smallIglooScreen, 0, 350, &rect);
+		app->render->DrawTexture(won0Screen, 0, 350, &rect);
 		app->render->DrawTexture(app->player->ice0Texture, 600, 900, &iceRect);
 	}
 	if (app->player->numIce > 0 && app->player->numIce <= 2)
 	{
-		app->render->DrawTexture(mediumIglooScreen, 0, 350, &rect);
+		app->render->DrawTexture(won12Screen, 0, 350, &rect);
 		if (app->player->numIce == 1)
 		{
 			app->render->DrawTexture(app->player->ice1Texture, 600, 900, &iceRect);
@@ -85,7 +86,7 @@ bool WinScreen::Update(float dt)
 	}
 	if (app->player->numIce > 2 && app->player->numIce <= 4)
 	{
-		app->render->DrawTexture(bigIglooScreen, 0, 350, &rect);
+		app->render->DrawTexture(won34Screen, 0, 350, &rect);
 		if (app->player->numIce == 3)
 		{
 			app->render->DrawTexture(app->player->ice3Texture, 600, 900, &iceRect);
@@ -97,7 +98,7 @@ bool WinScreen::Update(float dt)
 	}
 	if (app->player->numIce == 5)
 	{
-		app->render->DrawTexture(bigIglooScreen, 0, 350, &rect);
+		app->render->DrawTexture(won5Screen, 0, 350, &rect);
 		app->render->DrawTexture(app->player->ice5Texture, 600, 900, &iceRect);
 	}
 
@@ -127,7 +128,7 @@ bool WinScreen::CleanUp()
 {
 	LOG("Freeing scene");
 	
-	app->tex->UnLoad(winScreen);
+	//app->tex->UnLoad(winScreen);
 
 	return true;
 }
