@@ -101,7 +101,7 @@ bool FlyingEnemy::Update(float dt)
 
 	if (isDead)
 	{
-		if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND)
+		if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER)
 		{
 			if (currentAnimation == &leftFalling)
 			{
@@ -171,7 +171,7 @@ bool FlyingEnemy::Update(float dt)
 	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
 
 	SDL_Rect rectDead = currentDeadAnimation->GetCurrentFrame();
-	app->render->DrawTexture(deadTexture, enemyPos.x + 3, enemyPos.y + 4, &rectDead);
+	app->render->DrawTexture(deadTexture, enemyPos.x + 15, enemyPos.y + 6, &rectDead);
 
 	return true;
 }
