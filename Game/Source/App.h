@@ -18,7 +18,6 @@ class Input;
 class Render;
 class Textures;
 class Audio;
-//class Timer;
 class Scene;
 class TitleScreen;
 class LogoScreen;
@@ -94,7 +93,6 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	//Timer* timer;
 	Scene* scene;
 	TitleScreen* titleScreen;
 	LogoScreen* logoScreen;
@@ -119,12 +117,8 @@ private:
 
 	List<Module*> modules;
 
-	/*uint frames;
-	float dt;*/
-
 	bool saveRequest, loadRequest;
 	SString saveFile;
-
 
 	PerfTimer pTimer;
 	uint64 frameCount = 0;

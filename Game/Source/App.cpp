@@ -16,7 +16,6 @@
 #include "GroundEnemy.h"
 #include "FlyingEnemy.h"
 #include "PathFinding.h"
-//#include "Timer.h"
 #include "Life.h"
 #include "Item.h"
 
@@ -29,8 +28,6 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	/*frames = 0;*/
-	/*PERF_START(pTimer);*/
 	pTimer.Start();
 
 	input = new Input();
@@ -38,7 +35,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	/*timer = new Timer();*/
 	scene = new Scene();
 	titleScreen = new TitleScreen();
 	logoScreen = new LogoScreen();
@@ -61,7 +57,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	//AddModule(timer);
 
 	AddModule(scene);
 	AddModule(logoScreen);
@@ -82,7 +77,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	// Render last to swap buffer
 	AddModule(render);
 
-	/*PERF_PEEK(pTimer);*/
 	LOG("App constructor took %f ms", pTimer.ReadMs());
 }
 
@@ -110,7 +104,6 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	/*PERF_START(pTimer);*/
 	pTimer.Start();
 
 	pugi::xml_document configFile;
@@ -142,7 +135,6 @@ bool App::Awake()
 		}
 	}
 
-	/*PERF_PEEK(pTimer);*/
 	LOG("App Awake took %f ms", pTimer.ReadMs());
 
 	return ret;
