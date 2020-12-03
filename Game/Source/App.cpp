@@ -179,6 +179,12 @@ bool App::Update()
 	if (ret == true)
 		ret = PostUpdate();
 
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		if (!changeFps) changeFps = true;
+		else if (changeFps) changeFps = false;
+	}
+
 	FinishUpdate();
 
 	return ret;
@@ -235,8 +241,10 @@ void App::FinishUpdate()
 
 	if (frameDelay > lastFrameMs)
 	{
-		SDL_Delay(frameDelay - lastFrameMs);
+		if (!changeFps) SDL_Delay(frameDelay - lastFrameMs); //fps = 60
+		if (changeFps) SDL_Delay(1000 / 30 - lastFrameMs); //fps = 30
 	}
+
 }
 
 // Call modules before each loop iteration
