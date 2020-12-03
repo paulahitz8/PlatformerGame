@@ -10,20 +10,20 @@
 	<map />
 	<fadeScreen />
 	<ground enemies>
-		<enemy x="322" y="995" />
+		<enemy x="279" y="995" />
 	</ground enemies>
 	<flying enemies>
-		<enemy x="956" y="1118" />
+		<enemy x="352" y="702" />
 	</flying enemies>
 	<life />
 	<item />
 	<player>
-		<player x="7030" y="1065" />
+		<player x="7032" y="1065" />
 	</player>
 	<collisions />
 	<DeathScreen />
 	<WinScreen />
 	<renderer>
-		<camera x="-6526" y="-500" />
+		<camera x="-6528" y="-500" />
 	</renderer>
 </save_state>

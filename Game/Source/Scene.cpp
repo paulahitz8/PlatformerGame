@@ -119,12 +119,12 @@ bool Scene::Update(float dt)
 	// Draw map
 	if (app->map->active == true) app->map->Draw();
 
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-		app->map->data.width, app->map->data.height,
-		app->map->data.tileWidth, app->map->data.tileHeight,
-		app->map->data.tilesets.Count());
+	//SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+	//	app->map->data.width, app->map->data.height,
+	//	app->map->data.tileWidth, app->map->data.tileHeight,
+	//	app->map->data.tilesets.Count());
 
-	app->win->SetTitle(title.GetString());
+	//app->win->SetTitle(title.GetString());
 
 	//app->input->GetMousePosition(mouseX, mouseY);
 	//iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
