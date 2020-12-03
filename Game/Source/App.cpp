@@ -30,7 +30,8 @@
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	/*frames = 0;*/
-	PERF_START(pTimer);
+	/*PERF_START(pTimer);*/
+	pTimer.Start();
 
 	input = new Input();
 	win = new Window();
@@ -81,7 +82,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	// Render last to swap buffer
 	AddModule(render);
 
-	PERF_PEEK(pTimer);
+	/*PERF_PEEK(pTimer);*/
+	LOG("App Awake took %f ms", pTimer.ReadMs());
 }
 
 // Destructor
@@ -108,7 +110,8 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	PERF_START(pTimer);
+	/*PERF_START(pTimer);*/
+	pTimer.Start();
 
 	pugi::xml_document configFile;
 	pugi::xml_node config;
@@ -139,7 +142,8 @@ bool App::Awake()
 		}
 	}
 
-	PERF_PEEK(pTimer);
+	/*PERF_PEEK(pTimer);*/
+	LOG("App Awake took %f ms", pTimer.ReadMs());
 
 	return ret;
 }
@@ -200,7 +204,13 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 	return ret;
 }
 
-void App::PrepareUpdate() {}
+void App::PrepareUpdate()
+{
+	frameCount++;
+	lastSecFrameCount++;
+	dt = frameTime.ReadSec();
+	frameTime.Start();
+}
 
 void App::FinishUpdate()
 {
@@ -216,14 +226,23 @@ void App::FinishUpdate()
 		lastSecFrameCount = 0;
 	}
 
-	float averageFps = float(frameCount) / startupTime.ReadSec();
-	float secondsSinceStartup = startupTime.ReadSec();
-	uint32 lastFrameMs = frameTime.Read();
-	uint32 framesOnLastUpdate = prevLastSecFrameCount;
+	float averageFps = 0.0f;
+	float secondsSinceStartup = 0.0f;
+	uint32 lastFrameMs = 0;
+	uint32 framesOnLastUpdate = 0;
+
+	averageFps = float(frameCount) / startupTime.ReadSec();
+	secondsSinceStartup = startupTime.ReadSec();
+	lastFrameMs = frameTime.Read();
+	framesOnLastUpdate = prevLastSecFrameCount;
 
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
 		averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
+
+	if (frameDelay > lastFrameMs) {
+		SDL_Delay(frameDelay - lastFrameMs);
+	}
 }
 
 // Call modules before each loop iteration
@@ -284,6 +303,7 @@ bool App::PostUpdate()
 // Called before quitting
 bool App::CleanUp()
 {
+	pTimer.Start();
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.end;
@@ -294,6 +314,7 @@ bool App::CleanUp()
 		item = item->prev;
 	}
 
+	LOG("App CleanUp took %f ms", pTimer.ReadMs());
 	return ret;
 }
 

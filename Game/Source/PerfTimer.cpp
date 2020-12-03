@@ -18,19 +18,19 @@ PerfTimer::~PerfTimer() {}
 
 bool PerfTimer::Start()
 {
-	startClock = SDL_GetPerformanceCounter();
+	startTime = SDL_GetPerformanceCounter();
 
 	return true;
 }
 
 double PerfTimer::ReadMs() const
 {
-	return (1000.0 * (double(SDL_GetPerformanceCounter() - startClock) / double(frequency)));
+	return (1000.0 * (double(SDL_GetPerformanceCounter() - startTime) / double(frequency)));
 }
 
 uint64 PerfTimer::ReadTicks() const
 {
-	return (SDL_GetPerformanceCounter() - startClock);
+	return (SDL_GetPerformanceCounter() - startTime);
 }
 
 

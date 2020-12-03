@@ -128,7 +128,8 @@ private:
 
 	PerfTimer pTimer;
 	uint64 frameCount = 0;
-
+	const uint32 fps = 60;
+	const uint32 frameDelay = 1000 / fps;
 	Timer startupTime;
 	Timer frameTime;
 	Timer lastSecFrameTime;
