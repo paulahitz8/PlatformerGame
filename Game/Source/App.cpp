@@ -240,7 +240,8 @@ void App::FinishUpdate()
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
 		averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
 
-	if (frameDelay > lastFrameMs) {
+	if (frameDelay > lastFrameMs)
+	{
 		SDL_Delay(frameDelay - lastFrameMs);
 	}
 }
