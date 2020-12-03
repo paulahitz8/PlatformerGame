@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "GroundEnemy.h"
+#include "FlyingEnemy.h"
 #include "Item.h"
 #include "LogoScreen.h"
 #include "TitleScreen.h"

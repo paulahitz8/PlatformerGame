@@ -83,7 +83,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(render);
 
 	/*PERF_PEEK(pTimer);*/
-	LOG("App Awake took %f ms", pTimer.ReadMs());
+	LOG("App constructor took %f ms", pTimer.ReadMs());
 }
 
 // Destructor
@@ -151,7 +151,7 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
-	PERF_START(pTimer);
+	pTimer.Start();
 
 	bool ret = true;
 	ListItem<Module*>* item;
@@ -164,7 +164,7 @@ bool App::Start()
 		item = item->next;
 	}
 
-	PERF_PEEK(pTimer);
+	LOG("App Start took %f ms", pTimer.ReadMs());
 
 	return ret;
 }
