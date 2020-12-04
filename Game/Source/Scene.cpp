@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "GroundEnemy.h"
+#include "FlyingEnemy.h"
 #include "Item.h"
 #include "LogoScreen.h"
 #include "TitleScreen.h"
@@ -54,6 +55,7 @@ bool Scene::Start()
 
 	app->player->Enable();
 	app->groundenemy->Enable();
+	app->flyingenemy->Enable();
 	app->item->Enable();
 	app->life->Enable();
 
@@ -118,12 +120,12 @@ bool Scene::Update(float dt)
 	// Draw map
 	if (app->map->active == true) app->map->Draw();
 
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-		app->map->data.width, app->map->data.height,
-		app->map->data.tileWidth, app->map->data.tileHeight,
-		app->map->data.tilesets.Count());
+	//SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+	//	app->map->data.width, app->map->data.height,
+	//	app->map->data.tileWidth, app->map->data.tileHeight,
+	//	app->map->data.tilesets.Count());
 
-	app->win->SetTitle(title.GetString());
+	//app->win->SetTitle(title.GetString());
 
 	//app->input->GetMousePosition(mouseX, mouseY);
 	//iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
@@ -163,6 +165,7 @@ bool Scene::CleanUp()
 	app->player->Disable();
 	app->map->Disable();
 	app->groundenemy->Disable();
+	app->flyingenemy->Disable();
 	app->item->Disable();
 	app->life->Disable();
 

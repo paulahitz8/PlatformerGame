@@ -16,7 +16,6 @@
 #include "GroundEnemy.h"
 #include "FlyingEnemy.h"
 #include "PathFinding.h"
-//#include "Timer.h"
 #include "Life.h"
 #include "Item.h"
 
@@ -29,8 +28,6 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	/*frames = 0;*/
-	/*PERF_START(pTimer);*/
 	pTimer.Start();
 
 	input = new Input();
@@ -38,7 +35,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	/*timer = new Timer();*/
 	scene = new Scene();
 	titleScreen = new TitleScreen();
 	logoScreen = new LogoScreen();
@@ -61,7 +57,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	//AddModule(timer);
 
 	AddModule(scene);
 	AddModule(logoScreen);
@@ -82,8 +77,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	// Render last to swap buffer
 	AddModule(render);
 
-	/*PERF_PEEK(pTimer);*/
-	LOG("App Awake took %f ms", pTimer.ReadMs());
+	LOG("App constructor took %f ms", pTimer.ReadMs());
 }
 
 // Destructor
@@ -110,7 +104,6 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	/*PERF_START(pTimer);*/
 	pTimer.Start();
 
 	pugi::xml_document configFile;
@@ -142,7 +135,6 @@ bool App::Awake()
 		}
 	}
 
-	/*PERF_PEEK(pTimer);*/
 	LOG("App Awake took %f ms", pTimer.ReadMs());
 
 	return ret;
@@ -151,7 +143,7 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
-	PERF_START(pTimer);
+	pTimer.Start();
 
 	bool ret = true;
 	ListItem<Module*>* item;
@@ -164,7 +156,7 @@ bool App::Start()
 		item = item->next;
 	}
 
-	PERF_PEEK(pTimer);
+	LOG("App Start took %f ms", pTimer.ReadMs());
 
 	return ret;
 }
@@ -186,6 +178,12 @@ bool App::Update()
 
 	if (ret == true)
 		ret = PostUpdate();
+
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		if (!changeFps) changeFps = true;
+		else if (changeFps) changeFps = false;
+	}
 
 	FinishUpdate();
 
@@ -239,10 +237,14 @@ void App::FinishUpdate()
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
 		averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
+	app->win->SetTitle(title);
 
-	if (frameDelay > lastFrameMs) {
-		SDL_Delay(frameDelay - lastFrameMs);
+	if (frameDelay > lastFrameMs)
+	{
+		if (!changeFps) SDL_Delay(frameDelay - lastFrameMs); //fps = 60
+		if (changeFps) SDL_Delay(1000 / 30 - lastFrameMs); //fps = 30
 	}
+
 }
 
 // Call modules before each loop iteration
