@@ -106,6 +106,11 @@ ListItem<PathNode>* PathList::GetNodeLowestScore() const
 	return ret;
 }
 
+DynArray<iPoint> PathFinding::GetLastPath()
+{
+	return lastPath;
+}
+
 // PathNode -------------------------------------------------------------------------
 // Convenient constructors
 // ----------------------------------------------------------------------------------

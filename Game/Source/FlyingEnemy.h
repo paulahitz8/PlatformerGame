@@ -45,6 +45,9 @@ public:
 	iPoint enemyPos;
 
 	bool isDead = false;
+	int pathTimer = 0;
+	int size;
+	int createPath = 0; 
 
 private:
 

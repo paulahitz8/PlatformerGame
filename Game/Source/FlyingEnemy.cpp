@@ -73,7 +73,6 @@ bool FlyingEnemy::Start()
 	currentDeadAnimation = &blankAnim;
 
 	isDead = false;
-
 	enemyPos = { 300, 702 };
 
 	//Collider
@@ -81,6 +80,11 @@ bool FlyingEnemy::Start()
 
 	//Audios
 	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
+
+
+	//Path
+	app->path->CreatePath(enemyPos, app->player->playerPos);
+	int size = sizeof app->path->GetLastPath();
 
 	timer = 0;
 
@@ -94,6 +98,30 @@ bool FlyingEnemy::PreUpdate()
 
 bool FlyingEnemy::Update(float dt)
 {
+	
+	if ((abs(app->player->playerPos.x - enemyPos.x) < 300) & (abs(app->player->playerPos.y - enemyPos.y) < 300))
+	{
+		if (pathTimer >= 300 || pathTimer >= size - 1)
+		{
+			createPath = app->path->CreatePath(enemyPos, app->player->playerPos);
+			if (createPath== 0)
+			{
+				size = sizeof(app->path->GetLastPath()) / sizeof(app->path->GetLastPath()[0]);
+				pathTimer = 0;
+			}
+
+		}
+		//if (app->path->GetLastPath().At(pathTimer) != nullptr)
+		//{
+		//	enemyPos.x = app->path->GetLastPath[pathTimer];
+		//	enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
+		//	enemyPos.y = app->path->GetLastPath().At(pathTimer)->y;
+		//}
+
+
+		pathTimer++;
+		
+	}
 
 
 	//int speedP = 0;
@@ -141,21 +169,21 @@ bool FlyingEnemy::Update(float dt)
 
 	}
 
-	if (abs(app->player->playerPos.x - enemyPos.x) < 200)
-	{
-		if (app->player->playerPos.x < enemyPos.x) //from the left
-		{
-			currentAnimation = &left;
-			enemyPos.x-=2;
-		}
+	//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+	//{
+	//	if (app->player->playerPos.x < enemyPos.x) //from the left
+	//	{
+	//		currentAnimation = &left;
+	//		enemyPos.x-=2;
+	//	}
 
-		if (app->player->playerPos.x > enemyPos.x) //from the right
-		{
-			currentAnimation = &right;
-			enemyPos.x+=2;
-		}
+	//	if (app->player->playerPos.x > enemyPos.x) //from the right
+	//	{
+	//		currentAnimation = &right;
+	//		enemyPos.x+=2;
+	//	}
 
-	}
+	//}
 
 	currentAnimation->Update();
 	currentDeadAnimation->Update();
