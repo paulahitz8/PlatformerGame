@@ -48,7 +48,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	flyingenemy = new FlyingEnemy();
 	item = new Item();
 	life = new Life();
-	//path = new PathFinding();
+	path = new PathFinding();
 
 
 	// Ordered for awake / Start / Update
@@ -68,7 +68,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(flyingenemy);
 	AddModule(life);
 	AddModule(item);
-	//AddModule(path);
+	AddModule(path);
 	AddModule(player);
 	AddModule(collisions);
 	AddModule(deathScreen);

@@ -144,7 +144,7 @@ public:
 
 	iPoint WorldToMap(int x, int y) const;
 
-	//bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+	bool CreateWalkabilityMap(int* width, int* height, uchar** buffer) const;
 
 	// Changes property to value assigned
 	void SetTileProperty(int x, int y, const char* property, int value);

@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "PathFinding.h"
 #include "Player.h"
 #include "GroundEnemy.h"
 #include "FlyingEnemy.h"
@@ -46,6 +47,17 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	app->map->Load("map.tmx");
+
+	int w, h;
+	uchar* data = NULL;
+	if (app->map->CreateWalkabilityMap(&w, &h, &data))
+	{
+		app->path->SetMap(w, h, data);
+	}
+
+	RELEASE_ARRAY(data);
+
+
 	image = app->tex->Load("Assets/Screens/background.png");
 
 	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
