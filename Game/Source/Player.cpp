@@ -194,6 +194,17 @@ bool Player::PreUpdate()
 
 bool Player::Update(float dt)
 {
+
+	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+	{
+		if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)
+		{
+			delete snowballs[i];
+			snowballs[i] = nullptr;
+			--snowballCount;
+		}
+	}
+
 	// DEBUG Key to start from the beggining of level 1
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
@@ -218,12 +229,12 @@ bool Player::Update(float dt)
 	{
 		if (godMode)
 		{
-			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 			{
 
 				isShooting = false;
-				shootRight = false;
-				shootLeft = false;
+				/*shootRight = false;
+				shootLeft = false;*/
 
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
 				{
@@ -343,17 +354,17 @@ bool Player::Update(float dt)
 
 		else
 		{
-			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 			{
-					isShooting = false;
+					/*isShooting = false;*/
 					/*shootRight = false;
 					shootLeft = false;*/
 
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+				if (currentAnimation == &rightIdle/* || currentAnimation == &rightWalk || currentAnimation == &rightJump*/)
 				{
 					currentAnimation = &rightShoot;
 				}
-				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+				if (currentAnimation == &leftIdle /*|| currentAnimation == &leftWalk || currentAnimation == &leftJump*/)
 				{
 					currentAnimation = &leftShoot;
 				}
@@ -377,7 +388,7 @@ bool Player::Update(float dt)
 			{
 				/*if (!shootRight && !shootLeft)
 				{*/
-					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot)
+					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot || currentAnimation == &rightWalk || currentAnimation == &leftWalk || currentAnimation == &rightJump || currentAnimation == &leftJump)
 					{
 						for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 						{
@@ -533,7 +544,6 @@ bool Player::Update(float dt)
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
-				//isFalling = false;
 
 				if (timer == 5)
 				{
@@ -668,15 +678,6 @@ bool Player::Update(float dt)
 
 
 
-	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
-	{
-		if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)
-		{
-			delete snowballs[i];
-			snowballs[i] = nullptr;
-			--snowballCount;
-		}
-	}
 
 	if (isDead)
 	{
@@ -725,15 +726,17 @@ bool Player::Update(float dt)
 	}
 	if (isShooting == true)
 	{
-		if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
+		if ((currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) && timerShoot == 14)
 		{
 			snowballs[numSnowball]->right = true;
 			shootRight = true;
+			isShooting = false;
 		}
-		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
+		if ((currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) && timerShoot == 14)
 		{
 			snowballs[numSnowball]->left = true;
 			shootLeft = true;
+			isShooting = false;
 		}
 		timerShoot++;
 	}
@@ -904,6 +907,14 @@ bool Player::PostUpdate()
 
 bool Player::CleanUp()
 {
+	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+	{
+		if (snowballs[i] != nullptr)
+		{
+			delete snowballs[i];
+			snowballs[i] = nullptr;
+		}
+	}
 	//Unload the audios
 	app->audio->UnloadFx(walkingFx);
 	app->audio->UnloadFx(jumpingFx);
