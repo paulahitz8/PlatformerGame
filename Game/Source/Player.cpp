@@ -539,7 +539,6 @@ bool Player::Update(float dt)
 				currentSnowmanAnimation = &snowmanIdle;
 			}
 			timerCheck++;
-			
 
 
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
@@ -674,9 +673,6 @@ bool Player::Update(float dt)
 			}
 		}
 	}
-
-
-
 
 
 	if (isDead)
