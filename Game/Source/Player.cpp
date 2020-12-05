@@ -702,6 +702,9 @@ bool Player::Update(float dt)
 					currentAnimation = &blankAnim;
 					app->fadeScreen->active = true;
 					app->groundenemy->Disable();
+					app->flyingenemy->Disable();
+					app->item->Disable();
+					app->life->Disable();
 					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
 					timer = 0;
 				}

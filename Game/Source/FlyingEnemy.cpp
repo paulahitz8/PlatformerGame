@@ -58,7 +58,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	deadAnim.PushBack({ 90, 277, 22, 25 });
 	deadAnim.PushBack({ 114, 277, 22, 25 });
 	deadAnim.PushBack({ 138, 277, 22, 25 });
-	deadAnim.speed = 8.0f;
+	deadAnim.speed = 4.0f;
 
 	return true;
 }
