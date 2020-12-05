@@ -196,6 +196,10 @@ bool GroundEnemy::CleanUp()
 	app->tex->UnLoad(enemyTexture);
 	app->tex->UnLoad(deadTexture);
 
+	//Unload audios
+	//app->audio->UnloadFx(deadFx);
+	//app->audio->UnloadFx(attackFx);
+
 	return true;
 }
 

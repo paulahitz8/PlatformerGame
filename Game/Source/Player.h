@@ -115,7 +115,6 @@ private:
 	bool platform = false;
 	bool water = false;
 
-	unsigned int walkingFx;
 	unsigned int deadFx;
 	unsigned int jumpingFx;
 	unsigned int splashFx;

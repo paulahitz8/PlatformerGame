@@ -144,6 +144,7 @@ bool Item::CleanUp()
 {
 	//Unload the textures
 	app->tex->UnLoad(iceTexture);
+
 	app->audio->UnloadFx(iceFx);
 
 	return true;

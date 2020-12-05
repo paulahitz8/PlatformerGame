@@ -86,6 +86,7 @@ bool DeathScreen::PostUpdate()
 bool DeathScreen::CleanUp()
 {
 	LOG("Freeing scene");
+
 	app->tex->UnLoad(deathScreen);
 
 	return true;

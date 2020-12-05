@@ -174,6 +174,7 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	app->tex->UnLoad(image);
+
 	app->player->Disable();
 	app->map->Disable();
 	app->groundenemy->Disable();

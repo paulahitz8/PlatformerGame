@@ -126,6 +126,7 @@ bool Life::CleanUp()
 {
 	//Unload the textures
 	app->tex->UnLoad(fishTexture);
+
 	app->audio->UnloadFx(fishFx);
 
 	return true;

@@ -134,10 +134,10 @@ bool Player::Awake(pugi::xml_node&)
 	return true;
 }
 
-
 bool Player::Start()
 {
 	LOG("Loading player textures");
+
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	checkpointTexture = app->tex->Load("Assets/GUI/checkpoint.png");
 	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
@@ -149,7 +149,6 @@ bool Player::Start()
 	ice4Texture = app->tex->Load("Assets/GUI/ice_four.png");
 	ice5Texture = app->tex->Load("Assets/GUI/ice_five.png");
 	snowmanTexture = app->tex->Load("Assets/Characters/snowman_sprites.png");
-	
 
 	currentAnimation = &rightIdle;
 	currentSnowballAnimation = &blankAnim;
@@ -177,7 +176,6 @@ bool Player::Start()
 	checkpointList.Add(app->collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHEKPOINT));
 
 	//Audios
-	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
 	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
 	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
@@ -913,7 +911,6 @@ bool Player::CleanUp()
 		}
 	}
 	//Unload the audios
-	app->audio->UnloadFx(walkingFx);
 	app->audio->UnloadFx(jumpingFx);
 	app->audio->UnloadFx(deadFx);
 	app->audio->UnloadFx(splashFx);
@@ -922,6 +919,14 @@ bool Player::CleanUp()
 	app->tex->UnLoad(playerTexture);
 	app->tex->UnLoad(redHeartTexture);
 	app->tex->UnLoad(grayHeartTexture);
+	app->tex->UnLoad(checkpointTexture);
+	app->tex->UnLoad(ice0Texture);
+	app->tex->UnLoad(ice1Texture);
+	app->tex->UnLoad(ice2Texture);
+	app->tex->UnLoad(ice3Texture);
+	app->tex->UnLoad(ice4Texture);
+	app->tex->UnLoad(ice5Texture);
+	app->tex->UnLoad(snowmanTexture);
 
 	return true;
 }

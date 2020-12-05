@@ -230,8 +230,9 @@ bool FlyingEnemy::PostUpdate()
 
 bool FlyingEnemy::CleanUp()
 {
-	//Unload the audios
+	//Unload audios
 	//app->audio->UnloadFx(deadFx);
+	//app->audio->UnloadFx(attackFx);
 
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
