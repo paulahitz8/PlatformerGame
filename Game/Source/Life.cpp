@@ -27,7 +27,7 @@ bool Life::Awake(pugi::xml_node&)
 	fishAnim.PushBack({11, 15, 21, 20});
 	fishAnim.PushBack({40, 15, 21, 20 });
 	fishAnim.PushBack({70, 15, 21, 20});
-	fishAnim.speed = 0.02f;
+	fishAnim.speed = 1.0f;
 
 	blankAnim.PushBack({ 0, 0, 3, 3 });
 
@@ -95,10 +95,10 @@ bool Life::Update(float dt)
 	fish3Collider->SetPos(fish3Pos.x, fish3Pos.y);
 	fish4Collider->SetPos(fish4Pos.x, fish4Pos.y);
 
-	currentAnimation1->Update();
-	currentAnimation2->Update();
-	currentAnimation3->Update();
-	currentAnimation4->Update();
+	currentAnimation1->Update(dt);
+	currentAnimation2->Update(dt);
+	currentAnimation3->Update(dt);
+	currentAnimation4->Update(dt);
 
 	//Drawing the fishes
 	SDL_Rect rect1 = currentAnimation1->GetCurrentFrame();

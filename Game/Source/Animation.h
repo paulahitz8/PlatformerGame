@@ -34,18 +34,20 @@ public:
 		return !loop && !pingpong && loopCount > 0;
 	}
 
-	void Update()
+	void Update(float dt)
 	{
-		currentFrame += speed;
+		currentFrame += speed * dt;
 		if (currentFrame >= totalFrames)
 		{
-			currentFrame = (loop || pingpong) ? 0.0f : totalFrames - 1;
-			++loopCount;
-
-			if (pingpong)
+			if (loop)
 			{
-				pingpongDirection = -pingpongDirection;
+				currentFrame = 0.0f;
 			}
+			else
+			{
+				currentFrame = totalFrames - 1;
+			}
+			++loopCount;
 		}
 	}
 

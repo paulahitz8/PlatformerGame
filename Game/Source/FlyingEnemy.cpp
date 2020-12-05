@@ -34,7 +34,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	left.PushBack({ 290, 49, 53, 51 });
 	left.PushBack({ 140, 49, 53, 51 });
 	left.PushBack({ 90, 49, 53, 51 });
-	left.speed = 0.15f;
+	left.speed = 10.0f;
 
 	right.PushBack({ 615, 49, 53, 51 });
 	right.PushBack({ 565, 49, 53, 51 });
@@ -44,7 +44,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	right.PushBack({ 365, 49, 53, 51 });
 	right.PushBack({ 515, 49, 53, 51 });
 	right.PushBack({ 565, 49, 53, 51 });
-	right.speed = 0.15f;
+	right.speed = 10.0f;
 
 	leftDead.PushBack({ 40, 188, 64, 50 });
 	
@@ -58,7 +58,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	deadAnim.PushBack({ 90, 277, 22, 25 });
 	deadAnim.PushBack({ 114, 277, 22, 25 });
 	deadAnim.PushBack({ 138, 277, 22, 25 });
-	deadAnim.speed = 0.08f;
+	deadAnim.speed = 8.0f;
 
 	return true;
 }
@@ -172,24 +172,39 @@ bool FlyingEnemy::Update(float dt)
 
 	}
 
-	//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
-	//{
-	//	if (app->player->playerPos.x < enemyPos.x) //from the left
-	//	{
-	//		currentAnimation = &left;
-	//		enemyPos.x-=2;
-	//	}
+	if (!isDead)
+	{
+		if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+		{
+			//if (app->player->playerPos.x < enemyPos.x) //from the left
+			//{
+			//	currentAnimation = &left;
+			//	enemyPos.x-=2;
+			//}
 
-	//	if (app->player->playerPos.x > enemyPos.x) //from the right
-	//	{
-	//		currentAnimation = &right;
-	//		enemyPos.x+=2;
-	//	}
+			//if (app->player->playerPos.x > enemyPos.x) //from the right
+			//{
+			//	currentAnimation = &right;
+			//	enemyPos.x+=2;
+			//}
+			if (app->player->playerPos.x > enemyPos.x) //from the right
+			{
+				//enemyPos.x++;
+				currentAnimation = &right;
+				enemyPos.x += 160 * dt;
+			}
+			if (app->player->playerPos.x < enemyPos.x) //from the left
+			{
+				//enemyPos.x--;
+				currentAnimation = &left;
+				enemyPos.x -= 120 * dt;
+			}
+		}
+	}
+	
 
-	//}
-
-	currentAnimation->Update();
-	currentDeadAnimation->Update();
+	currentAnimation->Update(dt);
+	currentDeadAnimation->Update(dt);
 
 	//iPoint nextMove = app->path->Path(enemyPos, 4);
 	//enemyPos = nextMove;

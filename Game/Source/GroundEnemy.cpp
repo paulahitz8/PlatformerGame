@@ -28,45 +28,45 @@ bool GroundEnemy::Awake(pugi::xml_node&)
 
 	leftIdle.PushBack({ 120, 30, 30, 30 });
 	leftIdle.PushBack({ 150, 30, 30, 30 });
-	leftIdle.speed = 0.03f;
+	leftIdle.speed = 3.0f;
 
 	rightIdle.PushBack({ 120, 0, 30, 30 });
 	rightIdle.PushBack({ 150, 0, 30, 30 });
-	rightIdle.speed = 0.03f;
+	rightIdle.speed = 3.0f;
 
 	leftWalk.PushBack({ 244, 30, 32, 30 });
 	leftWalk.PushBack({ 276, 30, 32, 30 });
-	leftWalk.speed = 0.03f;
+	leftWalk.speed = 5.0f;
 
 	rightWalk.PushBack({ 245, 0, 32, 30 });
 	rightWalk.PushBack({ 277, 0, 32, 30 });
-	rightWalk.speed = 0.03f;
+	rightWalk.speed = 5.0f;
 
 	leftDead.PushBack({ 180, 30, 32, 30 });
 	leftDead.PushBack({ 212, 30, 32, 30 });
-	leftDead.speed = 0.03f;
+	leftDead.speed = 1.5f;
 
 	rightDead.PushBack({ 181, 0, 32, 30 });
 	rightDead.PushBack({ 213, 0, 32, 30 });
-	rightDead.speed = 0.03f;
+	leftDead.speed = 1.5f;
 
 	leftRoll.PushBack({ 30, 30, 30, 30 });
 	leftRoll.PushBack({ 0, 30, 30, 30 });
 	leftRoll.PushBack({ 90, 30, 30, 30 });
 	leftRoll.PushBack({ 60, 30, 30, 30 });
-	leftRoll.speed = 0.1f;
+	leftRoll.speed = 6.0f;
 
 	rightRoll.PushBack({ 60, 0, 30, 30 });
 	rightRoll.PushBack({ 90, 0, 30, 30 });
 	rightRoll.PushBack({ 0, 0, 30, 30 });
 	rightRoll.PushBack({ 30, 0, 30, 30 });
-	rightRoll.speed = 0.1f;
+	rightRoll.speed = 6.0f;
 
 	deadAnim.PushBack({ 66, 277, 22, 25 });
 	deadAnim.PushBack({ 90, 277, 22, 25 });
 	deadAnim.PushBack({ 114, 277, 22, 25 });
 	deadAnim.PushBack({ 138, 277, 22, 25 });
-	deadAnim.speed = 0.08f;
+	deadAnim.speed = 4.0f;
 
 	return true;
 }
@@ -130,35 +130,40 @@ bool GroundEnemy::Update(float dt)
 		timer++;
 	}
 
-	if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+	if (!isDead)
 	{
-		if (app->player->playerPos.x < enemyPos.x) //from the left
+		if (abs(app->player->playerPos.x - enemyPos.x) < 200)
 		{
-			enemyPos.x--;
-			currentAnimation = &leftRoll;
+			if (app->player->playerPos.x > enemyPos.x) //from the right
+			{
+				//enemyPos.x++;
+				enemyPos.x += 160 * dt;
+				currentAnimation = &rightRoll;
+			}
+			if (app->player->playerPos.x < enemyPos.x) //from the left
+			{
+				//enemyPos.x--;
+				enemyPos.x -= 120 * dt;
+				currentAnimation = &leftRoll;
+			}
 		}
 
-		if (app->player->playerPos.x > enemyPos.x) //from the right
+		else
 		{
-			enemyPos.x++;
-			currentAnimation = &rightRoll;
+			if (currentAnimation == &leftRoll)
+			{
+				currentAnimation = &leftIdle;
+			}
+			else if (currentAnimation == &rightRoll)
+			{
+				currentAnimation = &rightIdle;
+			}
 		}
-
 	}
-	else
-	{
-		if(currentAnimation == &leftRoll)
-		{
-			currentAnimation = &leftIdle;
-		}
-		else if (currentAnimation == &rightRoll)
-		{
-			currentAnimation = &rightIdle;
-		}
-	}
 
-	currentAnimation->Update();
-	currentDeadAnimation->Update();
+
+	currentAnimation->Update(dt);
+	currentDeadAnimation->Update(dt);
 
 	//iPoint nextMove = app->path->Path(enemyPos, 4);
 	//enemyPos = nextMove;
