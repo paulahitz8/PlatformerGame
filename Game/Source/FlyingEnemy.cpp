@@ -99,32 +99,32 @@ bool FlyingEnemy::PreUpdate()
 bool FlyingEnemy::Update(float dt)
 {
 	
-	if ((abs(app->player->playerPos.x - enemyPos.x) < 300) & (abs(app->player->playerPos.y - enemyPos.y) < 300))
-	{
-		if (pathTimer >= 300 || pathTimer >= size - 1)
-		{
-			createPath = app->path->CreatePath(enemyPos, app->player->playerPos);
-			//if (createPath == 0)
-			//{
-				size = sizeof(app->path->GetLastPath()) / sizeof(app->path->GetLastPath()[0]);
-				pathTimer = 0;
-			//}
+	//if ((abs(app->player->playerPos.x - enemyPos.x) < 300) & (abs(app->player->playerPos.y - enemyPos.y) < 300))
+	//{
+	//	if (pathTimer >= 300 || pathTimer >= size - 1)
+	//	{
+	//		createPath = app->path->CreatePath(enemyPos, app->player->playerPos);
+	//		//if (createPath == 0)
+	//		//{
+	//			size = sizeof(app->path->GetLastPath()) / sizeof(app->path->GetLastPath()[0]);
+	//			pathTimer = 0;
+	//		//}
 
-		}
-		if (app->path->GetLastPath().At(pathTimer) != nullptr)
-		{
-			DynArray<iPoint> path;
-			path = app->path->GetLastPath();
-			enemyPos = path[pathTimer];
-			//enemyPos.x = app->path->GetLastPath();
-			//enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
-			//enemyPos.y = app->path->GetLastPath().At(pathTimer)->y;
-		}
+	//	}
+	//	if (app->path->GetLastPath().At(pathTimer) != nullptr)
+	//	{
+	//		DynArray<iPoint> path;
+	//		path = app->path->GetLastPath();
+	//		enemyPos = path[pathTimer];
+	//		//enemyPos.x = app->path->GetLastPath();
+	//		//enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
+	//		//enemyPos.y = app->path->GetLastPath().At(pathTimer)->y;
+	//	}
 
 
-		pathTimer++;
-		
-	}
+	//	pathTimer++;
+	//	
+	//}
 
 
 	//int speedP = 0;
