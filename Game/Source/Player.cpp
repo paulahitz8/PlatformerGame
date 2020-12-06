@@ -888,12 +888,14 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->type == Collider::Type::GROUNDENEMY)
 			{
+				app->audio->PlayFx(app->groundenemy->sealFx);
 				app->groundenemy->isDead = true;
 
 				c2->pendingToDelete = true;
 			}
 			if (c2->type == Collider::Type::FLYINGENEMY)
 			{
+				app->audio->PlayFx(app->flyingenemy->eagleFx);
 				app->flyingenemy->isDead = true;
 
 				c2->pendingToDelete = true;

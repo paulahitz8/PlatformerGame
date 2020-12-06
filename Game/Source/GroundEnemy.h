@@ -46,6 +46,8 @@ public:
 
 	bool isDead = false;
 
+	unsigned int sealFx;
+
 private:
 
 	//list of animations
@@ -65,8 +67,6 @@ private:
 	fPoint speed;
 	Collider* enemyCollider = nullptr;
 
-	unsigned int deadFx;
-	unsigned int attackFx;
 
 	int timer;
 };
