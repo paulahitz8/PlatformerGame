@@ -18,10 +18,7 @@ public:
 			y0 = y; 
 			time += 2.0f / 60.0f;
 		}
-		else
-		{
-			time = 10.0f / 60.0f;
-		}
+		else time = 10.0f / 60.0f;
     }
     float gravity = 50.0f;
     float time = 10.0f / 60.0f;
