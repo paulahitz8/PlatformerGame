@@ -71,6 +71,7 @@ private:
 	Physics enemyPhysics;
 	Collider* enemyCollider = nullptr;
 
+	int soundTimer;
 	int timer;
 };
 

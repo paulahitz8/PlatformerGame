@@ -91,6 +91,7 @@ bool GroundEnemy::Start()
 	sealFx = app->audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
 
 	timer = 0;
+	soundTimer = 0;
 
 	return true;
 }
@@ -131,6 +132,10 @@ bool GroundEnemy::Update(float dt)
 		{
 			if (abs(app->player->playerPos.x - enemyPos.x) < 200)
 			{
+				if (soundTimer % 80 == 0)
+				{
+					app->audio->PlayFx(sealFx);
+				}
 				if (app->player->playerPos.x > enemyPos.x) //from the right
 				{
 					enemyPos.x += 160 * dt;
@@ -168,6 +173,8 @@ bool GroundEnemy::Update(float dt)
 		}
 	}
 
+	soundTimer++;
+
 	currentAnimation->Update(dt);
 	currentDeadAnimation->Update(dt);
 
@@ -199,6 +206,8 @@ bool GroundEnemy::CleanUp()
 
 	//Unload audios
 	app->audio->UnloadFx(sealFx);
+
+	enemyCollider->pendingToDelete = true;
 
 	return true;
 }

@@ -88,6 +88,7 @@ bool FlyingEnemy::Start()
 	//int size = sizeof app->path->GetLastPath();
 
 	timer = 0;
+	soundTimer = 0;
 
 	return true;
 }
@@ -178,6 +179,10 @@ bool FlyingEnemy::Update(float dt)
 		{
 			if (abs(app->player->playerPos.x - enemyPos.x) < 200)
 			{
+				if (soundTimer % 100 == 0)
+				{
+					app->audio->PlayFx(eagleFx);
+				}
 				if (app->player->playerPos.x > enemyPos.x) //from the right
 				{
 					currentAnimation = &right;
@@ -193,6 +198,8 @@ bool FlyingEnemy::Update(float dt)
 		
 	}
 	
+	soundTimer++;
+
 	currentAnimation->Update(dt);
 	currentDeadAnimation->Update(dt);
 
@@ -225,6 +232,8 @@ bool FlyingEnemy::CleanUp()
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
 	app->tex->UnLoad(deadTexture);
+
+	enemyCollider->pendingToDelete = true;
 
 	return true;
 }
