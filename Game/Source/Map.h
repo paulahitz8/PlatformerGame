@@ -95,7 +95,7 @@ struct MapLayer
 		uint result;
 		if (data[(y * width) + x] == NULL)
 		{
-			result = 62;
+			result = 0;
 		}
 		else
 		{

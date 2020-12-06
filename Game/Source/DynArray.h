@@ -36,7 +36,6 @@ public:
 	// Operators
 	VALUE& operator[](unsigned int index)
 	{
-		
 		return data[index];
 	}
 
@@ -135,7 +134,7 @@ public:
 
 		return result;
 	}
-
+	
 	const VALUE* At(unsigned int index) const
 	{
 		VALUE* result = NULL;
@@ -145,7 +144,7 @@ public:
 
 		return result;
 	}
-
+	
 	// Utils
 	unsigned int GetCapacity() const
 	{

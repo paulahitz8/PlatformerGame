@@ -3,8 +3,6 @@
 #include "Player.h"
 #include "List.h"
 
-#include <queue> 
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -106,10 +104,6 @@ ListItem<PathNode>* PathList::GetNodeLowestScore() const
 	return ret;
 }
 
-DynArray<iPoint> PathFinding::GetLastPath()
-{
-	return lastPath;
-}
 
 // PathNode -------------------------------------------------------------------------
 // Convenient constructors
@@ -179,33 +173,24 @@ int PathNode::CalculateF(const iPoint& destination)
 int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
-	if(IsWalkable(destination) == false || IsWalkable(origin) == false)
+	if (IsWalkable(destination) == false || IsWalkable(origin) == false)
 	{
 		return -1;
 	}
 	else
 	{
-		// L12b: TODO 2: Create two lists: open, close
-		// Add the origin tile to open
-		// Iterate while we have tile in the open list
 		PathList close;
 		PathList open;
 
 		open.list.Add(PathNode(0, origin.DistanceManhattan(destination), origin, nullptr));
-		
+
 		while (open.list.Count() != 0)
 		{
-			// L12b: TODO 3: Move the lowest score cell from open list to the closed list
 			close.list.Add(open.GetNodeLowestScore()->data);
 			open.list.Del(open.GetNodeLowestScore());
 
 			if (close.list.end->data.pos == destination)
 			{
-
-				// L12b: TODO 4: If we just added the destination, we are done!
-				// Backtrack to create the final path
-				// Use the Pathnode::parent and Flip() the path when you are finish
-				//MAYBE WHILE
 				for (ListItem<PathNode>* iterator = close.list.end; iterator->data.parent != nullptr; iterator = close.Find(iterator->data.parent->pos))
 				{
 					iPoint worldPos = iterator->data.parent->pos;
@@ -216,16 +201,11 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			}
 			else
 			{
-				// L12b: TODO 5: Fill a list of all adjancent nodes
 				PathList neighbours;
 				close.list.end->data.FindWalkableAdjacents(neighbours);
+
 				for (ListItem<PathNode>* iterator = neighbours.list.start; iterator != NULL; iterator = iterator->next)
 				{
-					// L12b: TODO 6: Iterate adjancent nodes:
-					// ignore nodes in the closed list
-					// If it is NOT found, calculate its F and add it to the open list
-					// If it is already in the open list, check if it is a better path (compare G)
-					// If it is a better path, Update the parent
 					if (close.Find(iterator->data.pos))
 					{
 						continue;
@@ -244,164 +224,11 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 						iterator->data.CalculateF(destination);
 						open.list.Add(iterator->data);
 					}
-					neighbours.list.Clear();
 				}
+				neighbours.list.Clear();
 			}
+
 		}
 	}
-
 	return -1;
 }
-
-//int PathFinding::Heuristic(iPoint start, iPoint end)
-//{
-//	return abs(start.x - end.x) + abs(start.y - end.y);
-//}
-//
-//List<iPoint> Neighbours(iPoint current, int speed)
-//{
-//	List<iPoint> list = List<iPoint>();
-//	// Order is top, right, bottom, left
-//	list.Add(iPoint(current.x, current.y - speed));
-//	list.Add(iPoint(current.x + speed, current.y));
-//	list.Add(iPoint(current.x, current.y - speed));
-//	list.Add(iPoint(current.x - speed, current.y));
-//
-//	return list;
-//
-//}
-//
-//iPoint PathFinding::NextMove(NodeAstar* endNode, iPoint start)
-//{
-//	NodeAstar* current = endNode;
-//
-//	while (current->GetPreviousNode()->GetPos() != start)
-//	{
-//		current = current->GetPreviousNode(); 
-//	}
-//	return current->GetPos();
-//}
-//
-//bool PathFinding::isVisited(iPoint nodePoint, List<NodeAstar*> visited) 
-//{
-//	ListItem<NodeAstar*>* current = visited.At(0);
-//	while (current != NULL) 
-//	{
-//		if (current->data->GetPos() == nodePoint) {
-//			return true;
-//		}
-//
-//		current = current->next;
-//	}
-//
-//	return false;
-//}
-//
-//priority_queue<NodeAstar*> PathFinding::UpdateNeighbours(priority_queue<NodeAstar*> nodes, 
-//	iPoint neighbourPoint, int newCost, NodeAstar* curr, NodeAstar* endNode, List<NodeAstar*> visited)
-//{	int manhattan = Heuristic(neighbourPoint, endNode->GetPos());
-//
-//	 Create a variable for saving the lost nodes for finding the desired node
-//	priority_queue<NodeAstar*> save;
-//
-//	 Taking first value
-//	NodeAstar* current = nodes.top();
-//	nodes.pop(); 
-//	NodeAstar* neighbourNode; 
-//
-//	Create a bool for stoping the iteration
-//	bool foundNode = false; 
-//
-//
-//	while (current != NULL || foundNode != true)
-//	{
-//		 Node in queue
-//		if (current->GetPos() == neighbourPoint) {
-//			 If the new calculated cost is lower, change the whole node and push it into the auxiliar queue
-//			if (current->GetCost() > newCost)
-//			{
-//				current->SetCost(newCost);
-//				current->SetPreviousNode(curr); 
-//				current->SetPrio(newCost + manhattan);
-//				save.push(current); 
-//
-//			}
-//			else 
-//			{
-//				 If the new calculated node is worse, push it to the auxiliar queue without modifying it
-//				save.push(current); 
-//			}
-//			foundNode = true; 
-//		}
-//		 Node not in queue
-//		else 
-//		{
-//			 Push the node in the auxiliar queue and find next element in main queue
-//			save.push(current);
-//			current = nodes.top();
-//			nodes.pop(); 
-//		}
-//
-//		 Check if the neighbour isn't on the visited list or on the priority queue
-//		if (isVisited(neighbourPoint, visited) == false || foundNode==false)
-//		{
-//			 Create the new node from neighbour
-//			neighbourNode = new NodeAstar(curr, newCost, neighbourPoint);
-//
-//			 Calculate it's priority and push it into the priority queue
-//			int priority = newCost + manhattan;
-//			neighbourNode->SetPrio(priority); 
-//			nodes.push(neighbourNode);
-//		}
-//	
-//	return nodes; 
-//		
-//	}
-//
-//	 Iterate over the auxiliar queue and add all it's items on the main queue again. 
-//	while (save.empty() == false) {
-//		nodes.push(save.top()); 
-//		save.pop(); 
-//	}
-//
-//}
-//
-//iPoint PathFinding::Path(iPoint start, int speed)
-//{
-//	NodeAstar* startNode = new NodeAstar(nullptr, 0, start);
-//	int manhattan; 
-//	std::priority_queue<NodeAstar*> frontier;
-//	frontier.push(startNode); 
-//
-//	iPoint end = app->player->playerPos;
-//	NodeAstar* endNode = new NodeAstar(nullptr, 0, start);
-//
-//	List<NodeAstar*> visited;
-//	
-//	NodeAstar* current = frontier.top(); 
-//
-//	while (current!=endNode)
-//	{
-//		NodeAstar* current = frontier.top();
-//		frontier.pop(); 
-//		visited.Add(current);
-//
-//		if (current->GetPos() == end)
-//		{
-//			break;
-//		}
-//
-//		List<iPoint> neighbours = Neighbours(current->GetPos(), speed);
-//		for (int i = 0; i < 4; i++)
-//		{
-//			int newCost = current->GetCost() + speed;
-//			iPoint next = neighbours.At(i)->data;
-//			frontier = UpdateNeighbours(frontier, neighbours[i], newCost, current, endNode, visited);
-//		}
-//	}
-//
-//	return NextMove(current, start);
-//
-//}
-//
-//CLEANUUUUUUUP

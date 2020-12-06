@@ -73,7 +73,7 @@ bool FlyingEnemy::Start()
 	currentDeadAnimation = &blankAnim;
 
 	isDead = false;
-	enemyPos = { 300, 702 };
+	enemyPos = { 260, 702 };
 
 	//Collider
 	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 35, 44 }, Collider::Type::FLYINGENEMY, this);
@@ -82,8 +82,10 @@ bool FlyingEnemy::Start()
 	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
 
 
-	//Path
-	//app->path->CreatePath(enemyPos, app->player->playerPos);
+	////Path
+	//iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+	//iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
+	//app->path->CreatePath(enemyTile, playerTile);
 	//int size = sizeof app->path->GetLastPath();
 
 	timer = 0;
@@ -98,32 +100,36 @@ bool FlyingEnemy::PreUpdate()
 
 bool FlyingEnemy::Update(float dt)
 {
+
+	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
 	
 	if ((abs(app->player->playerPos.x - enemyPos.x) < 300) & (abs(app->player->playerPos.y - enemyPos.y) < 300))
 	{
-		if (pathTimer >= 300 || pathTimer >= size - 1)
+		if (pathTimer >= 300 || pathTimer > app->path->GetLastPath()->Count() - 1)
 		{
-			createPath = app->path->CreatePath(enemyPos, app->player->playerPos);
-			//if (createPath == 0)
-			//{
-				size = sizeof(app->path->GetLastPath()) / sizeof(app->path->GetLastPath()[0]);
+			createPath = app->path->CreatePath(enemyTile, playerTile);
+			if (createPath == 0)
+			{
 				pathTimer = 0;
-			//}
+			}
 
 		}
-		if (app->path->GetLastPath().At(pathTimer) != nullptr)
+		
+		if (app->path->GetLastPath()->At(0)!= nullptr)
 		{
-			DynArray<iPoint> path;
-			path = app->path->GetLastPath();
-			enemyPos = path[pathTimer];
+
+			const iPoint* pos =  app->path->GetLastPath()->At(pathTimer); 
+			enemyPos.x = pos->x * 64; 
+			enemyPos.y = pos->y * 64;
+
 			//enemyPos.x = app->path->GetLastPath();
 			//enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
 			//enemyPos.y = app->path->GetLastPath().At(pathTimer)->y;
 		}
-
+		
 
 		pathTimer++;
-		
 	}
 
 

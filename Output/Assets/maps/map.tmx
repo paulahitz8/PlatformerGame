@@ -99,6 +99,7 @@
  <layer id="1" name="Base " width="200" height="20">
   <properties>
    <property name="Drawable" type="int" value="1"/>
+   <property name="Navigation" type="int" value="0"/>
   </properties>
   <data>
    <tile/>
@@ -4106,6 +4107,7 @@
  <layer id="2" name="Collisions" width="200" height="20">
   <properties>
    <property name="Drawable" type="int" value="0"/>
+   <property name="Navigation" type="int" value="1"/>
   </properties>
   <data>
    <tile/>
