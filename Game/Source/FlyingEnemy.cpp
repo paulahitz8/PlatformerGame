@@ -120,6 +120,8 @@ bool FlyingEnemy::Update(float dt)
 			else if (timer == 110) currentDeadAnimation = &blankAnim;
 
 			timer++;
+
+			if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER) app->audio->PlayFx(app->player->splashFx);
 		}
 		else
 		{

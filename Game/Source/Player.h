@@ -79,6 +79,8 @@ public:
 	bool godMode = false;
 	bool isDead = false;
 
+	unsigned int splashFx;
+
 private:
 
 	Snowball* snowballs[MAX_SNOWBALLS] = { nullptr };
@@ -119,9 +121,7 @@ private:
 
 	unsigned int deadFx;
 	unsigned int jumpingFx;
-	unsigned int splashFx;
 	unsigned int checkpointFx;
-	//attackFx
 
 	bool isJumping = false;
 	bool isFalling = false;

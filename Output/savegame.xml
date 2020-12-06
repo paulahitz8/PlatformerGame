@@ -8,19 +8,19 @@
 	<map />
 	<fadeScreen />
 	<ground enemies>
-		<enemy x="2376" y="995" />
+		<enemy x="784" y="1137" />
 	</ground enemies>
 	<flying enemies>
-		<enemy x="2348" y="828" />
+		<enemy x="2365" y="843" />
 	</flying enemies>
 	<life />
 	<item />
 	<pathfinding />
 	<player>
-		<player x="2542" y="1065" />
+		<player x="2540" y="1065" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="-2038" y="-500" />
+		<camera x="-2036" y="-500" />
 	</renderer>
 </save_state>

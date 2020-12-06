@@ -37,7 +37,7 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
 
-	void OnCollision(Collider* c1, Collider* c2);
+	int GetEnemyTileProperty(int x, int y, const char* property) const;
 
 	//SDL_Rect player;
 	SDL_Texture* enemyTexture;
@@ -68,11 +68,14 @@ private:
 
 	fPoint speed;
 	Collider* enemyCollider = nullptr;
+	Physics enemyPhysics;
 
 	int pathTimer = 0;
 	int createPath = 0;
 	int pathIndex = 0;
 	bool playerSeen;
+
+	bool isFalling = false;
 
 	int soundTimer;
 	int timer;

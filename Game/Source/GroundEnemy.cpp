@@ -81,7 +81,7 @@ bool GroundEnemy::Start()
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
 
-	app->flyingenemy->Enable();
+	app->flyingEnemy->Enable();
 
 	isDead = false;
 
@@ -113,63 +113,8 @@ bool GroundEnemy::PreUpdate()
 bool GroundEnemy::Update(float dt)
 {		
 
-	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
-	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
-
-	if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
-
-	//if (playerSeen)
-	//{
-		if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
-		{
-			createPath = app->path->CreatePath(enemyTile, playerTile);
-			//path = app->path->GetLastPath();
-			if (createPath == 0)
-			{
-				pathTimer = 0;
-			}
-		}
-
-		if (app->path->GetLastPath()->At(0) != nullptr)
-		{
-
-			const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
-			//enemyPos.x = pos->x * 64; 
-			//enemyPos.y = pos->y * 64;
-
-			if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y)
-			{
-				pathIndex++;
-			}
-			else
-			{
-				if (pos->x * 64 < enemyPos.x)
-				{
-					enemyPos.x -= 2;
-				}
-				else if (pos->x * 64 > enemyPos.x)
-				{
-					enemyPos.x += 2;
-				}
-
-				//if (pos->y * 64 < enemyPos.y)
-				//{
-				//	enemyPos.y -= 2;
-				//}
-				//else if (pos->y * 64 > enemyPos.y)
-				//{
-				//	enemyPos.y += 2;
-				//}
-			}
-
-			//enemyPos.x = app->path->GetLastPath();
-			//enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
-			//enemyPos.y = app->path->GetLastPath().At(pathTimer)->y;
-		}
-
-
-		pathTimer++;
-	//}
+	int speedE = 0;
+	enemyPhysics.DoPhysics(enemyPos.x, enemyPos.y, speed.x, speed.y, isFalling, speedE);
 
 
 	if (isDead)
@@ -199,6 +144,50 @@ bool GroundEnemy::Update(float dt)
 	{
 		if (!app->player->godMode)
 		{
+			iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+			iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
+
+			if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
+
+			if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
+			{
+				createPath = app->path->CreatePath(enemyTile, playerTile);
+				//path = app->path->GetLastPath();
+				if (createPath == 0)
+				{
+					pathTimer = 0;
+				}
+			}
+
+			if (app->path->GetLastPath()->At(0) != nullptr)
+			{
+
+				const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+				//enemyPos.x = pos->x * 64; 
+				//enemyPos.y = pos->y * 64;
+
+				if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y)
+				{
+					pathIndex++;
+				}
+				else
+				{
+					if (pos->x * 64 < enemyPos.x)
+					{
+						enemyPos.x -= 2;
+					}
+					else if (pos->x * 64 > enemyPos.x)
+					{
+						enemyPos.x += 2;
+					}
+
+				}
+
+			}
+
+			pathTimer++;
+
+
 			//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
 			//{
 			//	if (soundTimer % 80 == 0)
@@ -227,6 +216,23 @@ bool GroundEnemy::Update(float dt)
 			//		currentAnimation = &rightIdle;
 			//	}
 			//}
+
+			if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
+			{
+				isFalling = false;
+
+				if (enemyPos.y > (enemyPos.y / 64) * 64 + 41) enemyPos.y = (enemyPos.y / 64) * 64 + 41;
+			}
+			else isFalling = true;
+
+			if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::WATER)
+			{
+				app->audio->PlayFx(app->player->splashFx);
+
+				enemyCollider->pendingToDelete = true;
+				isDead = true;
+				isFalling = false;
+			}
 		}
 
 		else
@@ -241,6 +247,8 @@ bool GroundEnemy::Update(float dt)
 			}
 		}
 	}
+
+
 
 	soundTimer++;
 
@@ -276,10 +284,7 @@ bool GroundEnemy::CleanUp()
 	//Unload audios
 	app->audio->UnloadFx(sealFx);
 
-	if (enemyCollider != nullptr)
-	{
-		enemyCollider->pendingToDelete = true;
-	}
+	if (enemyCollider != nullptr) enemyCollider->pendingToDelete = true;
 
 	return true;
 }
@@ -302,13 +307,42 @@ bool GroundEnemy::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-void GroundEnemy::OnCollision(Collider* c1, Collider* c2)
+int GroundEnemy::GetEnemyTileProperty(int x, int y, const char* property) const
 {
-		if (c1->type == Collider::Type::GROUNDENEMY)
+	int ret;
+	// MapLayer
+	ListItem <MapLayer*>* ML = app->map->data.layers.start;
+	SString layerName = "Collisions";
+	while (ML != NULL)
+	{
+		if (ML->data->name == layerName)
 		{
-			if (c2->type == Collider::Type::GROUND)
-			{
-				enemyPos.x -=2;
-				enemyPos.y -=2;
-			}
+			break;
+		}
+		ML = ML->next;
+	}
+
+	// TileSet
+	ListItem <TileSet*>* T = app->map->data.tilesets.start;
+	SString tileSetName = "Collisions";
+
+	while (T != NULL)
+	{
+		if (T->data->name == tileSetName)
+		{
+			break;
+		}
+		T = T->next;
+	}
+
+	// Gets CollisionId
+	int id = (int)(ML->data->Get(x, y) - T->data->firstgId);
+	if (id < 0)
+	{
+		ret = 0;
+		return ret;
+	}
+	Tile* currentTile = T->data->GetPropList(id);
+	ret = currentTile->properties.GetProperty(property, 0);
+	return ret;
 }
