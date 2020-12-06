@@ -49,6 +49,8 @@ public:
 	int size;
 	int createPath = 0; 
 
+	unsigned int eagleFx;
+
 private:
 
 	//list of animations
@@ -68,9 +70,6 @@ private:
 	fPoint speed;
 	Physics enemyPhysics;
 	Collider* enemyCollider = nullptr;
-
-	unsigned int deadFx;
-	unsigned int attackFx;
 
 	int timer;
 };

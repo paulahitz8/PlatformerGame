@@ -88,7 +88,7 @@ bool GroundEnemy::Start()
 	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::GROUNDENEMY, this);
 
 	//Audios
-	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
+	sealFx = app->audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
 
 	timer = 0;
 
@@ -112,7 +112,7 @@ bool GroundEnemy::Update(float dt)
 		{
 			currentAnimation = &rightDead;
 		}
-		//app->audio->LoadFx(deadFx);
+
 		if (timer == 60)
 		{
 			currentAnimation = &blankAnim;
@@ -169,7 +169,6 @@ bool GroundEnemy::Update(float dt)
 		
 	}
 
-
 	currentAnimation->Update(dt);
 	currentDeadAnimation->Update(dt);
 
@@ -190,22 +189,17 @@ bool GroundEnemy::Update(float dt)
 
 bool GroundEnemy::PostUpdate()
 {
-
 	return true;
 }
 
 bool GroundEnemy::CleanUp()
 {
-	//Unload the audios
-	//app->audio->UnloadFx(deadFx);
-
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
 	app->tex->UnLoad(deadTexture);
 
 	//Unload audios
-	//app->audio->UnloadFx(deadFx);
-	//app->audio->UnloadFx(attackFx);
+	app->audio->UnloadFx(sealFx);
 
 	return true;
 }

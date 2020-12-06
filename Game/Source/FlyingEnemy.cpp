@@ -79,7 +79,7 @@ bool FlyingEnemy::Start()
 	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 35, 44 }, Collider::Type::FLYINGENEMY, this);
 
 	//Audios
-	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
+	eagleFx = app->audio->LoadFx("Assets/Audio/Fx/eagle_fx.wav");
 
 	//Path
 	//app->path->CreatePath(enemyPos, app->player->playerPos);
@@ -165,7 +165,6 @@ bool FlyingEnemy::Update(float dt)
 				currentAnimation = &rightFalling;
 			}
 		}
-		//app->audio->LoadFx(deadFx);
 	}
 
 	if (!isDead)
@@ -209,15 +208,14 @@ bool FlyingEnemy::Update(float dt)
 
 bool FlyingEnemy::PostUpdate()
 {
-
 	return true;
 }
 
 bool FlyingEnemy::CleanUp()
 {
 	//Unload audios
-	//app->audio->UnloadFx(deadFx);
-	//app->audio->UnloadFx(attackFx);
+	app->audio->UnloadFx(eagleFx);
+	
 
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
