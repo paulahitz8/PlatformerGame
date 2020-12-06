@@ -98,8 +98,7 @@ bool Scene::Update(float dt)
 	uint wmb, hmb;
 	app->tex->GetSize(background, wmb, hmb);
 
-	for (int i = 0; (wmb * i) <= (w - app->render->camera.x); i++)
-		app->render->DrawTexture(background, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
+	for (int i = 0; (wmb * i) <= (w - app->render->camera.x); i++) app->render->DrawTexture(background, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
 
 	// Draw map
 	if (app->map->active == true) app->map->Draw();
@@ -123,7 +122,6 @@ bool Scene::Update(float dt)
 		}
 	}
 
-
 	return true;
 }
 
@@ -143,6 +141,7 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	app->tex->UnLoad(background);
+	app->tex->UnLoad(debugPath);
 
 	app->player->Disable();
 	app->map->Disable();
