@@ -166,9 +166,7 @@ bool GroundEnemy::Update(float dt)
 				currentAnimation = &rightIdle;
 			}
 		}
-		
 	}
-
 
 	currentAnimation->Update(dt);
 	currentDeadAnimation->Update(dt);

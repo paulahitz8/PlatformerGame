@@ -77,6 +77,7 @@ public:
 	int GetTileProperty(int x, int y, const char* property) const;
 
 	bool godMode = false;
+	bool isDead = false;
 
 private:
 
@@ -123,7 +124,6 @@ private:
 	//attackFx
 
 	bool isJumping = false;
-	bool isDead = false;
 	bool isFalling = false;
 	bool isShooting = false;
 	bool shootRight = false;

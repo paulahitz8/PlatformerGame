@@ -606,10 +606,14 @@ bool Player::Update(float dt)
 				}
 				else
 				{
+					app->groundenemy->Disable();
+					app->flyingenemy->Disable();
 					playerPos = checkpointPos;
 					app->render->camera.x = 0;
 					currentAnimation = &rightIdle;
 					timer = 0;
+					app->groundenemy->Enable();
+					app->flyingenemy->Enable();
 				}
 			}
 			timer++;
