@@ -75,6 +75,7 @@ private:
 
 	int soundTimer;
 	int timer;
+	bool playerSeen;
 };
 
 #endif // __FLYINGENEMY_H__
