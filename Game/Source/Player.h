@@ -76,6 +76,8 @@ public:
 	List<Collider*>checkpointList;
 	int GetTileProperty(int x, int y, const char* property) const;
 
+	bool godMode = false;
+	bool isDead = false;
 
 private:
 
@@ -115,7 +117,6 @@ private:
 	bool platform = false;
 	bool water = false;
 
-	unsigned int walkingFx;
 	unsigned int deadFx;
 	unsigned int jumpingFx;
 	unsigned int splashFx;
@@ -123,8 +124,6 @@ private:
 	//attackFx
 
 	bool isJumping = false;
-	bool isDead = false;
-	bool godMode = false;
 	bool isFalling = false;
 	bool isShooting = false;
 	bool shootRight = false;
@@ -139,8 +138,6 @@ private:
 	int ppx, ppy;
 	int numSnowball;
 	
-
-
 	void OnCollision(Collider* c1, Collider* c2);
 };
 

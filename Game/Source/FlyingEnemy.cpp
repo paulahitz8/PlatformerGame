@@ -34,7 +34,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	left.PushBack({ 290, 49, 53, 51 });
 	left.PushBack({ 140, 49, 53, 51 });
 	left.PushBack({ 90, 49, 53, 51 });
-	left.speed = 0.15f;
+	left.speed = 10.0f;
 
 	right.PushBack({ 615, 49, 53, 51 });
 	right.PushBack({ 565, 49, 53, 51 });
@@ -44,7 +44,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	right.PushBack({ 365, 49, 53, 51 });
 	right.PushBack({ 515, 49, 53, 51 });
 	right.PushBack({ 565, 49, 53, 51 });
-	right.speed = 0.15f;
+	right.speed = 10.0f;
 
 	leftDead.PushBack({ 40, 188, 64, 50 });
 	
@@ -58,7 +58,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	deadAnim.PushBack({ 90, 277, 22, 25 });
 	deadAnim.PushBack({ 114, 277, 22, 25 });
 	deadAnim.PushBack({ 138, 277, 22, 25 });
-	deadAnim.speed = 0.08f;
+	deadAnim.speed = 4.0f;
 
 	return true;
 }
@@ -79,8 +79,7 @@ bool FlyingEnemy::Start()
 	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 35, 44 }, Collider::Type::FLYINGENEMY, this);
 
 	//Audios
-	//deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
-
+	eagleFx = app->audio->LoadFx("Assets/Audio/Fx/eagle_fx.wav");
 
 	////Path
 	//iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
@@ -132,7 +131,6 @@ bool FlyingEnemy::Update(float dt)
 		pathTimer++;
 	}
 
-
 	//int speedP = 0;
 	//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
 
@@ -172,38 +170,38 @@ bool FlyingEnemy::Update(float dt)
 				currentAnimation = &rightFalling;
 			}
 		}
-
-	
-		//app->audio->LoadFx(deadFx);
-
 	}
 
-	//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
-	//{
-	//	if (app->player->playerPos.x < enemyPos.x) //from the left
-	//	{
-	//		currentAnimation = &left;
-	//		enemyPos.x-=2;
-	//	}
-
-	//	if (app->player->playerPos.x > enemyPos.x) //from the right
-	//	{
-	//		currentAnimation = &right;
-	//		enemyPos.x+=2;
-	//	}
-
-	//}
-
-	currentAnimation->Update();
-	currentDeadAnimation->Update();
+	if (!isDead)
+	{
+		if (!app->player->godMode)
+		{
+			if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+			{
+				if (app->player->playerPos.x > enemyPos.x) //from the right
+				{
+					currentAnimation = &right;
+					enemyPos.x += 160 * dt;
+				}
+				if (app->player->playerPos.x < enemyPos.x) //from the left
+				{
+					currentAnimation = &left;
+					enemyPos.x -= 120 * dt;
+				}
+			}
+		}
+		
+	}
+	
+	currentAnimation->Update(dt);
+	currentDeadAnimation->Update(dt);
 
 	//iPoint nextMove = app->path->Path(enemyPos, 4);
 	//enemyPos = nextMove;
 
-
 	enemyCollider->SetPos(enemyPos.x + 10, enemyPos.y);
 
-	//Drawing the player
+	//Drawing the enemy
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
 
@@ -215,14 +213,14 @@ bool FlyingEnemy::Update(float dt)
 
 bool FlyingEnemy::PostUpdate()
 {
-
 	return true;
 }
 
 bool FlyingEnemy::CleanUp()
 {
-	//Unload the audios
-	//app->audio->UnloadFx(deadFx);
+	//Unload audios
+	app->audio->UnloadFx(eagleFx);
+	
 
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);

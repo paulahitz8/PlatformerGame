@@ -31,12 +31,12 @@ bool Player::Awake(pugi::xml_node&)
 	//right idle animations
 	rightIdle.PushBack({ 59, 129, 22, 25 });
 	rightIdle.PushBack({ 91, 129, 22, 25 });
-	rightIdle.speed = 0.008f;
+	rightIdle.speed = 0.8f;
 
 	//left idle animations
 	leftIdle.PushBack({ 289, 229, 22, 25 });
 	leftIdle.PushBack({ 257, 229, 22, 25 });
-	leftIdle.speed = 0.008f;
+	leftIdle.speed = 0.8f;
 
 	//walking to the right animations
 	rightWalk.PushBack({ 58, 97, 22, 25 });
@@ -51,7 +51,7 @@ bool Player::Awake(pugi::xml_node&)
 	rightWalk.PushBack({ 185, 97, 22, 25 });
 	rightWalk.PushBack({ 151, 97, 22, 25 });
 	rightWalk.PushBack({ 121, 97, 22, 25 });
-	rightWalk.speed = 0.15f;
+	rightWalk.speed = 6.0f;
 
 	//walking to the left animations
 	leftWalk.PushBack({ 290, 197, 22, 25 });
@@ -66,19 +66,19 @@ bool Player::Awake(pugi::xml_node&)
 	leftWalk.PushBack({ 163, 197, 22, 25 });
 	leftWalk.PushBack({ 195, 197, 22, 25 });
 	leftWalk.PushBack({ 227, 197, 22, 25 });
-	leftWalk.speed = 0.15f;
+	leftWalk.speed = 6.0f;
 
 	//jumping to the right animations
 	rightJump.PushBack({ 89, 97, 22, 25 });
 	rightJump.PushBack({ 91, 62, 22, 25 });
 	rightJump.PushBack({ 123, 64, 22, 25 });
-	rightJump.speed = 0.02f;
+	rightJump.speed = 2.5f;
 
 	//jumping to the left animations
 	leftJump.PushBack({ 258, 197, 22, 25 });
 	leftJump.PushBack({ 258, 162, 22, 25 });
 	leftJump.PushBack({ 225, 165, 22, 25 });
-	leftJump.speed = 0.02f;
+	leftJump.speed = 2.5f;
 
 	//right death animations
 	rightDeath.PushBack({ 187, 129, 22, 25 });
@@ -87,7 +87,7 @@ bool Player::Awake(pugi::xml_node&)
 	rightDeath.PushBack({ 90, 277, 22, 25 });
 	rightDeath.PushBack({ 114, 277, 22, 25 });
 	rightDeath.PushBack({ 138, 277, 22, 25 });
-	rightDeath.speed = 0.05f;
+	rightDeath.speed = 3.0f;
 
 	//left death animations
 	leftDeath.PushBack({ 162, 229, 22, 25 });
@@ -96,31 +96,31 @@ bool Player::Awake(pugi::xml_node&)
 	leftDeath.PushBack({ 90, 277, 22, 25 });
 	leftDeath.PushBack({ 114, 277, 22, 25 });
 	leftDeath.PushBack({ 138, 277, 22, 25 });
-	leftDeath.speed = 0.05f;
+	leftDeath.speed = 3.0f;
 
 	//left shoot animation
 	leftShoot.PushBack({ 193, 165, 22, 25 });
 	leftShoot.PushBack({ 162, 165, 22, 25 });
 	leftShoot.PushBack({ 132, 165, 22, 25 });
 	leftShoot.PushBack({ 162, 165, 22, 25 });
-	leftShoot.speed = 0.3f;
+	leftShoot.speed = 7.0f;
 
 	//right shoot animation
 	rightShoot.PushBack({ 155, 65, 22, 25 });
 	rightShoot.PushBack({ 186, 65, 22, 25 });
 	rightShoot.PushBack({ 216, 65, 22, 25 });
 	rightShoot.PushBack({ 186, 65, 22, 25 });
-	rightShoot.speed = 0.3f;
+	rightShoot.speed = 7.0f;
 
 	//snowball animation
 	snowballAnim.PushBack({ 203, 44, 6, 6 });
 	snowballAnim.PushBack({ 219, 44, 6, 6 });
-	snowballAnim.speed = 0.1f;
+	snowballAnim.speed = 10.0f;
 
 	//red heart animation
 	redHeart.PushBack({ 0, 0, 34, 29 });
 	redHeart.PushBack({ 34, 0, 34, 29 });
-	redHeart.speed = 0.03f;
+	redHeart.speed = 1.0f;
 
 	//snowman idle
 	snowmanIdle.PushBack({ 68, 0, 56, 64 });
@@ -129,15 +129,15 @@ bool Player::Awake(pugi::xml_node&)
 	snowmanWave.PushBack({146, 0, 56, 64});
 	snowmanIdle.PushBack({ 68, 0, 56, 64 });
 	snowmanWave.PushBack({228, 0, 56, 64});
-	snowmanWave.speed = 0.12f;
+	snowmanWave.speed = 6.0f;
 
 	return true;
 }
 
-
 bool Player::Start()
 {
 	LOG("Loading player textures");
+
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	checkpointTexture = app->tex->Load("Assets/GUI/checkpoint.png");
 	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
@@ -149,7 +149,6 @@ bool Player::Start()
 	ice4Texture = app->tex->Load("Assets/GUI/ice_four.png");
 	ice5Texture = app->tex->Load("Assets/GUI/ice_five.png");
 	snowmanTexture = app->tex->Load("Assets/Characters/snowman_sprites.png");
-	
 
 	currentAnimation = &rightIdle;
 	currentSnowballAnimation = &blankAnim;
@@ -177,7 +176,6 @@ bool Player::Start()
 	checkpointList.Add(app->collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHEKPOINT));
 
 	//Audios
-	walkingFx = app->audio->LoadFx("Assets/Audio/Fx/walking_fx.wav");
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
 	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
 	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
@@ -225,7 +223,7 @@ bool Player::Update(float dt)
 		godMode = !godMode;
 	}
 
-	if (isDead == false)
+	if (!isDead)
 	{
 		if (godMode)
 		{
@@ -236,28 +234,19 @@ bool Player::Update(float dt)
 				/*shootRight = false;
 				shootLeft = false;*/
 
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
-				{
-					currentAnimation = &rightShoot;
-				}
-				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftShoot;
-				}
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) currentAnimation = &rightShoot;
+
+				if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) currentAnimation = &leftShoot;
 
 				isShooting = true;
 			}
 
 			if (timerShoot == 15)
 			{
-				if (currentAnimation == &rightShoot)
-				{
-					currentAnimation = &rightIdle;
-				}
-				else if (currentAnimation == &leftShoot)
-				{
-					currentAnimation = &leftIdle;
-				}
+				if (currentAnimation == &rightShoot) currentAnimation = &rightIdle;
+
+				else if (currentAnimation == &leftShoot) currentAnimation = &leftIdle;
+
 				timerShoot = 0;
 			}
 
@@ -288,61 +277,44 @@ bool Player::Update(float dt)
 			{
 				if (isJumping != true)
 				{
-					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
-					{
-						currentAnimation = &rightWalk;
-					}
-					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-					{
-						currentAnimation = &leftWalk;
-					}
+					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightWalk;
+
+					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftWalk;
 				}
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				playerPos.x -= 8;
-				if (isJumping != true)
-				{
-					currentAnimation = &leftWalk;
-				}
+				playerPos.x -= floor(500 * dt);
+				if (!isJumping) currentAnimation = &leftWalk;
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				playerPos.x += 8;
-				if (isJumping != true)
-				{
-					currentAnimation = &rightWalk;
-				}
+				playerPos.x += floor(500 * dt);
+				if (!isJumping) currentAnimation = &rightWalk;
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			{
-				playerPos.y += 8;
+				playerPos.y += floor(500 * dt);
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 			{
-				playerPos.y -= 8;
+				playerPos.y -= floor(500 * dt);
 			}
 
 			// If last movement was left, set the current animation back to left idle
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 			{
-				if (isJumping != true)
-				{
-					currentAnimation = &leftIdle;
-				}
+				if (!isJumping) currentAnimation = &leftIdle;
 			}
 
 			// If last movement was right, set the current animation back to right idle
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
-				if (isJumping != true)
-				{
-					currentAnimation = &rightIdle;
-				}
+				if (!isJumping) currentAnimation = &rightIdle;
 			}
 
 			if (playerPos.x == 9300)
@@ -360,27 +332,19 @@ bool Player::Update(float dt)
 					/*shootRight = false;
 					shootLeft = false;*/
 
-				if (currentAnimation == &rightIdle/* || currentAnimation == &rightWalk || currentAnimation == &rightJump*/)
-				{
-					currentAnimation = &rightShoot;
-				}
-				if (currentAnimation == &leftIdle /*|| currentAnimation == &leftWalk || currentAnimation == &leftJump*/)
-				{
-					currentAnimation = &leftShoot;
-				}
+				if (currentAnimation == &rightIdle) currentAnimation = &rightShoot;
+
+				if (currentAnimation == &leftIdle) currentAnimation = &leftShoot;
+
 				isShooting = true;
 			}
 
 			if (timerShoot == 15)
 			{
-				if (currentAnimation == &rightShoot)
-				{
-					currentAnimation = &rightIdle;
-				}
-				else if (currentAnimation == &leftShoot)
-				{
-					currentAnimation = &leftIdle;
-				}
+				if (currentAnimation == &rightShoot) currentAnimation = &rightIdle;
+
+				else if (currentAnimation == &leftShoot) currentAnimation = &leftIdle;
+
 				timerShoot = 0;
 			}
 
@@ -406,8 +370,6 @@ bool Player::Update(float dt)
 				/*}*/
 			}
 
-
-
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
 				app->audio->PlayFx(jumpingFx);
@@ -418,25 +380,14 @@ bool Player::Update(float dt)
 				app->audio->PlayFx(jumpingFx);
 			}
 
-			else if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) && (app->input->GetKey(SDL_SCANCODE_W) != KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) != KEY_DOWN))
-			{
-				//app->audio->PlayFx(walkingFx);
-			}
-
-
 			//In case of both keys pressed
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				if (isJumping != true)
+				if (!isJumping)
 				{
-					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
-					{
-						currentAnimation = &rightWalk;
-					}
-					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-					{
-						currentAnimation = &leftWalk;
-					}
+					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightWalk;
+
+					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftWalk;
 				}
 			}
 
@@ -444,39 +395,27 @@ bool Player::Update(float dt)
 			//Walking to the left
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				playerPos.x += 4;
-				if (isFalling == false)
-				{
-					currentAnimation = &rightWalk;
-				}
+				playerPos.x += floor(250 * dt);
+				if (!isFalling) currentAnimation = &rightWalk;
 			}
 
 			//Walking to the right
 			else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				playerPos.x -= 4;
-				if (isFalling == false)
-				{
-					currentAnimation = &leftWalk;
-				}
+				playerPos.x -= floor(250 * dt);
+				if (!isFalling) currentAnimation = &leftWalk;
 			}
 
 			//If last movement was left, set the current animation back to left idle
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 			{
-				if (isFalling == false)
-				{
-					currentAnimation = &leftIdle;
-				}
+				if (!isFalling) currentAnimation = &leftIdle;
 			}
 
 			//If last movement was right, set the current animation back to right idle
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 			{
-				if (isFalling == false)
-				{
-					currentAnimation = &rightIdle;
-				}
+				if (!isFalling) currentAnimation = &rightIdle;
 			}
 
 			//If last movement was jumping, set the current animation back to idle
@@ -489,15 +428,12 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
 				isJumping = true;
-				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
-				{
-					currentAnimation = &rightJump;
-				}
-				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-				{
-					currentAnimation = &leftJump;
-				}
-				speed.y = -28.0f;
+
+				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightJump;
+
+				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftJump;
+
+				speed.y = floor(-1700.0 * dt);
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
@@ -506,13 +442,10 @@ bool Player::Update(float dt)
 				nextCheckpoint = checkpointList[i];
 				i++;
 				if (i == 3) i = 0;
-				if (nextCheckpoint != NULL)
-				{
-					playerPos = { nextCheckpoint->rect.x, nextCheckpoint->rect.y + 530 };
-				}
+				if (nextCheckpoint != NULL) playerPos = { nextCheckpoint->rect.x, nextCheckpoint->rect.y + 530 };
 			}
 
-			if (isCheckpoint == true)
+			if (isCheckpoint)
 			{
 				app->SaveGameRequest();
 				currentSnowmanAnimation = &snowmanWave;
@@ -528,7 +461,7 @@ bool Player::Update(float dt)
 				changePos = true;
 			}
 
-			if (isCheckpoint == true)
+			if (isCheckpoint)
 			{
 				app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
 			}
@@ -540,28 +473,20 @@ bool Player::Update(float dt)
 			}
 			timerCheck++;
 
-
 			if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
+				if (timer == 5) app->audio->PlayFx(splashFx);
 
-				if (timer == 5)
-				{
-					app->audio->PlayFx(splashFx);
-				}
-
-				if (isJumping == false)
+				if (!isJumping)
 				{
 					speed.y = 0;
 					isFalling = false;
 				}
-
 				isDead = true;
-
 				playerPos.x = ppx;
 				playerPos.y = ppy;
 				isFalling = false;
 			}
-
 
 			int speedP = 0;
 			playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
@@ -571,38 +496,29 @@ bool Player::Update(float dt)
 				{
 					isFalling = false;
 					isJumping = false;
-					if (currentAnimation == &rightJump)
-					{
-						currentAnimation = &rightIdle;
-					}
-					else if (currentAnimation == &leftJump)
-					{
-						currentAnimation = &leftIdle;
-					}
+
+					if (currentAnimation == &rightJump) currentAnimation = &rightIdle;
+
+					else if (currentAnimation == &leftJump) currentAnimation = &leftIdle;
+
 					if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
+
 					if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 					{
 						isFalling = true;
 						isJumping = true;
-						if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
-						{
-							currentAnimation = &rightJump;
-						}
-						else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-						{
-							currentAnimation = &leftJump;
-						}
+
+						if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightJump;
+
+						else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftJump;
 					}
-					if (isJumping == false)
+
+					if (!isJumping)
 					{
-						if (currentAnimation == &rightJump)
-						{
-							currentAnimation = &rightIdle;
-						}
-						else if (currentAnimation == &leftJump)
-						{
-							currentAnimation = &leftIdle;
-						}
+						if (currentAnimation == &rightJump) currentAnimation = &rightIdle;
+
+						else if (currentAnimation == &leftJump) currentAnimation = &leftIdle;
+
 						speed.y = 0;
 					}
 				}
@@ -612,38 +528,26 @@ bool Player::Update(float dt)
 			{
 				isFalling = false;
 				isJumping = false;
-				if (currentAnimation == &rightJump)
-				{
-					currentAnimation = &rightIdle;
-				}
-				else if (currentAnimation == &leftJump)
-				{
-					currentAnimation = &leftIdle;
-				}
+
+				if (currentAnimation == &rightJump) currentAnimation = &rightIdle;
+
+				else if (currentAnimation == &leftJump) currentAnimation = &leftIdle;
+
 				if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
+
 				if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 				{
 					isFalling = true;
 					isJumping = true;
-					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk)
-					{
-						currentAnimation = &rightJump;
-					}
-					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk)
-					{
-						currentAnimation = &leftJump;
-					}
+					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightJump;
+
+					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftJump;
 				}
-				if (isJumping == false)
+				if (!isJumping)
 				{
-					if (currentAnimation == &rightJump)
-					{
-						currentAnimation = &rightIdle;
-					}
-					else if (currentAnimation == &leftJump)
-					{
-						currentAnimation = &leftIdle;
-					}
+					if (currentAnimation == &rightJump) currentAnimation = &rightIdle;
+
+					else if (currentAnimation == &leftJump) currentAnimation = &leftIdle;
 					speed.y = 0;
 				}
 			}
@@ -658,7 +562,7 @@ bool Player::Update(float dt)
 				playerPos.x = ppx;
 			}
 
-			if (isJumping == true || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
+			if (isJumping || (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::GROUND && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::WATER && GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") != Collider::Type::PLATFORM))
 			{
 				isFalling = true;
 			}
@@ -674,26 +578,16 @@ bool Player::Update(float dt)
 		}
 	}
 
-
 	if (isDead)
 	{
 		if (!godMode)
 		{
 
-			if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump)
-			{
-				currentAnimation = &rightDeath;
-			}
+			if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) currentAnimation = &rightDeath;
 
-			else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump)
-			{
-				currentAnimation = &leftDeath;
-			}
+			else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) currentAnimation = &leftDeath;
 
-			if (timer == 50)
-			{
-				app->audio->PlayFx(deadFx);
-			}
+			if (timer == 50) app->audio->PlayFx(deadFx);
 
 			if (timer == 118)
 			{
@@ -704,15 +598,22 @@ bool Player::Update(float dt)
 					currentAnimation = &blankAnim;
 					app->fadeScreen->active = true;
 					app->groundenemy->Disable();
+					app->flyingenemy->Disable();
+					app->item->Disable();
+					app->life->Disable();
 					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
 					timer = 0;
 				}
 				else
 				{
+					app->groundenemy->Disable();
+					app->flyingenemy->Disable();
 					playerPos = checkpointPos;
 					app->render->camera.x = 0;
 					currentAnimation = &rightIdle;
 					timer = 0;
+					app->groundenemy->Enable();
+					app->flyingenemy->Enable();
 				}
 			}
 			timer++;
@@ -720,7 +621,8 @@ bool Player::Update(float dt)
 		}
 
 	}
-	if (isShooting == true)
+
+	if (isShooting)
 	{
 		if ((currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) && timerShoot == 14)
 		{
@@ -728,6 +630,7 @@ bool Player::Update(float dt)
 			shootRight = true;
 			isShooting = false;
 		}
+
 		if ((currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) && timerShoot == 14)
 		{
 			snowballs[numSnowball]->left = true;
@@ -750,6 +653,7 @@ bool Player::Update(float dt)
 			}
 		}
 	}
+
 	if (shootLeft)
 	{
 		for (uint i = 0; i < MAX_SNOWBALLS; ++i)
@@ -764,18 +668,15 @@ bool Player::Update(float dt)
 		}
 	}
 
-	//ppx = playerPos.x;
-	//ppy = playerPos.y;
-
-
-	currentAnimation->Update();
-	currentSnowballAnimation->Update();
-	currentSnowmanAnimation->Update();
-	currentHeart1->Update();
-	currentHeart2->Update();
-	currentHeart3->Update();
+	currentAnimation->Update(dt);
+	currentSnowballAnimation->Update(dt);
+	currentSnowmanAnimation->Update(dt);
+	currentHeart1->Update(dt);
+	currentHeart2->Update(dt);
+	currentHeart3->Update(dt);
 
 	playerCollider->SetPos(playerPos.x, playerPos.y);
+
 	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 	{
 		if (snowballs[i] != nullptr)
@@ -783,7 +684,6 @@ bool Player::Update(float dt)
 			snowballCollider->SetPos(snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y);
 		}
 	}
-
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
@@ -846,30 +746,17 @@ bool Player::Update(float dt)
 	}
 
 	SDL_Rect iceRect = { 0, 0, 68, 26 };
-	if (numIce == 0)
-	{
-		app->render->DrawTexture(ice0Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
-	}
-	if (numIce == 1)
-	{
-		app->render->DrawTexture(ice1Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
-	}
-	if (numIce == 2)
-	{
-		app->render->DrawTexture(ice2Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
-	}
-	if (numIce == 3)
-	{
-		app->render->DrawTexture(ice3Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
-	}
-	if (numIce == 4)
-	{
-		app->render->DrawTexture(ice4Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
-	}
-	if (numIce == 5)
-	{
-		app->render->DrawTexture(ice5Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
-	}
+	if (numIce == 0) app->render->DrawTexture(ice0Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+
+	if (numIce == 1) app->render->DrawTexture(ice1Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+
+	if (numIce == 2) app->render->DrawTexture(ice2Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+
+	if (numIce == 3) app->render->DrawTexture(ice3Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+
+	if (numIce == 4) app->render->DrawTexture(ice4Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
+
+	if (numIce == 5) app->render->DrawTexture(ice5Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
 
 	return true;
 }
@@ -877,26 +764,14 @@ bool Player::Update(float dt)
 bool Player::PostUpdate()
 {
 	// Map Limits
-	if (playerPos.x <= 0)
-	{
-		playerPos.x = 0;
-	}
+	if (playerPos.x <= 0) playerPos.x = 0;
 
-	if ((playerPos.x + playerRect.x) > (app->map->data.width * app->map->data.tileWidth))
-	{
-		--playerPos.x;
-	}
+	if ((playerPos.x + playerRect.x) > (app->map->data.width * app->map->data.tileWidth)) --playerPos.x;
 
 	//In case of godmode on
-	if (playerPos.y <= 0)
-	{
-		playerPos.y = 0;
-	}
+	if (playerPos.y <= 0) playerPos.y = 0;
 
-	if ((playerPos.y + playerRect.y) > (app->map->data.height * app->map->data.tileHeight))
-	{
-		--playerPos.y;
-	}
+	if ((playerPos.y + playerRect.y) > (app->map->data.height * app->map->data.tileHeight)) --playerPos.y;
 
 	return true;
 }
@@ -912,7 +787,6 @@ bool Player::CleanUp()
 		}
 	}
 	//Unload the audios
-	app->audio->UnloadFx(walkingFx);
 	app->audio->UnloadFx(jumpingFx);
 	app->audio->UnloadFx(deadFx);
 	app->audio->UnloadFx(splashFx);
@@ -921,6 +795,14 @@ bool Player::CleanUp()
 	app->tex->UnLoad(playerTexture);
 	app->tex->UnLoad(redHeartTexture);
 	app->tex->UnLoad(grayHeartTexture);
+	app->tex->UnLoad(checkpointTexture);
+	app->tex->UnLoad(ice0Texture);
+	app->tex->UnLoad(ice1Texture);
+	app->tex->UnLoad(ice2Texture);
+	app->tex->UnLoad(ice3Texture);
+	app->tex->UnLoad(ice4Texture);
+	app->tex->UnLoad(ice5Texture);
+	app->tex->UnLoad(snowmanTexture);
 
 	return true;
 }
@@ -996,7 +878,6 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 					speed.y = 0;
 					isFalling = false;
 				}
-
 				playerPos.x = ppx;
 				playerPos.y = ppy;
 				isFalling = false;
@@ -1007,12 +888,14 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->type == Collider::Type::GROUNDENEMY)
 			{
+				app->audio->PlayFx(app->groundenemy->sealFx);
 				app->groundenemy->isDead = true;
 
 				c2->pendingToDelete = true;
 			}
 			if (c2->type == Collider::Type::FLYINGENEMY)
 			{
+				app->audio->PlayFx(app->flyingenemy->eagleFx);
 				app->flyingenemy->isDead = true;
 
 				c2->pendingToDelete = true;

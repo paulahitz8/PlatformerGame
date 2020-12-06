@@ -45,7 +45,7 @@ bool WinScreen::Start()
 	app->scene->active = false;
 	app->render->camera.x = 0;
 	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg", 0.0f);
-	//winScreen = app->tex->Load("Assets/Screens/win_screen.png");
+
 	won0Screen = app->tex->Load("Assets/Screens/won_0.png");
 	won12Screen = app->tex->Load("Assets/Screens/won_12.png");
 	won34Screen = app->tex->Load("Assets/Screens/won_34.png");
@@ -128,7 +128,10 @@ bool WinScreen::CleanUp()
 {
 	LOG("Freeing scene");
 	
-	//app->tex->UnLoad(winScreen);
+	app->tex->UnLoad(won0Screen);
+	app->tex->UnLoad(won12Screen);
+	app->tex->UnLoad(won34Screen);
+	app->tex->UnLoad(won5Screen);
 
 	return true;
 }

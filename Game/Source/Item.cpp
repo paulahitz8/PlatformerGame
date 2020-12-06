@@ -27,7 +27,7 @@ bool Item::Awake(pugi::xml_node&)
 	iceAnim.PushBack({ 13, 12, 16, 24 });
 	iceAnim.PushBack({ 41, 12, 16, 24 });
 	iceAnim.PushBack({ 72, 12, 16, 24 });
-	iceAnim.speed = 0.02f;
+	iceAnim.speed = 1.0f;
 
 	blankAnim.PushBack({ 0, 0, 3, 3 });
 
@@ -45,10 +45,10 @@ bool Item::Start()
 	currentAnimation4 = &iceAnim;
 	currentAnimation5 = &iceAnim;
 
-	ice1Pos = { 550, 1050 };
+	ice1Pos = { 120, 600 };
 	ice2Pos = { 2007, 730 };
 	ice3Pos = { 4000, 730 };
-	ice4Pos = { 6325, 1050 };
+	ice4Pos = { 6325, 600 };
 	ice5Pos = { 7855, 865 };
 
 	//Audio
@@ -111,11 +111,11 @@ bool Item::Update(float dt)
 	ice4Collider->SetPos(ice4Pos.x, ice4Pos.y);
 	ice5Collider->SetPos(ice5Pos.x, ice5Pos.y);
 
-	currentAnimation1->Update();
-	currentAnimation2->Update();
-	currentAnimation3->Update();
-	currentAnimation4->Update();
-	currentAnimation5->Update();
+	currentAnimation1->Update(dt);
+	currentAnimation2->Update(dt);
+	currentAnimation3->Update(dt);
+	currentAnimation4->Update(dt);
+	currentAnimation5->Update(dt);
 
 	//Drawing the cubes
 	SDL_Rect rect1 = currentAnimation1->GetCurrentFrame();
@@ -144,6 +144,7 @@ bool Item::CleanUp()
 {
 	//Unload the textures
 	app->tex->UnLoad(iceTexture);
+
 	app->audio->UnloadFx(iceFx);
 
 	return true;
