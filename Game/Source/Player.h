@@ -76,6 +76,7 @@ public:
 	List<Collider*>checkpointList;
 	int GetTileProperty(int x, int y, const char* property) const;
 
+	bool godMode = false;
 
 private:
 
@@ -123,7 +124,6 @@ private:
 
 	bool isJumping = false;
 	bool isDead = false;
-	bool godMode = false;
 	bool isFalling = false;
 	bool isShooting = false;
 	bool shootRight = false;
@@ -138,8 +138,6 @@ private:
 	int ppx, ppy;
 	int numSnowball;
 	
-
-
 	void OnCollision(Collider* c1, Collider* c2);
 };
 

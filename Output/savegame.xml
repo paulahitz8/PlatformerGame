@@ -17,10 +17,10 @@
 	<item />
 	<pathfinding />
 	<player>
-		<player x="2508" y="1065" />
+		<player x="7024" y="1037" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="-2008" y="-500" />
+		<camera x="-6520" y="-500" />
 	</renderer>
 </save_state>

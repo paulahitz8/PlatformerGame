@@ -45,10 +45,10 @@ bool Item::Start()
 	currentAnimation4 = &iceAnim;
 	currentAnimation5 = &iceAnim;
 
-	ice1Pos = { 550, 1050 };
+	ice1Pos = { 120, 600 };
 	ice2Pos = { 2007, 730 };
 	ice3Pos = { 4000, 730 };
-	ice4Pos = { 6325, 1050 };
+	ice4Pos = { 6325, 600 };
 	ice5Pos = { 7855, 865 };
 
 	//Audio

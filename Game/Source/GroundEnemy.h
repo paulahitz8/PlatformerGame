@@ -63,7 +63,6 @@ private:
 	Animation deadAnim;
 
 	fPoint speed;
-	Physics enemyPhysics;
 	Collider* enemyCollider = nullptr;
 
 	unsigned int deadFx;

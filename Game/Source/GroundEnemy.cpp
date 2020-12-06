@@ -101,12 +101,7 @@ bool GroundEnemy::PreUpdate()
 }
 
 bool GroundEnemy::Update(float dt)
-{
-	
-
-	//int speedP = 0;
-	//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
-			
+{		
 	if (isDead)
 	{
 		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftRoll)
@@ -132,19 +127,31 @@ bool GroundEnemy::Update(float dt)
 
 	if (!isDead)
 	{
-		if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+		if (!app->player->godMode)
 		{
-			if (app->player->playerPos.x > enemyPos.x) //from the right
+			if (abs(app->player->playerPos.x - enemyPos.x) < 200)
 			{
-				//enemyPos.x++;
-				enemyPos.x += 160 * dt;
-				currentAnimation = &rightRoll;
+				if (app->player->playerPos.x > enemyPos.x) //from the right
+				{
+					enemyPos.x += 160 * dt;
+					currentAnimation = &rightRoll;
+				}
+				if (app->player->playerPos.x < enemyPos.x) //from the left
+				{
+					enemyPos.x -= 120 * dt;
+					currentAnimation = &leftRoll;
+				}
 			}
-			if (app->player->playerPos.x < enemyPos.x) //from the left
+			else
 			{
-				//enemyPos.x--;
-				enemyPos.x -= 120 * dt;
-				currentAnimation = &leftRoll;
+				if (currentAnimation == &leftRoll)
+				{
+					currentAnimation = &leftIdle;
+				}
+				else if (currentAnimation == &rightRoll)
+				{
+					currentAnimation = &rightIdle;
+				}
 			}
 		}
 
@@ -159,6 +166,7 @@ bool GroundEnemy::Update(float dt)
 				currentAnimation = &rightIdle;
 			}
 		}
+		
 	}
 
 
@@ -168,10 +176,9 @@ bool GroundEnemy::Update(float dt)
 	//iPoint nextMove = app->path->Path(enemyPos, 4);
 	//enemyPos = nextMove;
 
-
 	enemyCollider->SetPos(enemyPos.x, enemyPos.y);
 
-	//Drawing the player
+	//Drawing the enemy
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
 

@@ -57,8 +57,7 @@ bool Scene::Start()
 
 	RELEASE_ARRAY(data);
 
-
-	image = app->tex->Load("Assets/Screens/background.png");
+	background = app->tex->Load("Assets/Screens/background.png");
 
 	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
 	{
@@ -124,10 +123,10 @@ bool Scene::Update(float dt)
 	uint w, h;
 	app->win->GetWindowSize(w, h);
 	uint wmb, hmb;
-	app->tex->GetSize(image, wmb, hmb);
+	app->tex->GetSize(background, wmb, hmb);
 
 	for (int i = 0; (wmb * i) <= (w - app->render->camera.x); i++)
-		app->render->DrawTexture(image, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
+		app->render->DrawTexture(background, wmb * i, app->map->data.tileHeight * 2, false, 0.4f);
 
 	// Draw map
 	if (app->map->active == true) app->map->Draw();
@@ -173,7 +172,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	app->tex->UnLoad(image);
+	app->tex->UnLoad(background);
 
 	app->player->Disable();
 	app->map->Disable();
