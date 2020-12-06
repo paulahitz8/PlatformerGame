@@ -7,15 +7,7 @@
 #include "FadeScreen.h"
 #include "LogoScreen.h"
 #include "TitleScreen.h"
-#include "WinScreen.h"
-#include "DeathScreen.h"
 #include "Scene.h"
-#include "Map.h"
-#include "Player.h"
-#include "GroundEnemy.h"
-#include "FlyingEnemy.h"
-#include "Item.h"
-#include "Life.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -50,17 +42,6 @@ bool LogoScreen::Start()
 	logoScreen = app->tex->Load("Assets/Screens/logo_screen.png");
 
 	app->audio->PlayMusic("Assets/Audio/Music/logo_music.ogg");
-
-	app->map->active = false;
-	app->player->active = false;
-	app->groundenemy->active = false;
-	app->flyingenemy->active = false;
-	app->item->active = false;
-	app->scene->active = false;
-	app->titleScreen->active = false;
-	app->winScreen->active = false;
-	app->deathScreen->active = false;
-	app->life->active = false;
 	
 	return ret;
 }
@@ -92,10 +73,11 @@ bool LogoScreen::PostUpdate()
 		ret = false;
 	}
 
-	if (timer == 190) 
+
+	if (timer == 160) 
 	{
 		app->fadeScreen->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 50.0f);
+		app->fadeScreen->FadeToBlack(this, (Module*)app->titleScreen, 60.0f);
 	}
 	return ret;
 }
