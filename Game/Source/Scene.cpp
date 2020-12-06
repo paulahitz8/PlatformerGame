@@ -154,4 +154,3 @@ bool Scene::CleanUp()
 
 	return true;
 }
-

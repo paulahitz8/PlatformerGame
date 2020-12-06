@@ -65,7 +65,6 @@ bool WinScreen::Update(float dt)
 {
 	SDL_Rect iceRect = { 0, 0, 68, 26 };
 	rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	//app->render->DrawTexture(winScreen, 0, 350, &rect);
 
 	if (app->player->numIce == 0)
 	{

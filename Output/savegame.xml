@@ -20,12 +20,12 @@
 	<item />
 	<pathfinding />
 	<player>
-		<player x="4554" y="1065" />
+		<player x="7048" y="1065" />
 	</player>
 	<collisions />
 	<DeathScreen />
 	<WinScreen />
 	<renderer>
-		<camera x="-4054" y="-500" />
+		<camera x="-6544" y="-500" />
 	</renderer>
 </save_state>

@@ -758,8 +758,13 @@ bool Player::CleanUp()
 		{
 			delete snowballs[i];
 			snowballs[i] = nullptr;
+			snowballCollider->pendingToDelete = true;
 		}
 	}
+
+	if (playerCollider != nullptr) playerCollider->pendingToDelete = true;
+	
+
 	//Unload the audios
 	app->audio->UnloadFx(jumpingFx);
 	app->audio->UnloadFx(deadFx);
