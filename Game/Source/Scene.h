@@ -37,6 +37,9 @@ public:
 private:
 
 	SDL_Texture* background;
+	SDL_Texture* debugPath;
+
+	bool boolPath = false;
 };
 
 #endif // __SCENE_H__

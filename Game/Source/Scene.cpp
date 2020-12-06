@@ -55,6 +55,7 @@ bool Scene::Start()
 	RELEASE_ARRAY(data);
 
 	background = app->tex->Load("Assets/Screens/background.png");
+	debugPath = app->tex->Load("Assets/Maps/colliders_tileset.png");
 
 	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false) app->audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
 
@@ -70,28 +71,6 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
-	/*static iPoint origin;
-	static bool originSelected = false;
-
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
-
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (originSelected == true)
-		{
-			app->pathfinding->CreatePath(origin, p);
-			originSelected = false;
-		}
-		else
-		{
-			origin = p;
-			originSelected = true;
-		}
-	}*/
-
 	return true;
 }
 
@@ -100,14 +79,18 @@ bool Scene::Update(float dt)
 {
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) app->map->ChangePropertyOfLayer("Collisions", "Drawable", 1);
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		app->map->ChangePropertyOfLayer("Collisions", "Drawable", 1);
+		boolPath = !boolPath;
+	}
 
 	// Camera: follow the player
 	if (app->player->playerPos.x >= 500 && app->player->playerPos.x < 8820) app->render->camera.x = -(app->player->playerPos.x - 500);
 
 	// Camera limits
 	if (app->render->camera.x > 0) app->render->camera.x--;
-	
+
 	// Draw background
 	uint w, h;
 	app->win->GetWindowSize(w, h);
@@ -120,27 +103,20 @@ bool Scene::Update(float dt)
 	// Draw map
 	if (app->map->active == true) app->map->Draw();
 
-	//SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-	//	app->map->data.width, app->map->data.height,
-	//	app->map->data.tileWidth, app->map->data.tileHeight,
-	//	app->map->data.tilesets.Count());
+	// Draw debug path
 
-	//app->win->SetTitle(title.GetString());
+	SDL_Rect rect = {64, 0, 64, 64};
 
-	//app->input->GetMousePosition(mouseX, mouseY);
-	//iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	//p = app->map->WorldToMap(p.x, p.y);
-	//p = app->map->MapToWorld(p.x, p.y);
-
-	//app->render->DrawTexture(debugTex, p.x, p.y);
-
-	//const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-
-	//for (uint i = 0; i < path->Count(); ++i)
-	//{
-	//	iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-	//	app->render->DrawTexture(debugTex, pos.x, pos.y);
-	//}
+	if (boolPath)
+	{
+		for (uint i = 0; i < app->path->GetLastPath()->Count(); ++i)
+		{
+			iPoint pos = { app->path->GetLastPath()->At(i)->x, app->path->GetLastPath()->At(i)->y };
+			pos.x = pos.x * 64;
+			pos.y = pos.y * 64;
+			app->render->DrawTexture(debugPath, pos.x, pos.y, &rect);
+		}
+	}
 
 	return true;
 }
