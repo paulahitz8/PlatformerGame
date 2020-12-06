@@ -231,8 +231,6 @@ bool Player::Update(float dt)
 			{
 
 				isShooting = false;
-				/*shootRight = false;
-				shootLeft = false;*/
 
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) currentAnimation = &rightShoot;
 
@@ -244,7 +242,6 @@ bool Player::Update(float dt)
 			if (timerShoot == 15)
 			{
 				if (currentAnimation == &rightShoot) currentAnimation = &rightIdle;
-
 				else if (currentAnimation == &leftShoot) currentAnimation = &leftIdle;
 
 				timerShoot = 0;
@@ -272,13 +269,11 @@ bool Player::Update(float dt)
 				}
 			}
 
-
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				if (isJumping != true)
 				{
 					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightWalk;
-
 					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftWalk;
 				}
 			}
@@ -328,10 +323,6 @@ bool Player::Update(float dt)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 			{
-					/*isShooting = false;*/
-					/*shootRight = false;
-					shootLeft = false;*/
-
 				if (currentAnimation == &rightIdle) currentAnimation = &rightShoot;
 
 				if (currentAnimation == &leftIdle) currentAnimation = &leftShoot;
@@ -342,7 +333,6 @@ bool Player::Update(float dt)
 			if (timerShoot == 15)
 			{
 				if (currentAnimation == &rightShoot) currentAnimation = &rightIdle;
-
 				else if (currentAnimation == &leftShoot) currentAnimation = &leftIdle;
 
 				timerShoot = 0;
@@ -350,31 +340,27 @@ bool Player::Update(float dt)
 
 			if (timerShoot == 14)
 			{
-				/*if (!shootRight && !shootLeft)
-				{*/
-					if (currentAnimation == &leftShoot || currentAnimation == &rightShoot || currentAnimation == &rightWalk || currentAnimation == &leftWalk || currentAnimation == &rightJump || currentAnimation == &leftJump)
+				if (currentAnimation == &leftShoot || currentAnimation == &rightShoot || currentAnimation == &rightWalk || currentAnimation == &leftWalk || currentAnimation == &rightJump || currentAnimation == &leftJump)
+				{
+					for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 					{
-						for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+						if (snowballs[i] == nullptr)
 						{
-							if (snowballs[i] == nullptr)
-							{
-									numSnowball = i;
-									AddSnowball();
-									snowballs[i]->snowballPos = playerPos;
-									snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
-									break;
-							}
+								numSnowball = i;
+								AddSnowball();
+								snowballs[i]->snowballPos = playerPos;
+								snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
+								break;
 						}
-						currentSnowballAnimation = &snowballAnim;
 					}
-				/*}*/
+					currentSnowballAnimation = &snowballAnim;
+				}
 			}
 
 			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
 				app->audio->PlayFx(jumpingFx);
 			}
-
 			else if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (app->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT))
 			{
 				app->audio->PlayFx(jumpingFx);
@@ -386,11 +372,9 @@ bool Player::Update(float dt)
 				if (!isJumping)
 				{
 					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightWalk;
-
 					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftWalk;
 				}
 			}
-
 			
 			//Walking to the left
 			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -430,7 +414,6 @@ bool Player::Update(float dt)
 				isJumping = true;
 
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightJump;
-
 				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftJump;
 
 				speed.y = floor(-1700.0 * dt);
@@ -456,15 +439,9 @@ bool Player::Update(float dt)
 					changePos = false;
 				}
 			}
-			else
-			{
-				changePos = true;
-			}
+			else changePos = true;
 
-			if (isCheckpoint)
-			{
-				app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
-			}
+			if (isCheckpoint) app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
 
 			if (timerCheck % 10 == 0)
 			{
@@ -498,7 +475,6 @@ bool Player::Update(float dt)
 					isJumping = false;
 
 					if (currentAnimation == &rightJump) currentAnimation = &rightIdle;
-
 					else if (currentAnimation == &leftJump) currentAnimation = &leftIdle;
 
 					if (playerPos.y > (playerPos.y / 64) * 64 + 41) playerPos.y = (playerPos.y / 64) * 64 + 41;
@@ -582,14 +558,13 @@ bool Player::Update(float dt)
 	{
 		if (!godMode)
 		{
-
 			if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) currentAnimation = &rightDeath;
-
 			else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) currentAnimation = &leftDeath;
 
 			if (timer == 50) app->audio->PlayFx(deadFx);
 
 			timer++;
+
 			if (timer == 118)
 			{
 				lifeCount--;
@@ -619,10 +594,7 @@ bool Player::Update(float dt)
 					isDead = false;
 				}
 			}
-
-			//isDead = false;
 		}
-
 	}
 
 	if (isShooting)
@@ -886,6 +858,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				isFalling = false;
 				isDead = true;
 			}
+
 			if (c2->type == Collider::Type::FLYINGENEMY)
 			{
 				if (isJumping == false)
@@ -898,26 +871,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				isFalling = false;
 				isDead = true;
 			}
-		}
-		if (c1->type == Collider::Type::SNOWBALL)
-		{
-			if (c2->type == Collider::Type::GROUNDENEMY)
-			{
-				app->audio->PlayFx(app->groundEnemy->sealFx);
-				app->groundEnemy->isDead = true;
 
-				c2->pendingToDelete = true;
-			}
-			if (c2->type == Collider::Type::FLYINGENEMY)
-			{
-				app->audio->PlayFx(app->flyingEnemy->eagleFx);
-				app->flyingEnemy->isDead = true;
-
-				c2->pendingToDelete = true;
-			}
-		}
-		if (c1->type == Collider::Type::PLAYER)
-		{
 			if (c2->type == Collider::Type::LIFE)
 			{
 				app->life->isPicked = true;
@@ -927,9 +881,12 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				}
 				c2->pendingToDelete = true;
 			}
-		}
-		if (c1->type == Collider::Type::PLAYER)
-		{
+
+			if (c2->type == Collider::Type::CHEKPOINT)
+			{
+				isCheckpoint = true;
+			}
+
 			if (c2->type == Collider::Type::ITEM)
 			{
 				app->audio->PlayFx(app->item->iceFx);
@@ -938,11 +895,25 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				c2->pendingToDelete = true;
 			}
 		}
-		if (c1->type == Collider::Type::PLAYER)
+
+		if (c1->type == Collider::Type::SNOWBALL)
 		{
-			if (c2->type == Collider::Type::CHEKPOINT)
+			if (c2->type == Collider::Type::GROUNDENEMY)
 			{
-				isCheckpoint = true;
+				app->audio->PlayFx(app->groundEnemy->sealFx);
+				app->groundEnemy->isDead = true;
+
+				c2->pendingToDelete = true;
+				c1->pendingToDelete = true;
+			}
+
+			if (c2->type == Collider::Type::FLYINGENEMY)
+			{
+				app->audio->PlayFx(app->flyingEnemy->eagleFx);
+				app->flyingEnemy->isDead = true;
+
+				c2->pendingToDelete = true;
+				c1->pendingToDelete = true;
 			}
 		}
 	}
