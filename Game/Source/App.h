@@ -19,6 +19,7 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class BlackScreen;
 class TitleScreen;
 class LogoScreen;
 class Map;
@@ -95,6 +96,7 @@ public:
 	Audio* audio;
 	Scene* scene;
 	TitleScreen* titleScreen;
+	BlackScreen* blackScreen;
 	LogoScreen* logoScreen;
 	Map* map;
 	FadeScreen* fadeScreen;

@@ -31,6 +31,7 @@
     <ClCompile Include="Source\NodeAstar.cpp" />
     <ClCompile Include="Source\FlyingEnemy.cpp" />
     <ClCompile Include="Source\GroundEnemy.cpp" />
+    <ClCompile Include="Source\BlackScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="Source\NodeAstar.h" />
     <ClInclude Include="Source\FlyingEnemy.h" />
     <ClInclude Include="Source\GroundEnemy.h" />
+    <ClInclude Include="Source\BlackScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
