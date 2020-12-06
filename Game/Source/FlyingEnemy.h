@@ -45,10 +45,7 @@ public:
 	iPoint enemyPos;
 
 	bool isDead = false;
-	int pathTimer = 0;
-	int size;
-	int createPath = 0; 
-	int pathIndex = 0;
+
 	//const DynArray<iPoint>* path;
 
 	unsigned int eagleFx;
@@ -73,9 +70,13 @@ private:
 	Physics enemyPhysics;
 	Collider* enemyCollider = nullptr;
 
+	int pathTimer = 0;
+	int createPath = 0;
+	int pathIndex = 0;
+	bool playerSeen;
 	int soundTimer;
 	int timer;
-	bool playerSeen;
+
 };
 
 #endif // __FLYINGENEMY_H__
