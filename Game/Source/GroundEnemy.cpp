@@ -207,7 +207,10 @@ bool GroundEnemy::CleanUp()
 	//Unload audios
 	app->audio->UnloadFx(sealFx);
 
-	enemyCollider->pendingToDelete = true;
+	if (enemyCollider != nullptr)
+	{
+		enemyCollider->pendingToDelete = true;
+	}
 
 	return true;
 }

@@ -304,8 +304,10 @@ bool FlyingEnemy::CleanUp()
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
 	app->tex->UnLoad(deadTexture);
-
-	enemyCollider->pendingToDelete = true;
+	if (enemyCollider != nullptr)
+	{
+		enemyCollider->pendingToDelete = true;
+	}
 
 	return true;
 }
