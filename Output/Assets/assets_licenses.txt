@@ -1,0 +1,345 @@
+Tileset: 2D Platformer Snow Pack
+
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+No Copyright
+The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. See Other Information below.
+
+This license is acceptable for Free Cultural Works.
+
+Other Information
+In no way are the patent or trademark rights of any person affected by CC0, nor are the rights that other persons may have in the work or in how the work is used, such as publicity or privacy rights.
+Unless expressly stated otherwise, the person who associated a work with this deed makes no warranties about the work, and disclaims liability for all uses of the work, to the fullest extent permitted by applicable law.
+When using or citing the work, you should not imply endorsement by the author or the affirmer.
+
+Link for more information: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+----------
+
+Player sprites: Hidegvins
+
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+
+You are free to:
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+for any purpose, even commercially.
+This license is acceptable for Free Cultural Works.
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+Notices:
+You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+
+Link for more information: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+http://www.gnu.org/licenses/gpl-3.0.html
+
+----------
+
+Background: Glacial Mountains
+
+No license.
+
+Art:  Vicente Nitti (vnitti)
+
+This pixel art piece is licensed under a Creative Commons Atribution 4.0 International license CC BY 4.0,
+which reads the following:
+
+You are free to:
+	+ Share — copy and redistribute the material in any medium or format
+	+ Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+
+Under the following terms:
+	+ Attribution — You must give appropriate credit, provide a link to the license, and indicate if
+	  changes were made. You may do so in any reasonable manner, but not in any way that suggests the
+	  licensor endorses you or your use.
+
+	+ No additional restrictions — You may not apply legal terms or technological measures that legally
+	  restrict others from doing anything the license permits.
+
+License - http://creativecommons.org/licenses/by/4.0/
+
+Link for more information: https://vnitti.itch.io/glacial-mountains-parallax-background
+
+----------
+
+deadFx: Penguin SFX
+
+Attribution 3.0 Unported (CC BY 3.0)
+
+You are free to:
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+for any purpose, even commercially.
+
+This license is acceptable for Free Cultural Works.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+Notices:
+You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+
+Link for more information: https://creativecommons.org/licenses/by/3.0/legalcode
+
+
+----------
+
+jumpingFx: Platformer Jumping Sounds
+
+Attribution 3.0 Unported (CC BY 3.0)
+
+You are free to:
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+for any purpose, even commercially.
+
+This license is acceptable for Free Cultural Works.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+Notices:
+You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+
+Link for more information: https://creativecommons.org/licenses/by/3.0/legalcode
+
+
+----------
+
+splashFx: Water Splashes
+
+Attribution 3.0 Unported (CC BY 3.0)
+
+You are free to:
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+for any purpose, even commercially.
+
+This license is acceptable for Free Cultural Works.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+Notices:
+You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+
+Link for more information: https://creativecommons.org/licenses/by/3.0/legalcode
+
+
+----------
+
+iceFx: 42 Snow and Gravel Footsteps
+
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+No Copyright
+The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. See Other Information below.
+
+This license is acceptable for Free Cultural Works.
+
+Other Information
+In no way are the patent or trademark rights of any person affected by CC0, nor are the rights that other persons may have in the work or in how the work is used, such as publicity or privacy rights.
+Unless expressly stated otherwise, the person who associated a work with this deed makes no warranties about the work, and disclaims liability for all uses of the work, to the fullest extent permitted by applicable law.
+When using or citing the work, you should not imply endorsement by the author or the affirmer.
+
+Link for more information: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+
+----------
+
+fishFx: 42 Skippy Fish Water Sound Collection
+
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+No Copyright
+The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. See Other Information below.
+
+This license is acceptable for Free Cultural Works.
+
+Other Information
+In no way are the patent or trademark rights of any person affected by CC0, nor are the rights that other persons may have in the work or in how the work is used, such as publicity or privacy rights.
+Unless expressly stated otherwise, the person who associated a work with this deed makes no warranties about the work, and disclaims liability for all uses of the work, to the fullest extent permitted by applicable law.
+When using or citing the work, you should not imply endorsement by the author or the affirmer.
+
+Link for more information: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+
+----------
+
+checkpointFx: Completion sound.
+
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+No Copyright
+The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. See Other Information below.
+
+This license is acceptable for Free Cultural Works.
+
+Other Information
+In no way are the patent or trademark rights of any person affected by CC0, nor are the rights that other persons may have in the work or in how the work is used, such as publicity or privacy rights.
+Unless expressly stated otherwise, the person who associated a work with this deed makes no warranties about the work, and disclaims liability for all uses of the work, to the fullest extent permitted by applicable law.
+When using or citing the work, you should not imply endorsement by the author or the affirmer.
+
+Link for more information: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+
+----------
+
+sealFx: Seal - Free Sound Effect
+
+All of my sound effects are original and I make completely by myself from scratch! I do this so that everyone can use them in their videos without fear of copyright! Technically, that makes them all public domain! Using a sophisticated mic, I record my voice and the world around me, then edit them in studio grade software for efficiency and quality.
+
+Feel free to use the sound as you wish! And don't be afraid to show off your videos in my discussion tab using the effects! We love to see your creations!
+
+Though credit for using my sound effects is not required, it is very much appreciated!
+
+Link for more information: https://www.youtube.com/watch?v=w5Zbk3Az1FU&ab_channel=Stingray%27sMusic%26SoundEffects
+
+
+----------
+
+eagleFx: Bird, hawk, single screech, excited, medium close perspective
+
+License: Standard License
+Important – please read.
+
+You MUST agree to the terms below before using our website and downloading and using our free sound effects. We have tried to make our license as easy to understand as possible and we really want you to get the best use from our free sound effects and music. If in any doubt about how you intend to use our sounds with regards to this license, please get in touch.
+
+This License grants a single user the right to download and use our sound effects and music.
+
+Attribution / Credit Required
+Sound effects licensed via this standard license require attribution in the form of a credit / link back to our website. Please do NOT credit us from any social media platform. Credits must be added to the project itself, for example in your YouTube video description, app or game credits page or your projects related website or blog etc.  We are fairly flexible on how you do this, but we recommend something like:
+
+“Sound effects obtained from https://www.zapsplat.com“
+“Additional sound effects from https://www.zapsplat.com“
+“Music from https://www.zapsplat.com“
+
+Link for more information: https://www.zapsplat.com/license-type/standard-license/
+
+
+----------
+
+DeathScreenMusic: Music Box Game Over III
+
+Attribution 3.0 Unported (CC BY 3.0)
+
+You are free to:
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+for any purpose, even commercially.
+
+This license is acceptable for Free Cultural Works.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+Notices:
+You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+
+Link for more information: https://creativecommons.org/licenses/by/3.0/legalcode
+
+
+----------
+
+LogoScreenMusic: Dynamite sound effect
+
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+No Copyright
+The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. See Other Information below.
+
+This license is acceptable for Free Cultural Works.
+
+Other Information
+In no way are the patent or trademark rights of any person affected by CC0, nor are the rights that other persons may have in the work or in how the work is used, such as publicity or privacy rights.
+Unless expressly stated otherwise, the person who associated a work with this deed makes no warranties about the work, and disclaims liability for all uses of the work, to the fullest extent permitted by applicable law.
+When using or citing the work, you should not imply endorsement by the author or the affirmer.
+
+Link for more information: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+
+----------
+
+SnowMusic: Snowland Town
+
+Attribution 3.0 Unported (CC BY 3.0)
+
+You are free to:
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+for any purpose, even commercially.
+
+This license is acceptable for Free Cultural Works.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+Notices:
+You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+
+Link for more information: https://creativecommons.org/licenses/by/3.0/legalcode
+
+
+----------
+
+TitleScreenMusic: November Snow
+
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+No Copyright
+The person who associated a work with this deed has dedicated the work to the public domain by waiving all of his or her rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. See Other Information below.
+
+This license is acceptable for Free Cultural Works.
+
+Other Information
+In no way are the patent or trademark rights of any person affected by CC0, nor are the rights that other persons may have in the work or in how the work is used, such as publicity or privacy rights.
+Unless expressly stated otherwise, the person who associated a work with this deed makes no warranties about the work, and disclaims liability for all uses of the work, to the fullest extent permitted by applicable law.
+When using or citing the work, you should not imply endorsement by the author or the affirmer.
+
+Link for more information: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+
+----------
+
+Icecube sprites, heart sprites, fish sprites, seal sprites, eagle sprites, igloo images were made by TNT Cat. No license required.
