@@ -7,7 +7,6 @@
 #include "DynArray.h"
 #include "List.h"
 #include <unordered_map>
-#include "NodeAstar.h"
 #include <queue> 
 
 #define DEFAULT_PATH_LENGTH 50

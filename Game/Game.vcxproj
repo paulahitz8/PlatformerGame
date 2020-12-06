@@ -97,7 +97,6 @@
   <ItemGroup>
     <ClCompile Include="Source\BlackScreen.cpp" />
     <ClCompile Include="Source\FlyingEnemy.cpp" />
-    <ClCompile Include="Source\NodeAstar.cpp" />
     <ClCompile Include="Source\Item.cpp" />
     <ClCompile Include="Source\Life.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
