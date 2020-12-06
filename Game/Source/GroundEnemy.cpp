@@ -93,6 +93,12 @@ bool GroundEnemy::Start()
 	//Audios
 	sealFx = app->audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
 
+	//Path
+	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
+	createPath = app->path->CreatePath(enemyTile, playerTile);
+	playerSeen = false;
+
 	timer = 0;
 	soundTimer = 0;
 
@@ -106,6 +112,66 @@ bool GroundEnemy::PreUpdate()
 
 bool GroundEnemy::Update(float dt)
 {		
+
+	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
+
+	if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
+
+	//if (playerSeen)
+	//{
+		if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
+		{
+			createPath = app->path->CreatePath(enemyTile, playerTile);
+			//path = app->path->GetLastPath();
+			if (createPath == 0)
+			{
+				pathTimer = 0;
+			}
+		}
+
+		if (app->path->GetLastPath()->At(0) != nullptr)
+		{
+
+			const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+			//enemyPos.x = pos->x * 64; 
+			//enemyPos.y = pos->y * 64;
+
+			if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y)
+			{
+				pathIndex++;
+			}
+			else
+			{
+				if (pos->x * 64 < enemyPos.x)
+				{
+					enemyPos.x -= 2;
+				}
+				else if (pos->x * 64 > enemyPos.x)
+				{
+					enemyPos.x += 2;
+				}
+
+				//if (pos->y * 64 < enemyPos.y)
+				//{
+				//	enemyPos.y -= 2;
+				//}
+				//else if (pos->y * 64 > enemyPos.y)
+				//{
+				//	enemyPos.y += 2;
+				//}
+			}
+
+			//enemyPos.x = app->path->GetLastPath();
+			//enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
+			//enemyPos.y = app->path->GetLastPath().At(pathTimer)->y;
+		}
+
+
+		pathTimer++;
+	//}
+
+
 	if (isDead)
 	{
 		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftRoll)
@@ -133,34 +199,34 @@ bool GroundEnemy::Update(float dt)
 	{
 		if (!app->player->godMode)
 		{
-			if (abs(app->player->playerPos.x - enemyPos.x) < 200)
-			{
-				if (soundTimer % 80 == 0)
-				{
-					app->audio->PlayFx(sealFx);
-				}
-				if (app->player->playerPos.x > enemyPos.x) //from the right
-				{
-					enemyPos.x += 160 * dt;
-					currentAnimation = &rightRoll;
-				}
-				if (app->player->playerPos.x < enemyPos.x) //from the left
-				{
-					enemyPos.x -= 120 * dt;
-					currentAnimation = &leftRoll;
-				}
-			}
-			else
-			{
-				if (currentAnimation == &leftRoll)
-				{
-					currentAnimation = &leftIdle;
-				}
-				else if (currentAnimation == &rightRoll)
-				{
-					currentAnimation = &rightIdle;
-				}
-			}
+			//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+			//{
+			//	if (soundTimer % 80 == 0)
+			//	{
+			//		app->audio->PlayFx(sealFx);
+			//	}
+			//	if (app->player->playerPos.x > enemyPos.x) //from the right
+			//	{
+			//		enemyPos.x += 160 * dt;
+			//		currentAnimation = &rightRoll;
+			//	}
+			//	if (app->player->playerPos.x < enemyPos.x) //from the left
+			//	{
+			//		enemyPos.x -= 120 * dt;
+			//		currentAnimation = &leftRoll;
+			//	}
+			//}
+			//else
+			//{
+			//	if (currentAnimation == &leftRoll)
+			//	{
+			//		currentAnimation = &leftIdle;
+			//	}
+			//	else if (currentAnimation == &rightRoll)
+			//	{
+			//		currentAnimation = &rightIdle;
+			//	}
+			//}
 		}
 
 		else

@@ -67,6 +67,11 @@ private:
 	fPoint speed;
 	Collider* enemyCollider = nullptr;
 
+	int pathTimer = 0;
+	int createPath = 0;
+	int pathIndex = 0;
+	bool playerSeen;
+
 	int soundTimer;
 	int timer;
 };
