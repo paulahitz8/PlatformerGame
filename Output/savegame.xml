@@ -11,16 +11,16 @@
 		<enemy x="300" y="998" />
 	</ground enemies>
 	<flying enemies>
-		<enemy x="2800" y="702" />
+		<enemy x="2852" y="794" />
 	</flying enemies>
 	<life />
 	<item />
 	<pathfinding />
 	<player>
-		<player x="4608" y="1065" />
+		<player x="4590" y="1065" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="-4104" y="-500" />
+		<camera x="-4086" y="-500" />
 	</renderer>
 </save_state>

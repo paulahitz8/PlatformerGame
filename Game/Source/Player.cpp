@@ -192,7 +192,6 @@ bool Player::PreUpdate()
 
 bool Player::Update(float dt)
 {
-
 	for (uint i = 0; i < MAX_SNOWBALLS; ++i)
 	{
 		if (snowballs[i] != nullptr && snowballs[i]->pendingToDelete == true)

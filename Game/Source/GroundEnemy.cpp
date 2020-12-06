@@ -113,6 +113,13 @@ bool GroundEnemy::Update(float dt)
 
 	if (isDead)
 	{
+		if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
+		{
+			isFalling = false;
+
+			if (enemyPos.y > (enemyPos.y / 64) * 64 + 38) enemyPos.y = (enemyPos.y / 64) * 64 + 38;
+		}
+
 		if (currentAnimation == &leftIdle || currentAnimation == &leftRoll) currentAnimation = &leftDead;
 		else if (currentAnimation == &rightIdle || currentAnimation == &rightRoll) currentAnimation = &rightDead;
 	
