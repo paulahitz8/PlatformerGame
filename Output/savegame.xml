@@ -5,27 +5,22 @@
 	<textures />
 	<audio />
 	<scene />
-	<BlackScreen />
-	<LogoScreen />
-	<TitleScreen />
 	<map />
 	<fadeScreen />
 	<ground enemies>
-		<enemy x="559" y="995" />
+		<enemy x="2376" y="995" />
 	</ground enemies>
 	<flying enemies>
-		<enemy x="2038" y="704" />
+		<enemy x="2348" y="828" />
 	</flying enemies>
 	<life />
 	<item />
 	<pathfinding />
 	<player>
-		<player x="2540" y="1065" />
+		<player x="2542" y="1065" />
 	</player>
 	<collisions />
-	<DeathScreen />
-	<WinScreen />
 	<renderer>
-		<camera x="-2036" y="-500" />
+		<camera x="-2038" y="-500" />
 	</renderer>
 </save_state>

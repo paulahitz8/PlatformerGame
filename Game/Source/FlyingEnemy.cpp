@@ -105,97 +105,27 @@ bool FlyingEnemy::Update(float dt)
 
 	if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
 
-	if (playerSeen)
-	{
-		if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
-		{
-			createPath = app->path->CreatePath(enemyTile, playerTile);
-			//path = app->path->GetLastPath();
-			if (createPath == 0)
-			{
-				pathTimer = 0;
-			}
-		}
-
-		if (app->path->GetLastPath()->At(0) != nullptr)
-		{
-
-			const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
-			//enemyPos.x = pos->x * 64; 
-			//enemyPos.y = pos->y * 64;
-
-			if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y)
-			{
-				pathIndex++;
-			}
-			else
-			{
-				if (pos->x * 64 < enemyPos.x)
-				{
-					enemyPos.x -= 2;
-				}
-				else if (pos->x * 64 > enemyPos.x)
-				{
-					enemyPos.x += 2;
-				}
-
-				if (pos->y * 64 < enemyPos.y)
-				{
-					enemyPos.y -= 2;
-				}
-				else if (pos->y * 64 > enemyPos.y)
-				{
-					enemyPos.y += 2;
-				}
-			}
-
-			//enemyPos.x = app->path->GetLastPath();
-			//enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
-			//enemyPos.y = app->path->GetLastPath().At(pathTimer)->y;
-		}
-
-
-		pathTimer++;
-	}
-		
-	//int speedP = 0;
-	//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
-
 	if (isDead)
 	{
 		if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER)
 		{
-			if (currentAnimation == &leftFalling)
-			{
-				currentAnimation = &leftDead;
-			}
-			else if (currentAnimation == &rightFalling)
-			{
-				currentAnimation = &rightDead;
-			}
+			if (currentAnimation == &leftFalling) currentAnimation = &leftDead;
+			else if (currentAnimation == &rightFalling) currentAnimation = &rightDead;
+
 			if (timer == 60)
 			{
 				currentAnimation = &blankAnim;
 				currentDeadAnimation = &deadAnim;
 			}
-			else if (timer == 110)
-			{
-				currentDeadAnimation = &blankAnim;
-			}
+			else if (timer == 110) currentDeadAnimation = &blankAnim;
 
 			timer++;
 		}
 		else
 		{
 			enemyPos.y+=2;
-			if (currentAnimation == &left)
-			{
-				currentAnimation = &leftFalling;
-			}
-			else if (currentAnimation == &right)
-			{
-				currentAnimation = &rightFalling;
-			}
+			if (currentAnimation == &left) currentAnimation = &leftFalling;
+			else if (currentAnimation == &right) currentAnimation = &rightFalling;
 		}
 	}
 
@@ -203,34 +133,48 @@ bool FlyingEnemy::Update(float dt)
 	{
 		if (!app->player->godMode)
 		{
-			//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
-			//{
-			//	if (soundTimer % 100 == 0)
-			//	{
-			//		app->audio->PlayFx(eagleFx);
-			//	}
-			//	if (app->player->playerPos.x > enemyPos.x) //from the right
-			//	{
-			//		currentAnimation = &right;
-			//		enemyPos.x += 160 * dt;
-			//	}
-			//	if (app->player->playerPos.x < enemyPos.x) //from the left
-			//	{
-			//		currentAnimation = &left;
-			//		enemyPos.x -= 120 * dt;
-			//	}
-			//}
+			if (playerSeen)
+			{
+				if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
+				{
+					createPath = app->path->CreatePath(enemyTile, playerTile);
+
+					if (createPath == 0) pathTimer = 0;
+				}
+
+				if (app->path->GetLastPath()->At(0) != nullptr)
+				{
+
+					const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+
+					if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y) pathIndex++;
+					else
+					{
+						if (pos->x * 64 < enemyPos.x)
+						{
+							currentAnimation = &left;
+							enemyPos.x -= floor(150 * dt);
+						}
+						else if (pos->x * 64 > enemyPos.x)
+						{
+							currentAnimation = &right;
+							enemyPos.x += floor(150 * dt);
+						}
+
+						if (pos->y * 64 < enemyPos.y) enemyPos.y -= floor(150 * dt);
+						else if (pos->y * 64 > enemyPos.y) enemyPos.y += floor(150 * dt);
+					}
+				}
+				pathTimer++;
+				if (soundTimer % 500 == 0) app->audio->PlayFx(eagleFx);
+			}
 		}
-		
 	}
 	
 	soundTimer++;
 
-	//currentAnimation->Update(dt);
-	//currentDeadAnimation->Update(dt);
-
-	//iPoint nextMove = app->path->Path(enemyPos, 4);
-	//enemyPos = nextMove;
+	currentAnimation->Update(dt);
+	currentDeadAnimation->Update(dt);
 
 	enemyCollider->SetPos(enemyPos.x + 10, enemyPos.y);
 
@@ -253,15 +197,11 @@ bool FlyingEnemy::CleanUp()
 {
 	//Unload audios
 	app->audio->UnloadFx(eagleFx);
-	
 
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
 	app->tex->UnLoad(deadTexture);
-	if (enemyCollider != nullptr)
-	{
-		enemyCollider->pendingToDelete = true;
-	}
+	if (enemyCollider != nullptr) enemyCollider->pendingToDelete = true;
 
 	return true;
 }

@@ -65,8 +65,8 @@ bool Scene::Start()
 	}
 
 	app->player->Enable();
-	app->groundenemy->Enable();
-	app->flyingenemy->Enable();
+	app->groundEnemy->Enable();
+	app->flyingEnemy->Enable();
 	app->item->Enable();
 	app->life->Enable();
 
@@ -176,8 +176,8 @@ bool Scene::CleanUp()
 
 	app->player->Disable();
 	app->map->Disable();
-	app->groundenemy->Disable();
-	app->flyingenemy->Disable();
+	app->groundEnemy->Disable();
+	app->flyingEnemy->Disable();
 	app->item->Disable();
 	app->life->Disable();
 

@@ -129,5 +129,10 @@ bool Life::CleanUp()
 
 	app->audio->UnloadFx(fishFx);
 
+	if (fish1Collider != nullptr) fish1Collider->pendingToDelete = true;
+	if (fish2Collider != nullptr) fish2Collider->pendingToDelete = true;
+	if (fish3Collider != nullptr) fish3Collider->pendingToDelete = true;
+	if (fish4Collider != nullptr) fish4Collider->pendingToDelete = true;
+
 	return true;
 }
