@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Player.h"
 
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -42,7 +43,8 @@ bool WinScreen::Awake()
 bool WinScreen::Start()
 {
 	bool ret = true;
-	app->scene->active = false;
+	app->scene->active = false;	
+
 	app->render->camera.x = 0;
 	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg", 0.0f);
 

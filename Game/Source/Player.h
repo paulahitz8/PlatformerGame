@@ -114,6 +114,7 @@ private:
 	Physics playerPhysics;
 	Collider* playerCollider = nullptr;
 	Collider* snowballCollider = nullptr;
+	Collider* winCollider = nullptr;
 
 	bool ground = false;
 	bool platform = false;
@@ -130,6 +131,7 @@ private:
 	bool shootLeft = false;
 	bool changePos = false;
 	bool isCheckpoint = false;
+	bool isWon = false;
 
 	int timer = 0;
 	int timerCheck = 0;

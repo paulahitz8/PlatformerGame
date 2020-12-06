@@ -171,6 +171,7 @@ bool Player::Start()
 
 	//Collider
 	playerCollider = app->collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
+	winCollider = app->collisions->AddCollider({ 9300, 500, 20, 1000 }, Collider::Type::WIN);
 	checkpointList.Add(app->collisions->AddCollider({ 2520,500,20,1000 }, Collider::Type::CHEKPOINT));
 	checkpointList.Add(app->collisions->AddCollider({ 4570,500,20,1000 }, Collider::Type::CHEKPOINT));
 	checkpointList.Add(app->collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHEKPOINT));
@@ -311,11 +312,11 @@ bool Player::Update(float dt)
 				if (!isJumping) currentAnimation = &rightIdle;
 			}
 
-			if (playerPos.x == 9300)
-			{
-				app->fadeScreen->active = true;
-				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
-			}
+			//if (playerPos.x == 9300)
+			//{
+			//	app->fadeScreen->active = true;
+			//	app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
+			//}
 		}
 
 		else
@@ -544,12 +545,6 @@ bool Player::Update(float dt)
 
 			ppx = playerPos.x;
 			ppy = playerPos.y;
-
-			if (playerPos.x == 9300)
-			{
-				app->fadeScreen->active = true;
-				app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 20.0f);
-			}
 		}
 	}
 
@@ -595,6 +590,8 @@ bool Player::Update(float dt)
 			}
 		}
 	}
+
+	
 
 	if (isShooting)
 	{
@@ -677,6 +674,9 @@ bool Player::Update(float dt)
 		}
 	}
 	
+
+
+
 	//Drawing the snowmans
 	SDL_Rect rectSnow = currentSnowmanAnimation->GetCurrentFrame();
 	app->render->DrawTexture(snowmanTexture, 2500, 1026, &rectSnow);
@@ -731,7 +731,7 @@ bool Player::Update(float dt)
 	if (numIce == 4) app->render->DrawTexture(ice4Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
 
 	if (numIce == 5) app->render->DrawTexture(ice5Texture, -(app->render->camera.x - 100), app->render->camera.y + 1050, &iceRect);
-
+	
 	return true;
 }
 
@@ -747,6 +747,12 @@ bool Player::PostUpdate()
 
 	if ((playerPos.y + playerRect.y) > (app->map->data.height * app->map->data.tileHeight)) --playerPos.y;
 
+	if (isWon)
+	{
+		app->scene->Disable();
+		app->winScreen->Enable();
+	}
+
 	return true;
 }
 
@@ -758,12 +764,11 @@ bool Player::CleanUp()
 		{
 			delete snowballs[i];
 			snowballs[i] = nullptr;
-			snowballCollider->pendingToDelete = true;
+			//snowballCollider->pendingToDelete = true;
 		}
 	}
 
-	if (playerCollider != nullptr) playerCollider->pendingToDelete = true;
-	
+	//if (playerCollider != nullptr) playerCollider->pendingToDelete = true;
 
 	//Unload the audios
 	app->audio->UnloadFx(jumpingFx);
@@ -846,6 +851,14 @@ int Player::GetTileProperty(int x, int y, const char* property) const
 
 void Player::OnCollision(Collider* c1, Collider* c2)
 {
+	if (c1->type == Collider::Type::PLAYER)
+	{
+		if (c2->type == Collider::Type::WIN)
+		{
+			isWon = true;
+		}
+	}
+
 	if (!godMode)
 	{
 		if (c1->type == Collider::Type::PLAYER)

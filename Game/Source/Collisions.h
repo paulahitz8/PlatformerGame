@@ -22,6 +22,7 @@ struct Collider
 		SNOWBALL,
 		LIFE,
 		ITEM,
+		WIN,
 		MAX
 	};
 

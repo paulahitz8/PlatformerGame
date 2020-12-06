@@ -14,18 +14,18 @@
 		<enemy x="300" y="998" />
 	</ground enemies>
 	<flying enemies>
-		<enemy x="2800" y="702" />
+		<enemy x="2814" y="796" />
 	</flying enemies>
 	<life />
 	<item />
 	<pathfinding />
 	<player>
-		<player x="7048" y="1065" />
+		<player x="7000" y="1059" />
 	</player>
 	<collisions />
 	<DeathScreen />
 	<WinScreen />
 	<renderer>
-		<camera x="-6544" y="-500" />
+		<camera x="-6500" y="-500" />
 	</renderer>
 </save_state>

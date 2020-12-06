@@ -73,7 +73,6 @@ bool LogoScreen::PostUpdate()
 		ret = false;
 	}
 
-
 	if (timer == 160) 
 	{
 		app->fadeScreen->active = true;
