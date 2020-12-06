@@ -176,9 +176,6 @@ bool FlyingEnemy::Update(float dt)
 	currentAnimation->Update(dt);
 	currentDeadAnimation->Update(dt);
 
-	//iPoint nextMove = app->path->Path(enemyPos, 4);
-	//enemyPos = nextMove;
-
 	enemyCollider->SetPos(enemyPos.x + 10, enemyPos.y);
 
 	//Drawing the enemy
@@ -200,15 +197,11 @@ bool FlyingEnemy::CleanUp()
 {
 	//Unload audios
 	app->audio->UnloadFx(eagleFx);
-	
 
 	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
 	app->tex->UnLoad(deadTexture);
-	if (enemyCollider != nullptr)
-	{
-		enemyCollider->pendingToDelete = true;
-	}
+	if (enemyCollider != nullptr) enemyCollider->pendingToDelete = true;
 
 	return true;
 }

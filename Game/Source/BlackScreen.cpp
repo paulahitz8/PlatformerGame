@@ -53,8 +53,8 @@ bool BlackScreen::Start()
 	app->logoScreen->active = false;
 	app->map->active = false;
 	app->player->active = false;
-	app->groundenemy->active = false;
-	app->flyingenemy->active = false;
+	app->groundEnemy->active = false;
+	app->flyingEnemy->active = false;
 	app->item->active = false;
 	app->scene->active = false;
 	app->titleScreen->active = false;

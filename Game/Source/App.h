@@ -104,8 +104,8 @@ public:
 	Collisions* collisions;
 	DeathScreen* deathScreen;
 	WinScreen* winScreen;
-	GroundEnemy* groundenemy;
-	FlyingEnemy* flyingenemy;
+	GroundEnemy* groundEnemy;
+	FlyingEnemy* flyingEnemy;
 	PathFinding* path;
 	Item* item;
 	Life* life;

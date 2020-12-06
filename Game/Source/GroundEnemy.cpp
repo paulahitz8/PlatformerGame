@@ -81,8 +81,6 @@ bool GroundEnemy::Start()
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
 
-	app->flyingenemy->Enable();
-
 	isDead = false;
 
 	enemyPos = { 300, 995 };

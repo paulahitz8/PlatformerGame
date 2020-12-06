@@ -589,6 +589,7 @@ bool Player::Update(float dt)
 
 			if (timer == 50) app->audio->PlayFx(deadFx);
 
+			timer++;
 			if (timer == 118)
 			{
 				lifeCount--;
@@ -597,27 +598,29 @@ bool Player::Update(float dt)
 					playerCollider->pendingToDelete = true;
 					currentAnimation = &blankAnim;
 					app->fadeScreen->active = true;
-					app->groundenemy->Disable();
-					app->flyingenemy->Disable();
+					app->groundEnemy->Disable();
+					app->flyingEnemy->Disable();
 					app->item->Disable();
 					app->life->Disable();
 					app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);
 					timer = 0;
+					isDead = false;
 				}
-				else
+				else if (lifeCount != 0)
 				{
-					app->groundenemy->Disable();
-					app->flyingenemy->Disable();
+					app->flyingEnemy->Disable();
+					app->groundEnemy->Disable();
 					playerPos = checkpointPos;
 					app->render->camera.x = 0;
 					currentAnimation = &rightIdle;
 					timer = 0;
-					app->groundenemy->Enable();
-
+					app->groundEnemy->Enable();
+					app->flyingEnemy->Enable();
+					isDead = false;
 				}
 			}
-			timer++;
-			isDead = false;
+
+			//isDead = false;
 		}
 
 	}
@@ -900,15 +903,15 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->type == Collider::Type::GROUNDENEMY)
 			{
-				app->audio->PlayFx(app->groundenemy->sealFx);
-				app->groundenemy->isDead = true;
+				app->audio->PlayFx(app->groundEnemy->sealFx);
+				app->groundEnemy->isDead = true;
 
 				c2->pendingToDelete = true;
 			}
 			if (c2->type == Collider::Type::FLYINGENEMY)
 			{
-				app->audio->PlayFx(app->flyingenemy->eagleFx);
-				app->flyingenemy->isDead = true;
+				app->audio->PlayFx(app->flyingEnemy->eagleFx);
+				app->flyingEnemy->isDead = true;
 
 				c2->pendingToDelete = true;
 			}

@@ -46,8 +46,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions();
 	deathScreen = new DeathScreen();
 	winScreen = new WinScreen();
-	groundenemy = new GroundEnemy();
-	flyingenemy = new FlyingEnemy();
+	groundEnemy = new GroundEnemy();
+	flyingEnemy = new FlyingEnemy();
 	item = new Item();
 	life = new Life();
 	path = new PathFinding();
@@ -67,8 +67,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 
 	AddModule(fadeScreen);
-	AddModule(groundenemy);
-	AddModule(flyingenemy);
+	AddModule(groundEnemy);
+	AddModule(flyingEnemy);
 	AddModule(life);
 	AddModule(item);
 	AddModule(path);

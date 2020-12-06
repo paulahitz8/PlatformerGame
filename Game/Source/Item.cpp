@@ -144,8 +144,14 @@ bool Item::CleanUp()
 {
 	//Unload the textures
 	app->tex->UnLoad(iceTexture);
-
+	
 	app->audio->UnloadFx(iceFx);
+
+	if (ice1Collider != nullptr) ice1Collider->pendingToDelete = true;
+	if (ice2Collider != nullptr) ice2Collider->pendingToDelete = true;
+	if (ice3Collider != nullptr) ice3Collider->pendingToDelete = true;
+	if (ice4Collider != nullptr) ice4Collider->pendingToDelete = true;
+	if (ice5Collider != nullptr) ice5Collider->pendingToDelete = true;
 
 	return true;
 }
