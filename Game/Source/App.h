@@ -131,6 +131,7 @@ private:
 	uint32 prevLastSecFrameCount = 0;
 	float dt = 0.0f;
 	bool changeFps = false;
+	int frames;
 };
 
 extern App* app;

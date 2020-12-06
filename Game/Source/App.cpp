@@ -234,17 +234,24 @@ void App::FinishUpdate()
 	lastFrameMs = frameTime.Read();
 	framesOnLastUpdate = prevLastSecFrameCount;
 
-	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
-		averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
-	app->win->SetTitle(title);
-
 	if (frameDelay > lastFrameMs)
 	{
-		if (!changeFps) SDL_Delay(frameDelay - lastFrameMs); //fps = 60
-		if (changeFps) SDL_Delay(1000 / 30 - lastFrameMs); //fps = 30
+		if (!changeFps)
+		{
+			SDL_Delay(frameDelay - lastFrameMs); //fps = 60
+			frames = 60;
+		}
+		if (changeFps)
+		{
+			SDL_Delay(1000 / 30 - lastFrameMs); //fps = 30
+			frames = 30;
+		}
 	}
 
+	static char title[256];
+	sprintf_s(title, 256, "FPS: %d   Avg. FPS: %.2f   Last-frame MS: %02u   Vsync: %s",
+		frames, averageFps, lastFrameMs, app->render->vsync);
+	app->win->SetTitle(title);
 }
 
 // Call modules before each loop iteration
