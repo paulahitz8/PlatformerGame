@@ -883,6 +883,18 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				isFalling = false;
 				isDead = true;
 			}
+			if (c2->type == Collider::Type::FLYINGENEMY)
+			{
+				if (isJumping == false)
+				{
+					speed.y = 0;
+					isFalling = false;
+				}
+				playerPos.x = ppx;
+				playerPos.y = ppy;
+				isFalling = false;
+				isDead = true;
+			}
 		}
 		if (c1->type == Collider::Type::SNOWBALL)
 		{

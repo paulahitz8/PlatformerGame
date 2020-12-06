@@ -67,7 +67,7 @@ private:
 	fPoint speed;
 	Collider* enemyCollider = nullptr;
 
-
+	int soundTimer;
 	int timer;
 };
 
