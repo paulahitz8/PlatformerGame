@@ -50,6 +50,8 @@ public:
 
 	unsigned int eagleFx;
 
+	bool playerSeenF;
+
 private:
 
 	//list of animations
@@ -73,7 +75,6 @@ private:
 	int pathTimer = 0;
 	int createPath = 0;
 	int pathIndex = 0;
-	bool playerSeen;
 	int soundTimer;
 	int timer;
 

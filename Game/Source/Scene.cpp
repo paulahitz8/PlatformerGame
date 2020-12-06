@@ -77,6 +77,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
@@ -107,16 +108,21 @@ bool Scene::Update(float dt)
 
 	SDL_Rect rect = {64, 0, 64, 64};
 
-	if (boolPath)
+
+	if (app->groundEnemy->playerSeenG || app->flyingEnemy->playerSeenF)
 	{
-		for (uint i = 0; i < app->path->GetLastPath()->Count(); ++i)
+		if (boolPath)
 		{
-			iPoint pos = { app->path->GetLastPath()->At(i)->x, app->path->GetLastPath()->At(i)->y };
-			pos.x = pos.x * 64;
-			pos.y = pos.y * 64;
-			app->render->DrawTexture(debugPath, pos.x, pos.y, &rect);
+			for (uint i = 0; i < app->path->GetLastPath()->Count(); ++i)
+			{
+				iPoint pos = { app->path->GetLastPath()->At(i)->x, app->path->GetLastPath()->At(i)->y };
+				pos.x = pos.x * 64;
+				pos.y = pos.y * 64;
+				app->render->DrawTexture(debugPath, pos.x, pos.y, &rect);
+			}
 		}
 	}
+
 
 	return true;
 }

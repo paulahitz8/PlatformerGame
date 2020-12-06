@@ -89,7 +89,7 @@ bool GroundEnemy::Start()
 	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
 	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
 	createPath = app->path->CreatePath(enemyTile, playerTile);
-	playerSeen = false;
+	playerSeenG = false;
 
 	timer = 0;
 	soundTimer = 0;
@@ -108,8 +108,8 @@ bool GroundEnemy::Update(float dt)
 	int speedE = 0;
 	enemyPhysics.DoPhysics(enemyPos.x, enemyPos.y, speed.x, speed.y, isFalling, speedE);
 
-	if (abs(app->player->playerPos.x - enemyPos.x) < 200) playerSeen = true;
-	else playerSeen = false;
+	if (abs(app->player->playerPos.x - enemyPos.x) < 200) playerSeenG = true;
+	else playerSeenG = false;
 
 	if (isDead)
 	{
@@ -130,12 +130,12 @@ bool GroundEnemy::Update(float dt)
 	{
 		if (!app->player->godMode)
 		{
-			if (playerSeen)
+			if (playerSeenG)
 			{
 				iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
 				iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
 
-				if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
+				if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeenG = true;
 
 				if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
 				{
@@ -167,7 +167,7 @@ bool GroundEnemy::Update(float dt)
 			}			
 		}
 
-		if (!playerSeen || app->player->godMode)
+		if (!playerSeenG || app->player->godMode)
 		{
 			if (currentAnimation == &leftRoll) currentAnimation = &leftIdle;
 			else if (currentAnimation == &rightRoll) currentAnimation = &rightIdle;

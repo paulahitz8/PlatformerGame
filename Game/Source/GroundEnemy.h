@@ -50,6 +50,8 @@ public:
 
 	unsigned int sealFx;
 
+	bool playerSeenG;
+
 private:
 
 	//list of animations
@@ -71,7 +73,6 @@ private:
 	int pathTimer = 0;
 	int createPath = 0;
 	int pathIndex = 0;
-	bool playerSeen;
 
 	bool isFalling = false;
 

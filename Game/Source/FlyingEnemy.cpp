@@ -85,7 +85,7 @@ bool FlyingEnemy::Start()
 	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
 	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
 	createPath = app->path->CreatePath(enemyTile, playerTile);
-	playerSeen = false;
+	playerSeenF = false;
 
 	timer = 0;
 	soundTimer = 0;
@@ -103,7 +103,7 @@ bool FlyingEnemy::Update(float dt)
 	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
 	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
 
-	if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
+	if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeenF = true;
 
 	if (isDead)
 	{
@@ -134,7 +134,7 @@ bool FlyingEnemy::Update(float dt)
 	{
 		if (!app->player->godMode)
 		{
-			if (playerSeen)
+			if (playerSeenF)
 			{
 				if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
 				{
