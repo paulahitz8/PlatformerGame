@@ -81,6 +81,8 @@ bool GroundEnemy::Start()
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
 
+	app->flyingenemy->Enable();
+
 	isDead = false;
 
 	enemyPos = { 300, 995 };
@@ -306,14 +308,7 @@ void GroundEnemy::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->type == Collider::Type::GROUND)
 			{
-				if (isJumping == false)
-				{
-					speed.y = 0;
-					isFalling = false;
-				}
-				playerPos.x = ppx;
-				playerPos.y = ppy;
-				isFalling = false;
-				isDead = true;
+				enemyPos.x -=2;
+				enemyPos.y -=2;
 			}
 }
