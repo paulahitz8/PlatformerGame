@@ -61,9 +61,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 
 	AddModule(scene);
-	//AddModule(blackScreen);
-	//AddModule(logoScreen);
-	//AddModule(titleScreen);
+	AddModule(blackScreen);
+	AddModule(logoScreen);
+	AddModule(titleScreen);
 	AddModule(map);
 
 	AddModule(fadeScreen);
@@ -74,8 +74,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(path);
 	AddModule(player);
 	AddModule(collisions);
-	//AddModule(deathScreen);
-	//AddModule(winScreen);
+	AddModule(deathScreen);
+	AddModule(winScreen);
 
 	// Render last to swap buffer
 	AddModule(render);
