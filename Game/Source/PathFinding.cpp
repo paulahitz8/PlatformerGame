@@ -108,13 +108,13 @@ ListItem<PathNode>* PathList::GetNodeLowestScore() const
 // PathNode -------------------------------------------------------------------------
 // Convenient constructors
 // ----------------------------------------------------------------------------------
-PathNode::PathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL)
+PathNode::PathNode() : costSoFar(-1), heuristic(-1), pos(-1, -1), parent(NULL)
 {}
 
-PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent) : g(g), h(h), pos(pos), parent(parent)
+PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent) : costSoFar(g), heuristic(h), pos(pos), parent(parent)
 {}
 
-PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent)
+PathNode::PathNode(const PathNode& node) : costSoFar(node.costSoFar), heuristic(node.heuristic), pos(node.pos), parent(node.parent)
 {}
 
 // PathNode -------------------------------------------------------------------------
@@ -153,7 +153,7 @@ uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
 // ----------------------------------------------------------------------------------
 int PathNode::Score() const
 {
-	return g + h;
+	return costSoFar + heuristic;
 }
 
 // PathNode -------------------------------------------------------------------------
@@ -161,10 +161,10 @@ int PathNode::Score() const
 // ----------------------------------------------------------------------------------
 int PathNode::CalculateF(const iPoint& destination)
 {
-	g = parent->g + 1;
-	h = pos.DistanceTo(destination);
+	costSoFar = parent->costSoFar + 1;
+	heuristic = pos.DistanceTo(destination);
 
-	return g + h;
+	return costSoFar + heuristic;
 }
 
 // ----------------------------------------------------------------------------------
@@ -191,10 +191,10 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 			if (close.list.end->data.pos == destination)
 			{
-				for (ListItem<PathNode>* iterator = close.list.end; iterator->data.parent != nullptr; iterator = close.Find(iterator->data.parent->pos))
+				for (ListItem<PathNode>* i = close.list.end; i->data.parent != nullptr; i = close.Find(i->data.parent->pos))
 				{
-					iPoint worldPos = iterator->data.parent->pos;
-					lastPath.PushBack(worldPos);
+					iPoint newPos = i->data.parent->pos;
+					lastPath.PushBack(newPos);
 				}
 				lastPath.Flip();
 				return 0;
@@ -204,30 +204,29 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				PathList neighbours;
 				close.list.end->data.FindWalkableAdjacents(neighbours);
 
-				for (ListItem<PathNode>* iterator = neighbours.list.start; iterator != NULL; iterator = iterator->next)
+				for (ListItem<PathNode>* j = neighbours.list.start; j != NULL; j = j->next)
 				{
-					if (close.Find(iterator->data.pos))
+					if (close.Find(j->data.pos))
 					{
 						continue;
 					}
-					else if (open.Find(iterator->data.pos))
+					else if (open.Find(j->data.pos))
 					{
-						PathNode tmp = open.Find(iterator->data.pos)->data;
-						iterator->data.CalculateF(destination);
-						if (tmp.g > iterator->data.g)
+						PathNode tmp = open.Find(j->data.pos)->data;
+						j->data.CalculateF(destination);
+						if (tmp.costSoFar > j->data.costSoFar)
 						{
-							tmp.parent = iterator->data.parent;
+							tmp.parent = j->data.parent;
 						}
 					}
 					else
 					{
-						iterator->data.CalculateF(destination);
-						open.list.Add(iterator->data);
+						j->data.CalculateF(destination);
+						open.list.Add(j->data);
 					}
 				}
 				neighbours.list.Clear();
 			}
-
 		}
 	}
 	return -1;

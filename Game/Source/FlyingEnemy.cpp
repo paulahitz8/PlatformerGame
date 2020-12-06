@@ -100,28 +100,49 @@ bool FlyingEnemy::PreUpdate()
 
 bool FlyingEnemy::Update(float dt)
 {
-
 	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
 	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
 	
-	if ((abs(app->player->playerPos.x - enemyPos.x) < 300) & (abs(app->player->playerPos.y - enemyPos.y) < 300))
+	if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600))
 	{
 		if (pathTimer >= 300 || pathTimer > app->path->GetLastPath()->Count() - 1)
 		{
 			createPath = app->path->CreatePath(enemyTile, playerTile);
+			//path = app->path->GetLastPath();
 			if (createPath == 0)
 			{
 				pathTimer = 0;
 			}
-
 		}
 		
 		if (app->path->GetLastPath()->At(0)!= nullptr)
 		{
 
-			const iPoint* pos =  app->path->GetLastPath()->At(pathTimer); 
-			enemyPos.x = pos->x * 64; 
-			enemyPos.y = pos->y * 64;
+			const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+			//enemyPos.x = pos->x * 64; 
+			//enemyPos.y = pos->y * 64;
+
+			if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y)
+			{
+				pathIndex++;
+			}
+			if (pos->x * 64 < enemyPos.x)
+			{
+				enemyPos.x -= 5;
+			}
+			else if (pos->x * 64 > enemyPos.x)
+			{
+				enemyPos.x += 5;
+			}
+
+			if (pos->y * 64 < enemyPos.y)
+			{
+				enemyPos.y += 5;
+			}
+			else if (pos->y * 64 > enemyPos.y)
+			{
+				enemyPos.y -= 5;
+			}
 
 			//enemyPos.x = app->path->GetLastPath();
 			//enemyPos.x = app->path->GetLastPath().At(pathTimer)->x;
@@ -131,6 +152,57 @@ bool FlyingEnemy::Update(float dt)
 
 		pathTimer++;
 	}
+
+
+
+	/*iPoint pixelPosition;
+	float distance;
+
+	pixelPosition.x = path[pathIndex].x * app->map->data.tileWidth;
+	pixelPosition.y = path[pathIndex].y * app->map->data.tileHeight;
+
+	distance = pixelPosition.DistanceTo(position);
+
+	if (distance == 0)
+	{
+		pathIndex++;
+	}
+	else
+	{
+		float xDiff = pixelPosition.x - position.x;
+		float yDiff = pixelPosition.y - position.y;
+
+		if (xDiff < 0)
+		{
+			currentAnimation = &flyingLeftAnimation;
+		}
+		else if (xDiff >= 0)
+		{
+			currentAnimation = &flyingRightAnimation;
+		}
+
+		if (abs(xDiff) > abs(yDiff))
+		{
+			int xDir = (xDiff > 0) ? 1 : -1;
+			if (abs(xDiff) < abs(xDir * speed * dt))
+			{
+				position.x += xDiff;
+			}
+			else
+				position.x += xDir * speed * dt;
+		}
+		else
+		{
+			int yDir = (yDiff > 0) ? 1 : -1;
+			if (abs(yDiff) < abs(yDir * speed * dt))
+			{
+				position.y += yDiff;
+			}
+			else
+				position.y += yDir * speed * dt;
+		}
+
+	}*/
 
 	//int speedP = 0;
 	//playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
@@ -177,31 +249,31 @@ bool FlyingEnemy::Update(float dt)
 	{
 		if (!app->player->godMode)
 		{
-			if (abs(app->player->playerPos.x - enemyPos.x) < 200)
-			{
-				if (soundTimer % 100 == 0)
-				{
-					app->audio->PlayFx(eagleFx);
-				}
-				if (app->player->playerPos.x > enemyPos.x) //from the right
-				{
-					currentAnimation = &right;
-					enemyPos.x += 160 * dt;
-				}
-				if (app->player->playerPos.x < enemyPos.x) //from the left
-				{
-					currentAnimation = &left;
-					enemyPos.x -= 120 * dt;
-				}
-			}
+			//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
+			//{
+			//	if (soundTimer % 100 == 0)
+			//	{
+			//		app->audio->PlayFx(eagleFx);
+			//	}
+			//	if (app->player->playerPos.x > enemyPos.x) //from the right
+			//	{
+			//		currentAnimation = &right;
+			//		enemyPos.x += 160 * dt;
+			//	}
+			//	if (app->player->playerPos.x < enemyPos.x) //from the left
+			//	{
+			//		currentAnimation = &left;
+			//		enemyPos.x -= 120 * dt;
+			//	}
+			//}
 		}
 		
 	}
 	
 	soundTimer++;
 
-	currentAnimation->Update(dt);
-	currentDeadAnimation->Update(dt);
+	//currentAnimation->Update(dt);
+	//currentDeadAnimation->Update(dt);
 
 	//iPoint nextMove = app->path->Path(enemyPos, 4);
 	//enemyPos = nextMove;

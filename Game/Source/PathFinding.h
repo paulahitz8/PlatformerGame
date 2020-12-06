@@ -71,8 +71,8 @@ struct PathList;
 // ---------------------------------------------------------------------
 struct PathNode
 {
-	int g;
-	int h;
+	int costSoFar;
+	int heuristic;
 	iPoint pos;
 	const PathNode* parent; // needed to reconstruct the path in the end
 

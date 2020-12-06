@@ -48,6 +48,8 @@ public:
 	int pathTimer = 0;
 	int size;
 	int createPath = 0; 
+	int pathIndex = 0;
+	//const DynArray<iPoint>* path;
 
 	unsigned int eagleFx;
 
