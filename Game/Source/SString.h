@@ -28,10 +28,8 @@ public:
 
 	SString(unsigned int size)
 	{
-		if(size > 0)
-			Alloc(size);
-		else
-			Alloc(1);
+		if(size > 0) Alloc(size);
+		else Alloc(1);
 
 		Clear();
 	}
@@ -73,8 +71,7 @@ public:
 	// Destructor
 	virtual ~SString()
 	{
-		if(str != NULL)
-			delete[] str;
+		if(str != NULL) delete[] str;
 	}
 
 	const SString& Create(const char *format, ...)
@@ -139,8 +136,7 @@ public:
 			delete[] str;
 			Alloc(string.Length() + 1);
 		}
-		else
-			Clear();
+		else Clear();
 
 		strcpy_s(str, size, string.str);
 
@@ -160,15 +156,11 @@ public:
 				delete[] str;
 				Alloc(strlen(string)+1);
 			}
-			else
-				Clear();
+			else Clear();
 
 			strcpy_s(str, size, string);
 		}
-		else
-		{
-			Clear();
-		}
+		else Clear();
 
 		return(*this);
 	}
