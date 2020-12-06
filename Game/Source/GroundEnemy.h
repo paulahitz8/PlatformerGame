@@ -58,8 +58,6 @@ private:
 	Animation blankAnim;
 	Animation leftIdle;
 	Animation rightIdle;
-	Animation leftWalk;
-	Animation rightWalk;
 	Animation leftDead;
 	Animation rightDead;
 	Animation leftRoll;

@@ -35,14 +35,6 @@ bool GroundEnemy::Awake(pugi::xml_node&)
 	rightIdle.PushBack({ 150, 0, 30, 30 });
 	rightIdle.speed = 3.0f;
 
-	leftWalk.PushBack({ 244, 30, 32, 30 });
-	leftWalk.PushBack({ 276, 30, 32, 30 });
-	leftWalk.speed = 5.0f;
-
-	rightWalk.PushBack({ 245, 0, 32, 30 });
-	rightWalk.PushBack({ 277, 0, 32, 30 });
-	rightWalk.speed = 5.0f;
-
 	leftDead.PushBack({ 180, 30, 32, 30 });
 	leftDead.PushBack({ 212, 30, 32, 30 });
 	leftDead.speed = 1.5f;
@@ -85,7 +77,7 @@ bool GroundEnemy::Start()
 
 	isDead = false;
 
-	enemyPos = { 300, 995 };
+	enemyPos = { 300, 993 };
 
 	//Collider
 	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::GROUNDENEMY, this);
@@ -116,27 +108,21 @@ bool GroundEnemy::Update(float dt)
 	int speedE = 0;
 	enemyPhysics.DoPhysics(enemyPos.x, enemyPos.y, speed.x, speed.y, isFalling, speedE);
 
+	if (abs(app->player->playerPos.x - enemyPos.x) < 200) playerSeen = true;
+	else playerSeen = false;
 
 	if (isDead)
 	{
-		if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftRoll)
-		{
-			currentAnimation = &leftDead;
-		}
-		else if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightRoll)
-		{
-			currentAnimation = &rightDead;
-		}
-
+		if (currentAnimation == &leftIdle || currentAnimation == &leftRoll) currentAnimation = &leftDead;
+		else if (currentAnimation == &rightIdle || currentAnimation == &rightRoll) currentAnimation = &rightDead;
+	
 		if (timer == 60)
 		{
 			currentAnimation = &blankAnim;
 			currentDeadAnimation = &deadAnim;
 		}
-		else if (timer == 110)
-		{
-			currentDeadAnimation = &blankAnim;
-		}
+		else if (timer == 110) currentDeadAnimation = &blankAnim;
+
 		timer++;
 	}
 
@@ -144,119 +130,76 @@ bool GroundEnemy::Update(float dt)
 	{
 		if (!app->player->godMode)
 		{
-			iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
-			iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
-
-			if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
-
-			if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
+			if (playerSeen)
 			{
-				createPath = app->path->CreatePath(enemyTile, playerTile);
-				//path = app->path->GetLastPath();
-				if (createPath == 0)
+				iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+				iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
+
+				if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeen = true;
+
+				if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
 				{
-					pathTimer = 0;
+					createPath = app->path->CreatePath(enemyTile, playerTile);
+					if (createPath == 0) pathTimer = 0;
 				}
-			}
 
-			if (app->path->GetLastPath()->At(0) != nullptr)
-			{
-
-				const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
-				//enemyPos.x = pos->x * 64; 
-				//enemyPos.y = pos->y * 64;
-
-				if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y)
+				if (app->path->GetLastPath()->At(0) != nullptr)
 				{
-					pathIndex++;
-				}
-				else
-				{
-					if (pos->x * 64 < enemyPos.x)
+					const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+
+					if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y) pathIndex++;
+					else
 					{
-						enemyPos.x -= 2;
+						if (pos->x * 64 < enemyPos.x)
+						{
+							currentAnimation = &leftRoll;
+							enemyPos.x -= floor(130 * dt);
+						}
+						else if (pos->x * 64 > enemyPos.x)
+						{
+							currentAnimation = &rightRoll;
+							enemyPos.x += floor(130 * dt);
+						}
 					}
-					else if (pos->x * 64 > enemyPos.x)
-					{
-						enemyPos.x += 2;
-					}
-
 				}
-
-			}
-
-			pathTimer++;
-
-
-			//if (abs(app->player->playerPos.x - enemyPos.x) < 200)
-			//{
-			//	if (soundTimer % 80 == 0)
-			//	{
-			//		app->audio->PlayFx(sealFx);
-			//	}
-			//	if (app->player->playerPos.x > enemyPos.x) //from the right
-			//	{
-			//		enemyPos.x += 160 * dt;
-			//		currentAnimation = &rightRoll;
-			//	}
-			//	if (app->player->playerPos.x < enemyPos.x) //from the left
-			//	{
-			//		enemyPos.x -= 120 * dt;
-			//		currentAnimation = &leftRoll;
-			//	}
-			//}
-			//else
-			//{
-			//	if (currentAnimation == &leftRoll)
-			//	{
-			//		currentAnimation = &leftIdle;
-			//	}
-			//	else if (currentAnimation == &rightRoll)
-			//	{
-			//		currentAnimation = &rightIdle;
-			//	}
-			//}
-
-			if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
-			{
-				isFalling = false;
-
-				if (enemyPos.y > (enemyPos.y / 64) * 64 + 41) enemyPos.y = (enemyPos.y / 64) * 64 + 41;
-			}
-			else isFalling = true;
-
-			if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::WATER)
-			{
-				app->audio->PlayFx(app->player->splashFx);
-
-				enemyCollider->pendingToDelete = true;
-				isDead = true;
-				isFalling = false;
-			}
+				pathTimer++;
+				if (soundTimer % 450 == 0) app->audio->PlayFx(sealFx);
+			}			
 		}
 
-		else
+		if (!playerSeen || app->player->godMode)
 		{
-			if (currentAnimation == &leftRoll)
-			{
-				currentAnimation = &leftIdle;
-			}
-			else if (currentAnimation == &rightRoll)
-			{
-				currentAnimation = &rightIdle;
-			}
+			if (currentAnimation == &leftRoll) currentAnimation = &leftIdle;
+			else if (currentAnimation == &rightRoll) currentAnimation = &rightIdle;
+		}
+
+		if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::GROUND)
+		{
+			isFalling = false;
+
+			if (enemyPos.y > (enemyPos.y / 64) * 64 + 38) enemyPos.y = (enemyPos.y / 64) * 64 + 38;
+		}
+		else isFalling = true;
+
+		if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::WATER)
+		{
+			app->audio->PlayFx(app->player->splashFx);
+
+			enemyCollider->pendingToDelete = true;
+			isDead = true;
+			isFalling = false;
+		}
+
+		if (GetEnemyTileProperty((enemyPos.x - 1) / 64, (enemyPos.y + enemyRect.h - 5) / 64, "CollisionId") == Collider::Type::GROUND)
+		{
+			enemyPos.x += floor(130 * dt);
 		}
 	}
-
-
 
 	soundTimer++;
 
 	currentAnimation->Update(dt);
 	currentDeadAnimation->Update(dt);
-
-	//iPoint nextMove = app->path->Path(enemyPos, 4);
-	//enemyPos = nextMove;
 
 	enemyCollider->SetPos(enemyPos.x, enemyPos.y);
 

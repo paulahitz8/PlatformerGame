@@ -107,7 +107,7 @@ bool FlyingEnemy::Update(float dt)
 
 	if (isDead)
 	{
-		if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER)
+		if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::PLATFORM)
 		{
 			if (currentAnimation == &leftFalling) currentAnimation = &leftDead;
 			else if (currentAnimation == &rightFalling) currentAnimation = &rightDead;
@@ -120,9 +120,8 @@ bool FlyingEnemy::Update(float dt)
 			else if (timer == 110) currentDeadAnimation = &blankAnim;
 
 			timer++;
-
-			if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER) app->audio->PlayFx(app->player->splashFx);
 		}
+
 		else
 		{
 			enemyPos.y+=2;
