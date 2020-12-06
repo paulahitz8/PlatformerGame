@@ -613,7 +613,7 @@ bool Player::Update(float dt)
 					currentAnimation = &rightIdle;
 					timer = 0;
 					app->groundenemy->Enable();
-					app->flyingenemy->Enable();
+
 				}
 			}
 			timer++;

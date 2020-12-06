@@ -12,6 +12,7 @@
 #include "WinScreen.h"
 #include "PathFinding.h"
 #include "Player.h"
+#include "FlyingEnemy.h"
 #include "Math.h"
 
 GroundEnemy::GroundEnemy()
@@ -79,6 +80,8 @@ bool GroundEnemy::Start()
 	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
+
+	app->flyingenemy->Enable();
 
 	isDead = false;
 
