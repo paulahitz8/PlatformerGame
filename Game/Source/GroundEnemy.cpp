@@ -301,3 +301,21 @@ bool GroundEnemy::SaveState(pugi::xml_node& data)
 
 	return true;
 }
+
+void GroundEnemy::OnCollision(Collider* c1, Collider* c2)
+{
+		if (c1->type == Collider::Type::GROUNDENEMY)
+		{
+			if (c2->type == Collider::Type::GROUND)
+			{
+				if (isJumping == false)
+				{
+					speed.y = 0;
+					isFalling = false;
+				}
+				playerPos.x = ppx;
+				playerPos.y = ppy;
+				isFalling = false;
+				isDead = true;
+			}
+}
