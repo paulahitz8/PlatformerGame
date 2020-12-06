@@ -56,8 +56,7 @@ bool PathFinding::IsWalkable(const iPoint& pos) const
 // Utility: return the walkability value of a tile
 uchar PathFinding::GetTileAt(const iPoint& pos) const
 {
-	if (CheckBoundaries(pos))
-		return map[(pos.y * width) + pos.x];
+	if (CheckBoundaries(pos)) return map[(pos.y * width) + pos.x];
 
 	return INVALID_WALK_CODE;
 }
@@ -70,22 +69,18 @@ const DynArray<iPoint>* PathFinding::GetLastPath() const
 
 // PathList ------------------------------------------------------------------------
 // Looks for a node in this list and returns it's list node or NULL
-// ---------------------------------------------------------------------------------
  ListItem<PathNode>* PathList::Find(const iPoint& point) const
 {
 	ListItem<PathNode>* item = list.start;
 	while (item)
 	{
-		if (item->data.pos == point)
-			return item;
+		if (item->data.pos == point) return item;
 		item = item->next;
 	}
 	return NULL;
 }
 
-// PathList ------------------------------------------------------------------------
 // Returns the Pathnode with lowest score in this list or NULL if empty
-// ---------------------------------------------------------------------------------
 ListItem<PathNode>* PathList::GetNodeLowestScore() const
 {
 	ListItem<PathNode>* ret = NULL;
@@ -104,10 +99,8 @@ ListItem<PathNode>* PathList::GetNodeLowestScore() const
 	return ret;
 }
 
-
 // PathNode -------------------------------------------------------------------------
 // Convenient constructors
-// ----------------------------------------------------------------------------------
 PathNode::PathNode() : costSoFar(-1), heuristic(-1), pos(-1, -1), parent(NULL)
 {}
 
@@ -117,9 +110,7 @@ PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent) : co
 PathNode::PathNode(const PathNode& node) : costSoFar(node.costSoFar), heuristic(node.heuristic), pos(node.pos), parent(node.parent)
 {}
 
-// PathNode -------------------------------------------------------------------------
 // Fills a list (PathList) of all valid adjacent pathnodes
-// ----------------------------------------------------------------------------------
 uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
 {
 	iPoint cell;
@@ -127,38 +118,30 @@ uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
 
 	// north
 	cell.Create(pos.x, pos.y + 1);
-	if (app->path->IsWalkable(cell))
-		listToFill.list.Add(PathNode(-1, -1, cell, this));
+	if (app->path->IsWalkable(cell)) listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.Create(pos.x, pos.y - 1);
-	if (app->path->IsWalkable(cell))
-		listToFill.list.Add(PathNode(-1, -1, cell, this));
+	if (app->path->IsWalkable(cell)) listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.Create(pos.x + 1, pos.y);
-	if (app->path->IsWalkable(cell))
-		listToFill.list.Add(PathNode(-1, -1, cell, this));
+	if (app->path->IsWalkable(cell)) listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.Create(pos.x - 1, pos.y);
-	if (app->path->IsWalkable(cell))
-		listToFill.list.Add(PathNode(-1, -1, cell, this));
+	if (app->path->IsWalkable(cell)) listToFill.list.Add(PathNode(-1, -1, cell, this));
 
 	return listToFill.list.Count();
 }
 
-// PathNode -------------------------------------------------------------------------
 // Calculates this tile score
-// ----------------------------------------------------------------------------------
 int PathNode::Score() const
 {
 	return costSoFar + heuristic;
 }
 
-// PathNode -------------------------------------------------------------------------
 // Calculate the F for a specific destination tile
-// ----------------------------------------------------------------------------------
 int PathNode::CalculateF(const iPoint& destination)
 {
 	costSoFar = parent->costSoFar + 1;
@@ -167,21 +150,17 @@ int PathNode::CalculateF(const iPoint& destination)
 	return costSoFar + heuristic;
 }
 
-// ----------------------------------------------------------------------------------
-// Actual A* algorithm: return number of steps in the creation of the path or -1 ----
-// ----------------------------------------------------------------------------------
+// Actual A* algorithm: return number of steps in the creation of the path or -1
 int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	// L12b: TODO 1: if origin or destination are not walkable, return -1
-	if (IsWalkable(destination) == false || IsWalkable(origin) == false)
-	{
-		return -1;
-	}
+	//Making sure origin and destination are walkable
+	if (IsWalkable(destination) == false || IsWalkable(origin) == false) return -1;
 	else
 	{
-		PathList close;
 		PathList open;
+		PathList close;
 
+		//Adding the start node
 		open.list.Add(PathNode(0, origin.DistanceManhattan(destination), origin, nullptr));
 
 		while (open.list.Count() != 0)
@@ -189,9 +168,9 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			close.list.Add(open.GetNodeLowestScore()->data);
 			open.list.Del(open.GetNodeLowestScore());
 
+			//If destination has been reached add last node and flip the list with the resulting path
 			if (close.list.end->data.pos == destination)
 			{
-
 				for (ListItem<PathNode>* i = close.list.end; i->data.parent != nullptr; i = close.Find(i->data.parent->pos))
 				{
 					iPoint newPos = i->data.parent->pos;
@@ -201,6 +180,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				lastPath.Flip();
 				return 0;
 			}
+			//If not, check neighbours and add the most convenient, taking care of the possibility that one may already be in the list
 			else
 			{
 				PathList neighbours;
@@ -208,18 +188,13 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 				for (ListItem<PathNode>* j = neighbours.list.start; j != NULL; j = j->next)
 				{
-					if (close.Find(j->data.pos))
-					{
-						continue;
-					}
+					if (close.Find(j->data.pos)) continue;
 					else if (open.Find(j->data.pos))
 					{
 						PathNode tmp = open.Find(j->data.pos)->data;
 						j->data.CalculateF(destination);
-						if (tmp.costSoFar > j->data.costSoFar)
-						{
-							tmp.parent = j->data.parent;
-						}
+
+						if (tmp.costSoFar > j->data.costSoFar) tmp.parent = j->data.parent;
 					}
 					else
 					{

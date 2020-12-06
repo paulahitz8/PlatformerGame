@@ -53,11 +53,7 @@ bool Window::Awake(pugi::xml_node& config)
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
-		else
-		{
-			// Get window surface
-			screenSurface = SDL_GetWindowSurface(window);
-		}
+		else screenSurface = SDL_GetWindowSurface(window);		// Get window surface
 	}
 
 	return ret;
@@ -69,10 +65,7 @@ bool Window::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	// Destroy window
-	if(window != NULL)
-	{
-		SDL_DestroyWindow(window);
-	}
+	if(window != NULL) SDL_DestroyWindow(window);
 
 	// Quit SDL subsystems
 	SDL_Quit();
@@ -82,7 +75,6 @@ bool Window::CleanUp()
 // Set new window title
 void Window::SetTitle(const char* new_title)
 {
-	//title.create(new_title);
 	SDL_SetWindowTitle(window, new_title);
 }
 

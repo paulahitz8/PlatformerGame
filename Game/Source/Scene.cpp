@@ -50,19 +50,13 @@ bool Scene::Start()
 
 	int w, h;
 	uchar* data = NULL;
-	if (app->map->CreateWalkabilityMap(&w, &h, &data))
-	{
-		app->path->SetMap(w, h, data);
-	}
+	if (app->map->CreateWalkabilityMap(&w, &h, &data)) app->path->SetMap(w, h, data);
 
 	RELEASE_ARRAY(data);
 
 	background = app->tex->Load("Assets/Screens/background.png");
 
-	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false)
-	{
-		app->audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
-	}
+	if (app->titleScreen->active == false || app->winScreen->active == false || app->deathScreen->active == false) app->audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
 
 	app->player->Enable();
 	app->groundEnemy->Enable();
@@ -104,20 +98,15 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		app->LoadGameRequest();
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		app->SaveGameRequest();
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-		app->map->ChangePropertyOfLayer("Collisions", "Drawable", 1);
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) app->map->ChangePropertyOfLayer("Collisions", "Drawable", 1);
 
 	// Camera: follow the player
-	if (app->player->playerPos.x >= 500 && app->player->playerPos.x < 8820)
-		app->render->camera.x = -(app->player->playerPos.x - 500);
+	if (app->player->playerPos.x >= 500 && app->player->playerPos.x < 8820) app->render->camera.x = -(app->player->playerPos.x - 500);
 
 	// Camera limits
-	if (app->render->camera.x > 0)
-		app->render->camera.x--;
+	if (app->render->camera.x > 0) app->render->camera.x--;
 	
 	// Draw background
 	uint w, h;
@@ -161,8 +150,7 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
 	return ret;
 }

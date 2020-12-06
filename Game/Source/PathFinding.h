@@ -12,7 +12,6 @@
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
 
-
 class PathFinding : public Module
 {
 public:
@@ -42,14 +41,6 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
-	//int Heuristic(iPoint, iPoint);
-	//iPoint Path(iPoint, int);
-	//iPoint NextMove(NodeAstar*, iPoint);
-
-	//bool isVisited(iPoint, List<NodeAstar*>);
-
-	//priority_queue<NodeAstar*> UpdateNeighbours(std::priority_queue<NodeAstar*>, iPoint, int, NodeAstar*, NodeAstar*, List<NodeAstar*>);
-
 private:
 	// size of the map
 	uint width;
@@ -65,9 +56,7 @@ private:
 // forward declaration
 struct PathList;
 
-// ---------------------------------------------------------------------
 // Pathnode: Helper struct to represent a node in the path creation
-// ---------------------------------------------------------------------
 struct PathNode
 {
 	int costSoFar;
@@ -88,9 +77,7 @@ struct PathNode
 	int CalculateF(const iPoint& destination);
 };
 
-// ---------------------------------------------------------------------
 // Helper struct to include a list of path nodes
-// ---------------------------------------------------------------------
 struct PathList
 {
 	// Looks for a node in this list and returns it's list node or NULL

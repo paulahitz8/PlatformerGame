@@ -75,26 +75,14 @@ bool WinScreen::Update(float dt)
 	if (app->player->numIce > 0 && app->player->numIce <= 2)
 	{
 		app->render->DrawTexture(won12Screen, 0, 350, &rect);
-		if (app->player->numIce == 1)
-		{
-			app->render->DrawTexture(app->player->ice1Texture, 600, 900, &iceRect);
-		}
-		if (app->player->numIce == 2)
-		{
-			app->render->DrawTexture(app->player->ice2Texture, 600, 900, &iceRect);
-		}
+		if (app->player->numIce == 1) app->render->DrawTexture(app->player->ice1Texture, 600, 900, &iceRect);
+		if (app->player->numIce == 2) app->render->DrawTexture(app->player->ice2Texture, 600, 900, &iceRect);
 	}
 	if (app->player->numIce > 2 && app->player->numIce <= 4)
 	{
 		app->render->DrawTexture(won34Screen, 0, 350, &rect);
-		if (app->player->numIce == 3)
-		{
-			app->render->DrawTexture(app->player->ice3Texture, 600, 900, &iceRect);
-		}
-		if (app->player->numIce == 4)
-		{
-			app->render->DrawTexture(app->player->ice4Texture, 600, 900, &iceRect);
-		}
+		if (app->player->numIce == 3) app->render->DrawTexture(app->player->ice3Texture, 600, 900, &iceRect);
+		if (app->player->numIce == 4) app->render->DrawTexture(app->player->ice4Texture, 600, 900, &iceRect);
 	}
 	if (app->player->numIce == 5)
 	{
@@ -115,10 +103,7 @@ bool WinScreen::PostUpdate()
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-	{
-		ret = false;
-	}
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
 	return ret;
 }

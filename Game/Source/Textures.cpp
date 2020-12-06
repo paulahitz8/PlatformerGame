@@ -68,10 +68,7 @@ SDL_Texture* const Textures::Load(const char* path)
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = IMG_Load(path);
 
-	if(surface == NULL)
-	{
-		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
-	}
+	if(surface == NULL) LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
 	else
 	{
 		texture = LoadSurface(surface);
@@ -104,14 +101,8 @@ SDL_Texture* const Textures::LoadSurface(SDL_Surface* surface)
 {
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(app->render->renderer, surface);
 
-	if(texture == NULL)
-	{
-		LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
-	}
-	else
-	{
-		textures.Add(texture);
-	}
+	if(texture == NULL) LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
+	else textures.Add(texture);
 
 	return texture;
 }
