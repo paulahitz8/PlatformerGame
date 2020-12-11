@@ -1,7 +1,7 @@
 # TNT Cat
 
 
-![LogoScreen](https://github.com/paulahitz8/PlatformerGame/tree/master/Output/Assets/Screens/logo_screen.png)
+![Logo](https://github.com/paulahitz8/PlatformerGame/tree/master/Output/Assets/Screens/logo.png)
 
 ## Description
 
