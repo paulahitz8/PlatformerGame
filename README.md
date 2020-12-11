@@ -1,7 +1,4 @@
 # TNT Cat
-
-![Logo](https://github.com/paulahitz8/PlatformerGame/tree/master/Output/Assets/Screens/logo.png)
-
 ## Description
 
 Animal Rush is a platform game created by TNT Cat, where the player, each level, is a different animal. The goal of the game is to reach their shelter safely. We hope you enjoy the game as much as we enjoyed making it! 
