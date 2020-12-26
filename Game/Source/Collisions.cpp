@@ -22,7 +22,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::GROUND][Collider::Type::GROUNDENEMY] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::FLYINGENEMY] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::GROUND][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::GROUND][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::WIN] = false;
@@ -34,7 +34,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::WATER][Collider::Type::GROUNDENEMY] = true;
 	matrix[Collider::Type::WATER][Collider::Type::FLYINGENEMY] = true;
 	matrix[Collider::Type::WATER][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::WATER][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::WATER][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::WATER][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::WATER][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::WATER][Collider::Type::WIN] = false;
@@ -46,7 +46,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::PLAYER][Collider::Type::GROUNDENEMY] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::FLYINGENEMY] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::PLAYER][Collider::Type::CHEKPOINT] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::CHECKPOINT] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::LIFE] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::ITEM] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::WIN] = true;
@@ -58,7 +58,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::PLATFORM][Collider::Type::GROUNDENEMY] = true;
 	matrix[Collider::Type::PLATFORM][Collider::Type::FLYINGENEMY] = false;
 	matrix[Collider::Type::PLATFORM][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::PLATFORM][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::PLATFORM][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::PLATFORM][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::PLATFORM][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::PLATFORM][Collider::Type::WIN] = false;
@@ -70,7 +70,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::GROUNDENEMY][Collider::Type::GROUNDENEMY] = false;
 	matrix[Collider::Type::GROUNDENEMY][Collider::Type::FLYINGENEMY] = false;
 	matrix[Collider::Type::GROUNDENEMY][Collider::Type::SNOWBALL] = true;
-	matrix[Collider::Type::GROUNDENEMY][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::GROUNDENEMY][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::GROUNDENEMY][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::GROUNDENEMY][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::GROUNDENEMY][Collider::Type::WIN] = false;
@@ -82,7 +82,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::FLYINGENEMY][Collider::Type::GROUNDENEMY] = false;
 	matrix[Collider::Type::FLYINGENEMY][Collider::Type::FLYINGENEMY] = false;
 	matrix[Collider::Type::FLYINGENEMY][Collider::Type::SNOWBALL] = true;
-	matrix[Collider::Type::FLYINGENEMY][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::FLYINGENEMY][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::FLYINGENEMY][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::FLYINGENEMY][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::FLYINGENEMY][Collider::Type::WIN] = false;
@@ -94,22 +94,22 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::SNOWBALL][Collider::Type::GROUNDENEMY] = true;
 	matrix[Collider::Type::SNOWBALL][Collider::Type::FLYINGENEMY] = true;
 	matrix[Collider::Type::SNOWBALL][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::SNOWBALL][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::SNOWBALL][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::SNOWBALL][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::SNOWBALL][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::SNOWBALL][Collider::Type::WIN] = false;
 
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::GROUND] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::WATER] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::PLATFORM] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::GROUNDENEMY] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::FLYINGENEMY] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::CHEKPOINT] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::LIFE] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::ITEM] = false;
-	matrix[Collider::Type::CHEKPOINT][Collider::Type::WIN] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::GROUND] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::WATER] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::PLATFORM] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::GROUNDENEMY] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::FLYINGENEMY] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::SNOWBALL] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::CHECKPOINT] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::LIFE] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::ITEM] = false;
+	matrix[Collider::Type::CHECKPOINT][Collider::Type::WIN] = false;
 
 	matrix[Collider::Type::LIFE][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::LIFE][Collider::Type::WATER] = false;
@@ -118,7 +118,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::LIFE][Collider::Type::GROUNDENEMY] = false;
 	matrix[Collider::Type::LIFE][Collider::Type::FLYINGENEMY] = false;
 	matrix[Collider::Type::LIFE][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::LIFE][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::LIFE][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::LIFE][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::LIFE][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::LIFE][Collider::Type::WIN] = false;
@@ -130,7 +130,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::ITEM][Collider::Type::GROUNDENEMY] = false;
 	matrix[Collider::Type::ITEM][Collider::Type::FLYINGENEMY] = false;
 	matrix[Collider::Type::ITEM][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::ITEM][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::ITEM][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::ITEM][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::ITEM][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::ITEM][Collider::Type::WIN] = false;
@@ -142,7 +142,7 @@ Collisions::Collisions() : Module()
 	matrix[Collider::Type::WIN][Collider::Type::GROUNDENEMY] = false;
 	matrix[Collider::Type::WIN][Collider::Type::FLYINGENEMY] = false;
 	matrix[Collider::Type::WIN][Collider::Type::SNOWBALL] = false;
-	matrix[Collider::Type::WIN][Collider::Type::CHEKPOINT] = false;
+	matrix[Collider::Type::WIN][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::WIN][Collider::Type::LIFE] = false;
 	matrix[Collider::Type::WIN][Collider::Type::ITEM] = false;
 	matrix[Collider::Type::WIN][Collider::Type::WIN] = false;
@@ -258,7 +258,7 @@ void Collisions::DrawCollider()
 		case Collider::Type::SNOWBALL: // Red
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
-		case Collider::Type::CHEKPOINT: // Purple
+		case Collider::Type::CHECKPOINT: // Purple
 			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 
 			break;

@@ -172,9 +172,9 @@ bool Player::Start()
 	//Collider
 	playerCollider = app->collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
 	winCollider = app->collisions->AddCollider({ 9300, 500, 20, 1000 }, Collider::Type::WIN);
-	checkpointList.Add(app->collisions->AddCollider({ 2520,500,20,1000 }, Collider::Type::CHEKPOINT));
-	checkpointList.Add(app->collisions->AddCollider({ 4570,500,20,1000 }, Collider::Type::CHEKPOINT));
-	checkpointList.Add(app->collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHEKPOINT));
+	checkpointList.Add(app->collisions->AddCollider({ 2520,500,20,1000 }, Collider::Type::CHECKPOINT));
+	checkpointList.Add(app->collisions->AddCollider({ 4570,500,20,1000 }, Collider::Type::CHECKPOINT));
+	checkpointList.Add(app->collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHECKPOINT));
 
 	//Audios
 	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
@@ -899,7 +899,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				c2->pendingToDelete = true;
 			}
 
-			if (c2->type == Collider::Type::CHEKPOINT)
+			if (c2->type == Collider::Type::CHECKPOINT)
 			{
 				isCheckpoint = true;
 			}
