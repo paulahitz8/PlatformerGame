@@ -13,16 +13,7 @@ struct Collider
 	{
 		NONE = -1,
 		PLAYER,
-		GROUND,
-		WATER,
-		PLATFORM,
-		GROUNDENEMY,
-		FLYINGENEMY,
-		CHECKPOINT,
-		SNOWBALL,
-		LIFE,
-		ITEM,
-		WIN,
+		PLANET,
 		MAX
 	};
 

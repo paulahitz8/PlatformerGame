@@ -5,20 +5,10 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
-#include "Map.h"
-#include "TitleScreen.h"
-#include "LogoScreen.h"
 #include "FadeScreen.h"
 #include "Player.h"
 #include "Collisions.h"
-#include "BlackScreen.h"
-#include "DeathScreen.h"
-#include "WinScreen.h"
-#include "GroundEnemy.h"
-#include "FlyingEnemy.h"
-#include "PathFinding.h"
-#include "Life.h"
-#include "Item.h"
+
 
 #include "Defs.h"
 #include "Log.h"
@@ -37,20 +27,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	scene = new Scene();
-	blackScreen = new BlackScreen();
-	titleScreen = new TitleScreen();
-	logoScreen = new LogoScreen();
-	map = new Map();
 	fadeScreen = new FadeScreen();
 	player = new Player();
 	collisions = new Collisions();
-	deathScreen = new DeathScreen();
-	winScreen = new WinScreen();
-	groundEnemy = new GroundEnemy();
-	flyingEnemy = new FlyingEnemy();
-	item = new Item();
-	life = new Life();
-	path = new PathFinding();
 
 
 	// Ordered for awake / Start / Update
@@ -61,21 +40,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 
 	AddModule(scene);
-	AddModule(blackScreen);
-	AddModule(logoScreen);
-	AddModule(titleScreen);
-	AddModule(map);
 
 	AddModule(fadeScreen);
-	AddModule(groundEnemy);
-	AddModule(flyingEnemy);
-	AddModule(life);
-	AddModule(item);
-	AddModule(path);
 	AddModule(player);
 	AddModule(collisions);
-	AddModule(deathScreen);
-	AddModule(winScreen);
 
 	// Render last to swap buffer
 	AddModule(render);
