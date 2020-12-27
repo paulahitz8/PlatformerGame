@@ -19,9 +19,20 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class BlackScreen;
+class TitleScreen;
+class LogoScreen;
+class Map;
 class FadeScreen;
 class Player;
 class Collisions;
+class DeathScreen;
+class WinScreen;
+class GroundEnemy;
+class FlyingEnemy;
+class Item;
+class PathFinding;
+class Life;
 
 class App
 {
@@ -84,9 +95,20 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
+	TitleScreen* titleScreen;
+	BlackScreen* blackScreen;
+	LogoScreen* logoScreen;
+	Map* map;
 	FadeScreen* fadeScreen;
 	Player* player;
 	Collisions* collisions;
+	DeathScreen* deathScreen;
+	WinScreen* winScreen;
+	GroundEnemy* groundEnemy;
+	FlyingEnemy* flyingEnemy;
+	PathFinding* path;
+	Item* item;
+	Life* life;
 
 private:
 

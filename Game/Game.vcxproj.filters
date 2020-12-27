@@ -15,12 +15,22 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
       <Filter>External\PugiXml</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Map.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\FadeScreen.cpp" />
+    <ClCompile Include="Source\TitleScreen.cpp" />
+    <ClCompile Include="Source\LogoScreen.cpp" />
     <ClCompile Include="Source\Collisions.cpp" />
+    <ClCompile Include="Source\DeathScreen.cpp" />
+    <ClCompile Include="Source\WinScreen.cpp" />
+    <ClCompile Include="Source\PathFinding.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
-    <ClCompile Include="Source\Physics.cpp" />
-    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\Life.cpp" />
+    <ClCompile Include="Source\Item.cpp" />
+    <ClCompile Include="Source\FlyingEnemy.cpp" />
+    <ClCompile Include="Source\GroundEnemy.cpp" />
+    <ClCompile Include="Source\BlackScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -55,14 +65,25 @@
     <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp">
       <Filter>External\PugiXml</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\FadeScreen.h" />
     <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Physics.h" />
+    <ClInclude Include="Source\TitleScreen.h" />
+    <ClInclude Include="Source\LogoScreen.h" />
     <ClInclude Include="Source\Collisions.h" />
+    <ClInclude Include="Source\WinScreen.h" />
+    <ClInclude Include="Source\DeathScreen.h" />
+    <ClInclude Include="Source\PathFinding.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\PerfTimer.h" />
+    <ClInclude Include="Source\Life.h" />
+    <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\NodeAstar.h" />
-    <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\Physics.h" />
+    <ClInclude Include="Source\FlyingEnemy.h" />
+    <ClInclude Include="Source\GroundEnemy.h" />
+    <ClInclude Include="Source\BlackScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
