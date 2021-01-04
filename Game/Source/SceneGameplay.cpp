@@ -43,6 +43,8 @@ bool SceneGameplay::Load(Textures* tex)
 		RELEASE_ARRAY(data);
 	}
 
+	collisions = new Collisions();
+
 	entityManager = new EntityManager;
 	//player = new Player();
 	//flyingEnemy = new FlyingEnemy();
@@ -87,12 +89,12 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
-	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	{
-		/*map->ChangePropertyOfLayer("Collisions", "Drawable", 1);
-		boolPath = !boolPath;*/
-		map->drawColliders = !map->drawColliders;
-	}
+	//if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	//{
+	//	/*map->ChangePropertyOfLayer("Collisions", "Drawable", 1);
+	//	boolPath = !boolPath;*/
+	//	map->drawColliders = !map->drawColliders;
+	//}
 
 	// Camera: follow the player
 	if (player->playerPos.x >= 500 && player->playerPos.x < 8820) app->render->camera.x = -(player->playerPos.x - 500);
@@ -115,6 +117,8 @@ bool SceneGameplay::Update(Input* input, float dt)
 	entityManager->Update(dt);
 	/*map->Update(dt);*/
 	player->Update(input, dt);
+	collisions->PreUpdate();
+	collisions->Update(input, dt);
 
 	return true;
 }
@@ -159,6 +163,8 @@ bool SceneGameplay::Draw(Render* render)
 
 	life->Draw(render);
 
+	collisions->Draw(render);
+
 	return false;
 }
 
@@ -177,6 +183,7 @@ bool SceneGameplay::Unload()
 	//life->Disable();
 	entityManager->CleanUp();
 	map->CleanUp();
+	collisions->CleanUp();
 
 	delete player;
 	delete map;

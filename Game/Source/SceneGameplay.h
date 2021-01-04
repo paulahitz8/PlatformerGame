@@ -10,6 +10,7 @@
 #include "GroundEnemy.h"
 #include "Item.h"
 #include "Life.h"
+#include "Collisions.h"
 
 struct SDL_Texture;
 
@@ -41,6 +42,7 @@ private:
 	GroundEnemy* groundEnemy = nullptr;
 	Item* item = nullptr;
 	Life* life = nullptr;
+	Collisions* collisions = nullptr;
 
 	bool boolPath = false;
 };

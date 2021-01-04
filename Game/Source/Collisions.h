@@ -8,6 +8,8 @@
 #include "Module.h"
 #include "SDL/include/SDL_rect.h"
 
+class Render;
+
 struct Collider
 {
 	enum Type
@@ -59,11 +61,11 @@ public:
 
 	// Called at the middle of the application loop
 	// Switches the debug mode on/off
-	bool Update(float dt);
+	bool Update(Input* input, float dt);
 
 	// Called at the end of the application loop
 	// Draw all colliders (if debug mode is enabled)
-	bool PostUpdate();
+	bool Draw(Render* render);
 
 	// Removes all existing colliders
 	bool CleanUp();
@@ -75,7 +77,7 @@ public:
 	bool DeleteCollider(Collider* collider);
 
 	// Draws all existing colliders with some transparency
-	void DrawCollider();
+	void DrawCollider(Render* render);
 
 	inline uint GetColliderCount() const
 	{
@@ -97,6 +99,7 @@ private:
 
 	// The amount of colliders loaded into the array
 	uint colliderCount = 0;
+	Input* input;
 };
 
 #endif // __MODULE_COLLISIONS_H__

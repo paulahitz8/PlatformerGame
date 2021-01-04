@@ -10,10 +10,10 @@ Collisions::Collisions() : Module()
 {
 	name.Create("collisions");
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	/*for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		colliders[i] = nullptr;
-	}
+	}*/
 
 	matrix[Collider::Type::GROUND][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::WATER] = false;
@@ -202,9 +202,10 @@ bool Collisions::PreUpdate()
 	return true;
 }
 
-bool Collisions::Update(float dt)
+bool Collisions::Update(Input* input, float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	this->input = input;
+	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		debug = !debug;
 	}
@@ -212,17 +213,17 @@ bool Collisions::Update(float dt)
 	return true;
 }
 
-bool Collisions::PostUpdate()
+bool Collisions::Draw(Render* render)
 {
 	if (debug)
 	{
-		DrawCollider();
+		DrawCollider(render);
 	}
 
 	return true;
 }
 
-void Collisions::DrawCollider()
+void Collisions::DrawCollider(Render* render)
 {
 	Uint8 alpha = 80;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
@@ -235,41 +236,41 @@ void Collisions::DrawCollider()
 		switch (colliders[i]->type)
 		{
 		case Collider::Type::NONE:
-			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, 0, 255, 255, alpha);
 			break;
 		case Collider::Type::GROUND: // Green
-			app->render->DrawRectangle(colliders[i]->rect, 0, 255, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, 0, 255, 0, alpha);
 			break;
 		case Collider::Type::WATER: // Blue
-			app->render->DrawRectangle(colliders[i]->rect, 0, 0, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, 0, 0, 255, alpha);
 			break;
 		case Collider::Type::PLAYER: // Red
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		case Collider::Type::PLATFORM: // Yellow
-			app->render->DrawRectangle(colliders[i]->rect, 255, 255, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 255, 0, alpha);
 			break;
 		case Collider::Type::GROUNDENEMY: // Orange
-			app->render->DrawRectangle(colliders[i]->rect, 255, 165, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 165, 0, alpha);
 			break;
 		case Collider::Type::FLYINGENEMY: // Orange
-			app->render->DrawRectangle(colliders[i]->rect, 255, 165, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 165, 0, alpha);
 			break;
 		case Collider::Type::SNOWBALL: // Red
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		case Collider::Type::CHECKPOINT: // Purple
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 
 			break;
 		case Collider::Type::LIFE: // Purple
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
 		case Collider::Type::ITEM: // Purple
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
 		case Collider::Type::WIN: // Purple
-			app->render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
+			render->DrawRectangle(colliders[i]->rect, 255, 0, 255, alpha);
 			break;
 		}
 	}
