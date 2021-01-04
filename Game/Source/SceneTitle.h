@@ -35,9 +35,20 @@ private:
 	GuiButton* btnExit;
 	GuiButton* btnSettings;
 
+	GuiButton* btnCredCross;
+	GuiButton* btnSettCross;
+
+	bool exitReq = true;
+	bool creditsTab = false;
+	bool settingsTab = false;
+
 	SDL_Texture* sceneTitle;
 	SDL_Texture* buttonsTitle;
+	SDL_Texture* credits;
+	SDL_Texture* settings;
 	SDL_Rect rectTitle;
+	SDL_Rect rectCredit;
+	SDL_Rect rectSettings;
 };
 
 #endif // __TITLE_SCREEN_H__
