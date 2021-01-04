@@ -15,7 +15,9 @@ bool GuiButton::Update(Input* input, float dt)
 	if (state != GuiControlState::DISABLED)
 	{
 		int mouseX, mouseY;
+	
 		input->GetMousePosition(mouseX, mouseY);
+		mouseY += 500;
 
 		// Check collision between mouse and button bounds
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
@@ -47,11 +49,11 @@ bool GuiButton::Draw(Render* render)
 	{
 	case GuiControlState::DISABLED: render->DrawRectangle(bounds, 100, 100, 100, 255);
 		break;
-	case GuiControlState::NORMAL: render->DrawRectangle(bounds, 0, 255, 0, 255);
+	case GuiControlState::NORMAL: render->DrawRectangle(bounds, 0, 255, 0, 0);
 		break;
-	case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 0, 255);
+	case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 255, 160);
 		break;
-	case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255);
+	case GuiControlState::PRESSED: render->DrawRectangle(bounds, 255, 255, 255, 255);
 		break;
 	case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
 		break;
