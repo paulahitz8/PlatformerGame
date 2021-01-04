@@ -49,7 +49,7 @@ class Collisions : public Module
 public:
 	// Constructor
 	// Fills all collision matrix data
-	Collisions();
+	Collisions(Input* input);
 
 	// Destructor
 	virtual ~Collisions();
@@ -61,11 +61,11 @@ public:
 
 	// Called at the middle of the application loop
 	// Switches the debug mode on/off
-	bool Update(Input* input, float dt);
+	bool Update(float dt);
 
 	// Called at the end of the application loop
 	// Draw all colliders (if debug mode is enabled)
-	bool Draw(Render* render);
+	bool PostUpdate();
 
 	// Removes all existing colliders
 	bool CleanUp();

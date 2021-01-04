@@ -42,7 +42,7 @@ private:
 	GroundEnemy* groundEnemy = nullptr;
 	Item* item = nullptr;
 	Life* life = nullptr;
-	Collisions* collisions = nullptr;
+	/*Collisions* collisions = nullptr;*/
 
 	bool boolPath = false;
 };

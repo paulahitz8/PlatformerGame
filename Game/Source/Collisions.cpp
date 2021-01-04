@@ -6,14 +6,16 @@
 #include "SDL/include/SDL_scancode.h"
 #include "Log.h"
 
-Collisions::Collisions() : Module()
+Collisions::Collisions(Input* input) : Module()
 {
 	name.Create("collisions");
 
-	/*for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		colliders[i] = nullptr;
-	}*/
+	}
+
+	this->input = input;
 
 	matrix[Collider::Type::GROUND][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::WATER] = false;
@@ -202,9 +204,8 @@ bool Collisions::PreUpdate()
 	return true;
 }
 
-bool Collisions::Update(Input* input, float dt)
+bool Collisions::Update(float dt)
 {
-	this->input = input;
 	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		debug = !debug;
@@ -213,11 +214,11 @@ bool Collisions::Update(Input* input, float dt)
 	return true;
 }
 
-bool Collisions::Draw(Render* render)
+bool Collisions::PostUpdate()
 {
 	if (debug)
 	{
-		DrawCollider(render);
+		DrawCollider(app->render);
 	}
 
 	return true;

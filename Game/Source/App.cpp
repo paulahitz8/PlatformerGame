@@ -45,7 +45,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	//map = new Map();
 	//fadeScreen = new FadeScreen();
 	//player = new Player();
-	collisions = new Collisions();
+	collisions = new Collisions(input);
 	//sceneLose = new SceneLose();
 	//sceneWin = new SceneWin();
 	//groundEnemy = new GroundEnemy();
@@ -74,8 +74,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(life);
 	AddModule(item);*/
 	AddModule(path);
-	/*AddModule(player);
-	AddModule(collisions);*/
+	//AddModule(player);
+	AddModule(collisions);
 	//AddModule(sceneLose);
 	//AddModule(sceneWin);
 	AddModule(entityManager);

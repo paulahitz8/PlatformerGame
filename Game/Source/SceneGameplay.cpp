@@ -43,7 +43,7 @@ bool SceneGameplay::Load(Textures* tex)
 		RELEASE_ARRAY(data);
 	}
 
-	collisions = new Collisions();
+	/*collisions = new Collisions();*/
 
 	entityManager = new EntityManager;
 	//player = new Player();
@@ -117,8 +117,8 @@ bool SceneGameplay::Update(Input* input, float dt)
 	entityManager->Update(dt);
 	/*map->Update(dt);*/
 	player->Update(input, dt);
-	collisions->PreUpdate();
-	collisions->Update(input, dt);
+	//collisions->PreUpdate();
+	//collisions->Update(input, dt);
 
 	return true;
 }
@@ -163,11 +163,11 @@ bool SceneGameplay::Draw(Render* render)
 
 	life->Draw(render);
 
-	collisions->Draw(render);
+	/*collisions->Draw(render);*/
 
 	return false;
 }
-
+//no entiendo nada :)
 bool SceneGameplay::Unload()
 {
 	LOG("Freeing scene");
@@ -183,7 +183,7 @@ bool SceneGameplay::Unload()
 	//life->Disable();
 	entityManager->CleanUp();
 	map->CleanUp();
-	collisions->CleanUp();
+	/*collisions->CleanUp();*/
 
 	delete player;
 	delete map;
