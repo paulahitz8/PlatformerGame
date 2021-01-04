@@ -15,7 +15,9 @@ bool GuiButton::Update(Input* input, float dt)
 	if (state != GuiControlState::DISABLED)
 	{
 		int mouseX, mouseY;
+	
 		input->GetMousePosition(mouseX, mouseY);
+		mouseY += 500;
 
 		// Check collision between mouse and button bounds
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&

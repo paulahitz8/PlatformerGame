@@ -17,6 +17,24 @@
 SceneTitle::SceneTitle()
 {
 	//name.Create("SceneTitle");
+	
+	// GUI: Initialize required controls for the screen
+	btnCredits = new GuiButton(1, { 178, 984, 190, 60 }, "CREDITS");
+	btnCredits->SetObserver(this);
+
+	btnPlay = new GuiButton(2, { 544, 984, 190, 60 }, "PLAY");
+	btnPlay->SetObserver(this);
+
+	btnExit = new GuiButton(3, { 544 + (546 - 178), 984, 190, 60 }, "EXIT");
+	btnExit->SetObserver(this);
+
+	btnContinue = new GuiButton(4, { 544, 854, 190, 60 }, "CONTINUE");
+	btnContinue->SetObserver(this);
+
+	btnSettings = new GuiButton(5, { 1177, 562, 60, 60 }, "CONTINUE");
+	btnSettings->SetObserver(this);
+
+
 }
 
 SceneTitle::~SceneTitle() {}
@@ -28,7 +46,8 @@ bool SceneTitle::Load(Textures* tex)
 
 	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg");
 
-	sceneTitle = app->tex->Load("Assets/Screens/title_screen.png");
+	sceneTitle = tex->Load("Assets/Screens/title_screen.png");
+	buttonsTitle = tex->Load("Assets/GUI/title_buttons.png");
 	
 	return ret;
 }
@@ -43,6 +62,12 @@ bool SceneTitle::Update(Input* input, float dt)
 		TransitionToScene(SceneType::GAMEPLAY);
 	}
 
+	btnCredits->Update(input, dt);
+	btnPlay->Update(input, dt);
+	btnContinue->Update(input, dt);
+	btnExit->Update(input, dt);
+	btnSettings->Update(input, dt);
+
 	return true;
 }
 
@@ -50,7 +75,15 @@ bool SceneTitle::Update(Input* input, float dt)
 bool SceneTitle::Draw(Render* render)
 {
 	rectTitle = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	app->render->DrawTexture(sceneTitle, 0, 350, &rectTitle);
+	render->DrawTexture(sceneTitle, 0, 350, &rectTitle);
+	render->DrawTexture(buttonsTitle, 0, 350, &rectTitle);
+
+
+	btnCredits->Draw(render);
+	btnPlay->Draw(render);
+	btnContinue->Draw(render);
+	btnExit->Draw(render);
+	btnSettings->Draw(render);
 
 	return false;
 }
@@ -62,6 +95,24 @@ bool SceneTitle::Unload()
 	
 	app->tex->UnLoad(sceneTitle);
 	
+	return true;
+}
+
+bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
+{
+	switch (control->type)
+	{
+	case GuiControlType::BUTTON:
+	{
+		if (control->id == 1) TransitionToScene(SceneType::GAMEPLAY);
+		else if (control->id == 2) return false; // TODO: Exit request
+		else if (control->id == 3) return false; // TODO: Exit request
+		else if (control->id == 4) return false; // TODO: Exit request
+		else if (control->id == 5) return false; // TODO: Exit request
+	}
+	default: break;
+	}
+
 	return true;
 }
 
