@@ -8,21 +8,14 @@
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
-#include "FadeScreen.h"
-#include "WinScreen.h"
+//#include "FadeScreen.h"
+#include "SceneWin.h"
 #include "PathFinding.h"
 #include "Player.h"
 #include "FlyingEnemy.h"
 #include "Math.h"
 
-GroundEnemy::GroundEnemy()
-{
-	name.Create("ground enemies");
-}
-
-GroundEnemy::~GroundEnemy() {}
-
-bool GroundEnemy::Awake(pugi::xml_node&)
+GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 {
 	//animations
 	blankAnim.PushBack({ 0, 30, 2, 2 });
@@ -61,19 +54,13 @@ bool GroundEnemy::Awake(pugi::xml_node&)
 	deadAnim.PushBack({ 138, 277, 22, 25 });
 	deadAnim.speed = 4.0f;
 
-	return true;
-}
-
-
-bool GroundEnemy::Start()
-{
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/seal_sprites.png");
 	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
 
-	app->flyingEnemy->Enable();
+	/*app->flyingEnemy->Enable();*/
 
 	isDead = false;
 
@@ -86,29 +73,38 @@ bool GroundEnemy::Start()
 	sealFx = app->audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
 
 	//Path
-	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
-	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
-	createPath = app->path->CreatePath(enemyTile, playerTile);
 	playerSeenG = false;
 
 	timer = 0;
 	soundTimer = 0;
-
-	return true;
 }
 
-bool GroundEnemy::PreUpdate()
-{
-	return true;
-}
+GroundEnemy::~GroundEnemy() {}
+
+//bool GroundEnemy::Awake(pugi::xml_node&)
+//{
+//	
+//
+//	return true;
+//}
+
+
+//bool GroundEnemy::Start()
+//{
+//	
+//
+//	return true;
+//}
 
 bool GroundEnemy::Update(float dt)
-{		
-
+{
+	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+	iPoint playerTile = iPoint(player->playerPos.x / 64, player->playerPos.y / 64);
+	createPath = app->path->CreatePath(enemyTile, playerTile);
 	int speedE = 0;
 	enemyPhysics.DoPhysics(enemyPos.x, enemyPos.y, speed.x, speed.y, isFalling, speedE);
 
-	if (abs(app->player->playerPos.x - enemyPos.x) < 200) playerSeenG = true;
+	if (abs(player->playerPos.x - enemyPos.x) < 200) playerSeenG = true;
 	else playerSeenG = false;
 
 	if (isDead)
@@ -122,7 +118,7 @@ bool GroundEnemy::Update(float dt)
 
 		if (currentAnimation == &leftIdle || currentAnimation == &leftRoll) currentAnimation = &leftDead;
 		else if (currentAnimation == &rightIdle || currentAnimation == &rightRoll) currentAnimation = &rightDead;
-	
+
 		if (timer == 60)
 		{
 			currentAnimation = &blankAnim;
@@ -135,14 +131,14 @@ bool GroundEnemy::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!app->player->godMode)
+		if (!player->godMode)
 		{
 			if (playerSeenG)
 			{
 				iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
-				iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
+				iPoint playerTile = iPoint(player->playerPos.x / 64, player->playerPos.y / 64);
 
-				if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeenG = true;
+				if ((abs(player->playerPos.x - enemyPos.x) < 600) && (abs(player->playerPos.y - enemyPos.y) < 600)) playerSeenG = true;
 
 				if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
 				{
@@ -171,10 +167,10 @@ bool GroundEnemy::Update(float dt)
 				}
 				pathTimer++;
 				if (soundTimer % 450 == 0) app->audio->PlayFx(sealFx);
-			}			
+			}
 		}
 
-		if (!playerSeenG || app->player->godMode)
+		if (!playerSeenG || player->godMode)
 		{
 			if (currentAnimation == &leftRoll) currentAnimation = &leftIdle;
 			else if (currentAnimation == &rightRoll) currentAnimation = &rightIdle;
@@ -190,7 +186,7 @@ bool GroundEnemy::Update(float dt)
 
 		if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 		{
-			app->audio->PlayFx(app->player->splashFx);
+			app->audio->PlayFx(player->splashFx);
 
 			enemyCollider->pendingToDelete = true;
 			isDead = true;
@@ -210,19 +206,19 @@ bool GroundEnemy::Update(float dt)
 
 	enemyCollider->SetPos(enemyPos.x, enemyPos.y);
 
-	//Drawing the enemy
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
-
-	SDL_Rect rectDead = currentDeadAnimation->GetCurrentFrame();
-	app->render->DrawTexture(deadTexture, enemyPos.x + 3, enemyPos.y + 4, &rectDead);
-
 	return true;
 }
 
-bool GroundEnemy::PostUpdate()
+bool GroundEnemy::Draw(Render* render)
 {
-	return true;
+	//Drawing the enemy
+	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
+
+	SDL_Rect rectDead = currentDeadAnimation->GetCurrentFrame();
+	render->DrawTexture(deadTexture, enemyPos.x + 3, enemyPos.y + 4, &rectDead);
+
+	return false;
 }
 
 bool GroundEnemy::CleanUp()
@@ -261,7 +257,7 @@ int GroundEnemy::GetEnemyTileProperty(int x, int y, const char* property) const
 {
 	int ret;
 	// MapLayer
-	ListItem <MapLayer*>* ML = app->map->data.layers.start;
+	ListItem <MapLayer*>* ML = map->data.layers.start;
 	SString layerName = "Collisions";
 	while (ML != NULL)
 	{
@@ -273,7 +269,7 @@ int GroundEnemy::GetEnemyTileProperty(int x, int y, const char* property) const
 	}
 
 	// TileSet
-	ListItem <TileSet*>* T = app->map->data.tilesets.start;
+	ListItem <TileSet*>* T = map->data.tilesets.start;
 	SString tileSetName = "Collisions";
 
 	while (T != NULL)
@@ -295,4 +291,14 @@ int GroundEnemy::GetEnemyTileProperty(int x, int y, const char* property) const
 	Tile* currentTile = T->data->GetPropList(id);
 	ret = currentTile->properties.GetProperty(property, 0);
 	return ret;
+}
+
+void GroundEnemy::SetPlayer(Player* player)
+{
+	this->player = player;
+}
+
+void GroundEnemy::SetMap(Map* map)
+{
+	this->map = map;
 }

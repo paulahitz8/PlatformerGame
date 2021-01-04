@@ -1,38 +1,42 @@
 #ifndef __LIFE_H__
 #define __LIFE_H__
 
-#include "Module.h"
+#include "Entity.h"
+
 #include "Animation.h"
 #include "Point.h"
 
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
+class Player;
+class Render;
 
-class Life : public Module
+class Life : public Entity
 {
 public:
 
 	Life();
 
-	void Init();
+	/*void Init();*/
 
 	// Destructor
 	virtual ~Life();
 
 	// Called before player is available
-	bool Awake(pugi::xml_node& conf);
+	//bool Awake(pugi::xml_node& conf);
 
 	// Called before the first frame
-	bool Start();
+	//bool Start();
 
 	// Called each loop iteration
-	bool PreUpdate();
 	bool Update(float dt);
-	bool PostUpdate();
+	bool Draw(Render* render);
 
 	// Called before quitting
 	bool CleanUp();
+
+	void SetPlayer(Player* player);
 
 	SDL_Texture* fishTexture;
 	SDL_Rect fishRect = { 15, 20, 21, 10 };
@@ -57,6 +61,8 @@ private:
 	Animation* currentAnimation4 = &fishAnim;
 	Animation fishAnim;
 	Animation blankAnim;
+
+	Player* player = nullptr;
 
 	unsigned int fishFx;
 };

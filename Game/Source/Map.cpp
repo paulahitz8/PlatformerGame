@@ -1,6 +1,6 @@
 #include "App.h"
 #include "Render.h"
-#include "Textures.h"
+//#include "Textures.h"
 #include "Map.h"
 
 #include "Defs.h"
@@ -8,18 +8,15 @@
 
 #include <math.h>
 
-Map::Map() : Module(), mapLoaded(false)
+Map::Map(Textures* texture) : Entity(EntityType::MAP), mapLoaded(false)
 {
-	name.Create("map");
+	folder.Create("Assets/Maps/");
+	tex = texture;
+	scale = 2;
 }
 
 // Destructor
 Map::~Map() {}
-
-void Map::Init()
-{
-	active = false;
-}
 
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
@@ -32,37 +29,63 @@ bool Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-// Draw the map (all requried layers)
-void Map::Draw()
+void Map::Draw(Render* render)
 {
 	if (mapLoaded == false) return;
 
-	ListItem<MapLayer*>* layer = data.layers.start;
+	camOffset.x = render->camera.x;
+	camOffset.y = render->camera.y;
 
-	while (layer != NULL)
+	// L06: DONE 4: Make sure we draw all the layers and not just the first one
+	for (int i = 0; i < data.layers.Count(); i++)
 	{
-		if (layer->data->properties.GetProperty("Drawable") == 1)
-		{
-			for (int y = 0; y < data.height; ++y)
-			{
-				for (int x = 0; x < data.width; ++x)
+		if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(render, i);
+	}
+}
+
+// Draw the map (all requried layers)
+void Map::DrawLayer(Render* render, int num)
+{
+	if (num < data.layers.Count())
+	{
+		MapLayer* layer = data.layers[num];
+
+		render->scale = scale;
+
+		//while (layer != NULL)
+		//{
+		//	if (layer->data->properties.GetProperty("Drawable") == 1)
+		//	{
+				for (int y = 0; y < data.height; ++y)
 				{
-					int tileId = layer->data->Get(x, y);
-					if (tileId > 0)
+					for (int x = 0; x < data.width; ++x)
 					{
-						// Complete the draw function
-						TileSet* tileset;
-						tileset = GetTilesetFromTileId(tileId);
-						SDL_Rect tileRect = tileset->GetTileRect(tileId);
-						iPoint pos = MapToWorld(x, y);
-						app->render->DrawTexture(tileset->texture, pos.x, pos.y, &tileRect);
+						int tileId = layer->Get(x, y);
+
+						if (tileId > 0)
+						{
+							// Complete the draw function
+							TileSet* tileset = GetTilesetFromTileId(tileId);
+							SDL_Rect tileRect = tileset->GetTileRect(tileId);
+							iPoint pos = MapToWorld(x, y);
+							render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, &tileRect);
+						}
 					}
 				}
-			}
-		}
+			//}
 
-		layer = layer->next;
+				render->scale = 1;
+		//}
 	}
+}
+
+SDL_Rect Map::GetTilemapRec(int x, int y) const
+{
+	iPoint pos = MapToWorld(x, y);
+	SDL_Rect rec = { pos.x * scale + camOffset.x, pos.y * scale + camOffset.y,
+					 data.tileWidth * scale, data.tileHeight * scale };
+
+	return rec;
 }
 
 iPoint Map::MapToWorld(int x, int y) const
@@ -276,7 +299,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	else
 	{
 		SString tmp("%s%s", folder.GetString(), image.attribute("source").as_string());
-		set->texture = app->tex->Load(tmp.GetString());
+		set->texture = tex->Load(tmp.GetString());
 		set->texWidth = image.attribute("width").as_int();
 		set->texHeight = image.attribute("height").as_int();
 

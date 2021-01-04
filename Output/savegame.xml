@@ -1,31 +1,13 @@
 <?xml version="1.0"?>
 <save_state>
-	<input />
 	<window />
+	<input />
 	<textures />
 	<audio />
-	<scene />
-	<BlackScreen />
-	<LogoScreen />
-	<TitleScreen />
-	<map />
-	<fadeScreen />
-	<ground enemies>
-		<enemy x="300" y="998" />
-	</ground enemies>
-	<flying enemies>
-		<enemy x="2814" y="796" />
-	</flying enemies>
-	<life />
-	<item />
 	<pathfinding />
-	<player>
-		<player x="7000" y="1059" />
-	</player>
-	<collisions />
-	<DeathScreen />
-	<WinScreen />
+	<entitymanager />
+	<scenemanager />
 	<renderer>
-		<camera x="-6500" y="-500" />
+		<camera x="-458" y="-500" />
 	</renderer>
 </save_state>

@@ -1,38 +1,42 @@
 #ifndef __ITEM_H__
 #define __ITEM_H__
 
-#include "Module.h"
+#include "Entity.h"
+
 #include "Animation.h"
 #include "Point.h"
 
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
+class Player;
+class Render;
 
-class Item : public Module
+class Item : public Entity
 {
 public:
 
 	Item();
 
-	void Init();
+	/*void Init();*/
 
 	// Destructor
 	virtual ~Item();
 
 	// Called before player is available
-	bool Awake(pugi::xml_node& conf);
+	/*bool Awake(pugi::xml_node& conf);*/
 
 	// Called before the first frame
-	bool Start();
+	/*bool Start();*/
 
 	// Called each loop iteration
-	bool PreUpdate();
 	bool Update(float dt);
-	bool PostUpdate();
+	bool Draw(Render* render);
 
 	// Called before quitting
 	bool CleanUp();
+
+	void SetPlayer(Player* player);
 
 	SDL_Texture* iceTexture;
 
@@ -61,7 +65,7 @@ private:
 	Animation iceAnim;
 	Animation blankAnim;
 
-
+	Player* player = nullptr;
 };
 
 #endif // __ITEM_H__

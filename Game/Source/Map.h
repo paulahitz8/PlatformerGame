@@ -1,7 +1,9 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
-#include "Module.h"
+#include "Entity.h"
+#include "Textures.h"
+
 #include "List.h"
 #include "Point.h"
 
@@ -117,22 +119,24 @@ struct MapData
 	List<MapLayer*> layers;
 };
 
-class Map : public Module
+class Map : public Entity
 {
 public:
 
-	Map();
+	Map(Textures* texture);
 
 	// Destructor
 	virtual ~Map();
-
-	void Init();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
 
 	// Called each loop iteration
-	void Draw();
+	void Draw(Render* render);
+
+	void DrawLayer(Render* render, int num);
+
+	SDL_Rect GetTilemapRec(int x, int y) const;
 
 	// Called before quitting
 	bool CleanUp();
@@ -153,6 +157,8 @@ public:
 
 	MapData data;
 
+	bool drawColliders = false;
+
 private:
 
 	bool LoadMap();
@@ -163,9 +169,14 @@ private:
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 	TileSet* GetTilesetFromTileId(int id) const;
 
+	Textures* tex;
+
 	pugi::xml_document mapFile;
 	SString folder;
 	bool mapLoaded;
+
+	uint32 scale;
+	iPoint camOffset;
 };
 
 #endif // __MAP_H__

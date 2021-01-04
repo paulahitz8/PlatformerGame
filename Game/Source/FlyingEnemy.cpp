@@ -8,20 +8,13 @@
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
-#include "FadeScreen.h"
-#include "WinScreen.h"
+//#include "FadeScreen.h"
+#include "SceneWin.h"
 #include "PathFinding.h"
 #include "Player.h"
 #include "Math.h"
 
-FlyingEnemy::FlyingEnemy()
-{
-	name.Create("flying enemies");
-}
-
-FlyingEnemy::~FlyingEnemy() {}
-
-bool FlyingEnemy::Awake(pugi::xml_node&)
+FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 {
 	//animations
 	blankAnim.PushBack({ 0, 30, 2, 2 });
@@ -47,7 +40,7 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	right.speed = 10.0f;
 
 	leftDead.PushBack({ 40, 188, 64, 50 });
-	
+
 	rightDead.PushBack({ 615, 175, 59, 47 });
 
 	leftFalling.PushBack({ 40, 136, 53, 51 });
@@ -60,12 +53,6 @@ bool FlyingEnemy::Awake(pugi::xml_node&)
 	deadAnim.PushBack({ 138, 277, 22, 25 });
 	deadAnim.speed = 4.0f;
 
-	return true;
-}
-
-
-bool FlyingEnemy::Start()
-{
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/eagle_sprites.png");
 	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
@@ -82,32 +69,40 @@ bool FlyingEnemy::Start()
 	eagleFx = app->audio->LoadFx("Assets/Audio/Fx/eagle_fx.wav");
 
 	//Path
-	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
-	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
-	createPath = app->path->CreatePath(enemyTile, playerTile);
 	playerSeenF = false;
 
 	timer = 0;
 	soundTimer = 0;
-
-	return true;
 }
 
-bool FlyingEnemy::PreUpdate()
-{
-	return true;
-}
+FlyingEnemy::~FlyingEnemy() {}
+
+//bool FlyingEnemy::Awake(pugi::xml_node&)
+//{
+//	
+//
+//	return true;
+//}
+
+
+//bool FlyingEnemy::Start()
+//{
+//	
+//
+//	return true;
+//}
 
 bool FlyingEnemy::Update(float dt)
 {
 	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
-	iPoint playerTile = iPoint(app->player->playerPos.x / 64, app->player->playerPos.y / 64);
+	iPoint playerTile = iPoint(player->playerPos.x / 64, player->playerPos.y / 64);
+	createPath = app->path->CreatePath(enemyTile, playerTile);
 
-	if ((abs(app->player->playerPos.x - enemyPos.x) < 600) && (abs(app->player->playerPos.y - enemyPos.y) < 600)) playerSeenF = true;
+	if ((abs(player->playerPos.x - enemyPos.x) < 600) && (abs(player->playerPos.y - enemyPos.y) < 600)) playerSeenF = true;
 
 	if (isDead)
 	{
-		if (app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER || app->player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::PLATFORM)
+		if (player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER || player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::PLATFORM)
 		{
 			if (currentAnimation == &leftFalling) currentAnimation = &leftDead;
 			else if (currentAnimation == &rightFalling) currentAnimation = &rightDead;
@@ -124,7 +119,7 @@ bool FlyingEnemy::Update(float dt)
 
 		else
 		{
-			enemyPos.y+=2;
+			enemyPos.y += 2;
 			if (currentAnimation == &left) currentAnimation = &leftFalling;
 			else if (currentAnimation == &right) currentAnimation = &rightFalling;
 		}
@@ -132,7 +127,7 @@ bool FlyingEnemy::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!app->player->godMode)
+		if (!player->godMode)
 		{
 			if (playerSeenF)
 			{
@@ -171,7 +166,7 @@ bool FlyingEnemy::Update(float dt)
 			}
 		}
 	}
-	
+
 	soundTimer++;
 
 	currentAnimation->Update(dt);
@@ -179,19 +174,19 @@ bool FlyingEnemy::Update(float dt)
 
 	enemyCollider->SetPos(enemyPos.x + 10, enemyPos.y);
 
-	//Drawing the enemy
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	app->render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
-
-	SDL_Rect rectDead = currentDeadAnimation->GetCurrentFrame();
-	app->render->DrawTexture(deadTexture, enemyPos.x + 15, enemyPos.y + 6, &rectDead);
-
 	return true;
 }
 
-bool FlyingEnemy::PostUpdate()
+bool FlyingEnemy::Draw(Render* render)
 {
-	return true;
+	//Drawing the enemy
+	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	render->DrawTexture(enemyTexture, enemyPos.x, enemyPos.y, &rect);
+
+	SDL_Rect rectDead = currentDeadAnimation->GetCurrentFrame();
+	render->DrawTexture(deadTexture, enemyPos.x + 15, enemyPos.y + 6, &rectDead);
+
+	return false;
 }
 
 bool FlyingEnemy::CleanUp()
@@ -223,4 +218,9 @@ bool FlyingEnemy::SaveState(pugi::xml_node& data)
 	player.append_attribute("y") = enemyPos.y;
 
 	return true;
+}
+
+void FlyingEnemy::SetPlayer(Player* player)
+{
+	this->player = player;
 }
