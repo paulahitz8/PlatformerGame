@@ -54,13 +54,6 @@ bool SceneTitle::Load(Textures* tex)
 
 bool SceneTitle::Update(Input* input, float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		/*app->map->active = true;*/
-		/*app->fadeScreen->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->sceneGameplay, 50.0f);*/
-		TransitionToScene(SceneType::GAMEPLAY);
-	}
 
 	btnCredits->Update(input, dt);
 	btnPlay->Update(input, dt);
@@ -104,11 +97,11 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
-		if (control->id == 1) TransitionToScene(SceneType::GAMEPLAY);
-		else if (control->id == 2) return false; // TODO: Exit request
-		else if (control->id == 3) return false; // TODO: Exit request
-		else if (control->id == 4) return false; // TODO: Exit request
-		else if (control->id == 5) return false; // TODO: Exit request
+		if (control->id == 1) return false;  // Credits request
+		else if (control->id == 2) TransitionToScene(SceneType::GAMEPLAY); // Gameplay request
+		else if (control->id == 3) return false; // Exit request
+		else if (control->id == 4) return false; // Exit request
+		else if (control->id == 5) return false; // Exit request
 	}
 	default: break;
 	}
