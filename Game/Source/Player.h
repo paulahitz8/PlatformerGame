@@ -1,7 +1,8 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include "Module.h"
+#include "Entity.h"
+
 #include "Animation.h"
 #include "Physics.h"
 #include "List.h"
@@ -11,6 +12,12 @@
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
+class GroundEnemy;
+class FlyingEnemy;
+class Item;
+class Life;
+class Map;
+class Render;
 
 struct Snowball
 {
@@ -22,35 +29,41 @@ struct Snowball
 	bool pendingToDelete = false;
 };
 
-class Player : public Module
+class Player : public Entity
 {
 public:
 
 	Player();
 
-	void Init();
-	
+	/*void Init();*/
+
 	// Destructor
 	virtual ~Player();
 
 	// Called before player is available
-	bool Awake(pugi::xml_node& conf);
+	/*bool Awake(pugi::xml_node& conf);*/
 
 	// Called before the first frame
-	bool Start();
+	//bool Start();
 
 	// Called each loop iteration
-	bool PreUpdate();
-	bool Update(float dt);
+	bool Update(Input* input, float dt);
 	bool PostUpdate();
+	bool Draw(Render* render);
 
 	// Called before quitting
-	bool CleanUp(); 
+	bool CleanUp();
 
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
 
 	Snowball* AddSnowball();
+
+	void SetGroundEnemy(GroundEnemy* groundEnemy);
+	void SetFlyingEnemy(FlyingEnemy* flyingEnemy);
+	void SetItem(Item* item);
+	void SetLife(Life* life);
+	void SetMap(Map* map);
 
 	//SDL_Rect player;
 	SDL_Texture* playerTexture;
@@ -64,8 +77,8 @@ public:
 	SDL_Texture* ice4Texture;
 	SDL_Texture* ice5Texture;
 	SDL_Texture* snowmanTexture;
-	
-	SDL_Rect playerRect = {9,7,22,25};
+
+	SDL_Rect playerRect = { 9,7,22,25 };
 	SDL_Rect checkpointRect = { 248, 214, 145, 15 };
 
 	iPoint playerPos;
@@ -80,6 +93,8 @@ public:
 	bool isDead = false;
 
 	unsigned int splashFx;
+	int lifeCount = 3;
+	bool isWon = false;
 
 private:
 
@@ -109,7 +124,7 @@ private:
 	Animation leftShoot;
 	Animation snowballAnim;
 	Animation redHeart;
-	
+
 	fPoint speed;
 	Physics playerPhysics;
 	Collider* playerCollider = nullptr;
@@ -131,15 +146,19 @@ private:
 	bool shootLeft = false;
 	bool changePos = false;
 	bool isCheckpoint = false;
-	bool isWon = false;
 
 	int timer = 0;
 	int timerCheck = 0;
 	int timerShoot = 0;
-	int lifeCount = 3;
 	int ppx, ppy;
 	int numSnowball;
-	
+
+	GroundEnemy* groundEnemy = nullptr;
+	FlyingEnemy* flyingEnemy = nullptr;
+	Item* item = nullptr;
+	Life* life = nullptr;
+	Map* map = nullptr;
+
 	void OnCollision(Collider* c1, Collider* c2);
 };
 

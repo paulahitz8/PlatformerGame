@@ -4,23 +4,16 @@
 #include "Audio.h"
 #include "Input.h"
 #include "Render.h"
-#include "Scene.h"
+#include "SceneGameplay.h"
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
-#include "FadeScreen.h"
-#include "WinScreen.h"
+//#include "FadeScreen.h"
+#include "SceneWin.h"
 #include "Point.h"
-#include "Player.h"
+//#include "Player.h"
 
-Item::Item()
-{
-	name.Create("item");
-}
-
-Item::~Item() {}
-
-bool Item::Awake(pugi::xml_node&)
+Item::Item() : Entity(EntityType::ITEM)
 {
 	//animations
 	iceAnim.PushBack({ 41, 12, 16, 24 });
@@ -31,12 +24,6 @@ bool Item::Awake(pugi::xml_node&)
 
 	blankAnim.PushBack({ 0, 0, 3, 3 });
 
-	return true;
-}
-
-
-bool Item::Start()
-{
 	LOG("Loading player textures");
 	iceTexture = app->tex->Load("Assets/GUI/ice.png");
 	currentAnimation1 = &iceAnim;
@@ -60,16 +47,26 @@ bool Item::Start()
 	ice3Collider = app->collisions->AddCollider({ ice3Pos.x, ice3Pos.y, 16, 24 }, Collider::Type::ITEM, this);
 	ice4Collider = app->collisions->AddCollider({ ice4Pos.x, ice4Pos.y, 16, 24 }, Collider::Type::ITEM, this);
 	ice5Collider = app->collisions->AddCollider({ ice5Pos.x, ice5Pos.y, 16, 24 }, Collider::Type::ITEM, this);
-
-
-	
-	return true;
 }
 
-bool Item::PreUpdate()
-{
-	return true;
-}
+Item::~Item() {}
+
+//bool Item::Awake(pugi::xml_node&)
+//{
+//	
+//
+//	return true;
+//}
+
+
+//bool Item::Start()
+//{
+//	
+//
+//
+//	
+//	return true;
+//}
 
 bool Item::Update(float dt)
 {
@@ -77,33 +74,32 @@ bool Item::Update(float dt)
 	{
 		//app->audio->PlayFx(iceFx);
 
-		if (app->player->playerPos.x  > ice1Pos.x - 20 && app->player->playerPos.x < ice1Pos.x + 20
-			&& app->player->playerPos.y  > ice1Pos.y - 20 && app->player->playerPos.y < ice1Pos.y + 20)
+		if (player->playerPos.x  > ice1Pos.x - 20 && player->playerPos.x < ice1Pos.x + 20
+			&& player->playerPos.y  > ice1Pos.y - 20 && player->playerPos.y < ice1Pos.y + 20)
 		{
 			currentAnimation1 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice2Pos.x - 20 && app->player->playerPos.x < ice2Pos.x + 20
-			&& app->player->playerPos.y  > ice2Pos.y - 20 && app->player->playerPos.y < ice2Pos.y + 20)
+		if (player->playerPos.x > ice2Pos.x - 20 && player->playerPos.x < ice2Pos.x + 20
+			&& player->playerPos.y  > ice2Pos.y - 20 && player->playerPos.y < ice2Pos.y + 20)
 		{
 			currentAnimation2 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice3Pos.x - 20 && app->player->playerPos.x < ice3Pos.x + 20
-			&& app->player->playerPos.y  > ice3Pos.y - 20 && app->player->playerPos.y < ice3Pos.y + 20)
+		if (player->playerPos.x > ice3Pos.x - 20 && player->playerPos.x < ice3Pos.x + 20
+			&& player->playerPos.y  > ice3Pos.y - 20 && player->playerPos.y < ice3Pos.y + 20)
 		{
 			currentAnimation3 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice4Pos.x - 20 && app->player->playerPos.x < ice4Pos.x + 20
-			&& app->player->playerPos.y  > ice4Pos.y - 20 && app->player->playerPos.y < ice4Pos.y + 20)
+		if (player->playerPos.x > ice4Pos.x - 20 && player->playerPos.x < ice4Pos.x + 20
+			&& player->playerPos.y  > ice4Pos.y - 20 && player->playerPos.y < ice4Pos.y + 20)
 		{
 			currentAnimation4 = &blankAnim;
 		}
-		if (app->player->playerPos.x > ice5Pos.x - 20 && app->player->playerPos.x < ice5Pos.x + 20
-			&& app->player->playerPos.y  > ice5Pos.y - 20 && app->player->playerPos.y < ice5Pos.y + 20)
+		if (player->playerPos.x > ice5Pos.x - 20 && player->playerPos.x < ice5Pos.x + 20
+			&& player->playerPos.y  > ice5Pos.y - 20 && player->playerPos.y < ice5Pos.y + 20)
 		{
 			currentAnimation5 = &blankAnim;
 		}
 	}
-
 
 	ice1Collider->SetPos(ice1Pos.x, ice1Pos.y);
 	ice2Collider->SetPos(ice2Pos.x, ice2Pos.y);
@@ -117,6 +113,13 @@ bool Item::Update(float dt)
 	currentAnimation4->Update(dt);
 	currentAnimation5->Update(dt);
 
+	//isPicked = false;
+
+	return true;
+}
+
+bool Item::Draw(Render* render)
+{
 	//Drawing the cubes
 	SDL_Rect rect1 = currentAnimation1->GetCurrentFrame();
 	SDL_Rect rect2 = currentAnimation2->GetCurrentFrame();
@@ -124,20 +127,13 @@ bool Item::Update(float dt)
 	SDL_Rect rect4 = currentAnimation4->GetCurrentFrame();
 	SDL_Rect rect5 = currentAnimation5->GetCurrentFrame();
 
-	app->render->DrawTexture(iceTexture, ice1Pos.x, ice1Pos.y, &rect1);
-	app->render->DrawTexture(iceTexture, ice2Pos.x, ice2Pos.y, &rect2);
-	app->render->DrawTexture(iceTexture, ice3Pos.x, ice3Pos.y, &rect3);
-	app->render->DrawTexture(iceTexture, ice4Pos.x, ice4Pos.y, &rect4);
-	app->render->DrawTexture(iceTexture, ice5Pos.x, ice5Pos.y, &rect5);
+	render->DrawTexture(iceTexture, ice1Pos.x, ice1Pos.y, &rect1);
+	render->DrawTexture(iceTexture, ice2Pos.x, ice2Pos.y, &rect2);
+	render->DrawTexture(iceTexture, ice3Pos.x, ice3Pos.y, &rect3);
+	render->DrawTexture(iceTexture, ice4Pos.x, ice4Pos.y, &rect4);
+	render->DrawTexture(iceTexture, ice5Pos.x, ice5Pos.y, &rect5);
 
-	//isPicked = false;
-
-	return true;
-}
-
-bool Item::PostUpdate()
-{
-	return true;
+	return false;
 }
 
 bool Item::CleanUp()
@@ -154,4 +150,9 @@ bool Item::CleanUp()
 	if (ice5Collider != nullptr) ice5Collider->pendingToDelete = true;
 
 	return true;
+}
+
+void Item::SetPlayer(Player* player)
+{
+	this->player = player;
 }

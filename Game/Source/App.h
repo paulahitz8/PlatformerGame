@@ -18,21 +18,23 @@ class Input;
 class Render;
 class Textures;
 class Audio;
-class Scene;
-class BlackScreen;
-class TitleScreen;
-class LogoScreen;
-class Map;
-class FadeScreen;
-class Player;
+//class SceneGameplay;
+//class BlackScreen;
+//class SceneTitle;
+//class SceneLogo;
+//class Map;
+//class FadeScreen;
+//class Player;
 class Collisions;
-class DeathScreen;
-class WinScreen;
-class GroundEnemy;
-class FlyingEnemy;
-class Item;
+//class SceneLose;
+//class SceneWin;
+//class GroundEnemy;
+//class FlyingEnemy;
+//class Item;
 class PathFinding;
-class Life;
+//class Life;
+class EntityManager;
+class SceneManager;
 
 class App
 {
@@ -94,21 +96,23 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	Scene* scene;
-	TitleScreen* titleScreen;
+	/*SceneGameplay* sceneGameplay;
+	SceneTitle* sceneTitle;
 	BlackScreen* blackScreen;
-	LogoScreen* logoScreen;
-	Map* map;
-	FadeScreen* fadeScreen;
-	Player* player;
+	SceneLogo* sceneLogo;*/
+	//Map* map;
+	/*FadeScreen* fadeScreen;
+	Player* player;*/
 	Collisions* collisions;
-	DeathScreen* deathScreen;
-	WinScreen* winScreen;
+	/*SceneLose* sceneLose;
+	SceneWin* sceneWin;
 	GroundEnemy* groundEnemy;
-	FlyingEnemy* flyingEnemy;
+	FlyingEnemy* flyingEnemy;*/
 	PathFinding* path;
-	Item* item;
-	Life* life;
+	/*Item* item;
+	Life* life;*/
+	EntityManager* entityManager;
+	SceneManager* sceneManager;
 
 private:
 

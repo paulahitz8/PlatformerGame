@@ -4,6 +4,7 @@
 
 #define MAX_COLLIDERS 50
 
+#include "Entity.h"
 #include "Module.h"
 #include "SDL/include/SDL_rect.h"
 
@@ -18,7 +19,7 @@ struct Collider
 		PLATFORM,
 		GROUNDENEMY,
 		FLYINGENEMY,
-		CHEKPOINT,
+		CHECKPOINT,
 		SNOWBALL,
 		LIFE,
 		ITEM,
@@ -27,7 +28,7 @@ struct Collider
 	};
 
 	//Methods
-	Collider(SDL_Rect rectangle, Type type, Module* receiver = nullptr);
+	Collider(SDL_Rect rectangle, Type type, Entity* receiver = nullptr);
 
 	void SetPos(int x, int y);
 
@@ -37,7 +38,7 @@ struct Collider
 	SDL_Rect rect;
 	bool pendingToDelete = false;
 	Type type;
-	Module* receiver = nullptr;
+	Entity* receiver = nullptr;
 };
 
 
@@ -68,7 +69,7 @@ public:
 	bool CleanUp();
 
 	// Adds a new collider to the list
-	Collider* AddCollider(SDL_Rect rect, Collider::Type type, Module* receiver = nullptr);
+	Collider* AddCollider(SDL_Rect rect, Collider::Type type, Entity* receiver = nullptr);
 
 	//Delete collider to the list
 	bool DeleteCollider(Collider* collider);

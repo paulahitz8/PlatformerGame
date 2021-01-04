@@ -4,21 +4,23 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-#include "Scene.h"
-#include "Map.h"
-#include "TitleScreen.h"
-#include "LogoScreen.h"
-#include "FadeScreen.h"
-#include "Player.h"
+//#include "SceneGameplay.h"
+//#include "Map.h"
+//#include "SceneTitle.h"
+//#include "SceneLogo.h"
+//#include "FadeScreen.h"
+//#include "Player.h"
 #include "Collisions.h"
-#include "BlackScreen.h"
-#include "DeathScreen.h"
-#include "WinScreen.h"
-#include "GroundEnemy.h"
-#include "FlyingEnemy.h"
+//#include "BlackScreen.h"
+//#include "SceneLose.h"
+//#include "SceneWin.h"
+//#include "GroundEnemy.h"
+//#include "FlyingEnemy.h"
 #include "PathFinding.h"
-#include "Life.h"
-#include "Item.h"
+//#include "Life.h"
+//#include "Item.h"
+#include "EntityManager.h"
+#include "SceneManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -31,51 +33,53 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	pTimer.Start();
 
-	input = new Input();
 	win = new Window();
-	render = new Render();
-	tex = new Textures();
+	input = new Input(win);
+	render = new Render(win);
+	tex = new Textures(render);
 	audio = new Audio();
-	scene = new Scene();
-	blackScreen = new BlackScreen();
-	titleScreen = new TitleScreen();
-	logoScreen = new LogoScreen();
-	map = new Map();
-	fadeScreen = new FadeScreen();
-	player = new Player();
+	//sceneGameplay = new SceneGameplay();
+	//blackScreen = new BlackScreen();
+	//sceneTitle = new SceneTitle();
+	//sceneLogo = new SceneLogo();
+	//map = new Map();
+	//fadeScreen = new FadeScreen();
+	//player = new Player();
 	collisions = new Collisions();
-	deathScreen = new DeathScreen();
-	winScreen = new WinScreen();
-	groundEnemy = new GroundEnemy();
-	flyingEnemy = new FlyingEnemy();
-	item = new Item();
-	life = new Life();
+	//sceneLose = new SceneLose();
+	//sceneWin = new SceneWin();
+	//groundEnemy = new GroundEnemy();
+	//flyingEnemy = new FlyingEnemy();
+	//item = new Item();
+	//life = new Life();
 	path = new PathFinding();
+	entityManager = new EntityManager();
+	sceneManager = new SceneManager(input, render, tex);
 
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(input);
 	AddModule(win);
+	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-
-	AddModule(scene);
+	/*AddModule(sceneGameplay);
 	AddModule(blackScreen);
-	AddModule(logoScreen);
-	AddModule(titleScreen);
-	AddModule(map);
-
-	AddModule(fadeScreen);
+	AddModule(sceneLogo);
+	AddModule(sceneTitle);*/
+	/*AddModule(map);*/
+	/*AddModule(fadeScreen);
 	AddModule(groundEnemy);
 	AddModule(flyingEnemy);
 	AddModule(life);
-	AddModule(item);
+	AddModule(item);*/
 	AddModule(path);
-	AddModule(player);
-	AddModule(collisions);
-	AddModule(deathScreen);
-	AddModule(winScreen);
+	/*AddModule(player);
+	AddModule(collisions);*/
+	//AddModule(sceneLose);
+	//AddModule(sceneWin);
+	AddModule(entityManager);
+	AddModule(sceneManager);
 
 	// Render last to swap buffer
 	AddModule(render);

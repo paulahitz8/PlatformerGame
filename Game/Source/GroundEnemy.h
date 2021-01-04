@@ -1,35 +1,38 @@
 #ifndef __GROUNDENEMY_H__
 #define __GROUNDENEMY_H__
 
-#include "Module.h"
+#include "Entity.h"
+
 #include "Animation.h"
 #include "Physics.h"
 
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
+class Player;
+class Map;
+class Render;
 
-class GroundEnemy : public Module
+class GroundEnemy : public Entity
 {
 public:
 
 	GroundEnemy();
 
-	void Init();
+	//void Init();
 
 	// Destructor
 	virtual ~GroundEnemy();
 
 	// Called before player is available
-	bool Awake(pugi::xml_node& conf);
+	/*bool Awake(pugi::xml_node& conf);*/
 
 	// Called before the first frame
-	bool Start();
+	/*bool Start();*/
 
 	// Called each loop iteration
-	bool PreUpdate();
 	bool Update(float dt);
-	bool PostUpdate();
+	bool Draw(Render* render);
 
 	// Called before quitting
 	bool CleanUp();
@@ -38,6 +41,10 @@ public:
 	bool SaveState(pugi::xml_node&);
 
 	int GetEnemyTileProperty(int x, int y, const char* property) const;
+
+	void SetPlayer(Player* player);
+
+	void SetMap(Map* map);
 
 	//SDL_Rect player;
 	SDL_Texture* enemyTexture;
@@ -78,6 +85,10 @@ private:
 
 	int soundTimer;
 	int timer;
+
+	Player* player = nullptr;
+	Map* map = nullptr;
+
 };
 
 #endif // __GROUNDENEMY_H__

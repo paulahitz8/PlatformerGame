@@ -7,11 +7,13 @@
 
 #include "SDL/include/SDL.h"
 
+class Window;
+
 class Render : public Module
 {
 public:
 
-	Render();
+	Render(Window* win);
 
 	// Destructor
 	virtual ~Render();
@@ -54,6 +56,8 @@ public:
 	SDL_Rect viewport;
 	SDL_Color background;
 
+	Window* win;
+	uint scale;
 	char* vsync;
 };
 

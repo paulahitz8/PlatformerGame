@@ -1,45 +1,73 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "Module.h"
+#include "SString.h"
 
-struct SDL_Texture;
+class Input;
+class Render;
+class Textures;
 
-class Scene : public Module
+class GuiControl;
+
+enum class SceneType
+{
+	BLACK,
+	LOGO,
+	TITLE,
+	GAMEPLAY,
+	WIN,
+	LOSE
+};
+
+class Scene
 {
 public:
 
-	Scene();
+	Scene() : active(true), loaded(false), transitionRequired(false) {}
 
-	// Destructor
-	virtual ~Scene();
+	virtual bool Load(Textures* tex)
+	{
+		return true;
+	}
 
-	void Init();
+	virtual bool Update(Input* input, float dt)
+	{
+		return true;
+	}
 
-	// Called before render is available
-	bool Awake();
+	virtual bool Draw(Render* render)
+	{
+		return true;
+	}
 
-	// Called before the first frame
-	bool Start();
+	virtual bool Unload()
+	{
+		return true;
+	}
 
-	// Called before all Updates
-	bool PreUpdate();
+	void TransitionToScene(SceneType scene)
+	{
+		transitionRequired = true;
+		nextScene = scene;
+	}
 
-	// Called each loop iteration
-	bool Update(float dt);
+	// Define multiple Gui Event methods
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
+	}
 
-	// Called before all Updates
-	bool PostUpdate();
+public:
 
-	// Called before quitting
-	bool CleanUp();
+	bool active = true;
+	SString name;         // Scene name identifier?
 
-private:
+	// Possible properties
+	bool loaded = false;
+	// TODO: Transition animation properties
 
-	SDL_Texture* background;
-	SDL_Texture* debugPath;
-
-	bool boolPath = false;
+	bool transitionRequired;
+	SceneType nextScene;
 };
 
 #endif // __SCENE_H__
