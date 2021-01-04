@@ -3,6 +3,9 @@
 
 #include "Scene.h"
 #include "SDL/include/SDL_Rect.h"
+
+#include "GuiButton.h"
+
 struct SDL_Texture;
 
 class SceneTitle : public Scene
@@ -20,9 +23,20 @@ public:
 
 	bool Unload();
 
+	// Declare on mouse click event
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
+
 private:
 
+	GuiButton* btnCredits;
+	GuiButton* btnPlay;
+	GuiButton* btnContinue;
+	GuiButton* btnExit;
+	GuiButton* btnSettings;
+
 	SDL_Texture* sceneTitle;
+	SDL_Texture* buttonsTitle;
 	SDL_Rect rectTitle;
 };
 
