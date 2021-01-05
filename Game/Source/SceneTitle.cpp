@@ -61,6 +61,7 @@ bool SceneTitle::Load(Textures* tex)
 
 bool SceneTitle::Update(Input* input, float dt)
 {
+
 	if (creditsTab != true && settingsTab != true)
 	{
 		btnCredits->Update(input, dt);
