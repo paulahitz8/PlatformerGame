@@ -44,7 +44,7 @@ bool SceneBlack::Update(Input* input, float dt)
 	{
 		/*app->fadeScreen->active = true;
 		app->fadeScreen->FadeToBlack(this, (Module*)app->sceneLogo, 90.0f);*/
-		TransitionToScene(SceneType::LOSE);
+		TransitionToScene(SceneType::LOGO);
 	}
 	timer++;
 
