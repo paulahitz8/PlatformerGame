@@ -5,6 +5,8 @@
 #include "SDL/include/SDL_Rect.h"
 
 #include "GuiButton.h"
+#include "GuiCheckBox.h"
+#include "GuiSlider.h"
 
 struct SDL_Texture;
 
@@ -12,7 +14,7 @@ class SceneTitle : public Scene
 {
 public:
 
-	SceneTitle();
+	SceneTitle(Window* win);
 	virtual ~SceneTitle();
 
 	bool Load(Textures* tex);
@@ -26,6 +28,7 @@ public:
 	// Declare on mouse click event
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
+	bool fullscreen = false;
 
 private:
 
@@ -34,18 +37,27 @@ private:
 	GuiButton* btnContinue;
 	GuiButton* btnExit;
 	GuiButton* btnSettings;
-
 	GuiButton* btnCredCross;
 	GuiButton* btnSettCross;
+	GuiCheckBox* btnFullscreen;
+	GuiSlider* sliderMusic;
+	GuiSlider* sliderFx;
+
+	Textures* tex;
+	Window* win;
 
 	bool exitReq = true;
 	bool creditsTab = false;
 	bool settingsTab = false;
 
+	int timerFullscreen = 0;
+
 	SDL_Texture* sceneTitle;
 	SDL_Texture* buttonsTitle;
 	SDL_Texture* credits;
 	SDL_Texture* settings;
+	SDL_Texture* check;
+
 	SDL_Rect rectTitle;
 	SDL_Rect rectCredit;
 	SDL_Rect rectSettings;

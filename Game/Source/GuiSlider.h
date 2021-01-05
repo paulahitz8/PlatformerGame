@@ -16,6 +16,9 @@ public:
 	bool Update(Input* input, float dt);
 	bool Draw(Render* render);
 
+	int volume;
+	int unit;
+
 private:
 
 	// GuiSlider specific properties

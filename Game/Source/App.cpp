@@ -54,7 +54,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	//life = new Life();
 	path = new PathFinding();
 	entityManager = new EntityManager();
-	sceneManager = new SceneManager(input, render, tex);
+	sceneManager = new SceneManager(input, render, tex, win);
 
 
 	// Ordered for awake / Start / Update

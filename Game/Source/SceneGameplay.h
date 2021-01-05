@@ -12,6 +12,10 @@
 #include "Life.h"
 #include "Collisions.h"
 
+#include "GuiButton.h"
+#include "GuiCheckBox.h"
+#include "GuiSlider.h"
+
 struct SDL_Texture;
 
 class SceneGameplay : public Scene
@@ -29,10 +33,28 @@ public:
 
 	bool Unload();
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 private:
+
+	GuiButton* btnSettings;
+	GuiButton* btnExit;
+	GuiButton* btnTitle;
+	GuiButton* btnPauseCross;
+	GuiButton* btnSettCross;
+	GuiCheckBox* btnFullscreen;
+	GuiSlider* sliderMusic;
+	GuiSlider* sliderFx;
 
 	SDL_Texture* background;
 	SDL_Texture* debugPath;
+	SDL_Texture* pauseTex;
+	SDL_Texture* settingsTex;
+
+	SDL_Rect rectPause;
+	SDL_Rect rectSettings;
+	int timerMenu = 0;
+	int timerFullscreen = 0;
 
 	Map* map = nullptr;
 	EntityManager* entityManager = nullptr;
@@ -45,6 +67,10 @@ private:
 	/*Collisions* collisions = nullptr;*/
 
 	bool boolPath = false;
+	bool pauseMenu = false;
+	bool exitReq = true;
+	bool settingsTab = false;
+	bool fullscreen = false;
 };
 
 #endif // __SCENEGAMEPLAY_H__

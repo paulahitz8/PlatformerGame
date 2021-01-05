@@ -31,6 +31,7 @@ public:
 	uint GetScale() const;
 	uint GetWidth() const;
 	uint GetHeight() const;
+	void SetToFullscreen(bool fullscreen);
 
 public:
 
@@ -39,6 +40,11 @@ public:
 
 	// The surface contained by the window
 	SDL_Surface* screenSurface;
+
+	bool fullscreen;
+	bool borderless;
+	bool resizable;
+	bool fullscreen_window;
 
 private:
 	

@@ -254,6 +254,7 @@ bool Player::Update(Input* input, float dt)
 
 			if (input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
+
 				if (isJumping != true)
 				{
 					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightWalk;

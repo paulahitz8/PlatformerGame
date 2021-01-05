@@ -36,7 +36,7 @@ bool SceneLogo::Update(Input* input, float dt)
 	}
 	timer++;
 
-	return false;
+	return true;
 }
 
 bool SceneLogo::Draw(Render* render)

@@ -10,14 +10,14 @@
 #include "FadeScreen.h"
 #include "SceneGameplay.h"
 
+#include "SDL_mixer/include/SDL_mixer.h"
+
 #include "Defs.h"
 #include "Log.h"
 
 
-SceneTitle::SceneTitle()
+SceneTitle::SceneTitle(Window* win)
 {
-	//name.Create("SceneTitle");
-	
 	// GUI: Initialize required controls for the screen
 	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS");
 	btnCredits->SetObserver(this);
@@ -37,9 +37,19 @@ SceneTitle::SceneTitle()
 	btnCredCross = new GuiButton(6, { 932, 654, 36, 36 }, "CREDCROSS");
 	btnCredCross->SetObserver(this);
 
-	btnSettCross = new GuiButton(7, { 932, 654, 36, 36 }, "SETTCROSS");
+	btnSettCross = new GuiButton(7, { 930, 652, 36, 36 }, "SETTCROSS");
 	btnSettCross->SetObserver(this);
 
+	btnFullscreen = new GuiCheckBox(8, { 754, 954, 36, 36 }, "FULLSCREEN");
+	btnFullscreen->SetObserver(this);
+
+	sliderMusic = new GuiSlider(9, { 630, 754, 34, 34 }, "MUSIC");
+	sliderMusic->SetObserver(this);
+
+	sliderFx = new GuiSlider(10, { 630, 869, 34, 34 }, "FX");
+	sliderFx->SetObserver(this);
+
+	this->win = win;
 }
 
 SceneTitle::~SceneTitle() {}
@@ -55,12 +65,18 @@ bool SceneTitle::Load(Textures* tex)
 	buttonsTitle = tex->Load("Assets/GUI/title_buttons.png");
 	credits = tex->Load("Assets/GUI/credits.png");
 	settings = tex->Load("Assets/Screens/settings_screen.png");
+	check = tex->Load("Assets/GUI/settings_icons.png");
+
+	this->tex = tex;
+
+	timerFullscreen = 0;
 	
 	return ret;
 }
 
 bool SceneTitle::Update(Input* input, float dt)
 {
+
 	if (creditsTab != true && settingsTab != true)
 	{
 		btnCredits->Update(input, dt);
@@ -76,7 +92,22 @@ bool SceneTitle::Update(Input* input, float dt)
 	else if (settingsTab == true && creditsTab != true)
 	{
 		btnSettCross->Update(input, dt);
+		btnFullscreen->Update(input, dt);
+		sliderMusic->Update(input, dt);
+		sliderFx->Update(input, dt);
 	}
+
+	if (sliderMusic->state == GuiControlState::PRESSED)
+	{
+		Mix_VolumeMusic(sliderMusic->volume);
+	}
+
+	if (sliderFx->state == GuiControlState::PRESSED)
+	{
+		Mix_Volume(-1, sliderFx->volume);
+	}
+
+	timerFullscreen++;
 
 	return exitReq;
 }
@@ -99,9 +130,15 @@ bool SceneTitle::Draw(Render* render)
 	btnContinue->Draw(render);
 	btnExit->Draw(render);
 	btnSettings->Draw(render);
-
 	btnCredCross->Draw(render);
 	btnSettCross->Draw(render);
+
+	if (settingsTab)
+	{
+		btnFullscreen->Draw(render);
+		sliderMusic->Draw(render);
+		sliderFx->Draw(render);
+	}
 
 	return false;
 }
@@ -111,7 +148,22 @@ bool SceneTitle::Unload()
 {
 	LOG("Freeing scene");
 	
-	app->tex->UnLoad(sceneTitle);
+	tex->UnLoad(sceneTitle);
+	tex->UnLoad(buttonsTitle);
+	tex->UnLoad(credits);
+	tex->UnLoad(settings);
+	tex->UnLoad(check);
+
+	delete btnCredits;
+	delete btnPlay;
+	delete btnContinue;
+	delete btnExit;
+	delete btnSettings;
+	delete btnCredCross;
+	delete btnSettCross;
+	delete btnFullscreen;
+	delete sliderMusic;
+	delete sliderFx;
 	
 	return true;
 }
@@ -152,7 +204,20 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			settingsTab = false;  // Credits request
 			btnSettCross->state = GuiControlState::NORMAL;
-
+			sliderMusic->state = GuiControlState::NORMAL;
+			sliderFx->state = GuiControlState::NORMAL;
+		}
+	}
+	case GuiControlType::CHECKBOX:
+	{
+		if (control->id == 8)
+		{
+			if (timerFullscreen > 5)
+			{
+				fullscreen = !fullscreen;
+				win->SetToFullscreen(fullscreen);
+				timerFullscreen = 0;
+			}
 		}
 	}
 	default: break;
@@ -160,4 +225,3 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 
 	return true;
 }
-

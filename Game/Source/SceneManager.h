@@ -9,12 +9,13 @@ class GuiButton;
 class Input;
 class Render;
 class Textures;
+class Window;
 
 class SceneManager : public Module
 {
 public:
 
-	SceneManager(Input* input, Render* render, Textures* tex);
+	SceneManager(Input* input, Render* render, Textures* tex, Window* win);
 
 	// Destructor
 	virtual ~SceneManager();
@@ -38,11 +39,11 @@ public:
 	bool CleanUp();
 
 	Textures* tex;
-
-private:
-
 	Input* input;
 	Render* render;
+	Window* win;
+
+private:
 
 	Scene* current;
 	Scene* next;
