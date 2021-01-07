@@ -22,37 +22,37 @@ GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 
 	leftIdle.PushBack({ 120, 30, 30, 30 });
 	leftIdle.PushBack({ 150, 30, 30, 30 });
-	leftIdle.speed = 3.0f;
+	leftIdle.speed = 1.5f;
 
 	rightIdle.PushBack({ 120, 0, 30, 30 });
 	rightIdle.PushBack({ 150, 0, 30, 30 });
-	rightIdle.speed = 3.0f;
+	rightIdle.speed = 1.5f;
 
 	leftDead.PushBack({ 180, 30, 32, 30 });
 	leftDead.PushBack({ 212, 30, 32, 30 });
-	leftDead.speed = 1.5f;
+	leftDead.speed = 0.75f;
 
 	rightDead.PushBack({ 181, 0, 32, 30 });
 	rightDead.PushBack({ 213, 0, 32, 30 });
-	leftDead.speed = 1.5f;
+	leftDead.speed = 0.75f;
 
 	leftRoll.PushBack({ 30, 30, 30, 30 });
 	leftRoll.PushBack({ 0, 30, 30, 30 });
 	leftRoll.PushBack({ 90, 30, 30, 30 });
 	leftRoll.PushBack({ 60, 30, 30, 30 });
-	leftRoll.speed = 6.0f;
+	leftRoll.speed = 3.0f;
 
 	rightRoll.PushBack({ 60, 0, 30, 30 });
 	rightRoll.PushBack({ 90, 0, 30, 30 });
 	rightRoll.PushBack({ 0, 0, 30, 30 });
 	rightRoll.PushBack({ 30, 0, 30, 30 });
-	rightRoll.speed = 6.0f;
+	rightRoll.speed = 3.0f;
 
 	deadAnim.PushBack({ 66, 277, 22, 25 });
 	deadAnim.PushBack({ 90, 277, 22, 25 });
 	deadAnim.PushBack({ 114, 277, 22, 25 });
 	deadAnim.PushBack({ 138, 277, 22, 25 });
-	deadAnim.speed = 4.0f;
+	deadAnim.speed = 2.0f;
 
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/seal_sprites.png");
@@ -156,12 +156,12 @@ bool GroundEnemy::Update(float dt)
 						if (pos->x * 64 < enemyPos.x)
 						{
 							currentAnimation = &leftRoll;
-							enemyPos.x -= floor(130 * dt);
+							enemyPos.x -= floor(65 * dt);
 						}
 						else if (pos->x * 64 > enemyPos.x)
 						{
 							currentAnimation = &rightRoll;
-							enemyPos.x += floor(130 * dt);
+							enemyPos.x += floor(65 * dt);
 						}
 					}
 				}
@@ -195,7 +195,7 @@ bool GroundEnemy::Update(float dt)
 
 		if (GetEnemyTileProperty((enemyPos.x - 1) / 64, (enemyPos.y + enemyRect.h - 5) / 64, "CollisionId") == Collider::Type::GROUND)
 		{
-			enemyPos.x += floor(130 * dt);
+			enemyPos.x += floor(65 * dt);
 		}
 	}
 

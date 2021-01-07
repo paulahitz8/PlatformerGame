@@ -24,12 +24,12 @@ Player::Player() : Entity(EntityType::PLAYER)
 	//right idle animations
 	rightIdle.PushBack({ 59, 129, 22, 25 });
 	rightIdle.PushBack({ 91, 129, 22, 25 });
-	rightIdle.speed = 0.8f;
+	rightIdle.speed = 0.4f;
 
 	//left idle animations
 	leftIdle.PushBack({ 289, 229, 22, 25 });
 	leftIdle.PushBack({ 257, 229, 22, 25 });
-	leftIdle.speed = 0.8f;
+	leftIdle.speed = 0.4f;
 
 	//walking to the right animations
 	rightWalk.PushBack({ 58, 97, 22, 25 });
@@ -44,7 +44,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	rightWalk.PushBack({ 185, 97, 22, 25 });
 	rightWalk.PushBack({ 151, 97, 22, 25 });
 	rightWalk.PushBack({ 121, 97, 22, 25 });
-	rightWalk.speed = 6.0f;
+	rightWalk.speed = 3.0f;
 
 	//walking to the left animations
 	leftWalk.PushBack({ 290, 197, 22, 25 });
@@ -59,19 +59,19 @@ Player::Player() : Entity(EntityType::PLAYER)
 	leftWalk.PushBack({ 163, 197, 22, 25 });
 	leftWalk.PushBack({ 195, 197, 22, 25 });
 	leftWalk.PushBack({ 227, 197, 22, 25 });
-	leftWalk.speed = 6.0f;
+	leftWalk.speed = 3.0f;
 
 	//jumping to the right animations
 	rightJump.PushBack({ 89, 97, 22, 25 });
 	rightJump.PushBack({ 91, 62, 22, 25 });
 	rightJump.PushBack({ 123, 64, 22, 25 });
-	rightJump.speed = 2.5f;
+	rightJump.speed = 1.75f;
 
 	//jumping to the left animations
 	leftJump.PushBack({ 258, 197, 22, 25 });
 	leftJump.PushBack({ 258, 162, 22, 25 });
 	leftJump.PushBack({ 225, 165, 22, 25 });
-	leftJump.speed = 2.5f;
+	leftJump.speed = 1.75f;
 
 	//right death animations
 	rightDeath.PushBack({ 187, 129, 22, 25 });
@@ -80,7 +80,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	rightDeath.PushBack({ 90, 277, 22, 25 });
 	rightDeath.PushBack({ 114, 277, 22, 25 });
 	rightDeath.PushBack({ 138, 277, 22, 25 });
-	rightDeath.speed = 3.0f;
+	rightDeath.speed = 1.5f;
 
 	//left death animations
 	leftDeath.PushBack({ 162, 229, 22, 25 });
@@ -89,31 +89,31 @@ Player::Player() : Entity(EntityType::PLAYER)
 	leftDeath.PushBack({ 90, 277, 22, 25 });
 	leftDeath.PushBack({ 114, 277, 22, 25 });
 	leftDeath.PushBack({ 138, 277, 22, 25 });
-	leftDeath.speed = 3.0f;
+	leftDeath.speed = 1.5f;
 
 	//left shoot animation
 	leftShoot.PushBack({ 193, 165, 22, 25 });
 	leftShoot.PushBack({ 162, 165, 22, 25 });
 	leftShoot.PushBack({ 132, 165, 22, 25 });
 	leftShoot.PushBack({ 162, 165, 22, 25 });
-	leftShoot.speed = 7.0f;
+	leftShoot.speed = 3.5f;
 
 	//right shoot animation
 	rightShoot.PushBack({ 155, 65, 22, 25 });
 	rightShoot.PushBack({ 186, 65, 22, 25 });
 	rightShoot.PushBack({ 216, 65, 22, 25 });
 	rightShoot.PushBack({ 186, 65, 22, 25 });
-	rightShoot.speed = 7.0f;
+	rightShoot.speed = 3.5f;
 
 	//snowball animation
 	snowballAnim.PushBack({ 203, 44, 6, 6 });
 	snowballAnim.PushBack({ 219, 44, 6, 6 });
-	snowballAnim.speed = 10.0f;
+	snowballAnim.speed = 5.0f;
 
 	//red heart animation
 	redHeart.PushBack({ 0, 0, 34, 29 });
 	redHeart.PushBack({ 34, 0, 34, 29 });
-	redHeart.speed = 1.0f;
+	redHeart.speed = 0.5f;
 
 	//snowman idle
 	snowmanIdle.PushBack({ 68, 0, 56, 64 });
@@ -122,7 +122,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	snowmanWave.PushBack({ 146, 0, 56, 64 });
 	snowmanIdle.PushBack({ 68, 0, 56, 64 });
 	snowmanWave.PushBack({ 228, 0, 56, 64 });
-	snowmanWave.speed = 6.0f;
+	snowmanWave.speed = 3.0f;
 
 	LOG("Loading player textures");
 
@@ -264,24 +264,24 @@ bool Player::Update(Input* input, float dt)
 
 			if (input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				playerPos.x -= floor(500 * dt);
+				playerPos.x -= floor(250 * dt);
 				if (!isJumping) currentAnimation = &leftWalk;
 			}
 
 			if (input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				playerPos.x += floor(500 * dt);
+				playerPos.x += floor(250 * dt);
 				if (!isJumping) currentAnimation = &rightWalk;
 			}
 
 			if (input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			{
-				playerPos.y += floor(500 * dt);
+				playerPos.y += floor(250 * dt);
 			}
 
 			if (input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 			{
-				playerPos.y -= floor(500 * dt);
+				playerPos.y -= floor(250 * dt);
 			}
 
 			// If last movement was left, set the current animation back to left idle
@@ -363,14 +363,14 @@ bool Player::Update(Input* input, float dt)
 			//Walking to the left
 			else if (input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
-				playerPos.x += floor(250 * dt);
+				playerPos.x += floor(175 * dt);
 				if (!isFalling) currentAnimation = &rightWalk;
 			}
 
 			//Walking to the right
 			else if (input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
-				playerPos.x -= floor(250 * dt);
+				playerPos.x -= floor(175 * dt);
 				if (!isFalling) currentAnimation = &leftWalk;
 			}
 
@@ -400,7 +400,7 @@ bool Player::Update(Input* input, float dt)
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightJump;
 				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftJump;
 
-				speed.y = floor(-1700.0 * dt);
+				speed.y = -23;
 			}
 
 			if (input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)

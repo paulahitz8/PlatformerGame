@@ -14,8 +14,6 @@ bool GuiButton::Update(Input* input, float dt)
 {
 	if (state != GuiControlState::DISABLED)
 	{
-		int mouseX, mouseY;
-	
 		input->GetMousePosition(mouseX, mouseY);
 		mouseY += 500;
 

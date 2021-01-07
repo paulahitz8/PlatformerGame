@@ -27,7 +27,7 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 	left.PushBack({ 290, 49, 53, 51 });
 	left.PushBack({ 140, 49, 53, 51 });
 	left.PushBack({ 90, 49, 53, 51 });
-	left.speed = 10.0f;
+	left.speed = 5.0f;
 
 	right.PushBack({ 615, 49, 53, 51 });
 	right.PushBack({ 565, 49, 53, 51 });
@@ -37,7 +37,7 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 	right.PushBack({ 365, 49, 53, 51 });
 	right.PushBack({ 515, 49, 53, 51 });
 	right.PushBack({ 565, 49, 53, 51 });
-	right.speed = 10.0f;
+	right.speed = 5.0f;
 
 	leftDead.PushBack({ 40, 188, 64, 50 });
 
@@ -51,7 +51,7 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 	deadAnim.PushBack({ 90, 277, 22, 25 });
 	deadAnim.PushBack({ 114, 277, 22, 25 });
 	deadAnim.PushBack({ 138, 277, 22, 25 });
-	deadAnim.speed = 4.0f;
+	deadAnim.speed = 2.0f;
 
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/eagle_sprites.png");
@@ -149,16 +149,16 @@ bool FlyingEnemy::Update(float dt)
 						if (pos->x * 64 < enemyPos.x)
 						{
 							currentAnimation = &left;
-							enemyPos.x -= floor(150 * dt);
+							enemyPos.x -= floor(75 * dt);
 						}
 						else if (pos->x * 64 > enemyPos.x)
 						{
 							currentAnimation = &right;
-							enemyPos.x += floor(150 * dt);
+							enemyPos.x += floor(75 * dt);
 						}
 
-						if (pos->y * 64 < enemyPos.y) enemyPos.y -= floor(150 * dt);
-						else if (pos->y * 64 > enemyPos.y) enemyPos.y += floor(150 * dt);
+						if (pos->y * 64 < enemyPos.y) enemyPos.y -= floor(75 * dt);
+						else if (pos->y * 64 > enemyPos.y) enemyPos.y += floor(75 * dt);
 					}
 				}
 				pathTimer++;

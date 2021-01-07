@@ -18,6 +18,7 @@ public:
 
 	int volume;
 	int unit;
+	int mouseX, mouseY;
 
 private:
 

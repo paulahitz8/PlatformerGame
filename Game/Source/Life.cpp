@@ -20,7 +20,7 @@ Life::Life() : Entity(EntityType::LIFE)
 	fishAnim.PushBack({ 11, 15, 21, 20 });
 	fishAnim.PushBack({ 40, 15, 21, 20 });
 	fishAnim.PushBack({ 70, 15, 21, 20 });
-	fishAnim.speed = 1.0f;
+	fishAnim.speed = 0.5f;
 
 	blankAnim.PushBack({ 0, 0, 3, 3 });
 

@@ -30,6 +30,11 @@ bool EntityManager::Awake(pugi::xml_node& config)
 // Called before quitting
 bool EntityManager::CleanUp()
 {
+	for (int i = 0; i < entities.Count(); i++)
+	{
+		entities[i]->CleanUp();
+	}
+	
 	if (!active) return true;
 
 	return true;

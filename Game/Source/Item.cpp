@@ -20,7 +20,7 @@ Item::Item() : Entity(EntityType::ITEM)
 	iceAnim.PushBack({ 13, 12, 16, 24 });
 	iceAnim.PushBack({ 41, 12, 16, 24 });
 	iceAnim.PushBack({ 72, 12, 16, 24 });
-	iceAnim.speed = 1.0f;
+	iceAnim.speed = 0.5f;
 
 	blankAnim.PushBack({ 0, 0, 3, 3 });
 

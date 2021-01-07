@@ -118,6 +118,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		pauseMenu = true;
+		//TransitionToScene(SceneType::WIN);
 	}
 	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
 	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
@@ -178,6 +179,39 @@ bool SceneGameplay::Update(Input* input, float dt)
 	timerMenu++;
 	timerFullscreen++;
 
+	if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
+	{
+		//render->DrawTexture(settingsTex, -render->camera.x, 350, &rectSettings);
+	/*	btnSettings->mouseX 
+		btnExit->bounds.x = -app->render->camera.x + 538;
+		btnTitle->bounds.x = -app->render->camera.x + 540;
+		btnPauseCross->bounds.x = -app->render->camera.x + 930;
+		btnSettCross->bounds.x = -app->render->camera.x + 930;
+		btnFullscreen->bounds.x = -app->render->camera.x + 754;
+		sliderMusic->bounds.x = -app->render->camera.x + 630;
+		sliderFx->bounds.x = -app->render->camera.x + 630;*/
+
+		//btnSettings->mouseX = 2;
+		//btnExit->mouseX = 2;
+		//btnTitle->mouseX = 2;
+		//btnPauseCross->mouseX = 2;
+		//btnSettCross->mouseX = 2;
+		//btnFullscreen->mouseX = 2;
+		//sliderMusic->mouseX = 2;
+		//sliderFx->mouseX = 2;
+
+
+		btnSettings->bounds.x = -app->render->camera.x + 538;
+		btnExit->bounds.x = -app->render->camera.x + 538;
+		btnTitle->bounds.x = -app->render->camera.x + 540;
+		btnPauseCross->bounds.x = -app->render->camera.x + 930;
+		btnSettCross->bounds.x = -app->render->camera.x + 930;
+		btnFullscreen->bounds.x = -app->render->camera.x + 754;
+		sliderMusic->bounds.x = -app->render->camera.x + 630;
+		sliderFx->bounds.x = -app->render->camera.x + 630;
+	}
+
+
 	return exitReq;
 }
 
@@ -226,7 +260,7 @@ bool SceneGameplay::Draw(Render* render)
 	else if (pauseMenu == true && settingsTab == false)
 	{
 		rectPause = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-		render->DrawTexture(pauseTex, 0, 350, &rectPause);
+		render->DrawTexture(pauseTex, -render->camera.x, 350, &rectPause);
 		btnSettings->Draw(render);
 		btnExit->Draw(render);
 		btnTitle->Draw(render);
@@ -234,12 +268,19 @@ bool SceneGameplay::Draw(Render* render)
 	}
 	else if (settingsTab == true)
 	{
+	
 		rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-		render->DrawTexture(settingsTex, 0, 350, &rectSettings);
+		if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
+		{
+			render->DrawTexture(settingsTex, -render->camera.x, 350, &rectSettings);
+		}
+		//render->DrawTexture(settingsTex, 0, 350, &rectSettings);
 		btnSettCross->Draw(render);
 		btnFullscreen->Draw(render);
 		sliderMusic->Draw(render);
 		sliderFx->Draw(render);
+
+
 	}
 
 	return false;
