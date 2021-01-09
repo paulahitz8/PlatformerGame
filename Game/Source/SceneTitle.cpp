@@ -20,25 +20,25 @@
 SceneTitle::SceneTitle(Window* win, bool continueRequest, Render* render)
 {
 	// GUI: Initialize required controls for the screen
-	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS");
+	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS", drawBasic, drawSettings, drawCredits);
 	btnCredits->SetObserver(this);
 
-	btnPlay = new GuiButton(2, { 542, 984, 194, 60 }, "PLAY");
+	btnPlay = new GuiButton(2, { 542, 984, 194, 60 }, "PLAY", drawBasic, drawSettings, drawCredits);
 	btnPlay->SetObserver(this);
 
-	btnExit = new GuiButton(3, { 539 + (546 - 178), 984, 195, 60 }, "EXIT");
+	btnExit = new GuiButton(3, { 539 + (546 - 178), 984, 195, 60 }, "EXIT", drawBasic, drawSettings, drawCredits);
 	btnExit->SetObserver(this);
 
-	btnContinue = new GuiButton(4, { 542, 854, 194, 60 }, "CONTINUE");
+	btnContinue = new GuiButton(4, { 542, 854, 194, 60 }, "CONTINUE", drawBasic, drawSettings, drawCredits);
 	btnContinue->SetObserver(this);
 
-	btnSettings = new GuiButton(5, { 1172, 556, 78, 79 }, "SETTINGS");
+	btnSettings = new GuiButton(5, { 1172, 556, 78, 79 }, "SETTINGS", drawBasic, drawSettings, drawCredits);
 	btnSettings->SetObserver(this);
 
-	btnCredCross = new GuiButton(6, { 932, 654, 36, 36 }, "CREDCROSS");
+	btnCredCross = new GuiButton(6, { 932, 654, 36, 36 }, "CREDCROSS", drawBasic, drawSettings, drawCredits);
 	btnCredCross->SetObserver(this);
 
-	btnSettCross = new GuiButton(7, { 930, 652, 36, 36 }, "SETTCROSS");
+	btnSettCross = new GuiButton(7, { 930, 652, 36, 36 }, "SETTCROSS", drawBasic, drawSettings, drawCredits);
 	btnSettCross->SetObserver(this);
 
 	btnFullscreen = new GuiCheckBox(8, { 754, 954, 36, 36 }, "FULLSCREEN");
@@ -89,10 +89,19 @@ bool SceneTitle::Update(Input* input, float dt)
 		btnContinue->Update(input, dt, render);
 		btnExit->Update(input, dt, render);
 		btnSettings->Update(input, dt, render);
+		
+		if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		{
+			drawBasic = !drawBasic;
+		}
 	}
 	else if (creditsTab == true && settingsTab != true)
 	{
 		btnCredCross->Update(input, dt, render);
+		if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		{
+			drawCredits = !drawCredits;
+		}
 	}
 	else if (settingsTab == true && creditsTab != true)
 	{
@@ -100,6 +109,10 @@ bool SceneTitle::Update(Input* input, float dt)
 		btnFullscreen->Update(input, dt, render);
 		sliderMusic->Update(input, dt, render);
 		sliderFx->Update(input, dt, render);
+		if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		{
+			drawSettings = !drawSettings;
+		}
 	}
 
 	if (sliderMusic->state == GuiControlState::PRESSED)

@@ -10,11 +10,15 @@ class GuiButton : public GuiControl
 {
 public:
 
-	GuiButton(uint32 id, SDL_Rect bounds, const char* text);
+	GuiButton(uint32 id, SDL_Rect bounds, const char* text, bool drawBasic, bool drawSettings, bool drawCredits);
 	virtual ~GuiButton();
 
 	bool Update(Input* input, float dt, Render* render);
 	bool Draw(Render* render);
+
+	bool drawCredits;
+	bool drawSettings;
+	bool drawBasic;
 
 	int mouseX, mouseY;
 	unsigned int click;

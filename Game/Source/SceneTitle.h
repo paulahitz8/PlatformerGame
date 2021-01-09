@@ -53,6 +53,10 @@ private:
 	bool settingsTab = false;
 	bool continueRequest;
 
+	bool drawBasic = false;
+	bool drawCredits = false;
+	bool drawSettings = false;
+
 	int timerFullscreen = 0;
 
 	SDL_Texture* sceneTitle;

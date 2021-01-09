@@ -25,19 +25,19 @@
 
 SceneGameplay::SceneGameplay(bool continueRequest, Render* render)
 {
-	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS");
+	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS", drawBasic, drawSettings, drawCredits);
 	btnSettings->SetObserver(this);
 
-	btnExit = new GuiButton(2, { 538, 976, 202, 60 }, "EXIT");
+	btnExit = new GuiButton(2, { 538, 976, 202, 60 }, "EXIT", drawBasic, drawSettings, drawCredits);
 	btnExit->SetObserver(this);
 
-	btnTitle = new GuiButton(3, { 540, 845, 201, 60 }, "TITLE");
+	btnTitle = new GuiButton(3, { 540, 845, 201, 60 }, "TITLE", drawBasic, drawSettings, drawCredits);
 	btnTitle->SetObserver(this);
 
-	btnPauseCross = new GuiButton(4, { 930, 652, 36, 36 }, "PAUSECROSS");
+	btnPauseCross = new GuiButton(4, { 930, 652, 36, 36 }, "PAUSECROSS", drawBasic, drawSettings, drawCredits);
 	btnPauseCross->SetObserver(this);
 
-	btnSettCross = new GuiButton(5, { 930, 652, 36, 36 }, "SETTCROSS");
+	btnSettCross = new GuiButton(5, { 930, 652, 36, 36 }, "SETTCROSS", drawBasic, drawSettings, drawCredits);
 	btnSettCross->SetObserver(this);
 
 	btnFullscreen = new GuiCheckBox(6, { 754, 954, 36, 36 }, "FULLSCREEN");

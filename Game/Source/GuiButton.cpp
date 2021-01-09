@@ -3,10 +3,13 @@
 #include "App.h"
 #include "Audio.h"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, bool drawBasic, bool drawSettings, bool drawCredits) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
 	this->text = text;
+	this->drawSettings = drawSettings;
+	this->drawBasic = drawBasic;
+	this->drawCredits = drawCredits;
 	click = app->audio->LoadFx("Assets/Audio/Fx/Button.wav");
 }
 
@@ -17,6 +20,7 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(Input* input, float dt, Render* render)
 {
+
 	if (state != GuiControlState::DISABLED)
 	{
 		input->GetMousePosition(mouseX, mouseY);
@@ -57,8 +61,23 @@ bool GuiButton::Draw(Render* render)
 	// Draw the right button depending on state
 	switch (state)
 	{
-	case GuiControlState::DISABLED: render->DrawRectangle(bounds, 100, 100, 100, 255);
+	case GuiControlState::DISABLED: 
+	{
+		render->DrawRectangle(bounds, 100, 100, 100, 255);
+		if (drawBasic)
+		{
+
+		}
+		if (drawSettings)
+		{
+
+		}
+		if (drawCredits)
+		{
+
+		}
 		break;
+	}
 	case GuiControlState::NORMAL: render->DrawRectangle(bounds, 0, 255, 0, 0);
 		break;
 	case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 255, 160);

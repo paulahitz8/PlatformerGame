@@ -37,6 +37,10 @@ public:
 
 	bool pauseMenu = false;
 
+	bool drawBasic = false;
+	bool drawCredits = false;
+	bool drawSettings = false;
+
 private:
 
 	GuiButton* btnSettings;
