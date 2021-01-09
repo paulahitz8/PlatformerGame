@@ -1,13 +1,11 @@
-#include "App.h"
 #include "Font.h"
 #include "Textures.h"
 
-#include "Defs.h"
 #include "Log.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
-Font::Font(const char* rtpFontFile, Textures* tex) : Module()
+Font::Font(const char* rtpFontFile, Textures* tex)
 {
 	fontLoaded = false;
 
@@ -57,13 +55,13 @@ SDL_Texture* Font::GetTextureAtlas()
 
 SDL_Rect Font::GetCharRec(int value)
 {
-	SDL_Rect rec = { 0 };
+    SDL_Rect rec = { 0 };
 
-	// Get character rectangle corresponding to introduced value
+    // Get character rectangle corresponding to introduced value
 	// NOTE: In our current implementation rectangles are ordered following
 	// the character codepoint value but improved implementation would require
 	// a for() loop to look for the corresponding value on a hashmap table
 	rec = charsRecs[value];
 
-	return rec;
+    return rec;
 }

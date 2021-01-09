@@ -2,12 +2,12 @@
 #define __FONT_H__
 
 #include "Defs.h"
-#include "Module.h"
 
 #include "SDL/include/SDL.h"
-#include "Textures.h"
 
-class Font : public Module
+class Textures;
+
+class Font
 {
 public:
 
@@ -19,10 +19,10 @@ public:
     SDL_Rect GetCharRec(int value);
 
 private:
-
+	
     bool fontLoaded;
 
-    SDL_Texture* texture;
+	SDL_Texture* texture;
 
     int baseSize;
     int charsCount;

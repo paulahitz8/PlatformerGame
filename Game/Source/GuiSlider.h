@@ -29,6 +29,9 @@ private:
 
 	int minValue;
 	int maxValue;
+
+	bool canClick = true;
+	unsigned int click;
 };
 
 #endif // __GUISLIDER_H__
