@@ -16,9 +16,9 @@ public:
 	bool Update(Input* input, float dt, Render* render);
 	bool Draw(Render* render);
 
-	bool drawCredits;
-	bool drawSettings;
-	bool drawBasic;
+	bool drawCredits = false;
+	bool drawSettings = false;
+	bool drawBasic = false;
 
 	int mouseX, mouseY;
 	unsigned int click;
