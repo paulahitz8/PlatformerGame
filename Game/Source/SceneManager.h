@@ -46,6 +46,7 @@ public:
 	pugi::xml_node config;
 
 	bool continueRequest = false;
+	bool continueDone = false;
 
 private:
 
