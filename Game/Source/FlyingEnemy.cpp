@@ -94,85 +94,88 @@ FlyingEnemy::~FlyingEnemy() {}
 
 bool FlyingEnemy::Update(float dt)
 {
-	iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
-	iPoint playerTile = iPoint(player->playerPos.x / 64, player->playerPos.y / 64);
-	createPath = app->path->CreatePath(enemyTile, playerTile);
-
-	if ((abs(player->playerPos.x - enemyPos.x) < 600) && (abs(player->playerPos.y - enemyPos.y) < 600)) playerSeenF = true;
-
-	if (isDead)
+	if (notPause)
 	{
-		if (player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER || player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::PLATFORM)
-		{
-			if (currentAnimation == &leftFalling) currentAnimation = &leftDead;
-			else if (currentAnimation == &rightFalling) currentAnimation = &rightDead;
+		iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
+		iPoint playerTile = iPoint(player->playerPos.x / 64, player->playerPos.y / 64);
+		createPath = app->path->CreatePath(enemyTile, playerTile);
 
-			if (timer == 60)
+		if ((abs(player->playerPos.x - enemyPos.x) < 600) && (abs(player->playerPos.y - enemyPos.y) < 600)) playerSeenF = true;
+
+		if (isDead)
+		{
+			if (player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::GROUND || player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::WATER || player->GetTileProperty(enemyPos.x / 64, (enemyPos.y + 35) / 64, "CollisionId") == Collider::Type::PLATFORM)
 			{
-				currentAnimation = &blankAnim;
-				currentDeadAnimation = &deadAnim;
-			}
-			else if (timer == 110) currentDeadAnimation = &blankAnim;
+				if (currentAnimation == &leftFalling) currentAnimation = &leftDead;
+				else if (currentAnimation == &rightFalling) currentAnimation = &rightDead;
 
-			timer++;
-		}
-
-		else
-		{
-			enemyPos.y += 2;
-			if (currentAnimation == &left) currentAnimation = &leftFalling;
-			else if (currentAnimation == &right) currentAnimation = &rightFalling;
-		}
-	}
-
-	if (!isDead)
-	{
-		if (!player->godMode)
-		{
-			if (playerSeenF)
-			{
-				if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
+				if (timer == 60)
 				{
-					createPath = app->path->CreatePath(enemyTile, playerTile);
-
-					if (createPath == 0) pathTimer = 0;
+					currentAnimation = &blankAnim;
+					currentDeadAnimation = &deadAnim;
 				}
+				else if (timer == 110) currentDeadAnimation = &blankAnim;
 
-				if (app->path->GetLastPath()->At(0) != nullptr)
+				timer++;
+			}
+
+			else
+			{
+				enemyPos.y += 2;
+				if (currentAnimation == &left) currentAnimation = &leftFalling;
+				else if (currentAnimation == &right) currentAnimation = &rightFalling;
+			}
+		}
+
+		if (!isDead)
+		{
+			if (!player->godMode)
+			{
+				if (playerSeenF)
 				{
-
-					const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
-
-					if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y) pathIndex++;
-					else
+					if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
 					{
-						if (pos->x * 64 < enemyPos.x)
-						{
-							currentAnimation = &left;
-							enemyPos.x -= floor(75 * dt);
-						}
-						else if (pos->x * 64 > enemyPos.x)
-						{
-							currentAnimation = &right;
-							enemyPos.x += floor(75 * dt);
-						}
+						createPath = app->path->CreatePath(enemyTile, playerTile);
 
-						if (pos->y * 64 < enemyPos.y) enemyPos.y -= floor(75 * dt);
-						else if (pos->y * 64 > enemyPos.y) enemyPos.y += floor(75 * dt);
+						if (createPath == 0) pathTimer = 0;
 					}
+
+					if (app->path->GetLastPath()->At(0) != nullptr)
+					{
+
+						const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+
+						if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y) pathIndex++;
+						else
+						{
+							if (pos->x * 64 < enemyPos.x)
+							{
+								currentAnimation = &left;
+								enemyPos.x -= floor(75 * dt);
+							}
+							else if (pos->x * 64 > enemyPos.x)
+							{
+								currentAnimation = &right;
+								enemyPos.x += floor(75 * dt);
+							}
+
+							if (pos->y * 64 < enemyPos.y) enemyPos.y -= floor(75 * dt);
+							else if (pos->y * 64 > enemyPos.y) enemyPos.y += floor(75 * dt);
+						}
+					}
+					pathTimer++;
+					if (soundTimer % 500 == 0) app->audio->PlayFx(eagleFx);
 				}
-				pathTimer++;
-				if (soundTimer % 500 == 0) app->audio->PlayFx(eagleFx);
 			}
 		}
+
+		soundTimer++;
+
+		currentAnimation->Update(dt);
+		currentDeadAnimation->Update(dt);
+
+		enemyCollider->SetPos(enemyPos.x + 10, enemyPos.y);
 	}
-
-	soundTimer++;
-
-	currentAnimation->Update(dt);
-	currentDeadAnimation->Update(dt);
-
-	enemyCollider->SetPos(enemyPos.x + 10, enemyPos.y);
 
 	return true;
 }

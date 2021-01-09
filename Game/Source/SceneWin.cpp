@@ -16,7 +16,7 @@
 #include "Log.h"
 
 
-SceneWin::SceneWin()
+SceneWin::SceneWin(Render* render)
 {
 	//name.Create("SceneWin");
 
@@ -37,6 +37,8 @@ SceneWin::SceneWin()
 
 	btnSettCross = new GuiButton(7, { 932, 654, 36, 36 }, "SETTCROSS");
 	btnSettCross->SetObserver(this);
+
+	this->render = render;
 
 }
 
@@ -64,7 +66,7 @@ bool SceneWin::Load(Textures* tex)
 }
 
 // Called each loop iteration
-bool SceneWin::Update(Input* input, float dt)
+bool SceneWin::Update(Input* input, float dt, Render* render)
 {
 	//if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	//{
@@ -76,18 +78,18 @@ bool SceneWin::Update(Input* input, float dt)
 
 	if (creditsTab != true && settingsTab != true)
 	{
-		btnCredits->Update(input, dt);
-		btnPlay->Update(input, dt);
-		btnExit->Update(input, dt);
-		btnSettings->Update(input, dt);
+		btnCredits->Update(input, dt, render);
+		btnPlay->Update(input, dt, render);
+		btnExit->Update(input, dt, render);
+		btnSettings->Update(input, dt, render);
 	}
 	else if (creditsTab == true && settingsTab != true)
 	{
-		btnCredCross->Update(input, dt);
+		btnCredCross->Update(input, dt, render);
 	}
 	else if (settingsTab == true && creditsTab != true)
 	{
-		btnSettCross->Update(input, dt);
+		btnSettCross->Update(input, dt, render);
 	}
 
 	return exitReq;

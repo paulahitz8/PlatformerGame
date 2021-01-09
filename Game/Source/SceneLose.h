@@ -12,7 +12,7 @@ class SceneLose : public Scene
 {
 public:
 
-	SceneLose();
+	SceneLose(Render* render);
 	virtual ~SceneLose();
 
 	bool Load(Textures* tex);
@@ -52,6 +52,8 @@ private:
 	SDL_Texture* sceneLose;
 	SDL_Texture* buttonsTitle;
 	SDL_Rect rectLose;
+
+	Render* render;
 };
 
 #endif // __SCENELOSE_H__

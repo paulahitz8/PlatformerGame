@@ -11,7 +11,7 @@ GuiSlider::~GuiSlider()
 {
 }
 
-bool GuiSlider::Update(Input* input, float dt)
+bool GuiSlider::Update(Input* input, float dt, Render* render)
 {
 	//float tmpValue = (float)maxValue / (float)(limits.w - bounds.w);
 	//value = (bounds.x - limits.x) * tmpValue;
@@ -28,6 +28,8 @@ bool GuiSlider::Update(Input* input, float dt)
 		unit = 319 / 100;
 		volume = (mouseX - 493) / unit;
 		value = round(value);
+
+		bounds.x += render->camera.x;
 
 		// Check collision between mouse and button bounds
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
@@ -57,14 +59,14 @@ bool GuiSlider::Update(Input* input, float dt)
 			NotifyObserver();
 		}
 
-		if (bounds.x < 463)
-		{
-			bounds.x = 463;
-		}
-		if (bounds.x >= 782)
-		{
-			bounds.x = 782;
-		}
+		//if (bounds.x< 463)
+		//{
+		//	bounds.x = 463;
+		//}
+		//if (bounds.x>= 782 )
+		//{
+		//	bounds.x = 782;
+		//}
 
 		if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 		{

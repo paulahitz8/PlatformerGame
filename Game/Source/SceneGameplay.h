@@ -22,7 +22,7 @@ class SceneGameplay : public Scene
 {
 public:
 
-	SceneGameplay(bool continueRequest);
+	SceneGameplay(bool continueRequest, Render* render);
 	virtual ~SceneGameplay();
 
 	bool Load(Textures* tex);
@@ -34,6 +34,8 @@ public:
 	bool Unload();
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
+
+	bool pauseMenu = false;
 
 private:
 
@@ -68,10 +70,12 @@ private:
 
 	bool continueRequest;
 	bool boolPath = false;
-	bool pauseMenu = false;
+
 	bool exitReq = true;
 	bool settingsTab = false;
 	bool fullscreen = false;
+
+	Render* render;
 };
 
 #endif // __SCENEGAMEPLAY_H__

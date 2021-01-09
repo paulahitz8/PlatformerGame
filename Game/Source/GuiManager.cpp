@@ -1,6 +1,8 @@
 #include "GuiManager.h"
 
 #include "GuiButton.h"
+#include "GuiCheckBox.h"
+#include "GuiSlider.h"
 
 GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 {

@@ -14,7 +14,7 @@ class SceneTitle : public Scene
 {
 public:
 
-	SceneTitle(Window* win, bool continueRequest);
+	SceneTitle(Window* win, bool continueRequest, Render* render);
 	virtual ~SceneTitle();
 
 	bool Load(Textures* tex);
@@ -62,6 +62,9 @@ private:
 	SDL_Rect rectTitle;
 	SDL_Rect rectCredit;
 	SDL_Rect rectSettings;
+
+	Render* render;
+
 };
 
 #endif // __TITLE_SCREEN_H__

@@ -16,7 +16,7 @@
 #include "Log.h"
 
 
-SceneTitle::SceneTitle(Window* win, bool continueRequest)
+SceneTitle::SceneTitle(Window* win, bool continueRequest, Render* render)
 {
 	// GUI: Initialize required controls for the screen
 	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS");
@@ -49,6 +49,7 @@ SceneTitle::SceneTitle(Window* win, bool continueRequest)
 	sliderFx = new GuiSlider(10, { 630, 869, 34, 34 }, "FX");
 	sliderFx->SetObserver(this);
 
+	this->render = render;
 	this->win = win;
 	this->continueRequest = continueRequest;
 }
@@ -80,22 +81,22 @@ bool SceneTitle::Update(Input* input, float dt)
 
 	if (creditsTab != true && settingsTab != true)
 	{
-		btnCredits->Update(input, dt);
-		btnPlay->Update(input, dt);
-		btnContinue->Update(input, dt);
-		btnExit->Update(input, dt);
-		btnSettings->Update(input, dt);
+		btnCredits->Update(input, dt, render);
+		btnPlay->Update(input, dt, render);
+		btnContinue->Update(input, dt, render);
+		btnExit->Update(input, dt, render);
+		btnSettings->Update(input, dt, render);
 	}
 	else if (creditsTab == true && settingsTab != true)
 	{
-		btnCredCross->Update(input, dt);
+		btnCredCross->Update(input, dt, render);
 	}
 	else if (settingsTab == true && creditsTab != true)
 	{
-		btnSettCross->Update(input, dt);
-		btnFullscreen->Update(input, dt);
-		sliderMusic->Update(input, dt);
-		sliderFx->Update(input, dt);
+		btnSettCross->Update(input, dt, render);
+		btnFullscreen->Update(input, dt, render);
+		sliderMusic->Update(input, dt, render);
+		sliderFx->Update(input, dt, render);
 	}
 
 	if (sliderMusic->state == GuiControlState::PRESSED)
@@ -110,6 +111,8 @@ bool SceneTitle::Update(Input* input, float dt)
 
 	timerFullscreen++;
 
+	
+
 	return exitReq;
 }
 
@@ -120,8 +123,8 @@ bool SceneTitle::Draw(Render* render)
 	rectCredit = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 	rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 	//rectCredit = { 107, 98, 426, 299};
-	render->DrawTexture(sceneTitle, 0, 350, &rectTitle);
-	render->DrawTexture(buttonsTitle, 0, 350, &rectTitle);
+	render->DrawTexture(sceneTitle, app->render->camera.x, 350, &rectTitle);
+	render->DrawTexture(buttonsTitle, app->render->camera.x, 350, &rectTitle);
 
 	if(creditsTab == true) render->DrawTexture(credits, 0, 350, &rectCredit);
 	if(settingsTab == true) render->DrawTexture(settings, 0, 350, &rectSettings);

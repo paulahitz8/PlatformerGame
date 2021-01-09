@@ -37,6 +37,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\GroundEnemy.cpp" />
     <ClCompile Include="Source\FlyingEnemy.cpp" />
+    <ClCompile Include="Source\Font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -99,6 +100,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\GroundEnemy.h" />
     <ClInclude Include="Source\FlyingEnemy.h" />
+    <ClInclude Include="Source\Font.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

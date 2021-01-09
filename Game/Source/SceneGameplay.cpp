@@ -23,7 +23,7 @@
 #include "Log.h"
 
 
-SceneGameplay::SceneGameplay(bool continueRequest)
+SceneGameplay::SceneGameplay(bool continueRequest, Render* render)
 {
 	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS");
 	btnSettings->SetObserver(this);
@@ -50,6 +50,7 @@ SceneGameplay::SceneGameplay(bool continueRequest)
 	sliderFx->SetObserver(this);
 
 	this->continueRequest = continueRequest;
+	this->render = render;
 }
 
 // Destructor
@@ -158,18 +159,18 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	if (pauseMenu == true && settingsTab == false)
 	{
-		btnSettings->Update(input, dt);
-		btnExit->Update(input, dt);
-		btnTitle->Update(input, dt);
-		btnPauseCross->Update(input, dt);
+		btnSettings->Update(input, dt, render);
+		btnExit->Update(input, dt, render);
+		btnTitle->Update(input, dt, render);
+		btnPauseCross->Update(input, dt, render);
 	}
 
 	if (settingsTab == true)
 	{
-		btnSettCross->Update(input, dt);
-		btnFullscreen->Update(input, dt);
-		sliderMusic->Update(input, dt);
-		sliderFx->Update(input, dt);
+		btnSettCross->Update(input, dt, render);
+		btnFullscreen->Update(input, dt, render);
+		sliderMusic->Update(input, dt, render);
+		sliderFx->Update(input, dt, render);
 	}
 
 
@@ -207,7 +208,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 		//sliderMusic->mouseX = 2;
 		//sliderFx->mouseX = 2;
 
-
 		btnSettings->bounds.x = -app->render->camera.x + 538;
 		btnExit->bounds.x = -app->render->camera.x + 538;
 		btnTitle->bounds.x = -app->render->camera.x + 540;
@@ -224,16 +224,29 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 bool SceneGameplay::Draw(Render* render)
 {
+	// Draw background
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+	uint wmb, hmb;
+	app->tex->GetSize(background, wmb, hmb);
+
+	for (int i = 0; (wmb * i) <= (w - render->camera.x); i++) render->DrawTexture(background, wmb * i, map->data.tileHeight * 2, false, 0.4f);
+
+	// Draw map
+	map->Draw(render);
+
+	player->Draw(render);
+
+	flyingEnemy->Draw(render);
+
+	groundEnemy->Draw(render);
+
+	item->Draw(render);
+
+	life->Draw(render);
+
 	if (pauseMenu == false && settingsTab == false)
 	{
-		// Draw background
-		uint w, h;
-		app->win->GetWindowSize(w, h);
-		uint wmb, hmb;
-		app->tex->GetSize(background, wmb, hmb);
-
-		for (int i = 0; (wmb * i) <= (w - render->camera.x); i++) render->DrawTexture(background, wmb * i, map->data.tileHeight * 2, false, 0.4f);
-
 		// Draw debug path
 		SDL_Rect rect = { 64, 0, 64, 64 };
 
@@ -249,23 +262,14 @@ bool SceneGameplay::Draw(Render* render)
 					render->DrawTexture(debugPath, pos.x, pos.y, &rect);
 				}
 			}
-		}
-
-		// Draw map
-		map->Draw(render);
-
-		player->Draw(render);
-
-		flyingEnemy->Draw(render);
-
-		groundEnemy->Draw(render);
-
-		item->Draw(render);
-
-		life->Draw(render);
+		}	
 	}
+
 	else if (pauseMenu == true && settingsTab == false)
 	{
+		player->notPause = false;
+		flyingEnemy->notPause = false;
+		groundEnemy->notPause = false;
 		rectPause = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 		render->DrawTexture(pauseTex, -render->camera.x, 350, &rectPause);
 		btnSettings->Draw(render);
@@ -277,10 +281,11 @@ bool SceneGameplay::Draw(Render* render)
 	{
 	
 		rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-		if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
+		render->DrawTexture(settingsTex, -render->camera.x, 350, &rectPause);
+	/*	if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
 		{
 			render->DrawTexture(settingsTex, -render->camera.x, 350, &rectSettings);
-		}
+		}*/
 		//render->DrawTexture(settingsTex, 0, 350, &rectSettings);
 		btnSettCross->Draw(render);
 		btnFullscreen->Draw(render);
@@ -351,6 +356,9 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 		else if (control->id == 2) exitReq = false; // Exit request
 		else if (control->id == 4)
 		{
+			player->notPause = true;
+			flyingEnemy->notPause = true;
+			groundEnemy->notPause = true;
 			if (timerMenu > 5) pauseMenu = false;
 		}
 		else if (control->id == 5)

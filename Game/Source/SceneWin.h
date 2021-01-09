@@ -12,12 +12,12 @@ class SceneWin : public Scene
 {
 public:
 
-	SceneWin();
+	SceneWin(Render* render);
 	virtual ~SceneWin();
 
 	bool Load(Textures* tex);
 
-	bool Update(Input* input, float dt);
+	bool Update(Input* input, float dt, Render* render);
 
 	bool Draw(Render* render);
 
@@ -56,6 +56,7 @@ private:
 	SDL_Rect rectWin;
 
 	Player* player;
+	Render* render;
 };
 
 #endif // __SCENEWIN_H__

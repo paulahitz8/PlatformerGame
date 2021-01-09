@@ -1,4 +1,5 @@
 #include "GuiButton.h"
+#include "Render.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -10,7 +11,7 @@ GuiButton::~GuiButton()
 {
 }
 
-bool GuiButton::Update(Input* input, float dt)
+bool GuiButton::Update(Input* input, float dt, Render* render)
 {
 	if (state != GuiControlState::DISABLED)
 	{
@@ -18,7 +19,7 @@ bool GuiButton::Update(Input* input, float dt)
 		mouseY += 500;
 
 		// Check collision between mouse and button bounds
-		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
+		if ((mouseX > bounds.x + render->camera.x) && (mouseX < (bounds.x + bounds.w) + render->camera.x) &&
 			(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
 		{
 			state = GuiControlState::FOCUSED;

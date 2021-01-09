@@ -13,7 +13,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneLose::SceneLose()
+SceneLose::SceneLose(Render* render)
 {
 	//name.Create("SceneLose");
 
@@ -36,6 +36,7 @@ SceneLose::SceneLose()
 	btnSettCross = new GuiButton(7, { 932, 654, 36, 36 }, "SETTCROSS");
 	btnSettCross->SetObserver(this);
 
+	this->render = render;
 }
 
 SceneLose::~SceneLose() {}
@@ -62,18 +63,18 @@ bool SceneLose::Update(Input* input, float dt)
 
 	if (creditsTab != true && settingsTab != true)
 	{
-		btnCredits->Update(input, dt);
-		btnPlay->Update(input, dt);
-		btnExit->Update(input, dt);
-		btnSettings->Update(input, dt);
+		btnCredits->Update(input, dt, render);
+		btnPlay->Update(input, dt, render);
+		btnExit->Update(input, dt, render);
+		btnSettings->Update(input, dt, render);
 	}
 	else if (creditsTab == true && settingsTab != true)
 	{
-		btnCredCross->Update(input, dt);
+		btnCredCross->Update(input, dt, render);
 	}
 	else if (settingsTab == true && creditsTab != true)
 	{
-		btnSettCross->Update(input, dt);
+		btnSettCross->Update(input, dt, render);
 	}
 
 	return exitReq;

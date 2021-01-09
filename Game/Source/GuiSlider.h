@@ -13,7 +13,7 @@ public:
 	GuiSlider(uint32 id, SDL_Rect bounds, const char* text);
 	virtual ~GuiSlider();
 
-	bool Update(Input* input, float dt);
+	bool Update(Input* input, float dt, Render* render);
 	bool Draw(Render* render);
 
 	int volume;

@@ -95,6 +95,7 @@ public:
 	unsigned int splashFx;
 	int lifeCount = 3;
 	bool isWon = false;
+	bool notPause = true;
 
 private:
 
