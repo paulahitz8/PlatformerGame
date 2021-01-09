@@ -15,6 +15,7 @@
 #include "GuiButton.h"
 #include "GuiCheckBox.h"
 #include "GuiSlider.h"
+#include "Timer.h"
 
 struct SDL_Texture;
 class EntityManager;
@@ -80,8 +81,10 @@ private:
 	bool fullscreen = false;
 
 	Render* render;
-
+	Input* input;
 	Font* font;
+	Timer timer;
+	float timeP;
 };
 
 #endif // __SCENEGAMEPLAY_H__

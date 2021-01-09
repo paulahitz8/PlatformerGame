@@ -17,6 +17,7 @@
 #include "SceneWin.h"
 #include "SceneLose.h"
 //#include "Life.h"
+#include "Input.h"
 
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -204,6 +205,10 @@ bool SceneGameplay::Update(Input* input, float dt)
 		sliderFx->bounds.x = -app->render->camera.x + 630;
 	}
 
+	if (!pauseMenu)
+	{
+		timeP += dt/2;
+	}
 
 	return exitReq;
 }
@@ -282,6 +287,11 @@ bool SceneGameplay::Draw(Render* render)
 		render->DrawText(font, "EXIT", 600, 485, 42, 5, { 255, 255, 255, 255 });
 	}
 
+	// Timer
+	char time[16] = { 0 };
+	sprintf_s(time, 16, "Timer: %03d", (int)timeP);
+	render->DrawText(font, time, 550, 15, 30, 4, { 255,255,255,255 });
+	
 	return false;
 }
 
