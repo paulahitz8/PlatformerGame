@@ -43,6 +43,8 @@ public:
 	Render* render;
 	Window* win;
 
+	bool continueRequest = false;
+
 private:
 
 	Scene* current;

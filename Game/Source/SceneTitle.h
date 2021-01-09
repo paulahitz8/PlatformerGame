@@ -14,7 +14,7 @@ class SceneTitle : public Scene
 {
 public:
 
-	SceneTitle(Window* win);
+	SceneTitle(Window* win, bool continueRequest);
 	virtual ~SceneTitle();
 
 	bool Load(Textures* tex);
@@ -49,6 +49,7 @@ private:
 	bool exitReq = true;
 	bool creditsTab = false;
 	bool settingsTab = false;
+	bool continueRequest;
 
 	int timerFullscreen = 0;
 

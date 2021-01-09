@@ -23,7 +23,7 @@
 #include "Log.h"
 
 
-SceneGameplay::SceneGameplay()
+SceneGameplay::SceneGameplay(bool continueRequest)
 {
 	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS");
 	btnSettings->SetObserver(this);
@@ -48,6 +48,8 @@ SceneGameplay::SceneGameplay()
 
 	sliderFx = new GuiSlider(8, { 630, 869, 34, 34 }, "FX");
 	sliderFx->SetObserver(this);
+
+	this->continueRequest = continueRequest;
 }
 
 // Destructor
@@ -121,7 +123,12 @@ bool SceneGameplay::Update(Input* input, float dt)
 		//TransitionToScene(SceneType::WIN);
 	}
 	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
-	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveGameRequest();
+	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		app->SaveGameRequest();
+		continueRequest = true;
+	}
+
 	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		map->drawColliders = !map->drawColliders;

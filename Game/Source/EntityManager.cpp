@@ -90,3 +90,21 @@ bool EntityManager::UpdateAll(float dt, bool doLogic)
 
 	return true;
 }
+
+bool EntityManager::LoadState(pugi::xml_node& data)
+{
+	for (int i = 0; i < entities.Count(); i++)
+	{
+		entities[i]->LoadState(data);
+	}
+	return true;
+}
+
+bool EntityManager::SaveState(pugi::xml_node& data)
+{
+	for (int i = 0; i < entities.Count(); i++)
+	{
+		entities[i]->SaveState(data);
+	}
+	return true;
+}

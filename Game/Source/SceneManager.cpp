@@ -172,8 +172,8 @@ bool SceneManager::Update(float dt)
 		switch (current->nextScene)
 		{
 		case SceneType::LOGO: next = new SceneLogo(); break;
-		case SceneType::TITLE: next = new SceneTitle(win); break;
-		case SceneType::GAMEPLAY: next = new SceneGameplay(); break;
+		case SceneType::TITLE: next = new SceneTitle(win, continueRequest); break;
+		case SceneType::GAMEPLAY: next = new SceneGameplay(continueRequest); break;
 		case SceneType::WIN: next = new SceneWin(); break;
 		case SceneType::LOSE: next = new SceneLose(); break;
 		default: break;

@@ -16,7 +16,7 @@
 #include "Log.h"
 
 
-SceneTitle::SceneTitle(Window* win)
+SceneTitle::SceneTitle(Window* win, bool continueRequest)
 {
 	// GUI: Initialize required controls for the screen
 	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS");
@@ -50,6 +50,7 @@ SceneTitle::SceneTitle(Window* win)
 	sliderFx->SetObserver(this);
 
 	this->win = win;
+	this->continueRequest = continueRequest;
 }
 
 SceneTitle::~SceneTitle() {}
@@ -183,7 +184,18 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 		}
 		else if (control->id == 2) TransitionToScene(SceneType::GAMEPLAY); // Gameplay request
 		else if (control->id == 3) exitReq = false; // Exit request
-		else if (control->id == 4) return false; // Continue request
+		else if (control->id == 4) 	// Continue request
+		{
+			if (continueRequest)
+			{
+				app->LoadGameRequest();
+				TransitionToScene(SceneType::GAMEPLAY);
+			}
+			else
+			{
+				return false;
+			}
+		}
 		else if (control->id == 5) // Settings request
 		{
 			settingsTab = true;

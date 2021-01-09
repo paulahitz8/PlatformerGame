@@ -22,7 +22,7 @@ class SceneGameplay : public Scene
 {
 public:
 
-	SceneGameplay();
+	SceneGameplay(bool continueRequest);
 	virtual ~SceneGameplay();
 
 	bool Load(Textures* tex);
@@ -66,6 +66,7 @@ private:
 	Life* life = nullptr;
 	/*Collisions* collisions = nullptr;*/
 
+	bool continueRequest;
 	bool boolPath = false;
 	bool pauseMenu = false;
 	bool exitReq = true;

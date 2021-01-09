@@ -149,6 +149,8 @@ Player::Player() : Entity(EntityType::PLAYER)
 	checkpointPos = { 100, 1000 };
 
 	timer = 0;
+	god = 0;
+	timerGod = 0;
 	lifeCount = 3;
 	numIce = 0;
 	godMode = false;
@@ -201,15 +203,26 @@ bool Player::Update(Input* input, float dt)
 		app->render->camera.x = 0;
 	}
 
-	if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		godMode = !godMode;
-	}
+	//
+	//if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	//{
+	//	if (god == 0)
+	//	{
+	//		godMode = !godMode;
+	//	}
+	//	timerGod = 0;
+	//}
 
 	if (!isDead)
 	{
 		if (godMode)
 		{
+			//god = 1;
+			if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+			{
+				godMode = false;
+			}
+
 			if (input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 			{
 
@@ -301,10 +314,17 @@ bool Player::Update(Input* input, float dt)
 			//	app->fadeScreen->active = true;
 			//	app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
 			//}
+			timerGod++;
 		}
 
 		else
 		{
+
+			if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+			{
+				godMode = true;
+			}
+
 			if (input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 			{
 				if (currentAnimation == &rightIdle) currentAnimation = &rightShoot;
@@ -751,11 +771,11 @@ bool Player::CleanUp()
 		{
 			delete snowballs[i];
 			snowballs[i] = nullptr;
-			//snowballCollider->pendingToDelete = true;
+			snowballCollider->pendingToDelete = true;
 		}
 	}
 
-	//if (playerCollider != nullptr) playerCollider->pendingToDelete = true;
+	if (playerCollider != nullptr) playerCollider->pendingToDelete = true;
 
 	//Unload the audios
 	app->audio->UnloadFx(jumpingFx);
