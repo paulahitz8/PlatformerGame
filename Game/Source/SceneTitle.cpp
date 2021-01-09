@@ -231,6 +231,8 @@ bool SceneTitle::Unload()
 	delete btnVsync;
 	delete sliderMusic;
 	delete sliderFx;
+
+	continueDone = false;
 	
 	return true;
 }

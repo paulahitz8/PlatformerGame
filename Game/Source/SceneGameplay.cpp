@@ -50,9 +50,9 @@ SceneGameplay::SceneGameplay(bool continueRequest, bool continueDone, Render* re
 	sliderFx->SetObserver(this);
 
 	this->continueRequest = continueRequest;
+	this->continueDone = continueDone;
 	this->entityManager = entityManager;
 	this->render = render;
-	this->continueDone = continueDone;
 }
 
 // Destructor
@@ -104,14 +104,14 @@ bool SceneGameplay::Load(Textures* tex)
 
 	timerMenu = 0;
 	timerFullscreen = 0;
-
-	font = new Font("Assets/Fonts/pixel_digivolve.xml", tex);
-
+	/*continueDone = false;*/
 	if (continueDone)
 	{
 		app->LoadGameRequest();
 		continueDone = false;
 	}
+
+	font = new Font("Assets/Fonts/pixel_digivolve.xml", tex);
 
 	return true;
 }
