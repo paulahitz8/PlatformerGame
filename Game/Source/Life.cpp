@@ -15,6 +15,7 @@
 
 Life::Life() : Entity(EntityType::LIFE)
 {
+	name.Create("life");
 	//animations
 	fishAnim.PushBack({ 40, 15, 21, 20 });
 	fishAnim.PushBack({ 11, 15, 21, 20 });

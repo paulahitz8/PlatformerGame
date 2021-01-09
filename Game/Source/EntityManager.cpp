@@ -9,9 +9,10 @@
 #include "Defs.h"
 #include "Log.h"
 
-EntityManager::EntityManager() : Module()
+EntityManager::EntityManager(Input* input) : Module()
 {
 	name.Create("entitymanager");
+	this->input = input;
 }
 
 // Destructor
@@ -30,14 +31,19 @@ bool EntityManager::Awake(pugi::xml_node& config)
 // Called before quitting
 bool EntityManager::CleanUp()
 {
-	for (int i = 0; i < entities.Count(); i++)
-	{
-		entities[i]->CleanUp();
-	}
-	
-	if (!active) return true;
+	bool ret = true;
+	ListItem<Entity*>* item;
+	item = entities.end;
 
-	return true;
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->CleanUp();
+		item = item->prev;
+	}
+
+	entities.Clear();
+
+	return ret;
 }
 
 Entity* EntityManager::CreateEntity(EntityType type)
@@ -47,7 +53,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	switch (type)
 	{
 		// L13: Create the corresponding type entity
-	case EntityType::PLAYER: ret = new Player();  break;
+	case EntityType::PLAYER: ret = new Player(input);  break;
 	case EntityType::FLYINGENEMY: ret = new FlyingEnemy();  break;
 	case EntityType::GROUNDENEMY: ret = new GroundEnemy();  break;
 	case EntityType::ITEM: ret = new Item();  break;
@@ -59,6 +65,21 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	if (ret != nullptr) entities.Add(ret);
 
 	return ret;
+}
+
+void EntityManager::DestroyEntity(Entity* entity)
+{
+	ListItem<Entity*>* item;
+
+	for (item = entities.start; item != NULL; item = item->next)
+	{
+		if (item->data == entity) entities.Del(item);
+	}
+}
+
+void EntityManager::AddEntity(Entity* entity)
+{
+	if ( entity != nullptr) entities.Add(entity);
 }
 
 bool EntityManager::Update(float dt)
@@ -79,32 +100,53 @@ bool EntityManager::Update(float dt)
 
 bool EntityManager::UpdateAll(float dt, bool doLogic)
 {
+	bool ret = true;
+	ListItem<Entity*>* item;
+	Entity* pEntity = NULL;
+
 	if (doLogic)
 	{
-		// TODO: Update all entities 
-		for (int i = 0; i < entities.Count(); i++)
+		for (item = entities.start; item != NULL && ret == true; item = item->next)
 		{
-			if (entities[i]->type != EntityType::PLAYER) entities[i]->Update(dt);
+			pEntity = item->data;
+
+			if (pEntity->active == false) continue;
+			ret = item->data->Update(dt);
 		}
 	}
 
-	return true;
+	return ret;
 }
 
 bool EntityManager::LoadState(pugi::xml_node& data)
 {
-	for (int i = 0; i < entities.Count(); i++)
+	bool ret = true;
+
+	ListItem<Entity*>* item;
+	item = entities.start;
+
+	while (item != NULL && ret == true)
 	{
-		entities[i]->LoadState(data);
+		ret = item->data->LoadState(data.child(item->data->name.GetString()));
+		item = item->next;
 	}
-	return true;
+
+	return ret;
 }
 
 bool EntityManager::SaveState(pugi::xml_node& data)
 {
-	for (int i = 0; i < entities.Count(); i++)
+	bool ret = true;
+
+	ListItem<Entity*>* item;
+	item = entities.start;
+
+	while (item != NULL && ret == true)
 	{
-		entities[i]->SaveState(data);
+		data.append_child(item->data->name.GetString());
+		ret = item->data->SaveState(data.child(item->data->name.GetString()));
+		item = item->next;
 	}
-	return true;
+
+	return ret;
 }

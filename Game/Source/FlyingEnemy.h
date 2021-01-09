@@ -55,6 +55,7 @@ public:
 	unsigned int eagleFx;
 
 	bool playerSeenF;
+	bool notPause = true;
 
 private:
 

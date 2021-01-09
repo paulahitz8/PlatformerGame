@@ -10,7 +10,7 @@ class EntityManager : public Module
 {
 public:
 
-	EntityManager();
+	EntityManager(Input* input);
 
 	// Destructor
 	virtual ~EntityManager();
@@ -25,6 +25,7 @@ public:
 
 	// Additional methods
 	Entity* CreateEntity(EntityType type);
+
 	void DestroyEntity(Entity* entity);
 
 	void AddEntity(Entity* entity);
@@ -38,6 +39,8 @@ public:
 public:
 
 	List<Entity*> entities;
+
+	Input* input;
 
 	float accumulatedTime = 0.0f;
 	float updateMsCycle = 0.0f;

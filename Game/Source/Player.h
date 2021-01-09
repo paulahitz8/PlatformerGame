@@ -33,7 +33,7 @@ class Player : public Entity
 {
 public:
 
-	Player();
+	Player(Input* input);
 
 	/*void Init();*/
 
@@ -47,7 +47,7 @@ public:
 	//bool Start();
 
 	// Called each loop iteration
-	bool Update(Input* input, float dt);
+	bool Update(float dt);
 	bool PostUpdate();
 	bool Draw(Render* render);
 
@@ -95,6 +95,7 @@ public:
 	unsigned int splashFx;
 	int lifeCount = 3;
 	bool isWon = false;
+	bool notPause = true;
 
 private:
 
@@ -161,6 +162,7 @@ private:
 	Item* item = nullptr;
 	Life* life = nullptr;
 	Map* map = nullptr;
+	Input* input;
 
 	void OnCollision(Collider* c1, Collider* c2);
 };

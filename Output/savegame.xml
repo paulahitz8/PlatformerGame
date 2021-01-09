@@ -6,9 +6,21 @@
 	<audio />
 	<pathfinding />
 	<collisions />
-	<entitymanager />
+	<entitymanager>
+		<player>
+			<player x="535" y="1065" />
+		</player>
+		<flyingenemy>
+			<enemy x="2800" y="702" />
+		</flyingenemy>
+		<groundenemy>
+			<enemy x="300" y="998" />
+		</groundenemy>
+		<item />
+		<life />
+	</entitymanager>
 	<scenemanager />
 	<renderer>
-		<camera x="-176" y="-500" />
+		<camera x="-35" y="-500" />
 	</renderer>
 </save_state>

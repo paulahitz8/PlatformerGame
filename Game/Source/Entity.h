@@ -71,6 +71,7 @@ public:
 
 public:
 
+	SString name;
 	EntityType type;
 	bool active = true;
 	//SString name;         // Entity name identifier?

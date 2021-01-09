@@ -4,23 +4,11 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-//#include "SceneGameplay.h"
-//#include "Map.h"
-//#include "SceneTitle.h"
-//#include "SceneLogo.h"
-//#include "FadeScreen.h"
-//#include "Player.h"
 #include "Collisions.h"
-//#include "BlackScreen.h"
-//#include "SceneLose.h"
-//#include "SceneWin.h"
-//#include "GroundEnemy.h"
-//#include "FlyingEnemy.h"
 #include "PathFinding.h"
-//#include "Life.h"
-//#include "Item.h"
 #include "EntityManager.h"
 #include "SceneManager.h"
+#include "Font.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -38,23 +26,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(win);
 	tex = new Textures(render);
 	audio = new Audio();
-	//sceneGameplay = new SceneGameplay();
-	//blackScreen = new BlackScreen();
-	//sceneTitle = new SceneTitle();
-	//sceneLogo = new SceneLogo();
-	//map = new Map();
-	//fadeScreen = new FadeScreen();
-	//player = new Player();
 	collisions = new Collisions(input);
-	//sceneLose = new SceneLose();
-	//sceneWin = new SceneWin();
-	//groundEnemy = new GroundEnemy();
-	//flyingEnemy = new FlyingEnemy();
-	//item = new Item();
-	//life = new Life();
 	path = new PathFinding();
-	entityManager = new EntityManager();
-	sceneManager = new SceneManager(input, render, tex, win);
+	entityManager = new EntityManager(input);
+	sceneManager = new SceneManager(input, render, tex, win, config, entityManager);
 
 
 	// Ordered for awake / Start / Update
@@ -63,21 +38,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	/*AddModule(sceneGameplay);
-	AddModule(blackScreen);
-	AddModule(sceneLogo);
-	AddModule(sceneTitle);*/
-	/*AddModule(map);*/
-	/*AddModule(fadeScreen);
-	AddModule(groundEnemy);
-	AddModule(flyingEnemy);
-	AddModule(life);
-	AddModule(item);*/
 	AddModule(path);
-	//AddModule(player);
 	AddModule(collisions);
-	//AddModule(sceneLose);
-	//AddModule(sceneWin);
 	AddModule(entityManager);
 	AddModule(sceneManager);
 
@@ -114,7 +76,6 @@ bool App::Awake()
 	pTimer.Start();
 
 	pugi::xml_document configFile;
-	pugi::xml_node config;
 	pugi::xml_node configApp;
 
 	bool ret = false;
@@ -192,7 +153,7 @@ bool App::Update()
 		else if (changeFps) changeFps = false;
 	}
 
-	FinishUpdate();
+	FinishUpdate(render);
 
 	return ret;
 }
@@ -217,7 +178,7 @@ void App::PrepareUpdate()
 	frameTime.Start();
 }
 
-void App::FinishUpdate()
+void App::FinishUpdate(Render* render)
 {
 	// This is a good place to call Load / Save functions
 	if (loadRequest) LoadGame();
@@ -257,7 +218,7 @@ void App::FinishUpdate()
 
 	static char title[256];
 	sprintf_s(title, 256, "FPS: %d   Avg. FPS: %.2f   Last-frame MS: %02u   Vsync: %s",
-		frames, averageFps, lastFrameMs, app->render->vsync);
+		frames, averageFps, lastFrameMs, render->vsync);
 	app->win->SetTitle(title);
 }
 

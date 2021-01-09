@@ -18,21 +18,8 @@ class Input;
 class Render;
 class Textures;
 class Audio;
-//class SceneGameplay;
-//class BlackScreen;
-//class SceneTitle;
-//class SceneLogo;
-//class Map;
-//class FadeScreen;
-//class Player;
 class Collisions;
-//class SceneLose;
-//class SceneWin;
-//class GroundEnemy;
-//class FlyingEnemy;
-//class Item;
 class PathFinding;
-//class Life;
 class EntityManager;
 class SceneManager;
 
@@ -77,7 +64,7 @@ private:
 
 	void PrepareUpdate();
 
-	void FinishUpdate();
+	void FinishUpdate(Render* render);
 
 	bool PreUpdate();
 
@@ -96,23 +83,11 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	/*SceneGameplay* sceneGameplay;
-	SceneTitle* sceneTitle;
-	BlackScreen* blackScreen;
-	SceneLogo* sceneLogo;*/
-	//Map* map;
-	/*FadeScreen* fadeScreen;
-	Player* player;*/
 	Collisions* collisions;
-	/*SceneLose* sceneLose;
-	SceneWin* sceneWin;
-	GroundEnemy* groundEnemy;
-	FlyingEnemy* flyingEnemy;*/
 	PathFinding* path;
-	/*Item* item;
-	Life* life;*/
 	EntityManager* entityManager;
 	SceneManager* sceneManager;
+	pugi::xml_node config;
 
 private:
 

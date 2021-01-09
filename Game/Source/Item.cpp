@@ -15,6 +15,7 @@
 
 Item::Item() : Entity(EntityType::ITEM)
 {
+	name.Create("item");
 	//animations
 	iceAnim.PushBack({ 41, 12, 16, 24 });
 	iceAnim.PushBack({ 13, 12, 16, 24 });

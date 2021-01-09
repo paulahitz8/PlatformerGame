@@ -39,6 +39,7 @@ public:
 	float accumulatedTime = 0.0f;
 	float updateMsCycle = 0.0f;
 	bool doLogic = false;
+
 };
 
 #endif // __GUIMANAGER_H__

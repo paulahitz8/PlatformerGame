@@ -17,11 +17,12 @@
 #include "Log.h"
 
 #include "SDL/include/SDL.h"
+#include "PugiXml/src/pugixml.hpp"
 
 #define FADEOUT_TRANSITION_SPEED	2.0f
 #define FADEIN_TRANSITION_SPEED		2.0f
 
-SceneManager::SceneManager(Input* input, Render* render, Textures* tex, Window* win) : Module()
+SceneManager::SceneManager(Input* input, Render* render, Textures* tex, Window* win, pugi::xml_node& config, EntityManager* entitymanager) : Module()
 {
 	name.Create("scenemanager");
 
@@ -33,6 +34,8 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex, Window* 
 	this->render = render;
 	this->tex = tex;
 	this->win = win;
+	this->config = config;
+	this->entityManager = entitymanager;
 }
 
 // Destructor
@@ -62,31 +65,7 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
-	/*
-	// L12b: Debug pathfing
-	static iPoint origin;
-	static bool originSelected = false;
-
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
-
-	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if(originSelected == true)
-		{
-			app->pathFinding->CreatePath(origin, p);
-			originSelected = false;
-		}
-		else
-		{
-			origin = p;
-			originSelected = true;
-		}
-	}
-	*/
-
+	
 	return true;
 }
 
@@ -95,11 +74,7 @@ bool SceneManager::Update(float dt)
 {
 	if (!onTransition)
 	{
-		//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
-		//if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) render->camera.y += 1;
-		//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
-		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
-
+		render->camera.x = 0;
 		current->Update(input, dt);
 	}
 	else
@@ -171,11 +146,12 @@ bool SceneManager::Update(float dt)
 
 		switch (current->nextScene)
 		{
+		case SceneType::BLACK: next = new SceneBlack(); break;
 		case SceneType::LOGO: next = new SceneLogo(); break;
-		case SceneType::TITLE: next = new SceneTitle(win, continueRequest); break;
-		case SceneType::GAMEPLAY: next = new SceneGameplay(continueRequest); break;
-		case SceneType::WIN: next = new SceneWin(); break;
-		case SceneType::LOSE: next = new SceneLose(); break;
+		case SceneType::TITLE: next = new SceneTitle(win, &continueRequest, config, render); break;
+		case SceneType::GAMEPLAY: next = new SceneGameplay(&continueRequest, render, entityManager); break;
+		case SceneType::WIN: next = new SceneWin(render); break;
+		case SceneType::LOSE: next = new SceneLose(render); break;
 		default: break;
 		}
 
@@ -185,6 +161,8 @@ bool SceneManager::Update(float dt)
 	if (current->Update(input, dt) == false) return false;
 
 	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
+
+
 	return true;
 }
 

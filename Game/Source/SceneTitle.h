@@ -10,11 +10,13 @@
 
 struct SDL_Texture;
 
+class Font;
+
 class SceneTitle : public Scene
 {
 public:
 
-	SceneTitle(Window* win, bool continueRequest);
+	SceneTitle(Window* win, bool continueRequest, pugi::xml_node & config, Render * render);
 	virtual ~SceneTitle();
 
 	bool Load(Textures* tex);
@@ -40,6 +42,7 @@ private:
 	GuiButton* btnCredCross;
 	GuiButton* btnSettCross;
 	GuiCheckBox* btnFullscreen;
+	GuiCheckBox* btnVsync;
 	GuiSlider* sliderMusic;
 	GuiSlider* sliderFx;
 
@@ -51,7 +54,12 @@ private:
 	bool settingsTab = false;
 	bool continueRequest;
 
+	bool drawBasic = false;
+	bool drawCredits = false;
+	bool drawSettings = false;
+
 	int timerFullscreen = 0;
+	int timerVsync = 0;
 
 	SDL_Texture* sceneTitle;
 	SDL_Texture* buttonsTitle;
@@ -62,6 +70,11 @@ private:
 	SDL_Rect rectTitle;
 	SDL_Rect rectCredit;
 	SDL_Rect rectSettings;
+
+	pugi::xml_node config;
+	Render* render;
+
+	Font* font;
 };
 
 #endif // __TITLE_SCREEN_H__

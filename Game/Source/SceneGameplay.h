@@ -4,7 +4,7 @@
 #include "Scene.h"
 
 #include "Map.h"
-#include "EntityManager.h"
+//#include "EntityManager.h"
 #include "Player.h"
 #include "FlyingEnemy.h"
 #include "GroundEnemy.h"
@@ -17,12 +17,13 @@
 #include "GuiSlider.h"
 
 struct SDL_Texture;
+class EntityManager;
 
 class SceneGameplay : public Scene
 {
 public:
 
-	SceneGameplay(bool continueRequest);
+	SceneGameplay(bool continueRequest, Render* render, EntityManager * entitymanager);
 	virtual ~SceneGameplay();
 
 	bool Load(Textures* tex);
@@ -34,6 +35,12 @@ public:
 	bool Unload();
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
+
+	bool pauseMenu = false;
+
+	bool drawBasic = false;
+	bool drawCredits = false;
+	bool drawSettings = false;
 
 private:
 
@@ -56,8 +63,8 @@ private:
 	int timerMenu = 0;
 	int timerFullscreen = 0;
 
-	Map* map = nullptr;
 	EntityManager* entityManager = nullptr;
+	Map* map = nullptr;
 	Player* player = nullptr;
 	/*PathFinding* path;*/
 	FlyingEnemy* flyingEnemy = nullptr;
@@ -68,10 +75,14 @@ private:
 
 	bool continueRequest;
 	bool boolPath = false;
-	bool pauseMenu = false;
+
 	bool exitReq = true;
 	bool settingsTab = false;
 	bool fullscreen = false;
+
+	Render* render;
+
+	Font* font;
 };
 
 #endif // __SCENEGAMEPLAY_H__

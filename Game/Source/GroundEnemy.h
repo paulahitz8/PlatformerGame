@@ -58,6 +58,7 @@ public:
 	unsigned int sealFx;
 
 	bool playerSeenG;
+	bool notPause = true;
 
 private:
 

@@ -1,8 +1,12 @@
 #include "GuiSlider.h"
+#include "App.h"
+#include "Audio.h"
 
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
+	click = app->audio->LoadFx("Assets/Audio/Fx/Button.wav");
+	
 	this->bounds = bounds;
 	this->text = text;
 }
@@ -11,7 +15,7 @@ GuiSlider::~GuiSlider()
 {
 }
 
-bool GuiSlider::Update(Input* input, float dt)
+bool GuiSlider::Update(Input* input, float dt, Render* render)
 {
 	//float tmpValue = (float)maxValue / (float)(limits.w - bounds.w);
 	//value = (bounds.x - limits.x) * tmpValue;
@@ -25,9 +29,11 @@ bool GuiSlider::Update(Input* input, float dt)
 		int motionX = 0, motionY = 0;
 		input->GetMouseMotion(motionX, motionY);
 
-		unit = 319 / 100;
-		volume = (mouseX - 493) / unit;
-		value = round(value);
+		unit = 319 / 128;
+		volume = (mouseX - 463) / unit;
+		volume = round(volume);
+
+		bounds.x += render->camera.x;
 
 		// Check collision between mouse and button bounds
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
@@ -37,12 +43,18 @@ bool GuiSlider::Update(Input* input, float dt)
 
 			if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
+				if (canClick)
+				{
+					app->audio->PlayFx(click);
+					canClick = false;
+				}
 				state = GuiControlState::PRESSED;
 			}
 
 			// If mouse button pressed -> Generate event!
 			if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 			{
+				canClick = true;
 				NotifyObserver();
 			}
 		}
@@ -61,7 +73,7 @@ bool GuiSlider::Update(Input* input, float dt)
 		{
 			bounds.x = 463;
 		}
-		if (bounds.x >= 782)
+		if (bounds.x >= 782 )
 		{
 			bounds.x = 782;
 		}

@@ -1,16 +1,19 @@
 #include "GuiCheckBox.h"
+#include "App.h"
+#include "Audio.h"
 
 GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
 {
 	this->bounds = bounds;
 	this->text = text;
+	click = app->audio->LoadFx("Assets/Audio/Fx/Button.wav");
 }
 
 GuiCheckBox::~GuiCheckBox()
 {
 }
 
-bool GuiCheckBox::Update(Input* input, float dt)
+bool GuiCheckBox::Update(Input* input, float dt, Render* render)
 {
 	if (state != GuiControlState::DISABLED)
 	{
@@ -19,19 +22,25 @@ bool GuiCheckBox::Update(Input* input, float dt)
 		mouseY += 500;
 
 		// Check collision between mouse and button bounds
-		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
+		if ((mouseX > bounds.x + render->camera.x) && (mouseX < (bounds.x + bounds.w) + render->camera.x) &&
 			(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
 		{
 			state = GuiControlState::FOCUSED;
 
 			if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
+				if (canClick)
+				{
+					canClick = false;
+					app->audio->PlayFx(click);
+				}
 				state = GuiControlState::PRESSED;
 			}
 
 			// If mouse button pressed -> Generate event!
 			if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 			{
+				canClick = true;
 				checked = !checked;
 				NotifyObserver();
 			}

@@ -10,12 +10,13 @@ class Input;
 class Render;
 class Textures;
 class Window;
+class EntityManager;
 
 class SceneManager : public Module
 {
 public:
 
-	SceneManager(Input* input, Render* render, Textures* tex, Window* win);
+	SceneManager(Input* input, Render* render, Textures* tex, Window* win, pugi::xml_node& config, EntityManager* entityManager);
 
 	// Destructor
 	virtual ~SceneManager();
@@ -42,6 +43,7 @@ public:
 	Input* input;
 	Render* render;
 	Window* win;
+	pugi::xml_node config;
 
 	bool continueRequest = false;
 
@@ -49,6 +51,7 @@ private:
 
 	Scene* current;
 	Scene* next;
+	EntityManager* entityManager;
 
 	// Required variables to manage screen transitions (fade-in, fade-out)
 	bool onTransition;
