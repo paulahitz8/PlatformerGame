@@ -270,7 +270,7 @@ bool SceneGameplay::Draw(Render* render)
 		render->DrawText(font, "VSYNC", 500, 528, 45, 4, { 255, 255, 255, 255 });
 	}
 
-	if (pauseMenu)
+	if (pauseMenu && !settingsTab)
 	{
 		render->DrawText(font, "SETTINGS", 550, 212, 45, 3, { 255, 255, 255, 255 });
 		render->DrawText(font, "TITLE", 590, 350, 45, 4, { 255, 255, 255, 255 });
