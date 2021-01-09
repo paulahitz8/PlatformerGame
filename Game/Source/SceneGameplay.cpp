@@ -23,7 +23,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneGameplay::SceneGameplay(bool continueRequest, Render* render, EntityManager * entityManager)
+SceneGameplay::SceneGameplay(bool continueRequest, bool continueDone, Render* render, EntityManager * entityManager)
 {
 	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS", drawBasic, drawSettings, drawCredits);
 	btnSettings->SetObserver(this);
@@ -52,6 +52,7 @@ SceneGameplay::SceneGameplay(bool continueRequest, Render* render, EntityManager
 	this->continueRequest = continueRequest;
 	this->entityManager = entityManager;
 	this->render = render;
+	this->continueDone = continueDone;
 }
 
 // Destructor
@@ -71,14 +72,12 @@ bool SceneGameplay::Load(Textures* tex)
 		RELEASE_ARRAY(data);
 	}
 
-
 	/*collisions = new Collisions();*/
 	//player = new Player();
 	//flyingEnemy = new FlyingEnemy();
 	//groundEnemy = new GroundEnemy();
 	//item = new Item();
 	//life = new Life();
-
 	player = (Player*)entityManager->CreateEntity(EntityType::PLAYER);
 	flyingEnemy = (FlyingEnemy*)entityManager->CreateEntity(EntityType::FLYINGENEMY);
 	groundEnemy = (GroundEnemy*)entityManager->CreateEntity(EntityType::GROUNDENEMY);
@@ -107,6 +106,12 @@ bool SceneGameplay::Load(Textures* tex)
 	timerFullscreen = 0;
 
 	font = new Font("Assets/Fonts/pixel_digivolve.xml", tex);
+
+	if (continueDone)
+	{
+		app->LoadGameRequest();
+		continueDone = false;
+	}
 
 	return true;
 }
@@ -210,15 +215,10 @@ bool SceneGameplay::Draw(Render* render)
 
 	// Draw map
 	map->Draw(render);
-
 	player->Draw(render);
-
 	flyingEnemy->Draw(render);
-
 	groundEnemy->Draw(render);
-
 	item->Draw(render);
-
 	life->Draw(render);
 
 	if (pauseMenu == false && settingsTab == false)

@@ -17,7 +17,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneTitle::SceneTitle(Window* win, bool continueRequest, pugi::xml_node & config, Render * render)
+SceneTitle::SceneTitle(Window* win, bool continueRequest, bool continueDone, pugi::xml_node & config, Render * render)
 {
 	// GUI: Initialize required controls for the screen
 	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS", drawBasic, drawSettings, drawCredits);
@@ -56,6 +56,7 @@ SceneTitle::SceneTitle(Window* win, bool continueRequest, pugi::xml_node & confi
 	this->render = render;
 	this->win = win;
 	this->continueRequest = continueRequest;
+	this->continueDone = continueDone;
 	this->config = config;
 }
 
@@ -115,6 +116,7 @@ bool SceneTitle::Update(Input* input, float dt)
 		btnVsync->Update(input, dt, render);
 		sliderMusic->Update(input, dt, render);
 		sliderFx->Update(input, dt, render);
+
 		if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		{
 			drawSettings = !drawSettings;
@@ -133,8 +135,6 @@ bool SceneTitle::Update(Input* input, float dt)
 
 	timerFullscreen++;
 	timerVsync++;
-
-	
 
 	return exitReq;
 }
@@ -254,7 +254,7 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			if (continueRequest)
 			{
-				app->LoadGameRequest();
+				continueDone = true;
 				TransitionToScene(SceneType::GAMEPLAY);
 			}
 			else

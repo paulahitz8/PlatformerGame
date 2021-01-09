@@ -16,7 +16,7 @@ class SceneTitle : public Scene
 {
 public:
 
-	SceneTitle(Window* win, bool continueRequest, pugi::xml_node & config, Render * render);
+	SceneTitle(Window* win, bool continueRequest, bool continueDone, pugi::xml_node & config, Render * render);
 	virtual ~SceneTitle();
 
 	bool Load(Textures* tex);
@@ -53,6 +53,7 @@ private:
 	bool creditsTab = false;
 	bool settingsTab = false;
 	bool continueRequest;
+	bool continueDone;
 
 	bool drawBasic = false;
 	bool drawCredits = false;

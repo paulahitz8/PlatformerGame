@@ -23,7 +23,7 @@ class SceneGameplay : public Scene
 {
 public:
 
-	SceneGameplay(bool continueRequest, Render* render, EntityManager * entitymanager);
+	SceneGameplay(bool continueRequest, bool continueDone, Render* render, EntityManager * entitymanager);
 	virtual ~SceneGameplay();
 
 	bool Load(Textures* tex);
@@ -79,6 +79,7 @@ private:
 	bool exitReq = true;
 	bool settingsTab = false;
 	bool fullscreen = false;
+	bool continueDone;
 
 	Render* render;
 

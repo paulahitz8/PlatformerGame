@@ -148,8 +148,8 @@ bool SceneManager::Update(float dt)
 		{
 		case SceneType::BLACK: next = new SceneBlack(); break;
 		case SceneType::LOGO: next = new SceneLogo(); break;
-		case SceneType::TITLE: next = new SceneTitle(win, &continueRequest, config, render); break;
-		case SceneType::GAMEPLAY: next = new SceneGameplay(&continueRequest, render, entityManager); break;
+		case SceneType::TITLE: next = new SceneTitle(win, &continueRequest, &continueDone, config, render); break;
+		case SceneType::GAMEPLAY: next = new SceneGameplay(&continueRequest, &continueDone, render, entityManager); break;
 		case SceneType::WIN: next = new SceneWin(render); break;
 		case SceneType::LOSE: next = new SceneLose(render); break;
 		default: break;
