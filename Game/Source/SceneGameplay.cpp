@@ -70,21 +70,13 @@ bool SceneGameplay::Load(Textures* tex)
 		RELEASE_ARRAY(data);
 	}
 
-	/*collisions = new Collisions();*/
-
 	entityManager = new EntityManager;
-	//player = new Player();
-	//flyingEnemy = new FlyingEnemy();
-	//groundEnemy = new GroundEnemy();
-	//item = new Item();
-	//life = new Life();
 	player = (Player*)entityManager->CreateEntity(EntityType::PLAYER);
 	flyingEnemy = (FlyingEnemy*)entityManager->CreateEntity(EntityType::FLYINGENEMY);
 	groundEnemy = (GroundEnemy*)entityManager->CreateEntity(EntityType::GROUNDENEMY);
 	item = (Item*)entityManager->CreateEntity(EntityType::ITEM);
 	life = (Life*)entityManager->CreateEntity(EntityType::LIFE);
 
-	/*path = new PathFinding();*/
 	player->SetFlyingEnemy(flyingEnemy);
 	player->SetGroundEnemy(groundEnemy);
 	player->SetItem(item);
@@ -101,16 +93,12 @@ bool SceneGameplay::Load(Textures* tex)
 	pauseTex = tex->Load("Assets/GUI/pause_menu.png");
 	settingsTex = tex->Load("Assets/Screens/settings_screen.png");
 
-	/*if (app->sceneTitle->active == false || app->sceneWin->active == false || app->sceneLose->active == false)*/ app->audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
-
-	/*player->Enable();
-	groundEnemy->Enable();
-	flyingEnemy->Enable();
-	item->Enable();
-	life->Enable();*/
+	app->audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
 
 	timerMenu = 0;
 	timerFullscreen = 0;
+
+	font = new Font("Assets/Fonts/pixel_digivolve.xml", tex);
 
 	return true;
 }
@@ -154,7 +142,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 		TransitionToScene(SceneType::LOSE);
 	}
 	entityManager->Update(dt);
-	/*map->Update(dt);*/
 	player->Update(input, dt);
 
 	if (pauseMenu == true && settingsTab == false)
@@ -189,25 +176,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
 	{
-		//render->DrawTexture(settingsTex, -render->camera.x, 350, &rectSettings);
-	/*	btnSettings->mouseX 
-		btnExit->bounds.x = -app->render->camera.x + 538;
-		btnTitle->bounds.x = -app->render->camera.x + 540;
-		btnPauseCross->bounds.x = -app->render->camera.x + 930;
-		btnSettCross->bounds.x = -app->render->camera.x + 930;
-		btnFullscreen->bounds.x = -app->render->camera.x + 754;
-		sliderMusic->bounds.x = -app->render->camera.x + 630;
-		sliderFx->bounds.x = -app->render->camera.x + 630;*/
-
-		//btnSettings->mouseX = 2;
-		//btnExit->mouseX = 2;
-		//btnTitle->mouseX = 2;
-		//btnPauseCross->mouseX = 2;
-		//btnSettCross->mouseX = 2;
-		//btnFullscreen->mouseX = 2;
-		//sliderMusic->mouseX = 2;
-		//sliderFx->mouseX = 2;
-
 		btnSettings->bounds.x = -app->render->camera.x + 538;
 		btnExit->bounds.x = -app->render->camera.x + 538;
 		btnTitle->bounds.x = -app->render->camera.x + 540;
@@ -277,22 +245,28 @@ bool SceneGameplay::Draw(Render* render)
 		btnTitle->Draw(render);
 		btnPauseCross->Draw(render);
 	}
-	else if (settingsTab == true)
+	else if (settingsTab)
 	{
 	
 		rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 		render->DrawTexture(settingsTex, -render->camera.x, 350, &rectPause);
-	/*	if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
-		{
-			render->DrawTexture(settingsTex, -render->camera.x, 350, &rectSettings);
-		}*/
-		//render->DrawTexture(settingsTex, 0, 350, &rectSettings);
+
 		btnSettCross->Draw(render);
 		btnFullscreen->Draw(render);
 		sliderMusic->Draw(render);
 		sliderFx->Draw(render);
 
+		render->DrawText(font, "MUSIC VOLUME", 500, 195, 45, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "FX VOLUME", 530, 310, 45, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "FULLSCREEN", 400, 450, 42, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "VSYNC", 500, 528, 45, 4, { 255, 255, 255, 255 });
+	}
 
+	if (pauseMenu)
+	{
+		render->DrawText(font, "SETTINGS", 550, 212, 45, 3, { 255, 255, 255, 255 });
+		render->DrawText(font, "TITLE", 590, 350, 45, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "EXIT", 600, 485, 42, 5, { 255, 255, 255, 255 });
 	}
 
 	return false;
@@ -307,15 +281,8 @@ bool SceneGameplay::Unload()
 	app->tex->UnLoad(pauseTex);
 	app->tex->UnLoad(settingsTex);
 
-	//player->Disable();
-	//map->Disable();
-	//groundEnemy->Disable();
-	//flyingEnemy->Disable();
-	//item->Disable();
-	//life->Disable();
 	entityManager->CleanUp();
 	map->CleanUp();
-	/*collisions->CleanUp();*/
 
 	delete player;
 	delete map;
@@ -323,7 +290,6 @@ bool SceneGameplay::Unload()
 	delete flyingEnemy;
 	delete item;
 	delete life;
-	/*delete path;*/
 
 	delete btnSettings;
 	delete btnExit;
@@ -373,7 +339,7 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 	}
 	case GuiControlType::CHECKBOX:
 	{
-		if (control->id == 8)
+		if (control->id == 6)
 		{
 			if (timerFullscreen > 5)
 			{

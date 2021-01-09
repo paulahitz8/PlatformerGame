@@ -76,6 +76,8 @@ private:
 	bool fullscreen = false;
 
 	Render* render;
+
+	Font* font;
 };
 
 #endif // __SCENEGAMEPLAY_H__

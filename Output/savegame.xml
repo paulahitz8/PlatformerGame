@@ -9,6 +9,6 @@
 	<entitymanager />
 	<scenemanager />
 	<renderer>
-		<camera x="-4052" y="-500" />
+		<camera x="-6552" y="-500" />
 	</renderer>
 </save_state>

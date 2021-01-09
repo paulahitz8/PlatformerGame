@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "FadeScreen.h"
 #include "SceneGameplay.h"
+#include "Font.h"
 
 #include "SDL_mixer/include/SDL_mixer.h"
 
@@ -69,6 +70,8 @@ bool SceneTitle::Load(Textures* tex)
 	settings = tex->Load("Assets/Screens/settings_screen.png");
 	check = tex->Load("Assets/GUI/settings_icons.png");
 
+	font = new Font("Assets/Fonts/pixel_digivolve.xml", tex);
+
 	this->tex = tex;
 
 	timerFullscreen = 0;
@@ -122,7 +125,7 @@ bool SceneTitle::Draw(Render* render)
 	rectTitle = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 	rectCredit = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 	rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	//rectCredit = { 107, 98, 426, 299};
+
 	render->DrawTexture(sceneTitle, app->render->camera.x, 350, &rectTitle);
 	render->DrawTexture(buttonsTitle, app->render->camera.x, 350, &rectTitle);
 
@@ -143,6 +146,44 @@ bool SceneTitle::Draw(Render* render)
 		sliderMusic->Draw(render);
 		sliderFx->Draw(render);
 	}
+
+	//Drawing text
+
+	if (!creditsTab && !settingsTab)
+	{
+		render->DrawText(font, "CREDITS", 192, 490, 45, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "PLAY", 589, 490, 45, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "CONTINUE", 550, 360, 42, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "EXIT", 968, 490, 45, 4, { 255, 255, 255, 255 });
+	}
+
+	else if (creditsTab)
+	{
+		render->DrawText(font, "PRODUCERS", 490, 150, 60, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "PAULA HITZ", 540, 210, 35, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "IRENE HERNANDEZ", 487, 250, 35, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "MARIA CALLE", 535, 290, 35, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "LICENSE", 540, 345, 60, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "MIT License       Copyright(c) 2020 Ray", 400, 410, 20, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "Permission is hereby granted, free of charge, to any person", 330, 430, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "obtaining a copy of this software and associated documentation ", 330, 450, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "files (the Software), to deal in the Software without restriction,", 320, 470, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "including without limitation the rights to use, copy, modify, ", 335, 490, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "merge, publish, distribute, sublicense, and/or sell	copies of  ", 335, 510, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "the Software, and to permit persons to whom the Software ", 340, 530, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "is furnished to do so, subject to the following conditions : ", 330, 550, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "The above copyright notice and this permission notice shall be ", 320, 570, 15, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "included in all copies or substantial portions of the Software.  ", 320, 590, 15, 4, { 255, 255, 255, 255 });
+	}
+
+	else if (settingsTab)
+	{
+		render->DrawText(font, "MUSIC VOLUME", 500, 195, 45, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "FX VOLUME", 530, 310, 45, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "FULLSCREEN", 400, 450, 42, 4, { 255, 255, 255, 255 });
+		render->DrawText(font, "VSYNC", 500, 528, 45, 4, { 255, 255, 255, 255 });
+	}
+
 
 	return false;
 }

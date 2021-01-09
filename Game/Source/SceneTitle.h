@@ -10,6 +10,8 @@
 
 struct SDL_Texture;
 
+class Font;
+
 class SceneTitle : public Scene
 {
 public:
@@ -64,6 +66,8 @@ private:
 	SDL_Rect rectSettings;
 
 	Render* render;
+
+	Font* font;
 
 };
 
