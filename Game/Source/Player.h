@@ -97,6 +97,8 @@ public:
 	bool isWon = false;
 	bool notPause = true;
 
+	bool drawBasic = false;
+
 private:
 
 	Snowball* snowballs[MAX_SNOWBALLS] = { nullptr };

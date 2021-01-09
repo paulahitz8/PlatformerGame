@@ -56,8 +56,6 @@ private:
 	bool continueDone;
 
 	bool drawBasic = false;
-	bool drawCredits = false;
-	bool drawSettings = false;
 
 	int timerFullscreen = 0;
 	int timerVsync = 0;

@@ -25,19 +25,19 @@
 
 SceneGameplay::SceneGameplay(bool continueRequest, bool continueDone, Render* render, EntityManager * entityManager)
 {
-	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS", drawBasic, drawSettings, drawCredits);
+	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS");
 	btnSettings->SetObserver(this);
 
-	btnExit = new GuiButton(2, { 538, 976, 202, 60 }, "EXIT", drawBasic, drawSettings, drawCredits);
+	btnExit = new GuiButton(2, { 538, 976, 202, 60 }, "EXIT");
 	btnExit->SetObserver(this);
 
-	btnTitle = new GuiButton(3, { 540, 845, 201, 60 }, "TITLE", drawBasic, drawSettings, drawCredits);
+	btnTitle = new GuiButton(3, { 540, 845, 201, 60 }, "TITLE");
 	btnTitle->SetObserver(this);
 
-	btnPauseCross = new GuiButton(4, { 930, 652, 36, 36 }, "PAUSECROSS", drawBasic, drawSettings, drawCredits);
+	btnPauseCross = new GuiButton(4, { 930, 652, 36, 36 }, "PAUSECROSS");
 	btnPauseCross->SetObserver(this);
 
-	btnSettCross = new GuiButton(5, { 930, 652, 36, 36 }, "SETTCROSS", drawBasic, drawSettings, drawCredits);
+	btnSettCross = new GuiButton(5, { 930, 652, 36, 36 }, "SETTCROSS");
 	btnSettCross->SetObserver(this);
 
 	btnFullscreen = new GuiCheckBox(6, { 754, 954, 36, 36 }, "FULLSCREEN");
@@ -119,6 +119,11 @@ bool SceneGameplay::Load(Textures* tex)
 // Called each loop iteration
 bool SceneGameplay::Update(Input* input, float dt)
 {
+	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		drawBasic = !drawBasic;
+	}
+
 	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		pauseMenu = true;
@@ -159,16 +164,16 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	if (pauseMenu == true && settingsTab == false)
 	{
-		btnSettings->Update(input, dt, render);
-		btnExit->Update(input, dt, render);
-		btnTitle->Update(input, dt, render);
-		btnPauseCross->Update(input, dt, render);
+		btnSettings->Update(input, dt, render, drawBasic);
+		btnExit->Update(input, dt, render, drawBasic);
+		btnTitle->Update(input, dt, render, drawBasic);
+		btnPauseCross->Update(input, dt, render, drawBasic);
 	}
 
 	if (settingsTab == true)
 	{
-		btnSettCross->Update(input, dt, render);
-		btnFullscreen->Update(input, dt, render);
+		btnSettCross->Update(input, dt, render, drawBasic);
+		btnFullscreen->Update(input, dt, render, drawBasic);
 		sliderMusic->Update(input, dt, render);
 		sliderFx->Update(input, dt, render);
 	}

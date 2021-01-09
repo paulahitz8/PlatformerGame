@@ -13,8 +13,10 @@ GuiCheckBox::~GuiCheckBox()
 {
 }
 
-bool GuiCheckBox::Update(Input* input, float dt, Render* render)
+bool GuiCheckBox::Update(Input* input, float dt, Render* render, bool drawBasic)
 {
+	this->drawBasic = drawBasic;
+
 	if (state != GuiControlState::DISABLED)
 	{
 
@@ -58,17 +60,32 @@ bool GuiCheckBox::Draw(Render* render)
 	{
 	case GuiControlState::DISABLED:
 	{
-		if (checked) render->DrawRectangle(bounds, 100, 100, 100, 255);
+		if (checked) render->DrawRectangle(checkSeen, 0, 255, 0, 255);
 		else render->DrawRectangle(bounds, 100, 100, 100, 255);
+
 	} break;
 	case GuiControlState::NORMAL:
 	{
-		if (checked) render->DrawRectangle(bounds, 0, 255, 0, 255);
-		else render->DrawRectangle(bounds, 0, 255, 0, 255);
+		if (drawBasic == true) render->DrawRectangle(bounds, 209, 37, 0, 255);
+		else
+		{
+			if (checked) render->DrawRectangle(bounds, 0, 255, 0, 255);
+			else render->DrawRectangle(bounds, 0, 255, 0, 0);
+		}
 	} break;
-	case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 0, 255);
+	case GuiControlState::FOCUSED: 
+		if (drawBasic == true) render->DrawRectangle(bounds, 255, 193, 52, 255);
+		else
+		{
+			render->DrawRectangle(bounds, 255, 255, 255, 160);
+		}
 		break;
-	case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255);
+	case GuiControlState::PRESSED: 
+		if (drawBasic == true) render->DrawRectangle(bounds, 186, 255, 37, 255);
+		else
+		{
+			render->DrawRectangle(bounds, 255, 255, 255, 255);
+		}
 		break;
 	case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
 		break;

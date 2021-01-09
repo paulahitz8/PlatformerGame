@@ -182,6 +182,7 @@ Player::~Player() {}
 
 bool Player::Update(float dt)
 {
+
 	if (notPause)
 	{
 		for (uint i = 0; i < MAX_SNOWBALLS; ++i)
