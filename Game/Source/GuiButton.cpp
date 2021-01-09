@@ -1,14 +1,18 @@
 #include "GuiButton.h"
 #include "Render.h"
+#include "App.h"
+#include "Audio.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
 	this->text = text;
+	click = app->audio->LoadFx("Assets/Audio/Fx/Button.wav");
 }
 
 GuiButton::~GuiButton()
 {
+
 }
 
 bool GuiButton::Update(Input* input, float dt, Render* render)
@@ -26,12 +30,19 @@ bool GuiButton::Update(Input* input, float dt, Render* render)
 
 			if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
+				if (canClick)
+				{
+					canClick = false;
+					app->audio->PlayFx(click);
+				}
+
 				state = GuiControlState::PRESSED;
 			}
 
 			// If mouse button pressed -> Generate event!
 			if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 			{
+				canClick = true;
 				NotifyObserver();
 			}
 		}
