@@ -29,6 +29,8 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex, Window* 
 	onTransition = false;
 	fadeOutCompleted = false;
 	transitionAlpha = 0.0f;;
+	continueDone = false;
+
 
 	this->input = input;
 	this->render = render;

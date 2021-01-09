@@ -75,12 +75,12 @@ private:
 	/*Collisions* collisions = nullptr;*/
 
 	bool continueRequest;
+	bool continueDone;
 	bool boolPath = false;
 
 	bool exitReq = true;
 	bool settingsTab = false;
 	bool fullscreen = false;
-	bool continueDone;
 
 	Render* render;
 	Input* input;

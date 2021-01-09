@@ -44,7 +44,7 @@ SceneTitle::SceneTitle(Window* win, bool continueRequest, bool continueDone, pug
 	btnFullscreen = new GuiCheckBox(8, { 754, 954, 36, 36 }, "FULLSCREEN");
 	btnFullscreen->SetObserver(this);
 
-	btnVsync = new GuiCheckBox(9, { 754, 854, 36, 36 }, "VSYNC");
+	btnVsync = new GuiCheckBox(9, { 754, 1026, 36, 36 }, "VSYNC");
 	btnVsync->SetObserver(this);
 
 	sliderMusic = new GuiSlider(10, { 630, 754, 34, 34 }, "MUSIC");
@@ -231,6 +231,8 @@ bool SceneTitle::Unload()
 	delete btnVsync;
 	delete sliderMusic;
 	delete sliderFx;
+
+	continueDone = false;
 	
 	return true;
 }
@@ -301,14 +303,15 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			if (timerVsync > 5)
 			{
-				if (app->render->config.child("vsync").attribute("value").as_bool(true) == true)
+				if (app->render->config.child("vsync").attribute("value").as_bool() == true)
 				{
 					app->render->config.child("vsync").attribute("value") = false;
 				}
-				else if (app->render->config.child("vsync").attribute("value").as_bool(false) == true)
+				else if (app->render->config.child("vsync").attribute("value").as_bool() == false)
 				{
 					app->render->config.child("vsync").append_attribute("value") = true;
 				}
+				timerVsync = 0;
 			}
 		}
 	}
