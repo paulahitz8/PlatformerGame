@@ -56,14 +56,18 @@ public:
 
 	bool playerSeenF;
 	bool notPause = true;
-
-private:
+	int timer;
+	int soundTimer;
 
 	//list of animations
 	Animation* currentAnimation = &right;
 	Animation* currentDeadAnimation = &blankAnim;
+
 	Animation blankAnim;
 	Animation left;
+
+private:
+
 	Animation right;
 	Animation leftDead;
 	Animation rightDead;
@@ -80,11 +84,8 @@ private:
 	int pathTimer = 0;
 	int createPath = 0;
 	int pathIndex = 0;
-	int soundTimer;
-	int timer;
 
 	Player* player = nullptr;
-
 };
 
 #endif // __FLYINGENEMY_H__

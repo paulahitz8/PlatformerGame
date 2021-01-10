@@ -57,11 +57,15 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/eagle_sprites.png");
 	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
-	currentAnimation = &left;
-	currentDeadAnimation = &blankAnim;
 
+	//Path
+	playerSeenF = false;
 	isDead = false;
 	enemyPos = { 2800, 702 };
+	timer = 0;
+	soundTimer = 0;
+	currentAnimation = &left;
+	currentDeadAnimation = &blankAnim;
 
 	//Collider
 	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 35, 44 }, Collider::Type::FLYINGENEMY, this);
@@ -69,11 +73,6 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 	//Audios
 	eagleFx = app->audio->LoadFx("Assets/Audio/Fx/eagle_fx.wav");
 
-	//Path
-	playerSeenF = false;
-
-	timer = 0;
-	soundTimer = 0;
 }
 
 FlyingEnemy::~FlyingEnemy() {}

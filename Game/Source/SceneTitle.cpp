@@ -154,6 +154,10 @@ bool SceneTitle::Draw(Render* render)
 	{
 		btnContinue->Draw(render);
 	}
+	else
+	{
+		render->DrawRectangle(btnContinue->bounds, 0, 0, 0, 50);
+	}
 	btnExit->Draw(render);
 	btnSettings->Draw(render);
 	btnCredCross->Draw(render);

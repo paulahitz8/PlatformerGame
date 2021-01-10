@@ -60,13 +60,17 @@ public:
 	bool playerSeenG;
 	bool notPause = true;
 
-private:
+	int soundTimer;
+	int timer;
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;
 	Animation* currentDeadAnimation = &blankAnim;
 	Animation blankAnim;
 	Animation leftIdle;
+
+private:
+
 	Animation rightIdle;
 	Animation leftDead;
 	Animation rightDead;
@@ -78,14 +82,11 @@ private:
 	Collider* enemyCollider = nullptr;
 	Physics enemyPhysics;
 
-	int pathTimer = 0;
-	int createPath = 0;
 	int pathIndex = 0;
+	int createPath = 0;
+	int pathTimer = 0;
 
 	bool isFalling = false;
-
-	int soundTimer;
-	int timer;
 
 	Player* player = nullptr;
 	Map* map = nullptr;

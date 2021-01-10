@@ -45,6 +45,9 @@ SceneGameplay::SceneGameplay(/*bool continueRequest, bool continueDone,*/ Render
 	btnFullscreen = new GuiCheckBox(6, { 754, 954, 36, 36 }, "FULLSCREEN");
 	btnFullscreen->SetObserver(this);
 
+	btnVsync = new GuiCheckBox(9, { 754, 1026, 36, 36 }, "VSYNC");
+	btnVsync->SetObserver(this);
+
 	sliderMusic = new GuiSlider(7, { 630, 754, 34, 34 }, "MUSIC");
 	sliderMusic->SetObserver(this);
 
@@ -74,12 +77,6 @@ bool SceneGameplay::Load(Textures* tex)
 		RELEASE_ARRAY(data);
 	}
 
-	/*collisions = new Collisions();*/
-	//player = new Player();
-	//flyingEnemy = new FlyingEnemy();
-	//groundEnemy = new GroundEnemy();
-	//item = new Item();
-	//life = new Life();
 	player = (Player*)entityManager->CreateEntity(EntityType::PLAYER);
 	flyingEnemy = (FlyingEnemy*)entityManager->CreateEntity(EntityType::FLYINGENEMY);
 	groundEnemy = (GroundEnemy*)entityManager->CreateEntity(EntityType::GROUNDENEMY);
@@ -106,7 +103,6 @@ bool SceneGameplay::Load(Textures* tex)
 
 	timerMenu = 0;
 	timerFullscreen = 0;
-	/*continueDone = false;*/
 	if (app->sceneManager->continueDone)
 	{
 		app->LoadGameRequest();
@@ -129,9 +125,10 @@ bool SceneGameplay::Update(Input* input, float dt)
 	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		pauseMenu = true;
-		//TransitionToScene(SceneType::WIN);
 	}
+
 	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
+
 	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
 		app->SaveGameRequest();
@@ -149,9 +146,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 	// Camera limits
 	if (app->render->camera.x > 0) app->render->camera.x--;
 
-	//// Draw map
-	//if (map->active == true) map->Draw();
-
 	if (player->isWon)
 	{
 		TransitionToScene(SceneType::WIN);
@@ -162,7 +156,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 		TransitionToScene(SceneType::LOSE);
 	}
 	entityManager->Update(dt);
-	/*map->Update(dt);*/
 
 	if (pauseMenu == true && settingsTab == false)
 	{
@@ -178,6 +171,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 		btnFullscreen->Update(input, dt, render, drawBasic);
 		sliderMusic->Update(input, dt, render);
 		sliderFx->Update(input, dt, render);
+		btnVsync->Update(input, dt, render, drawBasic);
 	}
 
 
@@ -202,8 +196,21 @@ bool SceneGameplay::Update(Input* input, float dt)
 		btnPauseCross->bounds.x = -app->render->camera.x + 930;
 		btnSettCross->bounds.x = -app->render->camera.x + 930;
 		btnFullscreen->bounds.x = -app->render->camera.x + 754;
+		btnVsync->bounds.x = -app->render->camera.x + 754;
 		sliderMusic->bounds.x = -app->render->camera.x + 630;
 		sliderFx->bounds.x = -app->render->camera.x + 630;
+	}
+	else
+	{
+		btnSettings->bounds.x = 538;
+		btnExit->bounds.x = 538;
+		btnTitle->bounds.x = 540;
+		btnPauseCross->bounds.x = 930;
+		btnSettCross->bounds.x = 930;
+		btnFullscreen->bounds.x = 754;
+		btnVsync->bounds.x = 754;
+		sliderMusic->bounds.x = 630;
+		sliderFx->bounds.x = 630;
 	}
 
 	if (!pauseMenu)
@@ -272,6 +279,7 @@ bool SceneGameplay::Draw(Render* render)
 
 		btnSettCross->Draw(render);
 		btnFullscreen->Draw(render);
+		btnVsync->Draw(render);
 		sliderMusic->Draw(render);
 		sliderFx->Draw(render);
 
@@ -321,6 +329,7 @@ bool SceneGameplay::Unload()
 	delete btnPauseCross;
 	delete btnSettCross;
 	delete btnFullscreen;
+	delete btnVsync;
 	delete sliderMusic;
 	delete sliderFx;
 
@@ -370,6 +379,21 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 				fullscreen = !fullscreen;
 				app->win->SetToFullscreen(fullscreen);
 				timerFullscreen = 0;
+			}
+		}
+		else if (control->id == 9)
+		{
+			if (timerVsync > 5)
+			{
+				if (app->render->config.child("vsync").attribute("value").as_bool() == true)
+				{
+					app->render->config.child("vsync").attribute("value") = false;
+				}
+				else if (app->render->config.child("vsync").attribute("value").as_bool() == false)
+				{
+					app->render->config.child("vsync").append_attribute("value") = true;
+				}
+				timerVsync = 0;
 			}
 		}
 	}
