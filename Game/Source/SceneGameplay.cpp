@@ -58,7 +58,7 @@ SceneGameplay::SceneGameplay(Render* render, EntityManager * entityManager)
 	vsync = false;
 	fullscreen = false;
 	settingsTab = false;
-	exitReq = false;
+	exitReq = true;
 	boolPath = false;
 
 	this->entityManager = entityManager;
