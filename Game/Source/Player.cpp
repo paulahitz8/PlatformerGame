@@ -632,7 +632,6 @@ bool Player::Update(float dt)
 						groundEnemy->isDead = false;
 						groundEnemy->enemyPos = { 300, 993 };
 
-
 						flyingEnemy->active = true;
 						flyingEnemy->playerSeenF = false;
 						flyingEnemy->isDead = false;
