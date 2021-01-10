@@ -643,7 +643,6 @@ bool Player::Update(float dt)
 			}
 		}
 
-
 		currentAnimation->Update(dt);
 		currentSnowballAnimation->Update(dt);
 		currentSnowmanAnimation->Update(dt);
