@@ -11,7 +11,10 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneLogo::SceneLogo() {}
+SceneLogo::SceneLogo(Audio* audio)
+{
+	this->audio = audio;
+}
 
 SceneLogo::~SceneLogo() {}
 
@@ -22,7 +25,7 @@ bool SceneLogo::Load(Textures* tex)
 
 	sceneLogo = tex->Load("Assets/Screens/logo_screen.png");
 
-	app->audio->PlayMusic("Assets/Audio/Music/logo_music.ogg");
+	audio->PlayMusic("Assets/Audio/Music/logo_music.ogg");
 	
 	return false;
 }

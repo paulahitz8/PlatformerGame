@@ -12,12 +12,16 @@ struct SDL_Texture;
 class Player;
 class Map;
 class Render;
+class Textures;
+class Audio;
+class Collisions;
+class PathFinding;
 
 class GroundEnemy : public Entity
 {
 public:
 
-	GroundEnemy();
+	GroundEnemy(Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path);
 	virtual ~GroundEnemy();
 
 	bool Update(float dt);
@@ -67,6 +71,9 @@ private:
 	fPoint speed;
 	Collider* enemyCollider = nullptr;
 	Physics enemyPhysics;
+	PathFinding* path;
+	Audio* audio;
+	Textures* tex;
 
 	int pathIndex = 0;
 	int createPath = 0;

@@ -4,7 +4,7 @@
 #include "Log.h"
 #include "SceneGameplay.h"
 
-Player::Player(Input* input) : Entity(EntityType::PLAYER)
+Player::Player(Input* input, Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path, Render* render) : Entity(EntityType::PLAYER)
 {
 	name.Create("player");
 	//blank animation
@@ -114,17 +114,17 @@ Player::Player(Input* input) : Entity(EntityType::PLAYER)
 	snowmanWave.speed = 3.0f;
 
 	LOG("Loading player textures");
-	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
-	checkpointTexture = app->tex->Load("Assets/GUI/checkpoint.png");
-	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
-	grayHeartTexture = app->tex->Load("Assets/GUI/gray_heart.png");
-	ice0Texture = app->tex->Load("Assets/GUI/ice_zero.png");
-	ice1Texture = app->tex->Load("Assets/GUI/ice_one.png");
-	ice2Texture = app->tex->Load("Assets/GUI/ice_two.png");
-	ice3Texture = app->tex->Load("Assets/GUI/ice_three.png");
-	ice4Texture = app->tex->Load("Assets/GUI/ice_four.png");
-	ice5Texture = app->tex->Load("Assets/GUI/ice_five.png");
-	snowmanTexture = app->tex->Load("Assets/Characters/snowman_sprites.png");
+	playerTexture = tex->Load("Assets/Characters/penguin_sprites.png");
+	checkpointTexture = tex->Load("Assets/GUI/checkpoint.png");
+	redHeartTexture = tex->Load("Assets/GUI/red_heart.png");
+	grayHeartTexture = tex->Load("Assets/GUI/gray_heart.png");
+	ice0Texture = tex->Load("Assets/GUI/ice_zero.png");
+	ice1Texture = tex->Load("Assets/GUI/ice_one.png");
+	ice2Texture = tex->Load("Assets/GUI/ice_two.png");
+	ice3Texture = tex->Load("Assets/GUI/ice_three.png");
+	ice4Texture = tex->Load("Assets/GUI/ice_four.png");
+	ice5Texture = tex->Load("Assets/GUI/ice_five.png");
+	snowmanTexture = tex->Load("Assets/Characters/snowman_sprites.png");
 
 	currentAnimation = &rightIdle;
 	currentSnowballAnimation = &blankAnim;
@@ -164,19 +164,24 @@ Player::Player(Input* input) : Entity(EntityType::PLAYER)
 	i = 0;
 
 	//Collider
-	playerCollider = app->collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
-	winCollider = app->collisions->AddCollider({ 9300, 500, 20, 1000 }, Collider::Type::WIN);
-	checkpointList.Add(app->collisions->AddCollider({ 2520,500,20,1000 }, Collider::Type::CHECKPOINT));
-	checkpointList.Add(app->collisions->AddCollider({ 4570,500,20,1000 }, Collider::Type::CHECKPOINT));
-	checkpointList.Add(app->collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHECKPOINT));
+	playerCollider = collisions->AddCollider({ playerPos.x, playerPos.y, 22, 25 }, Collider::Type::PLAYER, this);
+	winCollider = collisions->AddCollider({ 9300, 500, 20, 1000 }, Collider::Type::WIN);
+	checkpointList.Add(collisions->AddCollider({ 2520,500,20,1000 }, Collider::Type::CHECKPOINT));
+	checkpointList.Add(collisions->AddCollider({ 4570,500,20,1000 }, Collider::Type::CHECKPOINT));
+	checkpointList.Add(collisions->AddCollider({ 7000,500,20,1000 }, Collider::Type::CHECKPOINT));
 
 	//Audios
-	deadFx = app->audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
-	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
-	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
-	checkpointFx = app->audio->LoadFx("Assets/Audio/Fx/checkpoint_fx.wav");
+	deadFx = audio->LoadFx("Assets/Audio/Fx/dead_fx.wav");
+	jumpingFx = audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
+	splashFx = audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
+	checkpointFx = audio->LoadFx("Assets/Audio/Fx/checkpoint_fx.wav");
 
 	this->input = input;
+	this->path = path;
+	this->audio = audio;
+	this->tex = tex;
+	this->render = render;
+	this->collisions = collisions;
 }
 
 Player::~Player() {}
@@ -200,7 +205,7 @@ bool Player::Update(float dt)
 		{
 			playerPos.x = 100;
 			playerPos.y = 1000;
-			app->render->camera.x = 0;
+			render->camera.x = 0;
 		}
 
 		// DEBUG Key to start from the beginning of current level
@@ -208,7 +213,7 @@ bool Player::Update(float dt)
 		{
 			playerPos.x = 100;
 			playerPos.y = 1000;
-			app->render->camera.x = 0;
+			render->camera.x = 0;
 		}
 
 		// DEBUG Key to enter godmode
@@ -253,7 +258,7 @@ bool Player::Update(float dt)
 									numSnowball = i;
 									AddSnowball();
 									snowballs[i]->snowballPos = playerPos;
-									snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
+									snowballCollider = collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
 									break;
 								}
 							}
@@ -336,7 +341,7 @@ bool Player::Update(float dt)
 								numSnowball = i;
 								AddSnowball();
 								snowballs[i]->snowballPos = playerPos;
-								snowballCollider = app->collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
+								snowballCollider = collisions->AddCollider({ snowballs[i]->snowballPos.x, snowballs[i]->snowballPos.y, 6, 6 }, Collider::Type::SNOWBALL, this);
 								break;
 							}
 						}
@@ -346,11 +351,11 @@ bool Player::Update(float dt)
 
 				if ((input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 				{
-					app->audio->PlayFx(jumpingFx);
+					audio->PlayFx(jumpingFx);
 				}
 				else if ((input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && (input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT || input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT))
 				{
-					app->audio->PlayFx(jumpingFx);
+					audio->PlayFx(jumpingFx);
 				}
 
 				//In case of both keys pressed
@@ -427,7 +432,7 @@ bool Player::Update(float dt)
 					currentSnowmanAnimation = &snowmanWave;
 					if (changePos)
 					{
-						app->audio->PlayFx(checkpointFx);
+						audio->PlayFx(checkpointFx);
 						checkpointPos = playerPos;
 						changePos = false;
 					}
@@ -443,7 +448,7 @@ bool Player::Update(float dt)
 
 				if (GetTileProperty(playerPos.x / 64, (playerPos.y + playerRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 				{
-					if (timer == 5) app->audio->PlayFx(splashFx);
+					if (timer == 5) audio->PlayFx(splashFx);
 
 					if (!isJumping)
 					{
@@ -594,7 +599,7 @@ bool Player::Update(float dt)
 				if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) currentAnimation = &rightDeath;
 				else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) currentAnimation = &leftDeath;
 
-				if (timer == 50) app->audio->PlayFx(deadFx);
+				if (timer == 50) audio->PlayFx(deadFx);
 
 				timer++;
 
@@ -614,7 +619,7 @@ bool Player::Update(float dt)
 						groundEnemy->active = false;
 
 						playerPos = checkpointPos;
-						app->render->camera.x = 0;
+						render->camera.x = 0;
 						currentAnimation = &rightIdle;
 						timer = 0;
 
@@ -757,22 +762,22 @@ bool Player::CleanUp()
 	if (playerCollider != nullptr) playerCollider->pendingToDelete = true;
 
 	//Unload the audios
-	app->audio->UnloadFx(jumpingFx);
-	app->audio->UnloadFx(deadFx);
-	app->audio->UnloadFx(splashFx);
-	app->audio->UnloadFx(checkpointFx);
+	audio->UnloadFx(jumpingFx);
+	audio->UnloadFx(deadFx);
+	audio->UnloadFx(splashFx);
+	audio->UnloadFx(checkpointFx);
 
-	app->tex->UnLoad(playerTexture);
-	app->tex->UnLoad(redHeartTexture);
-	app->tex->UnLoad(grayHeartTexture);
-	app->tex->UnLoad(checkpointTexture);
-	app->tex->UnLoad(ice0Texture);
-	app->tex->UnLoad(ice1Texture);
-	app->tex->UnLoad(ice2Texture);
-	app->tex->UnLoad(ice3Texture);
-	app->tex->UnLoad(ice4Texture);
-	app->tex->UnLoad(ice5Texture);
-	app->tex->UnLoad(snowmanTexture);
+	tex->UnLoad(playerTexture);
+	tex->UnLoad(redHeartTexture);
+	tex->UnLoad(grayHeartTexture);
+	tex->UnLoad(checkpointTexture);
+	tex->UnLoad(ice0Texture);
+	tex->UnLoad(ice1Texture);
+	tex->UnLoad(ice2Texture);
+	tex->UnLoad(ice3Texture);
+	tex->UnLoad(ice4Texture);
+	tex->UnLoad(ice5Texture);
+	tex->UnLoad(snowmanTexture);
 
 	return true;
 }
@@ -892,7 +897,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 			if (c2->type == Collider::Type::ITEM)
 			{
-				app->audio->PlayFx(item->iceFx);
+				audio->PlayFx(item->iceFx);
 				item->isPicked = true;
 				numIce++;
 				c2->pendingToDelete = true;
@@ -903,7 +908,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (c2->type == Collider::Type::GROUNDENEMY)
 			{
-				app->audio->PlayFx(groundEnemy->sealFx);
+				audio->PlayFx(groundEnemy->sealFx);
 				groundEnemy->isDead = true;
 
 				c2->pendingToDelete = true;
@@ -912,7 +917,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 
 			if (c2->type == Collider::Type::FLYINGENEMY)
 			{
-				app->audio->PlayFx(flyingEnemy->eagleFx);
+				audio->PlayFx(flyingEnemy->eagleFx);
 				flyingEnemy->isDead = true;
 
 				c2->pendingToDelete = true;

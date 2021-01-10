@@ -5,12 +5,15 @@
 #include "Player.h"
 
 struct SDL_Texture;
+class Textures;
+class Window;
+class Audio;
 
 class SceneWin : public Scene
 {
 public:
 
-	SceneWin(Render* render);
+	SceneWin(Render* render, Textures* tex, Window* win, Audio* audio);
 	virtual ~SceneWin();
 
 	bool Load(Textures* tex);
@@ -31,6 +34,9 @@ private:
 
 	Player* player;
 	Render* render;
+	Textures* tex;
+	Window* win;
+	Audio* audio;
 };
 
 #endif // __SCENEWIN_H__

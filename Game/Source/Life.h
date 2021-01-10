@@ -11,12 +11,16 @@
 struct SDL_Texture;
 class Player;
 class Render;
+class Textures;
+class Audio;
+class Collisions;
+class PathFinding;
 
 class Life : public Entity
 {
 public:
 
-	Life();
+	Life(Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path);
 	virtual ~Life();
 
 	bool Update(float dt);
@@ -50,6 +54,10 @@ private:
 	Animation* currentAnimation4 = &fishAnim;
 	Animation fishAnim;
 	Animation blankAnim;
+
+	PathFinding* path;
+	Audio* audio;
+	Textures* tex;
 
 	Player* player = nullptr;
 

@@ -12,9 +12,12 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneLose::SceneLose(Render* render)
+SceneLose::SceneLose(Render* render, Textures* tex, Window* win, Audio* audio)
 {
 	this->render = render;
+	this->tex = tex;
+	this->win = win;
+	this->audio = audio;
 }
 
 SceneLose::~SceneLose() {}
@@ -26,7 +29,7 @@ bool SceneLose::Load(Textures* tex)
 	render->camera.x = 0;
 	sceneLose = tex->Load("Assets/Screens/death_screen.png");
 
-	app->audio->PlayMusic("Assets/Audio/Music/death_music.ogg", 0.0f);
+	audio->PlayMusic("Assets/Audio/Music/death_music.ogg", 0.0f);
 
 	return ret;
 }
@@ -43,7 +46,7 @@ bool SceneLose::Update(Input* input, float dt)
 
 bool SceneLose::Draw(Render* render)
 {
-	rectLose = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
+	rectLose = { 0, -500, (int)win->GetWidth(), (int)win->GetHeight() + 300 };
 	render->DrawTexture(sceneLose, 0, 350, &rectLose);
 
 	return false;
@@ -53,7 +56,7 @@ bool SceneLose::Unload()
 {
 	LOG("Freeing scene");
 
-	app->tex->UnLoad(sceneLose);
+	tex->UnLoad(sceneLose);
 
 	return true;
 }

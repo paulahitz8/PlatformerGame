@@ -16,7 +16,7 @@ class SceneTitle : public Scene
 {
 public:
 
-	SceneTitle(Window* win, pugi::xml_node & config, Render * render);
+	SceneTitle(Window* win, Render* render, Audio* audio);
 	virtual ~SceneTitle();
 
 	bool Load(Textures* tex);
@@ -48,6 +48,7 @@ private:
 
 	Textures* tex;
 	Window* win;
+	Audio* audio;
 
 	bool exitReq = true;
 	bool creditsTab = false;
@@ -69,9 +70,7 @@ private:
 	SDL_Rect rectCredit;
 	SDL_Rect rectSettings;
 
-	pugi::xml_node config;
 	Render* render;
-
 	Font* font;
 };
 

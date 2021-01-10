@@ -6,7 +6,7 @@
 #include "SDL/include/SDL_scancode.h"
 #include "Log.h"
 
-Collisions::Collisions(Input* input) : Module()
+Collisions::Collisions(Input* input, Render* render) : Module()
 {
 	name.Create("collisions");
 
@@ -16,6 +16,7 @@ Collisions::Collisions(Input* input) : Module()
 	}
 
 	this->input = input;
+	this->render = render;
 
 	matrix[Collider::Type::GROUND][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::WATER] = false;
@@ -218,7 +219,7 @@ bool Collisions::PostUpdate()
 {
 	if (debug)
 	{
-		DrawCollider(app->render);
+		DrawCollider(render);
 	}
 
 	return true;

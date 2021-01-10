@@ -4,12 +4,15 @@
 #include "Scene.h"
 
 struct SDL_Texture;
+class Textures;
+class Window;
+class Audio;
 
 class SceneLose : public Scene
 {
 public:
 
-	SceneLose(Render* render);
+	SceneLose(Render* render, Textures* tex, Window* win, Audio* audio);
 	virtual ~SceneLose();
 
 	bool Load(Textures* tex);
@@ -26,6 +29,9 @@ private:
 	SDL_Rect rectLose;
 
 	Render* render;
+	Textures* tex;
+	Window* win;
+	Audio* audio;
 };
 
 #endif // __SCENELOSE_H__

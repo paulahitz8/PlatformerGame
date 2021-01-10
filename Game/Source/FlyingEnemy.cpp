@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "Math.h"
 
-FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
+FlyingEnemy::FlyingEnemy(Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path) : Entity(EntityType::FLYINGENEMY)
 {
 	name.Create("flyingenemy");
 	//animations
@@ -54,8 +54,8 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 	deadAnim.speed = 2.0f;
 
 	LOG("Loading player textures");
-	enemyTexture = app->tex->Load("Assets/Characters/eagle_sprites.png");
-	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
+	enemyTexture = tex->Load("Assets/Characters/eagle_sprites.png");
+	deadTexture = tex->Load("Assets/Characters/penguin_sprites.png");
 
 	//Path
 	playerSeenF = false;
@@ -67,11 +67,14 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 	currentDeadAnimation = &blankAnim;
 
 	//Collider
-	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 35, 44 }, Collider::Type::FLYINGENEMY, this);
+	enemyCollider = collisions->AddCollider({ enemyPos.x, enemyPos.y, 35, 44 }, Collider::Type::FLYINGENEMY, this);
 
 	//Audios
-	eagleFx = app->audio->LoadFx("Assets/Audio/Fx/eagle_fx.wav");
+	eagleFx = audio->LoadFx("Assets/Audio/Fx/eagle_fx.wav");
 
+	this->path = path;
+	this->audio = audio;
+	this->tex = tex;
 }
 
 FlyingEnemy::~FlyingEnemy() {}
@@ -82,7 +85,7 @@ bool FlyingEnemy::Update(float dt)
 	{
 		iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
 		iPoint playerTile = iPoint(player->playerPos.x / 64, player->playerPos.y / 64);
-		createPath = app->path->CreatePath(enemyTile, playerTile);
+		createPath = path->CreatePath(enemyTile, playerTile);
 
 		if ((abs(player->playerPos.x - enemyPos.x) < 600) && (abs(player->playerPos.y - enemyPos.y) < 600)) playerSeenF = true;
 
@@ -117,17 +120,17 @@ bool FlyingEnemy::Update(float dt)
 			{
 				if (playerSeenF)
 				{
-					if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
+					if (pathTimer >= 10 || pathTimer > path->GetLastPath()->Count() - 1)
 					{
-						createPath = app->path->CreatePath(enemyTile, playerTile);
+						createPath = path->CreatePath(enemyTile, playerTile);
 
 						if (createPath == 0) pathTimer = 0;
 					}
 
-					if (app->path->GetLastPath()->At(0) != nullptr)
+					if (path->GetLastPath()->At(0) != nullptr)
 					{
 
-						const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+						const iPoint* pos = path->GetLastPath()->At(pathIndex);
 
 						if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y) pathIndex++;
 						else
@@ -148,7 +151,7 @@ bool FlyingEnemy::Update(float dt)
 						}
 					}
 					pathTimer++;
-					if (soundTimer % 500 == 0) app->audio->PlayFx(eagleFx);
+					if (soundTimer % 500 == 0) audio->PlayFx(eagleFx);
 				}
 			}
 		}
@@ -178,10 +181,10 @@ bool FlyingEnemy::Draw(Render* render)
 
 bool FlyingEnemy::CleanUp()
 {
-	app->audio->UnloadFx(eagleFx);
+	audio->UnloadFx(eagleFx);
 
-	app->tex->UnLoad(enemyTexture);
-	app->tex->UnLoad(deadTexture);
+	tex->UnLoad(enemyTexture);
+	tex->UnLoad(deadTexture);
 	if (enemyCollider != nullptr) enemyCollider->pendingToDelete = true;
 
 	return true;

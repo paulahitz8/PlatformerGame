@@ -11,12 +11,14 @@ class Render;
 class Textures;
 class Window;
 class EntityManager;
+class PathFinding;
+class Audio;
 
 class SceneManager : public Module
 {
 public:
 
-	SceneManager(Input* input, Render* render, Textures* tex, Window* win, pugi::xml_node& config, EntityManager* entityManager);
+	SceneManager(Input* input, Render* render, Textures* tex, Window* win, EntityManager* entityManager, PathFinding* path, Audio* audio);
 	virtual ~SceneManager();
 
 	bool Awake();
@@ -35,7 +37,6 @@ public:
 	Input* input;
 	Render* render;
 	Window* win;
-	pugi::xml_node config;
 
 	bool continueRequest = false;
 	bool continueDone = false;
@@ -45,6 +46,8 @@ private:
 	Scene* current;
 	Scene* next;
 	EntityManager* entityManager;
+	PathFinding* path;
+	Audio* audio;
 
 	bool onTransition;
 	bool fadeOutCompleted;

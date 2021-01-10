@@ -6,11 +6,17 @@
 
 #include "List.h"
 
+class Textures;
+class Audio;
+class Collisions;
+class PathFinding;
+class Render;
+
 class EntityManager : public Module
 {
 public:
 
-	EntityManager(Input* input);
+	EntityManager(Input* input, Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path, Render* render);
 
 	// Destructor
 	virtual ~EntityManager();
@@ -41,6 +47,11 @@ public:
 	List<Entity*> entities;
 
 	Input* input;
+	Textures* tex;
+	Audio* audio;
+	Collisions* collisions;
+	PathFinding* path;
+	Render* render;
 
 	float accumulatedTime = 0.0f;
 	float updateMsCycle = 0.0f;

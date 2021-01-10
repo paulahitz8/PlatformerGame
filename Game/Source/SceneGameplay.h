@@ -23,7 +23,7 @@ class SceneGameplay : public Scene
 {
 public:
 
-	SceneGameplay(Render* render, EntityManager * entitymanager);
+	SceneGameplay(Render* render, EntityManager * entitymanager, PathFinding* path, Window* win, Textures* tex, Audio* audio);
 	virtual ~SceneGameplay();
 
 	bool Load(Textures* tex);
@@ -75,6 +75,10 @@ private:
 	Render* render = nullptr;
 	Input* input = nullptr;
 	Font* font = nullptr;
+	PathFinding* path = nullptr;
+	Window* win = nullptr;
+	Textures* tex = nullptr;
+	Audio* audio = nullptr;
 
 	bool boolPath = false;
 	bool exitReq = true;

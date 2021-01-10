@@ -26,10 +26,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(win);
 	tex = new Textures(render);
 	audio = new Audio();
-	collisions = new Collisions(input);
+	collisions = new Collisions(input, render);
 	path = new PathFinding();
-	entityManager = new EntityManager(input);
-	sceneManager = new SceneManager(input, render, tex, win, config, entityManager);
+	entityManager = new EntityManager(input, tex, audio, collisions, path, render);
+	sceneManager = new SceneManager(input, render, tex, win, entityManager, path, audio);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp

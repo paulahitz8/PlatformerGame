@@ -19,6 +19,10 @@ class Life;
 class Map;
 class Render;
 class SDL_Rect;
+class Textures;
+class Audio;
+class Collisions;
+class PathFinding;
 
 struct Snowball
 {
@@ -34,7 +38,7 @@ class Player : public Entity
 {
 public:
 
-	Player(Input* input);
+	Player(Input* input, Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path, Render* render);
 	virtual ~Player();
 
 	bool Update(float dt);
@@ -150,6 +154,11 @@ private:
 	Life* life = nullptr;
 	Map* map = nullptr;
 	Input* input;
+	PathFinding* path;
+	Audio* audio;
+	Textures* tex;
+	Render* render;
+	Collisions* collisions;
 };
 
 #endif // __PLAYER_H__

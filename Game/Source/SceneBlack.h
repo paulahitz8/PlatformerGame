@@ -4,12 +4,14 @@
 #include "Scene.h"
 
 struct SDL_Texture;
+class Window;
+class Textures;
 
 class SceneBlack : public Scene
 {
 public:
 
-	SceneBlack();
+	SceneBlack(Window* win, Textures* tex);
 	virtual ~SceneBlack();
 
 	bool Load(Textures* tex);
@@ -24,6 +26,9 @@ private:
 
 	SDL_Texture* sceneBlack;
 	int timer = 0;
+
+	Window* win;
+	Textures* tex;
 };
 
 #endif // __SCENEBLACK_H__

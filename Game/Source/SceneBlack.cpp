@@ -20,7 +20,11 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneBlack::SceneBlack(){}
+SceneBlack::SceneBlack(Window* win, Textures* tex)
+{
+	this->win = win;
+	this->tex = tex;
+}
 
 SceneBlack::~SceneBlack() {}
 
@@ -47,8 +51,8 @@ bool SceneBlack::Update(Input* input, float dt)
 
 bool SceneBlack::Draw(Render* render)
 {
-	SDL_Rect rect = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	app->render->DrawTexture(sceneBlack, 0, 300, &rect);
+	SDL_Rect rect = { 0, -500, (int)win->GetWidth(), (int)win->GetHeight() + 300 };
+	render->DrawTexture(sceneBlack, 0, 300, &rect);
 
 	return false;
 }
@@ -57,7 +61,7 @@ bool SceneBlack::Unload()
 {
 	LOG("Freeing scene");
 
-	app->tex->UnLoad(sceneBlack);
+	tex->UnLoad(sceneBlack);
 
 	return true;
 }

@@ -11,12 +11,16 @@
 struct SDL_Texture;
 class Player;
 class Render;
+class Textures;
+class Audio;
+class Collisions;
+class PathFinding;
 
 class FlyingEnemy : public Entity
 {
 public:
 
-	FlyingEnemy();
+	FlyingEnemy(Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path);
 	virtual ~FlyingEnemy();
 
 	bool Update(float dt);
@@ -64,6 +68,9 @@ private:
 	fPoint speed;
 	Physics enemyPhysics;
 	Collider* enemyCollider = nullptr;
+	PathFinding* path;
+	Audio* audio;
+	Textures* tex;
 
 	int pathTimer = 0;
 	int createPath = 0;

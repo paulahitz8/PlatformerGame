@@ -49,7 +49,7 @@ class Collisions : public Module
 public:
 	// Constructor
 	// Fills all collision matrix data
-	Collisions(Input* input);
+	Collisions(Input* input, Render* render);
 
 	// Destructor
 	virtual ~Collisions();
@@ -99,7 +99,8 @@ private:
 
 	// The amount of colliders loaded into the array
 	uint colliderCount = 0;
-	Input* input;
+	Input* input = nullptr;
+	Render* render = nullptr;
 };
 
 #endif // __MODULE_COLLISIONS_H__

@@ -5,6 +5,7 @@
 #include "SDL/include/SDL_rect.h"
 
 class Textures;
+class Audio;
 
 struct SDL_Texture;
 
@@ -12,7 +13,7 @@ class SceneLogo : public Scene
 {
 public:
 
-	SceneLogo();
+	SceneLogo(Audio* audio);
 	virtual ~SceneLogo();
 
 	bool Load(Textures* tex);
@@ -29,6 +30,7 @@ private:
 	SDL_Texture* sceneLogo;
 	SDL_Rect rectLogo;
 	
+	Audio* audio;
 	Textures* tex;
 	int timer = 0;
 

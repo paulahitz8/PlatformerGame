@@ -19,7 +19,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneGameplay::SceneGameplay(Render* render, EntityManager * entityManager)
+SceneGameplay::SceneGameplay(Render* render, EntityManager * entityManager, PathFinding* path, Window* win, Textures* tex, Audio* audio)
 {
 	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS");
 	btnSettings->SetObserver(this);
@@ -63,6 +63,10 @@ SceneGameplay::SceneGameplay(Render* render, EntityManager * entityManager)
 
 	this->entityManager = entityManager;
 	this->render = render;
+	this->path = path;
+	this->win = win;
+	this->tex = tex;
+	this->audio = audio;
 }
 
 SceneGameplay::~SceneGameplay() {}
@@ -76,7 +80,7 @@ bool SceneGameplay::Load(Textures* tex)
 	{
 		int w, h;
 		uchar* data = NULL;
-		if (map->CreateWalkabilityMap(&w, &h, &data)) app->path->SetMap(w, h, data);
+		if (map->CreateWalkabilityMap(&w, &h, &data)) path->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
 	}
@@ -103,7 +107,7 @@ bool SceneGameplay::Load(Textures* tex)
 	pauseTex = tex->Load("Assets/GUI/pause_menu.png");
 	settingsTex = tex->Load("Assets/Screens/settings_screen.png");
 
-	app->audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
+	audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
 
 	timerMenu = 0;
 	timerFullscreen = 0;
@@ -160,10 +164,10 @@ bool SceneGameplay::Update(Input* input, float dt)
 	timerMap++;
 
 	// Camera: follow the player
-	if (player->playerPos.x >= 500 && player->playerPos.x < 8820) app->render->camera.x = -(player->playerPos.x - 500);
+	if (player->playerPos.x >= 500 && player->playerPos.x < 8820) render->camera.x = -(player->playerPos.x - 500);
 
 	// Camera limits
-	if (app->render->camera.x > 0) app->render->camera.x--;
+	if (render->camera.x > 0) render->camera.x--;
 
 	if (player->isWon)
 	{
@@ -210,15 +214,15 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
 	{
-		btnSettings->bounds.x = -app->render->camera.x + 538;
-		btnExit->bounds.x = -app->render->camera.x + 538;
-		btnTitle->bounds.x = -app->render->camera.x + 540;
-		btnPauseCross->bounds.x = -app->render->camera.x + 930;
-		btnSettCross->bounds.x = -app->render->camera.x + 930;
-		btnFullscreen->bounds.x = -app->render->camera.x + 754;
-		btnVsync->bounds.x = -app->render->camera.x + 754;
-		sliderMusic->bounds.x = -app->render->camera.x + 630;
-		sliderFx->bounds.x = -app->render->camera.x + 630;
+		btnSettings->bounds.x = -render->camera.x + 538;
+		btnExit->bounds.x = -render->camera.x + 538;
+		btnTitle->bounds.x = -render->camera.x + 540;
+		btnPauseCross->bounds.x = -render->camera.x + 930;
+		btnSettCross->bounds.x = -render->camera.x + 930;
+		btnFullscreen->bounds.x = -render->camera.x + 754;
+		btnVsync->bounds.x = -render->camera.x + 754;
+		sliderMusic->bounds.x = -render->camera.x + 630;
+		sliderFx->bounds.x = -render->camera.x + 630;
 	}
 	else
 	{
@@ -245,9 +249,9 @@ bool SceneGameplay::Draw(Render* render)
 {
 	// Draw background
 	uint w, h;
-	app->win->GetWindowSize(w, h);
+	win->GetWindowSize(w, h);
 	uint wmb, hmb;
-	app->tex->GetSize(background, wmb, hmb);
+	tex->GetSize(background, wmb, hmb);
 	for (int i = 0; (wmb * i) <= (w - render->camera.x); i++) render->DrawTexture(background, wmb * i, map->data.tileHeight * 2, false, 0.4f);
 
 	// Draw map
@@ -267,9 +271,9 @@ bool SceneGameplay::Draw(Render* render)
 		{
 			if (boolPath)
 			{
-				for (uint i = 0; i < app->path->GetLastPath()->Count(); ++i)
+				for (uint i = 0; i < path->GetLastPath()->Count(); ++i)
 				{
-					iPoint pos = { app->path->GetLastPath()->At(i)->x, app->path->GetLastPath()->At(i)->y };
+					iPoint pos = { path->GetLastPath()->At(i)->x, path->GetLastPath()->At(i)->y };
 					pos.x = pos.x * 64;
 					pos.y = pos.y * 64;
 					render->DrawTexture(debugPath, pos.x, pos.y, &rect);
@@ -283,7 +287,7 @@ bool SceneGameplay::Draw(Render* render)
 		player->notPause = false;
 		flyingEnemy->notPause = false;
 		groundEnemy->notPause = false;
-		rectPause = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
+		rectPause = { 0, -500, (int)win->GetWidth(), (int)win->GetHeight() + 300 };
 		render->DrawTexture(pauseTex, -render->camera.x, 350, &rectPause);
 		btnSettings->Draw(render);
 		btnExit->Draw(render);
@@ -292,7 +296,7 @@ bool SceneGameplay::Draw(Render* render)
 	}
 	else if (settingsTab)
 	{
-		rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
+		rectSettings = { 0, -500, (int)win->GetWidth(), (int)win->GetHeight() + 300 };
 		render->DrawTexture(settingsTex, -render->camera.x, 350, &rectPause);
 		btnSettCross->Draw(render);
 		btnFullscreen->Draw(render);
@@ -324,10 +328,10 @@ bool SceneGameplay::Unload()
 {
 	LOG("Freeing scene");
 
-	app->tex->UnLoad(background);
-	app->tex->UnLoad(debugPath);
-	app->tex->UnLoad(pauseTex);
-	app->tex->UnLoad(settingsTex);
+	tex->UnLoad(background);
+	tex->UnLoad(debugPath);
+	tex->UnLoad(pauseTex);
+	tex->UnLoad(settingsTex);
 
 	entityManager->CleanUp();
 	map->CleanUp();
@@ -392,7 +396,7 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 			if (timerFullscreen > 5)
 			{
 				fullscreen = !fullscreen;
-				app->win->SetToFullscreen(fullscreen);
+				win->SetToFullscreen(fullscreen);
 				timerFullscreen = 0;
 			}
 		}

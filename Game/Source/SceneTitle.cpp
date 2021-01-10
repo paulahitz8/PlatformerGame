@@ -18,7 +18,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneTitle::SceneTitle(Window* win, pugi::xml_node & config, Render * render)
+SceneTitle::SceneTitle(Window* win, Render* render, Audio* audio)
 {
 	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS");
 	btnCredits->SetObserver(this);
@@ -57,7 +57,7 @@ SceneTitle::SceneTitle(Window* win, pugi::xml_node & config, Render * render)
 
 	this->render = render;
 	this->win = win;
-	this->config = config;
+	this->audio = audio;
 }
 
 SceneTitle::~SceneTitle() {}
@@ -67,7 +67,7 @@ bool SceneTitle::Load(Textures* tex)
 	LOG("Loading Title Screen");
 	bool ret = true;
 
-	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg");
+	audio->PlayMusic("Assets/Audio/Music/title_music.ogg");
 
 	sceneTitle = tex->Load("Assets/Screens/title_screen.png");
 	buttonsTitle = tex->Load("Assets/GUI/title_buttons.png");
@@ -141,12 +141,12 @@ bool SceneTitle::Update(Input* input, float dt)
 bool SceneTitle::Draw(Render* render)
 {
 
-	rectTitle = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	rectCredit = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
-	rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
+	rectTitle = { 0, -500, (int)win->GetWidth(), (int)win->GetHeight() + 300 };
+	rectCredit = { 0, -500, (int)win->GetWidth(), (int)win->GetHeight() + 300 };
+	rectSettings = { 0, -500, (int)win->GetWidth(), (int)win->GetHeight() + 300 };
 
-	render->DrawTexture(sceneTitle, app->render->camera.x, 350, &rectTitle);
-	render->DrawTexture(buttonsTitle, app->render->camera.x, 350, &rectTitle);
+	render->DrawTexture(sceneTitle, render->camera.x, 350, &rectTitle);
+	render->DrawTexture(buttonsTitle, render->camera.x, 350, &rectTitle);
 
 	if(creditsTab == true) render->DrawTexture(credits, 0, 350, &rectCredit);
 	if(settingsTab == true) render->DrawTexture(settings, 0, 350, &rectSettings);

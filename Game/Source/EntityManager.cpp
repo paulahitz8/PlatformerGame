@@ -9,10 +9,15 @@
 #include "Defs.h"
 #include "Log.h"
 
-EntityManager::EntityManager(Input* input) : Module()
+EntityManager::EntityManager(Input* input, Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path, Render* render) : Module()
 {
 	name.Create("entitymanager");
 	this->input = input;
+	this->tex = tex;
+	this->audio = audio;
+	this->collisions = collisions;
+	this->path = path;
+	this->render = render;
 }
 
 // Destructor
@@ -53,11 +58,11 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	switch (type)
 	{
 		// L13: Create the corresponding type entity
-	case EntityType::PLAYER: ret = new Player(input); break;
-	case EntityType::FLYINGENEMY: ret = new FlyingEnemy(); break;
-	case EntityType::GROUNDENEMY: ret = new GroundEnemy(); break;
-	case EntityType::ITEM: ret = new Item(); break;
-	case EntityType::LIFE: ret = new Life(); break;
+	case EntityType::PLAYER: ret = new Player(input, tex, audio, collisions, path, render); break;
+	case EntityType::FLYINGENEMY: ret = new FlyingEnemy(tex, audio, collisions, path); break;
+	case EntityType::GROUNDENEMY: ret = new GroundEnemy(tex, audio, collisions, path); break;
+	case EntityType::ITEM: ret = new Item(tex, audio, collisions, path); break;
+	case EntityType::LIFE: ret = new Life(tex, audio, collisions, path); break;
 	default: break;
 	}
 

@@ -11,7 +11,7 @@
 #include "SceneWin.h"
 #include "Point.h"
 
-Life::Life() : Entity(EntityType::LIFE)
+Life::Life(Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path) : Entity(EntityType::LIFE)
 {
 	name.Create("life");
 
@@ -25,7 +25,7 @@ Life::Life() : Entity(EntityType::LIFE)
 	blankAnim.PushBack({ 0, 0, 3, 3 });
 
 	LOG("Loading player textures");
-	fishTexture = app->tex->Load("Assets/GUI/fish.png");
+	fishTexture = tex->Load("Assets/GUI/fish.png");
 	currentAnimation1 = &fishAnim;
 	currentAnimation2 = &fishAnim;
 	currentAnimation3 = &fishAnim;
@@ -39,18 +39,22 @@ Life::Life() : Entity(EntityType::LIFE)
 	isPicked = false;
 
 	//Audio
-	fishFx = app->audio->LoadFx("Assets/Audio/Fx/bubbles_fx.wav");
+	fishFx = audio->LoadFx("Assets/Audio/Fx/bubbles_fx.wav");
 
 	//Collider
-	fish1Collider = app->collisions->AddCollider({ fish1Pos.x, fish1Pos.y, 21, 20 }, Collider::Type::LIFE, this);
-	fish2Collider = app->collisions->AddCollider({ fish2Pos.x, fish2Pos.y, 21, 20 }, Collider::Type::LIFE, this);
-	fish3Collider = app->collisions->AddCollider({ fish3Pos.x, fish3Pos.y, 21, 20 }, Collider::Type::LIFE, this);
-	fish4Collider = app->collisions->AddCollider({ fish4Pos.x, fish4Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+	fish1Collider = collisions->AddCollider({ fish1Pos.x, fish1Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+	fish2Collider = collisions->AddCollider({ fish2Pos.x, fish2Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+	fish3Collider = collisions->AddCollider({ fish3Pos.x, fish3Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+	fish4Collider = collisions->AddCollider({ fish4Pos.x, fish4Pos.y, 21, 20 }, Collider::Type::LIFE, this);
 
 	currentAnimation1 = &fishAnim;
 	currentAnimation2 = &fishAnim;
 	currentAnimation3 = &fishAnim;
 	currentAnimation4 = &fishAnim;
+
+	this->path = path;
+	this->audio = audio;
+	this->tex = tex;
 }
 
 Life::~Life() {}
@@ -59,7 +63,7 @@ bool Life::Update(float dt)
 {
 	if (isPicked == true)
 	{
-		app->audio->PlayFx(fishFx);
+		audio->PlayFx(fishFx);
 
 		if (player->playerPos.x > 950 && player->playerPos.x < 1050)
 		{
@@ -113,9 +117,9 @@ bool Life::Draw(Render* render)
 bool Life::CleanUp()
 {
 	//Unload the textures
-	app->tex->UnLoad(fishTexture);
+	tex->UnLoad(fishTexture);
 
-	app->audio->UnloadFx(fishFx);
+	audio->UnloadFx(fishFx);
 
 	if (fish1Collider != nullptr) fish1Collider->pendingToDelete = true;
 	if (fish2Collider != nullptr) fish2Collider->pendingToDelete = true;

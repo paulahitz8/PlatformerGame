@@ -22,7 +22,7 @@
 #define FADEOUT_TRANSITION_SPEED	2.0f
 #define FADEIN_TRANSITION_SPEED		2.0f
 
-SceneManager::SceneManager(Input* input, Render* render, Textures* tex, Window* win, pugi::xml_node& config, EntityManager* entitymanager) : Module()
+SceneManager::SceneManager(Input* input, Render* render, Textures* tex, Window* win, EntityManager* entitymanager, PathFinding* path, Audio* audio) : Module()
 {
 	name.Create("scenemanager");
 
@@ -35,8 +35,9 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex, Window* 
 	this->render = render;
 	this->tex = tex;
 	this->win = win;
-	this->config = config;
 	this->entityManager = entitymanager;
+	this->path = path;
+	this->audio = audio;
 }
 
 SceneManager::~SceneManager()
@@ -52,7 +53,7 @@ bool SceneManager::Awake()
 
 bool SceneManager::Start()
 {
-	current = new SceneBlack();
+	current = new SceneBlack(win, tex);
 	current->Load(tex);
 
 	next = nullptr;
@@ -121,12 +122,12 @@ bool SceneManager::Update(float dt)
 
 		switch (current->nextScene)
 		{
-		case SceneType::BLACK: next = new SceneBlack(); break;
-		case SceneType::LOGO: next = new SceneLogo(); break;
-		case SceneType::TITLE: next = new SceneTitle(win, config, render); break;
-		case SceneType::GAMEPLAY: next = new SceneGameplay(render, entityManager); break;
-		case SceneType::WIN: next = new SceneWin(render); break;
-		case SceneType::LOSE: next = new SceneLose(render); break;
+		case SceneType::BLACK: next = new SceneBlack(win, tex); break;
+		case SceneType::LOGO: next = new SceneLogo(audio); break;
+		case SceneType::TITLE: next = new SceneTitle(win, render, audio); break;
+		case SceneType::GAMEPLAY: next = new SceneGameplay(render, entityManager, path, win, tex, audio); break;
+		case SceneType::WIN: next = new SceneWin(render, tex, win, audio); break;
+		case SceneType::LOSE: next = new SceneLose(render, tex, win, audio); break;
 		default: break;
 		}
 

@@ -14,7 +14,7 @@
 #include "FlyingEnemy.h"
 #include "Math.h"
 
-GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
+GroundEnemy::GroundEnemy(Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path) : Entity(EntityType::GROUNDENEMY)
 {
 	name.Create("groundenemy");
 
@@ -56,8 +56,8 @@ GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 	deadAnim.speed = 2.0f;
 
 	LOG("Loading player textures");
-	enemyTexture = app->tex->Load("Assets/Characters/seal_sprites.png");
-	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
+	enemyTexture = tex->Load("Assets/Characters/seal_sprites.png");
+	deadTexture = tex->Load("Assets/Characters/penguin_sprites.png");
 
 	//Path
 	playerSeenG = false;
@@ -76,10 +76,14 @@ GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 	enemyPos = { 300, 993 };
 
 	//Collider
-	enemyCollider = app->collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::GROUNDENEMY, this);
+	enemyCollider = collisions->AddCollider({ enemyPos.x, enemyPos.y, 27, 25 }, Collider::Type::GROUNDENEMY, this);
 
 	//Audios
-	sealFx = app->audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
+	sealFx = audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
+
+	this->path = path;
+	this->audio = audio;
+	this->tex = tex;
 }
 
 GroundEnemy::~GroundEnemy() {}
@@ -90,7 +94,7 @@ bool GroundEnemy::Update(float dt)
 	{
 		iPoint enemyTile = iPoint(enemyPos.x / 64, enemyPos.y / 64);
 		iPoint playerTile = iPoint(player->playerPos.x / 64, player->playerPos.y / 64);
-		createPath = app->path->CreatePath(enemyTile, playerTile);
+		createPath = path->CreatePath(enemyTile, playerTile);
 		int speedE = 0;
 		enemyPhysics.DoPhysics(enemyPos.x, enemyPos.y, speed.x, speed.y, isFalling, speedE);
 
@@ -130,15 +134,15 @@ bool GroundEnemy::Update(float dt)
 
 					if ((abs(player->playerPos.x - enemyPos.x) < 600) && (abs(player->playerPos.y - enemyPos.y) < 600)) playerSeenG = true;
 
-					if (pathTimer >= 10 || pathTimer > app->path->GetLastPath()->Count() - 1)
+					if (pathTimer >= 10 || pathTimer > path->GetLastPath()->Count() - 1)
 					{
-						createPath = app->path->CreatePath(enemyTile, playerTile);
+						createPath = path->CreatePath(enemyTile, playerTile);
 						if (createPath == 0) pathTimer = 0;
 					}
 
-					if (app->path->GetLastPath()->At(0) != nullptr)
+					if (path->GetLastPath()->At(0) != nullptr)
 					{
-						const iPoint* pos = app->path->GetLastPath()->At(pathIndex);
+						const iPoint* pos = path->GetLastPath()->At(pathIndex);
 
 						if (pos->x * 64 == enemyPos.x && pos->y * 64 == enemyPos.y) pathIndex++;
 						else
@@ -156,7 +160,7 @@ bool GroundEnemy::Update(float dt)
 						}
 					}
 					pathTimer++;
-					if (soundTimer % 450 == 0) app->audio->PlayFx(sealFx);
+					if (soundTimer % 450 == 0) audio->PlayFx(sealFx);
 				}
 			}
 
@@ -176,7 +180,7 @@ bool GroundEnemy::Update(float dt)
 
 			if (GetEnemyTileProperty(enemyPos.x / 64, (enemyPos.y + enemyRect.h) / 64, "CollisionId") == Collider::Type::WATER)
 			{
-				app->audio->PlayFx(player->splashFx);
+				audio->PlayFx(player->splashFx);
 
 				enemyCollider->pendingToDelete = true;
 				isDead = true;
@@ -215,11 +219,11 @@ bool GroundEnemy::Draw(Render* render)
 bool GroundEnemy::CleanUp()
 {
 	//Unload the textures
-	app->tex->UnLoad(enemyTexture);
-	app->tex->UnLoad(deadTexture);
+	tex->UnLoad(enemyTexture);
+	tex->UnLoad(deadTexture);
 
 	//Unload audios
-	app->audio->UnloadFx(sealFx);
+	audio->UnloadFx(sealFx);
 
 	if (enemyCollider != nullptr) enemyCollider->pendingToDelete = true;
 

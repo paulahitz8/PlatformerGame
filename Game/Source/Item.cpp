@@ -11,7 +11,7 @@
 #include "SceneWin.h"
 #include "Point.h"
 
-Item::Item() : Entity(EntityType::ITEM)
+Item::Item(Textures* tex, Audio* audio, Collisions* collisions, PathFinding* path) : Entity(EntityType::ITEM)
 {
 	name.Create("item");
 
@@ -25,7 +25,7 @@ Item::Item() : Entity(EntityType::ITEM)
 	blankAnim.PushBack({ 0, 0, 3, 3 });
 
 	LOG("Loading player textures");
-	iceTexture = app->tex->Load("Assets/GUI/ice.png");
+	iceTexture = tex->Load("Assets/GUI/ice.png");
 	currentAnimation1 = &iceAnim;
 	currentAnimation2 = &iceAnim;
 	currentAnimation3 = &iceAnim;
@@ -39,20 +39,24 @@ Item::Item() : Entity(EntityType::ITEM)
 	ice5Pos = { 7855, 865 };
 
 	//Audio
-	iceFx = app->audio->LoadFx("Assets/Audio/Fx/ice_fx.wav");
+	iceFx = audio->LoadFx("Assets/Audio/Fx/ice_fx.wav");
 
 	//Collider
-	ice1Collider = app->collisions->AddCollider({ ice1Pos.x, ice1Pos.y, 16, 24 }, Collider::Type::ITEM, this);
-	ice2Collider = app->collisions->AddCollider({ ice2Pos.x, ice2Pos.y, 16, 24 }, Collider::Type::ITEM, this);
-	ice3Collider = app->collisions->AddCollider({ ice3Pos.x, ice3Pos.y, 16, 24 }, Collider::Type::ITEM, this);
-	ice4Collider = app->collisions->AddCollider({ ice4Pos.x, ice4Pos.y, 16, 24 }, Collider::Type::ITEM, this);
-	ice5Collider = app->collisions->AddCollider({ ice5Pos.x, ice5Pos.y, 16, 24 }, Collider::Type::ITEM, this);
+	ice1Collider = collisions->AddCollider({ ice1Pos.x, ice1Pos.y, 16, 24 }, Collider::Type::ITEM, this);
+	ice2Collider = collisions->AddCollider({ ice2Pos.x, ice2Pos.y, 16, 24 }, Collider::Type::ITEM, this);
+	ice3Collider = collisions->AddCollider({ ice3Pos.x, ice3Pos.y, 16, 24 }, Collider::Type::ITEM, this);
+	ice4Collider = collisions->AddCollider({ ice4Pos.x, ice4Pos.y, 16, 24 }, Collider::Type::ITEM, this);
+	ice5Collider = collisions->AddCollider({ ice5Pos.x, ice5Pos.y, 16, 24 }, Collider::Type::ITEM, this);
 
 	currentAnimation1 = &iceAnim;
 	currentAnimation2 = &iceAnim;
 	currentAnimation3 = &iceAnim;
 	currentAnimation4 = &iceAnim;
 	currentAnimation5 = &iceAnim;
+
+	this->path = path;
+	this->audio = audio;
+	this->tex = tex;
 }
 
 Item::~Item() {}
@@ -125,9 +129,9 @@ bool Item::Draw(Render* render)
 bool Item::CleanUp()
 {
 	//Unload the textures
-	app->tex->UnLoad(iceTexture);
+	tex->UnLoad(iceTexture);
 	
-	app->audio->UnloadFx(iceFx);
+	audio->UnloadFx(iceFx);
 
 	if (ice1Collider != nullptr) ice1Collider->pendingToDelete = true;
 	if (ice2Collider != nullptr) ice2Collider->pendingToDelete = true;
