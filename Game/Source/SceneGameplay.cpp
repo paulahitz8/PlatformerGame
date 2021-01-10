@@ -103,6 +103,7 @@ bool SceneGameplay::Load(Textures* tex)
 
 	timerMenu = 0;
 	timerFullscreen = 0;
+	timerVsync = 0;
 	if (app->sceneManager->continueDone)
 	{
 		app->LoadGameRequest();
@@ -187,6 +188,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	timerMenu++;
 	timerFullscreen++;
+	timerVsync++;
 
 	if (player->playerPos.x >= 500 && player->playerPos.x < 8820)
 	{
@@ -385,14 +387,26 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			if (timerVsync > 5)
 			{
-				if (app->render->config.child("vsync").attribute("value").as_bool() == true)
-				{
-					app->render->config.child("vsync").attribute("value") = false;
-				}
-				else if (app->render->config.child("vsync").attribute("value").as_bool() == false)
-				{
-					app->render->config.child("vsync").append_attribute("value") = true;
-				}
+				/*	if (app->render->config.child("vsync").attribute("value").as_bool() == true)
+					{
+						app->render->config.child("vsync").attribute("value") = false;
+					}
+					else if (app->render->config.child("vsync").attribute("value").as_bool() == false)
+					{
+						app->render->config.child("vsync").append_attribute("value") = true;
+					}*/
+					/*if (render->vsyncBool == false)
+					{
+						SDL_GL_SetSwapInterval(1);
+						render->vsyncBool = true;
+					}
+					if (render->vsyncBool == true)
+					{
+						SDL_GL_SetSwapInterval(0);
+						render->vsyncBool = false;
+					}*/
+				vsync = !vsync;
+				render->SetToVsync(vsync);
 				timerVsync = 0;
 			}
 		}
