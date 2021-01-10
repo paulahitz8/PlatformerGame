@@ -58,10 +58,15 @@ GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 	LOG("Loading player textures");
 	enemyTexture = app->tex->Load("Assets/Characters/seal_sprites.png");
 	deadTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
+
+	//Path
+	playerSeenG = false;
+
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
 
-	/*app->flyingEnemy->Enable();*/
+	timer = 0;
+	soundTimer = 0;
 
 	isDead = false;
 
@@ -73,11 +78,6 @@ GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 	//Audios
 	sealFx = app->audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
 
-	//Path
-	playerSeenG = false;
-
-	timer = 0;
-	soundTimer = 0;
 }
 
 GroundEnemy::~GroundEnemy() {}

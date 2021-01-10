@@ -51,6 +51,7 @@ private:
 	GuiCheckBox* btnFullscreen;
 	GuiSlider* sliderMusic;
 	GuiSlider* sliderFx;
+	GuiCheckBox* btnVsync;
 
 	SDL_Texture* background;
 	SDL_Texture* debugPath;
@@ -61,6 +62,7 @@ private:
 	SDL_Rect rectSettings;
 	int timerMenu = 0;
 	int timerFullscreen = 0;
+	int timerVsync = 0;
 
 	EntityManager* entityManager = nullptr;
 	Map* map = nullptr;
@@ -75,10 +77,10 @@ private:
 	//bool continueRequest;
 	//bool continueDone;
 	bool boolPath = false;
-
 	bool exitReq = true;
 	bool settingsTab = false;
 	bool fullscreen = false;
+	bool vsync = false;
 
 	Render* render;
 	Input* input;

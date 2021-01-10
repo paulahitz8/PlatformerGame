@@ -114,8 +114,8 @@ bool SceneTitle::Update(Input* input, float dt)
 		btnSettCross->Update(input, dt, render, drawBasic);
 		btnFullscreen->Update(input, dt, render, drawBasic);
 		btnVsync->Update(input, dt, render, drawBasic);
-		sliderMusic->Update(input, dt, render);
-		sliderFx->Update(input, dt, render);
+		sliderMusic->Update(input, dt, render, drawBasic);
+		sliderFx->Update(input, dt, render, drawBasic);
 	}
 
 	if (sliderMusic->state == GuiControlState::PRESSED)
@@ -153,6 +153,10 @@ bool SceneTitle::Draw(Render* render)
 	if (app->sceneManager->continueRequest)
 	{
 		btnContinue->Draw(render);
+	}
+	else
+	{
+		if (!settingsTab && !creditsTab) render->DrawRectangle(btnContinue->bounds, 0, 0, 0, 50);
 	}
 	btnExit->Draw(render);
 	btnSettings->Draw(render);
@@ -302,14 +306,26 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			if (timerVsync > 5)
 			{
-				if (app->render->config.child("vsync").attribute("value").as_bool() == true)
+			/*	if (app->render->config.child("vsync").attribute("value").as_bool() == true)
 				{
 					app->render->config.child("vsync").attribute("value") = false;
 				}
 				else if (app->render->config.child("vsync").attribute("value").as_bool() == false)
 				{
 					app->render->config.child("vsync").append_attribute("value") = true;
+				}*/
+				/*if (render->vsyncBool == false)
+				{
+					SDL_GL_SetSwapInterval(1);
+					render->vsyncBool = true;
 				}
+				if (render->vsyncBool == true)
+				{
+					SDL_GL_SetSwapInterval(0);
+					render->vsyncBool = false;
+				}*/
+				vsync = !vsync;
+				render->SetToVsync(vsync);
 				timerVsync = 0;
 			}
 		}

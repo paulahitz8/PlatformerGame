@@ -217,6 +217,11 @@ void App::FinishUpdate(Render* render)
 	}
 
 	static char title[256];
+	if (render->vsyncBool == true) 
+	{
+		render->vsync = "on";
+	}
+	else if (render->vsyncBool == false) render->vsync = "off";
 	sprintf_s(title, 256, "FPS: %d   Avg. FPS: %.2f   Last-frame MS: %02u   Vsync: %s",
 		frames, averageFps, lastFrameMs, render->vsync);
 	app->win->SetTitle(title);

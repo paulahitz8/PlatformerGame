@@ -51,6 +51,9 @@ public:
 
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
+	void SetToVsync(bool vsync);
+
+	bool vsyncBool;
 
 public:
 

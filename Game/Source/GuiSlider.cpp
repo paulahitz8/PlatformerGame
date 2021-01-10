@@ -15,10 +15,11 @@ GuiSlider::~GuiSlider()
 {
 }
 
-bool GuiSlider::Update(Input* input, float dt, Render* render)
+bool GuiSlider::Update(Input* input, float dt, Render* render, bool drawBasic)
 {
 	//float tmpValue = (float)maxValue / (float)(limits.w - bounds.w);
 	//value = (bounds.x - limits.x) * tmpValue;
+	this->drawBasic = drawBasic;
 
 	if (state != GuiControlState::DISABLED)
 	{
@@ -33,7 +34,7 @@ bool GuiSlider::Update(Input* input, float dt, Render* render)
 		volume = (mouseX - 463) / unit;
 		volume = round(volume);
 
-		bounds.x += render->camera.x;
+		//bounds.x += render->camera.x;
 
 		// Check collision between mouse and button bounds
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
@@ -95,12 +96,21 @@ bool GuiSlider::Draw(Render* render)
 	{
 	case GuiControlState::DISABLED: render->DrawRectangle(bounds, 100, 100, 100, 255);
 		break;
-	case GuiControlState::NORMAL: render->DrawRectangle(bounds, 255, 255, 255, 255);
-		break;
-	case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 255, 150);
-		break;
-	case GuiControlState::PRESSED: render->DrawRectangle(bounds, 255, 255, 255, 200);
-		break;
+	case GuiControlState::NORMAL:
+	{
+		if (drawBasic) render->DrawRectangle(bounds, 209, 37, 0, 255);
+		else render->DrawRectangle(bounds, 255, 255, 255, 255);
+	} break;
+	case GuiControlState::FOCUSED:
+	{
+		if (drawBasic) render->DrawRectangle(bounds, 255, 193, 52, 255);
+		else render->DrawRectangle(bounds, 255, 255, 255, 150);
+	} break;
+	case GuiControlState::PRESSED:
+	{
+		if (drawBasic) render->DrawRectangle(bounds, 186, 255, 37, 255);
+		else render->DrawRectangle(bounds, 255, 255, 255, 200);
+	} break;
 	case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
 		break;
 	default:

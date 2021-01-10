@@ -575,25 +575,38 @@ bool Player::Update(float dt)
 					{
 						playerCollider->pendingToDelete = true;
 						currentAnimation = &blankAnim;
-						/*	app->fadeScreen->active = true;
-							app->groundEnemy->Disable();
-							app->flyingEnemy->Disable();
-							app->item->Disable();
-							app->life->Disable();
-							app->fadeScreen->FadeToBlack(this, (Module*)app->deathScreen, 100.0f);*/
 						timer = 0;
 						isDead = false;
 					}
 					else if (lifeCount != 0)
 					{
-						flyingEnemy->Disable();
-						groundEnemy->Disable();
+						flyingEnemy->active = false;
+						groundEnemy->active = false;
 						playerPos = checkpointPos;
 						app->render->camera.x = 0;
 						currentAnimation = &rightIdle;
 						timer = 0;
-						groundEnemy->Enable();
-						flyingEnemy->Enable();
+
+						groundEnemy->active = true;
+						groundEnemy->playerSeenG = false;
+						groundEnemy->currentAnimation = &groundEnemy->leftIdle;
+						groundEnemy->currentDeadAnimation = &groundEnemy->blankAnim;
+						groundEnemy->timer = 0;
+						groundEnemy->soundTimer = 0;
+						groundEnemy->isDead = false;
+						groundEnemy->enemyPos = { 300, 993 };
+
+
+						flyingEnemy->active = true;
+						flyingEnemy->playerSeenF = false;
+						flyingEnemy->isDead = false;
+						flyingEnemy->enemyPos = { 2800, 702 };
+						flyingEnemy->timer = 0;
+						flyingEnemy->soundTimer = 0;
+						flyingEnemy->currentAnimation = &flyingEnemy->left;
+						flyingEnemy->currentDeadAnimation = &flyingEnemy->blankAnim;
+
+
 						isDead = false;
 					}
 				}

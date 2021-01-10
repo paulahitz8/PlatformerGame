@@ -31,6 +31,7 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	bool fullscreen = false;
+	bool vsync = false;
 
 private:
 

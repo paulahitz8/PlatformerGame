@@ -34,10 +34,15 @@ bool Render::Awake(pugi::xml_node& config)
 	if (config.child("vsync").attribute("value").as_bool(true) == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
-		vsync = "on";
+		//vsync = "on";
+		vsyncBool = true;
 		LOG("Using vsync");
 	}
-	else vsync = "off";
+	else
+	{
+		//vsync = "off";
+		vsyncBool = false;
+	}
 
 	renderer = SDL_CreateRenderer(win->window, -1, flags);
 
@@ -53,7 +58,6 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.x = 0;
 		camera.y = -500;
 	}
-
 	return ret;
 }
 
@@ -290,4 +294,20 @@ bool Render::DrawText(Font* font, const char* text, int x, int y, int size, int 
 	}
 
 	return ret;
+}
+
+void Render::SetToVsync(bool vsync)
+{
+	Uint32 flags = SDL_RENDERER_ACCELERATED;
+	if (vsync == true)
+	{
+		flags |= SDL_RENDERER_PRESENTVSYNC;
+		vsyncBool = true;
+		//SDL_GL_SetSwapInterval(0);
+	}
+	else
+	{
+		vsyncBool = false;
+		//SDL_GL_SetSwapInterval(1);
+	}
 }
