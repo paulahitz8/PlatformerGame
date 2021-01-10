@@ -152,7 +152,6 @@ Player::Player(Input* input) : Entity(EntityType::PLAYER)
 
 	timer = 0;
 	god = 0;
-	timerGod = 0;
 	lifeCount = 3;
 	numIce = 0;
 	godMode = false;
@@ -173,7 +172,6 @@ Player::Player(Input* input) : Entity(EntityType::PLAYER)
 	jumpingFx = app->audio->LoadFx("Assets/Audio/Fx/jumping_fx.wav");
 	splashFx = app->audio->LoadFx("Assets/Audio/Fx/splash_fx.wav");
 	checkpointFx = app->audio->LoadFx("Assets/Audio/Fx/checkpoint_fx.wav");
-	//attackFx
 
 	this->input = input;
 }
@@ -182,7 +180,6 @@ Player::~Player() {}
 
 bool Player::Update(float dt)
 {
-
 	if (notPause)
 	{
 		for (uint i = 0; i < MAX_SNOWBALLS; ++i)
@@ -209,30 +206,18 @@ bool Player::Update(float dt)
 			playerPos.y = 1000;
 			app->render->camera.x = 0;
 		}
-
-		//
-		//if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		//{
-		//	if (god == 0)
-		//	{
-		//		godMode = !godMode;
-		//	}
-		//	timerGod = 0;
-		//}
+		
+		if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		{
+			godMode = !godMode;
+		}
 
 		if (!isDead)
 		{
 			if (godMode)
 			{
-				//god = 1;
-				if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-				{
-					godMode = false;
-				}
-
 				if (input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 				{
-
 					isShooting = false;
 
 					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) currentAnimation = &rightShoot;
@@ -274,7 +259,6 @@ bool Player::Update(float dt)
 
 				if (input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
-
 					if (isJumping != true)
 					{
 						if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightWalk;
@@ -315,23 +299,10 @@ bool Player::Update(float dt)
 				{
 					if (!isJumping) currentAnimation = &rightIdle;
 				}
-
-				//if (playerPos.x == 9300)
-				//{
-				//	app->fadeScreen->active = true;
-				//	app->fadeScreen->FadeToBlack(this, (Module*)app->winScreen, 100.0f);
-				//}
-				timerGod++;
 			}
 
 			else
 			{
-
-				if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-				{
-					godMode = true;
-				}
-
 				if (input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 				{
 					if (currentAnimation == &rightIdle) currentAnimation = &rightShoot;
@@ -427,7 +398,7 @@ bool Player::Update(float dt)
 					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightJump;
 					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftJump;
 
-					speed.y = -23;
+					speed.y = -23.0f;
 				}
 
 				if (input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
@@ -476,6 +447,7 @@ bool Player::Update(float dt)
 
 				int speedP = 0;
 				playerPhysics.DoPhysics(playerPos.x, playerPos.y, speed.x, speed.y, isFalling, speedP);
+
 				if (speedP > 0)
 				{
 					if (GetTileProperty((playerPos.x + playerRect.w / 2) / 64, (playerPos.y + playerRect.h - 1) / 64, "CollisionId") == Collider::Type::PLATFORM)

@@ -24,6 +24,8 @@ bool Map::Awake(pugi::xml_node& config)
 	LOG("Loading Map Parser");
 	bool ret = true;
 
+	drawColliders = false;
+
 	folder.Create(config.child("folder").child_value());
 
 	return ret;

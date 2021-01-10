@@ -151,7 +151,6 @@ private:
 	bool isCheckpoint = false;
 
 	int god = 0;
-	int timerGod = 0;
 
 	int timer = 0;
 	int timerCheck = 0;

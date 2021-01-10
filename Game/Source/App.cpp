@@ -192,29 +192,17 @@ void App::FinishUpdate(Render* render)
 		lastSecFrameCount = 0;
 	}
 
-	float averageFps = 0.0f;
 	float secondsSinceStartup = 0.0f;
-	uint32 lastFrameMs = 0;
-	uint32 framesOnLastUpdate = 0;
-
-	averageFps = float(frameCount) / startupTime.ReadSec();
 	secondsSinceStartup = startupTime.ReadSec();
-	lastFrameMs = frameTime.Read();
-	framesOnLastUpdate = prevLastSecFrameCount;
 
-	if (frameDelay > lastFrameMs)
-	{
-		if (!changeFps)
-		{
-			SDL_Delay(frameDelay - lastFrameMs); //fps = 60
-			frames = 60;
-		}
-		if (changeFps)
-		{
-			SDL_Delay(1000 / 30 - lastFrameMs); //fps = 30
-			frames = 30;
-		}
-	}
+	uint32 lastFrameMs = 0;
+	lastFrameMs = frameTime.Read();
+
+	float averageFps = 0.0f;
+	averageFps = float(frameCount) / startupTime.ReadSec();
+
+	uint32 framesOnLastUpdate = 0;
+	framesOnLastUpdate = prevLastSecFrameCount;
 
 	static char title[256];
 	if (render->vsyncBool == true) 
@@ -225,6 +213,23 @@ void App::FinishUpdate(Render* render)
 	sprintf_s(title, 256, "FPS: %d   Avg. FPS: %.2f   Last-frame MS: %02u   Vsync: %s",
 		frames, averageFps, lastFrameMs, render->vsync);
 	app->win->SetTitle(title);
+
+	PERF_START(pTimer);
+	if (frameDelay > lastFrameMs)
+	{
+		if (!changeFps)
+		{
+			SDL_Delay(frameDelay - lastFrameMs); //fps = 60
+			frames = 60;
+		}
+		if (changeFps)
+		{
+			SDL_Delay(frameDelay * 2 - lastFrameMs); //fps = 30
+			frames = 30;
+		}
+	}
+
+	PERF_PEEK(pTimer);
 }
 
 // Call modules before each loop iteration

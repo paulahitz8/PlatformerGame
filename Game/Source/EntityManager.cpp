@@ -53,11 +53,11 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	switch (type)
 	{
 		// L13: Create the corresponding type entity
-	case EntityType::PLAYER: ret = new Player(input);  break;
-	case EntityType::FLYINGENEMY: ret = new FlyingEnemy();  break;
-	case EntityType::GROUNDENEMY: ret = new GroundEnemy();  break;
-	case EntityType::ITEM: ret = new Item();  break;
-	case EntityType::LIFE: ret = new Life();  break;
+	case EntityType::PLAYER: ret = new Player(input); break;
+	case EntityType::FLYINGENEMY: ret = new FlyingEnemy(); break;
+	case EntityType::GROUNDENEMY: ret = new GroundEnemy(); break;
+	case EntityType::ITEM: ret = new Item(); break;
+	case EntityType::LIFE: ret = new Life(); break;
 	default: break;
 	}
 
