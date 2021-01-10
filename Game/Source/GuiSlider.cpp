@@ -33,7 +33,7 @@ bool GuiSlider::Update(Input* input, float dt, Render* render)
 		volume = (mouseX - 463) / unit;
 		volume = round(volume);
 
-		bounds.x += render->camera.x;
+		//bounds.x += render->camera.x;
 
 		// Check collision between mouse and button bounds
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
