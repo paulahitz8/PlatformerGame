@@ -411,7 +411,7 @@ bool Player::Update(float dt)
 					speed.y = -18.0f;
 				}
 
-				if (input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+				if (input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 				{
 					if (timerC > 5)
 					{
