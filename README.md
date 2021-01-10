@@ -6,7 +6,9 @@
 
 Animal Rush is a platform game created by TNT Cat, where the player, each level, is a different animal. The goal of the game is to reach their shelter safely. We hope you enjoy the game as much as we enjoyed making it! 
 
-If you are a penguin, remember to collect as much icecubes as possible to make your igloo bigger! And if you lose health, eat some fish to recover. Watch out for the seals and the eagles.
+If you are a penguin, remember to collect as much icecubes as possible to make your igloo bigger! And if you lose health, eat some fish to recover. Watch out for the seal and the eagle.
+
+If you want to win the game, make sure you enter your new, safe home!
 
 ## Key Features
 
@@ -24,6 +26,9 @@ If you are a penguin, remember to collect as much icecubes as possible to make y
  - Map checkpoint teleportation
  - DeltaTime
  - Stable fps
+ - Entity system
+ - GUI
+ - HUD
  
 ## Extra Features
  
@@ -44,10 +49,11 @@ If you are a penguin, remember to collect as much icecubes as possible to make y
  - F2 for starting at the beginning of the current level
  - F5 for saving the current game state
  - F6 for loading the previous state
+ - F7 to teleport between checkpoints
+ - F8 to view GUI bounds and states
  - F9 for viewing colliders/logic/paths
  - F10 to enter God Mode
  - F11 to enable/disable FPS cap to 30
- - C to teleport between checkpoints
 
 ## Developers
 
