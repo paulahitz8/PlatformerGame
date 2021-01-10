@@ -55,9 +55,11 @@ private:
 	SDL_Texture* debugPath;
 	SDL_Texture* pauseTex;
 	SDL_Texture* settingsTex;
+	SDL_Texture* iglooTex;
 
 	SDL_Rect rectPause;
 	SDL_Rect rectSettings;
+	SDL_Rect iglooRect;
 
 	int timerMenu = 0;
 	int timerFullscreen = 0;
@@ -81,6 +83,7 @@ private:
 	bool settingsTab = false;
 	bool fullscreen = false;
 	bool vsync = false;
+	bool isHome = false;
 
 	Timer timer;
 	float timeP;

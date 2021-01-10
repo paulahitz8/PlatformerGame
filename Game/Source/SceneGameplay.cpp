@@ -102,12 +102,15 @@ bool SceneGameplay::Load(Textures* tex)
 	debugPath = tex->Load("Assets/Maps/colliders_tileset.png");
 	pauseTex = tex->Load("Assets/GUI/pause_menu.png");
 	settingsTex = tex->Load("Assets/Screens/settings_screen.png");
+	iglooTex = tex->Load("Assets/Maps/snow_tileset.png");
+	iglooRect = { 0, 192, 109, 64 };
 
 	app->audio->PlayMusic("Assets/Audio/Music/snow_music.ogg");
 
 	timerMenu = 0;
 	timerFullscreen = 0;
 	timerVsync = 0;
+	isHome = false;
 
 	if (app->sceneManager->continueDone)
 	{
@@ -122,6 +125,8 @@ bool SceneGameplay::Load(Textures* tex)
 
 bool SceneGameplay::Update(Input* input, float dt)
 {
+	app->sceneManager->iceNum = player->numIce;
+
 	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 		if (timerDraw > 5)
@@ -152,7 +157,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 	{
 		if (timerMap > 5)
 		{
-			boolPath = !boolPath;
+			//boolPath = !boolPath;
 			map->drawColliders = !map->drawColliders;
 			timerMap = 0;
 		}
@@ -160,14 +165,23 @@ bool SceneGameplay::Update(Input* input, float dt)
 	timerMap++;
 
 	// Camera: follow the player
-	if (player->playerPos.x >= 500 && player->playerPos.x < 8820) app->render->camera.x = -(player->playerPos.x - 500);
+	if (player->playerPos.x >= 500)
+	{
+		app->render->camera.x = -(player->playerPos.x - 500);
+	}
 
 	// Camera limits
 	if (app->render->camera.x > 0) app->render->camera.x--;
 
-	if (player->isWon)
+	if (player->playerPos.x >= 9315)
 	{
+		isHome = true;
 		TransitionToScene(SceneType::WIN);
+	}
+
+	if (isHome)
+	{
+		app->render->DrawTexture(iglooTex, 9219, 1026, &iglooRect);
 	}
 
 	if (player->lifeCount == 0)

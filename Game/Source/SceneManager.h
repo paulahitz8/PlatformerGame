@@ -39,13 +39,14 @@ public:
 
 	bool continueRequest = false;
 	bool continueDone = false;
+	int iceNum = 0;
 
 private:
 
 	Scene* current;
 	Scene* next;
 	EntityManager* entityManager;
-
+	
 	bool onTransition;
 	bool fadeOutCompleted;
 	float transitionAlpha;
