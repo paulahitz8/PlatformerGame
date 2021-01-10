@@ -67,18 +67,18 @@ bool GuiButton::Draw(Render* render)
 	} break;
 	case GuiControlState::NORMAL:
 	{
-		if (drawBasic == true) render->DrawRectangle(bounds, 209, 37, 0, 255);
+		if (drawBasic) render->DrawRectangle(bounds, 209, 37, 0, 255);
 		else render->DrawRectangle(bounds, 0, 255, 0, 0);
 
 	} break;
 	case GuiControlState::FOCUSED:
 	{
-		if (drawBasic == true) render->DrawRectangle(bounds, 255, 193, 52, 255);
+		if (drawBasic) render->DrawRectangle(bounds, 255, 193, 52, 255);
 		else render->DrawRectangle(bounds, 255, 255, 255, 160);
 	} break;
 	case GuiControlState::PRESSED:
 	{
-		if (drawBasic == true) render->DrawRectangle(bounds, 186, 255, 37, 255);
+		if (drawBasic) render->DrawRectangle(bounds, 186, 255, 37, 255);
 		else render->DrawRectangle(bounds, 255, 255, 255, 255);
 	} break;
 	case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);

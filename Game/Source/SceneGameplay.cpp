@@ -169,8 +169,8 @@ bool SceneGameplay::Update(Input* input, float dt)
 	{
 		btnSettCross->Update(input, dt, render, drawBasic);
 		btnFullscreen->Update(input, dt, render, drawBasic);
-		sliderMusic->Update(input, dt, render);
-		sliderFx->Update(input, dt, render);
+		sliderMusic->Update(input, dt, render, drawBasic);
+		sliderFx->Update(input, dt, render, drawBasic);
 		btnVsync->Update(input, dt, render, drawBasic);
 	}
 

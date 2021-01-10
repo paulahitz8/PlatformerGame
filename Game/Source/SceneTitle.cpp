@@ -114,8 +114,8 @@ bool SceneTitle::Update(Input* input, float dt)
 		btnSettCross->Update(input, dt, render, drawBasic);
 		btnFullscreen->Update(input, dt, render, drawBasic);
 		btnVsync->Update(input, dt, render, drawBasic);
-		sliderMusic->Update(input, dt, render);
-		sliderFx->Update(input, dt, render);
+		sliderMusic->Update(input, dt, render, drawBasic);
+		sliderFx->Update(input, dt, render, drawBasic);
 	}
 
 	if (sliderMusic->state == GuiControlState::PRESSED)
@@ -156,7 +156,7 @@ bool SceneTitle::Draw(Render* render)
 	}
 	else
 	{
-		render->DrawRectangle(btnContinue->bounds, 0, 0, 0, 50);
+		if (!settingsTab && !creditsTab) render->DrawRectangle(btnContinue->bounds, 0, 0, 0, 50);
 	}
 	btnExit->Draw(render);
 	btnSettings->Draw(render);
