@@ -20,10 +20,8 @@ Render::Render(Window* win) : Module()
 	this->win = win;
 }
 
-// Destructor
 Render::~Render() {}
 
-// Called before render is available
 bool Render::Awake(pugi::xml_node& config)
 {
 	LOG("Create SDL rendering context");
@@ -61,17 +59,14 @@ bool Render::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-// Called before the first frame
 bool Render::Start()
 {
 	LOG("render start");
-	// background
 	SDL_RenderGetViewport(renderer, &viewport);
 
 	return true;
 }
 
-// Called each loop iteration
 bool Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
@@ -90,7 +85,6 @@ bool Render::PostUpdate()
 	return true;
 }
 
-// Called before quitting
 bool Render::CleanUp()
 {
 	LOG("Destroying SDL render");
@@ -98,7 +92,6 @@ bool Render::CleanUp()
 	return true;
 }
 
-// Load Game State
 bool Render::LoadState(pugi::xml_node& data)
 {
 	LOG("Loading Renderer");
@@ -110,7 +103,6 @@ bool Render::LoadState(pugi::xml_node& data)
 	return ret;
 }
 
-// Save Game State
 bool Render::SaveState(pugi::xml_node& data)
 {
 	pugi::xml_node cam = data.append_child("camera");
@@ -120,7 +112,6 @@ bool Render::SaveState(pugi::xml_node& data)
 
 	return true;
 }
-
 
 void Render::SetBackgroundColor(SDL_Color color)
 {
@@ -148,7 +139,6 @@ iPoint Render::ScreenToWorld(int x, int y) const
 	return ret;
 }
 
-// Blit to screen
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
@@ -303,11 +293,9 @@ void Render::SetToVsync(bool vsync)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		vsyncBool = true;
-		//SDL_GL_SetSwapInterval(0);
 	}
 	else
 	{
 		vsyncBool = false;
-		//SDL_GL_SetSwapInterval(1);
 	}
 }

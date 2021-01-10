@@ -18,6 +18,7 @@ class Item;
 class Life;
 class Map;
 class Render;
+class SDL_Rect;
 
 struct Snowball
 {
@@ -34,24 +35,12 @@ class Player : public Entity
 public:
 
 	Player(Input* input);
-
-	/*void Init();*/
-
-	// Destructor
 	virtual ~Player();
 
-	// Called before player is available
-	/*bool Awake(pugi::xml_node& conf);*/
-
-	// Called before the first frame
-	//bool Start();
-
-	// Called each loop iteration
 	bool Update(float dt);
-	bool PostUpdate();
+
 	bool Draw(Render* render);
 
-	// Called before quitting
 	bool CleanUp();
 
 	bool LoadState(pugi::xml_node&);
@@ -65,7 +54,10 @@ public:
 	void SetLife(Life* life);
 	void SetMap(Map* map);
 
-	//SDL_Rect player;
+	int GetTileProperty(int x, int y, const char* property) const;
+
+	void OnCollision(Collider* c1, Collider* c2);
+
 	SDL_Texture* playerTexture;
 	SDL_Texture* checkpointTexture;
 	SDL_Texture* redHeartTexture;
@@ -82,30 +74,26 @@ public:
 	SDL_Rect checkpointRect = { 248, 214, 145, 15 };
 
 	iPoint playerPos;
-	//iPoint snowballPos;
 	iPoint checkpointPos;
-
-	int numIce = 0;
+	
 	List<Collider*>checkpointList;
-	int GetTileProperty(int x, int y, const char* property) const;
 
 	bool godMode = false;
 	bool isDead = false;
-
-	unsigned int splashFx;
-	int lifeCount = 3;
 	bool isWon = false;
 	bool notPause = true;
-
 	bool drawBasic = false;
+
+	int lifeCount = 3;
+	int numIce = 0;
+	unsigned int splashFx;
 
 private:
 
 	Snowball* snowballs[MAX_SNOWBALLS] = { nullptr };
 	uint snowballCount = 0;
-	int i;
+	int i = 0;
 
-	//list of animations
 	Animation* currentAnimation = &rightIdle;
 	Animation* currentSnowballAnimation = &blankAnim;
 	Animation* currentHeart1 = &redHeart;
@@ -130,6 +118,7 @@ private:
 
 	fPoint speed;
 	Physics playerPhysics;
+
 	Collider* playerCollider = nullptr;
 	Collider* snowballCollider = nullptr;
 	Collider* winCollider = nullptr;
@@ -137,11 +126,6 @@ private:
 	bool ground = false;
 	bool platform = false;
 	bool water = false;
-
-	unsigned int deadFx;
-	unsigned int jumpingFx;
-	unsigned int checkpointFx;
-
 	bool isJumping = false;
 	bool isFalling = false;
 	bool isShooting = false;
@@ -150,13 +134,15 @@ private:
 	bool changePos = false;
 	bool isCheckpoint = false;
 
-	int god = 0;
-
 	int timer = 0;
 	int timerCheck = 0;
 	int timerShoot = 0;
+	int timerC = 0;
 	int ppx, ppy;
 	int numSnowball;
+	unsigned int deadFx;
+	unsigned int jumpingFx;
+	unsigned int checkpointFx;
 
 	GroundEnemy* groundEnemy = nullptr;
 	FlyingEnemy* flyingEnemy = nullptr;
@@ -164,8 +150,6 @@ private:
 	Life* life = nullptr;
 	Map* map = nullptr;
 	Input* input;
-
-	void OnCollision(Collider* c1, Collider* c2);
 };
 
 #endif // __PLAYER_H__

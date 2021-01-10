@@ -16,7 +16,7 @@ class SceneTitle : public Scene
 {
 public:
 
-	SceneTitle(Window* win, /*bool continueRequest, bool continueDone,*/ pugi::xml_node & config, Render * render);
+	SceneTitle(Window* win, pugi::xml_node & config, Render * render);
 	virtual ~SceneTitle();
 
 	bool Load(Textures* tex);
@@ -27,7 +27,6 @@ public:
 
 	bool Unload();
 
-	// Declare on mouse click event
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	bool fullscreen = false;
@@ -53,13 +52,12 @@ private:
 	bool exitReq = true;
 	bool creditsTab = false;
 	bool settingsTab = false;
-	//bool continueRequest;
-	//bool continueDone;
 
 	bool drawBasic = false;
 
 	int timerFullscreen = 0;
 	int timerVsync = 0;
+	int timerDraw = 0;
 
 	SDL_Texture* sceneTitle;
 	SDL_Texture* buttonsTitle;

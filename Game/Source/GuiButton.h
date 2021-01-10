@@ -18,14 +18,9 @@ public:
 
 	int mouseX, mouseY;
 	unsigned int click;
+
 	bool canClick = true;
-
-	bool drawBasic;
-
-private:
-
-	// Gui Button specific properties
-	// Maybe some animation properties for state change?
+	bool drawBasic = false;
 };
 
 #endif // __GUIBUTTON_H__

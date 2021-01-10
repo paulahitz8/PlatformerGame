@@ -8,14 +8,13 @@
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
-//#include "FadeScreen.h"
 #include "SceneWin.h"
 #include "Point.h"
-//#include "Player.h"
 
 Item::Item() : Entity(EntityType::ITEM)
 {
 	name.Create("item");
+
 	//animations
 	iceAnim.PushBack({ 41, 12, 16, 24 });
 	iceAnim.PushBack({ 13, 12, 16, 24 });
@@ -48,33 +47,21 @@ Item::Item() : Entity(EntityType::ITEM)
 	ice3Collider = app->collisions->AddCollider({ ice3Pos.x, ice3Pos.y, 16, 24 }, Collider::Type::ITEM, this);
 	ice4Collider = app->collisions->AddCollider({ ice4Pos.x, ice4Pos.y, 16, 24 }, Collider::Type::ITEM, this);
 	ice5Collider = app->collisions->AddCollider({ ice5Pos.x, ice5Pos.y, 16, 24 }, Collider::Type::ITEM, this);
+
+	currentAnimation1 = &iceAnim;
+	currentAnimation2 = &iceAnim;
+	currentAnimation3 = &iceAnim;
+	currentAnimation4 = &iceAnim;
+	currentAnimation5 = &iceAnim;
 }
 
 Item::~Item() {}
 
-//bool Item::Awake(pugi::xml_node&)
-//{
-//	
-//
-//	return true;
-//}
-
-
-//bool Item::Start()
-//{
-//	
-//
-//
-//	
-//	return true;
-//}
 
 bool Item::Update(float dt)
 {
 	if (isPicked == true)
 	{
-		//app->audio->PlayFx(iceFx);
-
 		if (player->playerPos.x  > ice1Pos.x - 20 && player->playerPos.x < ice1Pos.x + 20
 			&& player->playerPos.y  > ice1Pos.y - 20 && player->playerPos.y < ice1Pos.y + 20)
 		{
@@ -113,8 +100,6 @@ bool Item::Update(float dt)
 	currentAnimation3->Update(dt);
 	currentAnimation4->Update(dt);
 	currentAnimation5->Update(dt);
-
-	//isPicked = false;
 
 	return true;
 }

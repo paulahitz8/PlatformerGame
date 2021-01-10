@@ -7,11 +7,15 @@ GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiCont
 	this->bounds = bounds;
 	this->text = text;
 	click = app->audio->LoadFx("Assets/Audio/Fx/Button.wav");
+
+	timerCheckbox = 0;
+	canClick = true;
+	drawBasic = false;
+	checked = false;
 }
 
 GuiCheckBox::~GuiCheckBox()
-{
-}
+{}
 
 bool GuiCheckBox::Update(Input* input, float dt, Render* render, bool drawBasic)
 {
@@ -43,11 +47,18 @@ bool GuiCheckBox::Update(Input* input, float dt, Render* render, bool drawBasic)
 			if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 			{
 				canClick = true;
-				checked = true;
+				if (timerCheckbox > 5)
+				{
+					checked = !checked;
+					timerCheckbox = 0;
+				}
+
 				NotifyObserver();
 			}
 		}
 		else state = GuiControlState::NORMAL;
+
+		timerCheckbox++;
 	}
 
 	return false;
@@ -68,9 +79,9 @@ bool GuiCheckBox::Draw(Render* render)
 		if (drawBasic) render->DrawRectangle(bounds, 209, 37, 0, 255);
 		else
 		{
-			if (checked) 
+			if (checked)
 			{
-				render->DrawRectangle(checkSeen, 255, 255, 255, 255);
+				render->DrawRectangle(bounds, 255, 255, 255, 255);
 			}
 			else render->DrawRectangle(bounds, 0, 255, 0, 0);
 		}
@@ -79,6 +90,10 @@ bool GuiCheckBox::Draw(Render* render)
 		if (drawBasic) render->DrawRectangle(bounds, 255, 193, 52, 255);
 		else
 		{
+			if (checked)
+			{
+				render->DrawRectangle(bounds, 255, 255, 255, 255);
+			}
 			render->DrawRectangle(bounds, 255, 255, 255, 160);
 		}
 		break;
@@ -86,6 +101,10 @@ bool GuiCheckBox::Draw(Render* render)
 		if (drawBasic) render->DrawRectangle(bounds, 186, 255, 37, 255);
 		else
 		{
+			if (checked)
+			{
+				render->DrawRectangle(bounds, 255, 255, 255, 255);
+			}
 			render->DrawRectangle(bounds, 255, 255, 255, 255);
 		}
 		break;

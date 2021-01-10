@@ -4,7 +4,6 @@
 #include "Scene.h"
 
 #include "Map.h"
-//#include "EntityManager.h"
 #include "Player.h"
 #include "FlyingEnemy.h"
 #include "GroundEnemy.h"
@@ -24,7 +23,7 @@ class SceneGameplay : public Scene
 {
 public:
 
-	SceneGameplay(/*bool continueRequest, bool continueDone,*/ Render* render, EntityManager * entitymanager);
+	SceneGameplay(Render* render, EntityManager * entitymanager);
 	virtual ~SceneGameplay();
 
 	bool Load(Textures* tex);
@@ -38,7 +37,6 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	bool pauseMenu = false;
-
 	bool drawBasic = false;
 
 private:
@@ -49,9 +47,9 @@ private:
 	GuiButton* btnPauseCross;
 	GuiButton* btnSettCross;
 	GuiCheckBox* btnFullscreen;
+	GuiCheckBox* btnVsync;
 	GuiSlider* sliderMusic;
 	GuiSlider* sliderFx;
-	GuiCheckBox* btnVsync;
 
 	SDL_Texture* background;
 	SDL_Texture* debugPath;
@@ -60,31 +58,30 @@ private:
 
 	SDL_Rect rectPause;
 	SDL_Rect rectSettings;
+
 	int timerMenu = 0;
 	int timerFullscreen = 0;
 	int timerVsync = 0;
+	int timerMap = 0;
+	int timerDraw = 0;
 
 	EntityManager* entityManager = nullptr;
 	Map* map = nullptr;
 	Player* player = nullptr;
-	/*PathFinding* path;*/
 	FlyingEnemy* flyingEnemy = nullptr;
 	GroundEnemy* groundEnemy = nullptr;
 	Item* item = nullptr;
 	Life* life = nullptr;
-	/*Collisions* collisions = nullptr;*/
+	Render* render = nullptr;
+	Input* input = nullptr;
+	Font* font = nullptr;
 
-	//bool continueRequest;
-	//bool continueDone;
 	bool boolPath = false;
 	bool exitReq = true;
 	bool settingsTab = false;
 	bool fullscreen = false;
 	bool vsync = false;
 
-	Render* render;
-	Input* input;
-	Font* font;
 	Timer timer;
 	float timeP;
 };

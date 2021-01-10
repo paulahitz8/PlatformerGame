@@ -19,16 +19,12 @@ public:
 
 	unsigned int click;
 	bool canClick = true;
-	bool drawBasic;
-	bool checked;
+	bool drawBasic = false;
+	bool checked = false;
 
 private:
 
-	// GuiCheckBox specific properties
-	// Maybe some animation properties for state change?
-	//bool checked;
-
-	SDL_Rect checkSeen = { 754, 954, 22, 22 };
+	int timerCheckbox = 0;
 };
 
 #endif // __GUICHECKBOX_H__

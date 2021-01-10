@@ -6,11 +6,8 @@
 #include "Window.h"
 #include "SceneWin.h"
 
-
-
 #include "Defs.h"
 #include "Log.h"
-
 
 SceneWin::SceneWin(Render* render)
 {
@@ -25,8 +22,6 @@ bool SceneWin::Load(Textures* tex)
 	LOG("Loading Win Screen");
 	bool ret = true;
 
-	//player = new Player();
-
 	app->render->camera.x = 0;
 	app->audio->PlayMusic("Assets/Audio/Music/title_music.ogg", 0.0f);
 
@@ -38,7 +33,6 @@ bool SceneWin::Load(Textures* tex)
 	return ret;
 }
 
-// Called each loop iteration
 bool SceneWin::Update(Input* input, float dt, Render* render)
 {
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -68,8 +62,8 @@ bool SceneWin::Draw(Render* render)
 	if (player->numIce > 2 && player->numIce <= 4)
 	{
 		app->render->DrawTexture(sceneWon34, 0, 350, &rectWin);
-		if (player->numIce == 3) app->render->DrawTexture(player->ice3Texture, 600, 900, &iceRect);
-		if (player->numIce == 4) app->render->DrawTexture(player->ice4Texture, 600, 900, &iceRect);
+		if (player->numIce == 3) render->DrawTexture(player->ice3Texture, 600, 900, &iceRect);
+		if (player->numIce == 4) render->DrawTexture(player->ice4Texture, 600, 900, &iceRect);
 	}
 	if (player->numIce == 5)
 	{
@@ -89,8 +83,5 @@ bool SceneWin::Unload()
 	app->tex->UnLoad(sceneWon34);
 	app->tex->UnLoad(sceneWon5);
 
-	delete player;
-
 	return true;
 }
-

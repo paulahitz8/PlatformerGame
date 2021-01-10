@@ -16,7 +16,7 @@ public:
 			x = x + vx * time;
 			vel = (y - y0) / time;
 			y0 = y;
-			time += 1.0f / 60.0f;
+			time += 0.5f / 60.0f;
 		}
 		else time = 10.0f / 60.0f;
 	}

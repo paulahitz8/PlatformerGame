@@ -7,6 +7,9 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 {
 	click = app->audio->LoadFx("Assets/Audio/Fx/Button.wav");
 	
+	drawBasic = false;
+	canClick = true;
+
 	this->bounds = bounds;
 	this->text = text;
 }
@@ -17,8 +20,6 @@ GuiSlider::~GuiSlider()
 
 bool GuiSlider::Update(Input* input, float dt, Render* render, bool drawBasic)
 {
-	//float tmpValue = (float)maxValue / (float)(limits.w - bounds.w);
-	//value = (bounds.x - limits.x) * tmpValue;
 	this->drawBasic = drawBasic;
 
 	if (state != GuiControlState::DISABLED)
@@ -33,8 +34,6 @@ bool GuiSlider::Update(Input* input, float dt, Render* render, bool drawBasic)
 		unit = 319 / 128;
 		volume = (mouseX - 463) / unit;
 		volume = round(volume);
-
-		//bounds.x += render->camera.x;
 
 		// Check collision between mouse and button bounds
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&

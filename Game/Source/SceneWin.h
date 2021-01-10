@@ -21,10 +21,8 @@ public:
 
 	bool Unload();
 
-
 private:
 
-	//scene
 	SDL_Texture* sceneWon0;
 	SDL_Texture* sceneWon12;
 	SDL_Texture* sceneWon34;

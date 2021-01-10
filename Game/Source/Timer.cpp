@@ -1,5 +1,4 @@
 #include "Timer.h"
-//#include "App.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -28,8 +27,3 @@ float Timer::ReadSec() const
 {
 	return float(SDL_GetTicks() - startTime) / 1000.0f;
 }
-
-
-
-
-

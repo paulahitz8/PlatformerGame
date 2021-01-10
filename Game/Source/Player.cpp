@@ -1,20 +1,7 @@
 #include "Player.h"
 #include "App.h"
-#include "Textures.h"
 #include "Audio.h"
-#include "Input.h"
-#include "Render.h"
-#include "Scene.h"
 #include "Log.h"
-#include "Map.h"
-#include "Collisions.h"
-//#include "FadeScreen.h"
-#include "SceneWin.h"
-#include "GroundEnemy.h"
-#include "FlyingEnemy.h"
-#include "Item.h"
-#include "Life.h"
-#include "Window.h"
 #include "SceneGameplay.h"
 
 Player::Player(Input* input) : Entity(EntityType::PLAYER)
@@ -127,7 +114,6 @@ Player::Player(Input* input) : Entity(EntityType::PLAYER)
 	snowmanWave.speed = 3.0f;
 
 	LOG("Loading player textures");
-
 	playerTexture = app->tex->Load("Assets/Characters/penguin_sprites.png");
 	checkpointTexture = app->tex->Load("Assets/GUI/checkpoint.png");
 	redHeartTexture = app->tex->Load("Assets/GUI/red_heart.png");
@@ -150,14 +136,31 @@ Player::Player(Input* input) : Entity(EntityType::PLAYER)
 	playerPos = { 100,1000 };
 	checkpointPos = { 100, 1000 };
 
-	timer = 0;
-	god = 0;
-	lifeCount = 3;
-	numIce = 0;
+	playerRect = { 9,7,22,25 };
+	checkpointRect = { 248, 214, 145, 15 };
 	godMode = false;
 	isDead = false;
+	isWon = false;
+	notPause = true;
+	drawBasic = false;
+	ground = false;
+	platform = false;
+	water = false;
 	isJumping = false;
+	isFalling = false;
+	isShooting = false;
+	shootRight = false;
+	shootLeft = false;
 	changePos = false;
+	isCheckpoint = false;
+
+	timer = 0;
+	timerCheck = 0;
+	timerShoot = 0;
+	timerC = 0;
+	lifeCount = 3;
+	numIce = 0;
+	snowballCount = 0;
 	i = 0;
 
 	//Collider
@@ -200,13 +203,15 @@ bool Player::Update(float dt)
 			app->render->camera.x = 0;
 		}
 
+		// DEBUG Key to start from the beginning of current level
 		if (input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
 			playerPos.x = 100;
 			playerPos.y = 1000;
 			app->render->camera.x = 0;
 		}
-		
+
+		// DEBUG Key to enter godmode
 		if (input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
 			godMode = !godMode;
@@ -361,14 +366,14 @@ bool Player::Update(float dt)
 				//Walking to the left
 				else if (input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
-					playerPos.x += floor(175 * dt);
+					playerPos.x += floor(120 * dt);
 					if (!isFalling) currentAnimation = &rightWalk;
 				}
 
 				//Walking to the right
 				else if (input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
-					playerPos.x -= floor(175 * dt);
+					playerPos.x -= floor(120 * dt);
 					if (!isFalling) currentAnimation = &leftWalk;
 				}
 
@@ -398,17 +403,23 @@ bool Player::Update(float dt)
 					if (currentAnimation == &rightIdle || currentAnimation == &rightWalk) currentAnimation = &rightJump;
 					else if (currentAnimation == &leftIdle || currentAnimation == &leftWalk) currentAnimation = &leftJump;
 
-					speed.y = -23.0f;
+					speed.y = -18.0f;
 				}
 
 				if (input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 				{
-					Collider* nextCheckpoint = NULL;
-					nextCheckpoint = checkpointList[i];
-					i++;
-					if (i == 3) i = 0;
-					if (nextCheckpoint != NULL) playerPos = { nextCheckpoint->rect.x, nextCheckpoint->rect.y + 530 };
+					if (timerC > 5)
+					{
+						Collider* nextCheckpoint = NULL;
+						nextCheckpoint = checkpointList[i];
+						i++;
+						if (i == 3) i = 0;
+						if (nextCheckpoint != NULL) playerPos = { nextCheckpoint->rect.x, nextCheckpoint->rect.y + 530 };
+						timerC = 0;
+					}
 				}
+
+				timerC++;
 
 				if (isCheckpoint)
 				{
@@ -527,6 +538,53 @@ bool Player::Update(float dt)
 				ppx = playerPos.x;
 				ppy = playerPos.y;
 			}
+
+			if (isShooting)
+			{
+				if ((currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) && timerShoot == 14)
+				{
+					snowballs[numSnowball]->right = true;
+					shootRight = true;
+					isShooting = false;
+				}
+
+				if ((currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) && timerShoot == 14)
+				{
+					snowballs[numSnowball]->left = true;
+					shootLeft = true;
+					isShooting = false;
+				}
+				timerShoot++;
+			}
+
+			if (shootRight)
+			{
+				for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+				{
+					if (snowballs[i] != nullptr)
+					{
+						if (snowballs[i]->pendingToDelete == false && snowballs[i]->right == true)
+						{
+							snowballs[i]->snowballPos.x += 3;
+						}
+					}
+				}
+			}
+
+			if (shootLeft)
+			{
+				for (uint i = 0; i < MAX_SNOWBALLS; ++i)
+				{
+					if (snowballs[i] != nullptr)
+					{
+						if (snowballs[i]->pendingToDelete == false && snowballs[i]->left == true)
+						{
+							snowballs[i]->snowballPos.x -= 3;
+						}
+					}
+				}
+			}
+
 		}
 
 		if (isDead)
@@ -543,17 +601,18 @@ bool Player::Update(float dt)
 				if (timer == 118)
 				{
 					lifeCount--;
+
 					if (lifeCount == 0)
 					{
 						playerCollider->pendingToDelete = true;
 						currentAnimation = &blankAnim;
 						timer = 0;
-						isDead = false;
 					}
 					else if (lifeCount != 0)
 					{
 						flyingEnemy->active = false;
 						groundEnemy->active = false;
+
 						playerPos = checkpointPos;
 						app->render->camera.x = 0;
 						currentAnimation = &rightIdle;
@@ -578,60 +637,12 @@ bool Player::Update(float dt)
 						flyingEnemy->currentAnimation = &flyingEnemy->left;
 						flyingEnemy->currentDeadAnimation = &flyingEnemy->blankAnim;
 
-
 						isDead = false;
 					}
 				}
 			}
 		}
 
-
-
-		if (isShooting)
-		{
-			if ((currentAnimation == &rightIdle || currentAnimation == &rightWalk || currentAnimation == &rightJump) && timerShoot == 14)
-			{
-				snowballs[numSnowball]->right = true;
-				shootRight = true;
-				isShooting = false;
-			}
-
-			if ((currentAnimation == &leftIdle || currentAnimation == &leftWalk || currentAnimation == &leftJump) && timerShoot == 14)
-			{
-				snowballs[numSnowball]->left = true;
-				shootLeft = true;
-				isShooting = false;
-			}
-			timerShoot++;
-		}
-
-		if (shootRight)
-		{
-			for (uint i = 0; i < MAX_SNOWBALLS; ++i)
-			{
-				if (snowballs[i] != nullptr)
-				{
-					if (snowballs[i]->pendingToDelete == false && snowballs[i]->right == true)
-					{
-						snowballs[i]->snowballPos.x += 5;
-					}
-				}
-			}
-		}
-
-		if (shootLeft)
-		{
-			for (uint i = 0; i < MAX_SNOWBALLS; ++i)
-			{
-				if (snowballs[i] != nullptr)
-				{
-					if (snowballs[i]->pendingToDelete == false && snowballs[i]->left == true)
-					{
-						snowballs[i]->snowballPos.x -= 5;
-					}
-				}
-			}
-		}
 
 		currentAnimation->Update(dt);
 		currentSnowballAnimation->Update(dt);
@@ -650,13 +661,17 @@ bool Player::Update(float dt)
 			}
 		}
 	}
+
+	// Map Limits
+	if (playerPos.x <= 0) playerPos.x = 0;
+	if (playerPos.y <= 500) playerPos.y = 500;
 	
 	return true;
 }
 
 bool Player::Draw(Render* render)
 {
-	if (isCheckpoint) app->render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
+	if (isCheckpoint) render->DrawTexture(checkpointTexture, playerPos.x - 55, playerPos.y - 200, &checkpointRect);
 
 	//Drawing the player
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
@@ -696,8 +711,7 @@ bool Player::Draw(Render* render)
 		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
 		render->DrawTexture(redHeartTexture, -(render->camera.x - 1070), render->camera.y + 1050, &rect5);
 	}
-
-	if (lifeCount == 2)
+	else if (lifeCount == 2)
 	{
 		render->DrawTexture(grayHeartTexture, -(render->camera.x - 1000), render->camera.y + 1050, &grayRect);
 
@@ -707,8 +721,7 @@ bool Player::Draw(Render* render)
 		SDL_Rect rect5 = currentHeart3->GetCurrentFrame();
 		render->DrawTexture(redHeartTexture, -(render->camera.x - 1070), render->camera.y + 1050, &rect5);
 	}
-
-	if (lifeCount == 1)
+	else if (lifeCount == 1)
 	{
 		render->DrawTexture(grayHeartTexture, -(render->camera.x - 1000), render->camera.y + 1050, &grayRect);
 
@@ -718,41 +731,16 @@ bool Player::Draw(Render* render)
 		render->DrawTexture(redHeartTexture, -(render->camera.x - 1070), render->camera.y + 1050, &rect5);
 	}
 
+	// Drawing ice
 	SDL_Rect iceRect = { 0, 0, 68, 26 };
 	if (numIce == 0) render->DrawTexture(ice0Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
-
-	if (numIce == 1) render->DrawTexture(ice1Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
-
-	if (numIce == 2) render->DrawTexture(ice2Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
-
-	if (numIce == 3) render->DrawTexture(ice3Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
-
-	if (numIce == 4) render->DrawTexture(ice4Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
-
-	if (numIce == 5) render->DrawTexture(ice5Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
+	else if (numIce == 1) render->DrawTexture(ice1Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
+	else if (numIce == 2) render->DrawTexture(ice2Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
+	else if (numIce == 3) render->DrawTexture(ice3Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
+	else if (numIce == 4) render->DrawTexture(ice4Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
+	else if (numIce == 5) render->DrawTexture(ice5Texture, -(render->camera.x - 100), render->camera.y + 1050, &iceRect);
 
 	return false;
-}
-
-bool Player::PostUpdate()
-{
-	// Map Limits
-	if (playerPos.x <= 0) playerPos.x = 0;
-
-	if ((playerPos.x + playerRect.x) > (map->data.width * map->data.tileWidth)) --playerPos.x;
-
-	//In case of godmode on
-	if (playerPos.y <= 0) playerPos.y = 0;
-
-	if ((playerPos.y + playerRect.y) > (map->data.height * map->data.tileHeight)) --playerPos.y;
-
-	//if (isWon)
-	//{
-	//	app->scene->Disable();
-	//	app->winScreen->Enable();
-	//}
-
-	return true;
 }
 
 bool Player::CleanUp()

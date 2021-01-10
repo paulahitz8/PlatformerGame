@@ -18,9 +18,8 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneTitle::SceneTitle(Window* win,/* bool continueRequest, bool continueDone,*/ pugi::xml_node & config, Render * render)
+SceneTitle::SceneTitle(Window* win, pugi::xml_node & config, Render * render)
 {
-	// GUI: Initialize required controls for the screen
 	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS");
 	btnCredits->SetObserver(this);
 
@@ -54,10 +53,10 @@ SceneTitle::SceneTitle(Window* win,/* bool continueRequest, bool continueDone,*/
 	sliderFx = new GuiSlider(11, { 630, 869, 34, 34 }, "FX");
 	sliderFx->SetObserver(this);
 
+	timerDraw = 0;
+
 	this->render = render;
 	this->win = win;
-	//this->continueRequest = continueRequest;
-	//this->continueDone = continueDone;
 	this->config = config;
 }
 
@@ -90,8 +89,13 @@ bool SceneTitle::Update(Input* input, float dt)
 {
 	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-		drawBasic = !drawBasic;
+		if (timerDraw > 5)
+		{
+			drawBasic = !drawBasic;
+			timerDraw = 0;
+		}
 	}
+	timerDraw++;
 
 	if (creditsTab != true && settingsTab != true)
 	{
@@ -134,7 +138,6 @@ bool SceneTitle::Update(Input* input, float dt)
 	return exitReq;
 }
 
-// Called each loop iteration
 bool SceneTitle::Draw(Render* render)
 {
 
@@ -172,7 +175,6 @@ bool SceneTitle::Draw(Render* render)
 	}
 
 	//Drawing text
-
 	if (!creditsTab && !settingsTab)
 	{
 		render->DrawText(font, "CREDITS", 192, 490, 45, 4, { 255, 255, 255, 255 });
@@ -212,7 +214,6 @@ bool SceneTitle::Draw(Render* render)
 	return false;
 }
 
-// Called before quitting
 bool SceneTitle::Unload()
 {
 	LOG("Freeing scene");
@@ -234,8 +235,6 @@ bool SceneTitle::Unload()
 	delete btnVsync;
 	delete sliderMusic;
 	delete sliderFx;
-
-	//continueDone = false;
 	
 	return true;
 }
@@ -246,7 +245,6 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
-		// Default
 		if (control->id == 1) // Credits request
 		{
 			creditsTab = true;
@@ -273,17 +271,13 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 			btnSettings->state = GuiControlState::NORMAL;
 
 		}
-
-		// Credits
-		else if (control->id == 6)
+		else if (control->id == 6) // Credits
 		{
 			creditsTab = false;  // Credits request
 			btnCredCross->state = GuiControlState::NORMAL;
 
 		}
-
-		// Settings
-		else if (control->id == 7)
+		else if (control->id == 7) // Settings
 		{
 			settingsTab = false;  // Credits request
 			btnSettCross->state = GuiControlState::NORMAL;
@@ -306,24 +300,6 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			if (timerVsync > 5)
 			{
-			/*	if (app->render->config.child("vsync").attribute("value").as_bool() == true)
-				{
-					app->render->config.child("vsync").attribute("value") = false;
-				}
-				else if (app->render->config.child("vsync").attribute("value").as_bool() == false)
-				{
-					app->render->config.child("vsync").append_attribute("value") = true;
-				}*/
-				/*if (render->vsyncBool == false)
-				{
-					SDL_GL_SetSwapInterval(1);
-					render->vsyncBool = true;
-				}
-				if (render->vsyncBool == true)
-				{
-					SDL_GL_SetSwapInterval(0);
-					render->vsyncBool = false;
-				}*/
 				vsync = !vsync;
 				render->SetToVsync(vsync);
 				timerVsync = 0;

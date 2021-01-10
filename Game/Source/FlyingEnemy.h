@@ -17,23 +17,12 @@ class FlyingEnemy : public Entity
 public:
 
 	FlyingEnemy();
-
-	//void Init();
-
-	// Destructor
 	virtual ~FlyingEnemy();
 
-	// Called before player is available
-	/*bool Awake(pugi::xml_node& conf);*/
-
-	// Called before the first frame
-	//bool Start();
-
-	// Called each loop iteration
 	bool Update(float dt);
+
 	bool Draw(Render* render);
 
-	// Called before quitting
 	bool CleanUp();
 
 	bool LoadState(pugi::xml_node&);
@@ -41,7 +30,6 @@ public:
 
 	void SetPlayer(Player* player);
 
-	//SDL_Rect player;
 	SDL_Texture* enemyTexture;
 	SDL_Texture* deadTexture;
 	SDL_Rect enemyRect = { 9,7,22,25 };
@@ -50,19 +38,15 @@ public:
 
 	bool isDead = false;
 
-	//const DynArray<iPoint>* path;
-
 	unsigned int eagleFx;
 
-	bool playerSeenF;
+	bool playerSeenF = false;
 	bool notPause = true;
-	int timer;
-	int soundTimer;
+	int timer = 0;
+	int soundTimer = 0;
 
-	//list of animations
 	Animation* currentAnimation = &right;
 	Animation* currentDeadAnimation = &blankAnim;
-
 	Animation blankAnim;
 	Animation left;
 

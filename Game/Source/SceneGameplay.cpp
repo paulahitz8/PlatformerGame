@@ -6,17 +6,11 @@
 #include "Window.h"
 #include "SceneGameplay.h"
 #include "EntityManager.h"
-//#include "Map.h"
 #include "PathFinding.h"
-//#include "Player.h"
-//#include "GroundEnemy.h"
-//#include "FlyingEnemy.h"
-//#include "Item.h"
 #include "SceneLogo.h"
 #include "SceneTitle.h"
 #include "SceneWin.h"
 #include "SceneLose.h"
-//#include "Life.h"
 #include "Input.h"
 #include "SceneManager.h"
 
@@ -25,7 +19,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneGameplay::SceneGameplay(/*bool continueRequest, bool continueDone,*/ Render* render, EntityManager * entityManager)
+SceneGameplay::SceneGameplay(Render* render, EntityManager * entityManager)
 {
 	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS");
 	btnSettings->SetObserver(this);
@@ -54,13 +48,23 @@ SceneGameplay::SceneGameplay(/*bool continueRequest, bool continueDone,*/ Render
 	sliderFx = new GuiSlider(8, { 630, 869, 34, 34 }, "FX");
 	sliderFx->SetObserver(this);
 
-	//this->continueRequest = continueRequest;
-	//this->continueDone = continueDone;
+	timerMenu = 0;
+	timerFullscreen = 0;
+	timerVsync = 0;
+	timerMap = 0;
+	timerDraw = 0;
+	pauseMenu = false;
+	drawBasic = false;
+	vsync = false;
+	fullscreen = false;
+	settingsTab = false;
+	exitReq = false;
+	boolPath = false;
+
 	this->entityManager = entityManager;
 	this->render = render;
 }
 
-// Destructor
 SceneGameplay::~SceneGameplay() {}
 
 bool SceneGameplay::Load(Textures* tex)
@@ -104,6 +108,7 @@ bool SceneGameplay::Load(Textures* tex)
 	timerMenu = 0;
 	timerFullscreen = 0;
 	timerVsync = 0;
+
 	if (app->sceneManager->continueDone)
 	{
 		app->LoadGameRequest();
@@ -115,20 +120,27 @@ bool SceneGameplay::Load(Textures* tex)
 	return true;
 }
 
-// Called each loop iteration
 bool SceneGameplay::Update(Input* input, float dt)
 {
 	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-		drawBasic = !drawBasic;
+		if (timerDraw > 5)
+		{
+			drawBasic = !drawBasic;
+			timerDraw = 0;
+		}
 	}
+	timerDraw++;
 
 	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		pauseMenu = true;
 	}
 
-	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadGameRequest();
+	if (input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	{
+		app->LoadGameRequest();
+	}
 
 	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
@@ -138,8 +150,14 @@ bool SceneGameplay::Update(Input* input, float dt)
 
 	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
-		map->drawColliders = !map->drawColliders;
+		if (timerMap > 5)
+		{
+			boolPath = !boolPath;
+			map->drawColliders = !map->drawColliders;
+			timerMap = 0;
+		}
 	}
+	timerMap++;
 
 	// Camera: follow the player
 	if (player->playerPos.x >= 500 && player->playerPos.x < 8820) app->render->camera.x = -(player->playerPos.x - 500);
@@ -156,6 +174,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 	{
 		TransitionToScene(SceneType::LOSE);
 	}
+
 	entityManager->Update(dt);
 
 	if (pauseMenu == true && settingsTab == false)
@@ -174,7 +193,6 @@ bool SceneGameplay::Update(Input* input, float dt)
 		sliderFx->Update(input, dt, render, drawBasic);
 		btnVsync->Update(input, dt, render, drawBasic);
 	}
-
 
 	if (sliderMusic->state == GuiControlState::PRESSED)
 	{
@@ -230,7 +248,6 @@ bool SceneGameplay::Draw(Render* render)
 	app->win->GetWindowSize(w, h);
 	uint wmb, hmb;
 	app->tex->GetSize(background, wmb, hmb);
-
 	for (int i = 0; (wmb * i) <= (w - render->camera.x); i++) render->DrawTexture(background, wmb * i, map->data.tileHeight * 2, false, 0.4f);
 
 	// Draw map
@@ -275,16 +292,13 @@ bool SceneGameplay::Draw(Render* render)
 	}
 	else if (settingsTab)
 	{
-	
 		rectSettings = { 0, -500, (int)app->win->GetWidth(), (int)app->win->GetHeight() + 300 };
 		render->DrawTexture(settingsTex, -render->camera.x, 350, &rectPause);
-
 		btnSettCross->Draw(render);
 		btnFullscreen->Draw(render);
 		btnVsync->Draw(render);
 		sliderMusic->Draw(render);
 		sliderFx->Draw(render);
-
 		render->DrawText(font, "MUSIC VOLUME", 500, 195, 45, 4, { 255, 255, 255, 255 });
 		render->DrawText(font, "FX VOLUME", 530, 310, 45, 4, { 255, 255, 255, 255 });
 		render->DrawText(font, "FULLSCREEN", 400, 450, 42, 4, { 255, 255, 255, 255 });
@@ -344,17 +358,16 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
-		// Default
 		if (control->id == 1) // Settings request
 		{
 			settingsTab = true;
 			btnSettings->state = GuiControlState::NORMAL;
 		}
+		else if (control->id == 2) exitReq = false; // Exit request
 		else if (control->id == 3)
 		{
 			TransitionToScene(SceneType::TITLE); // Gameplay request
 		}
-		else if (control->id == 2) exitReq = false; // Exit request
 		else if (control->id == 4)
 		{
 			player->notPause = true;
@@ -387,24 +400,6 @@ bool SceneGameplay::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			if (timerVsync > 5)
 			{
-				/*	if (app->render->config.child("vsync").attribute("value").as_bool() == true)
-					{
-						app->render->config.child("vsync").attribute("value") = false;
-					}
-					else if (app->render->config.child("vsync").attribute("value").as_bool() == false)
-					{
-						app->render->config.child("vsync").append_attribute("value") = true;
-					}*/
-					/*if (render->vsyncBool == false)
-					{
-						SDL_GL_SetSwapInterval(1);
-						render->vsyncBool = true;
-					}
-					if (render->vsyncBool == true)
-					{
-						SDL_GL_SetSwapInterval(0);
-						render->vsyncBool = false;
-					}*/
 				vsync = !vsync;
 				render->SetToVsync(vsync);
 				timerVsync = 0;

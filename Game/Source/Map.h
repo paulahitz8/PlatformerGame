@@ -157,7 +157,7 @@ public:
 
 	MapData data;
 
-	bool drawColliders;
+	bool drawColliders = false;
 
 private:
 

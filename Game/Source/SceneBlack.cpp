@@ -5,7 +5,6 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-//#include "FadeScreen.h"
 #include "SceneLogo.h"
 #include "SceneTitle.h"
 #include "SceneWin.h"
@@ -21,10 +20,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneBlack::SceneBlack()
-{
-	//name.Create("BlackScreen");
-}
+SceneBlack::SceneBlack(){}
 
 SceneBlack::~SceneBlack() {}
 
@@ -42,8 +38,6 @@ bool SceneBlack::Update(Input* input, float dt)
 {
 	if (timer == 10)
 	{
-		/*app->fadeScreen->active = true;
-		app->fadeScreen->FadeToBlack(this, (Module*)app->sceneLogo, 90.0f);*/
 		TransitionToScene(SceneType::LOGO);
 	}
 	timer++;
@@ -67,4 +61,3 @@ bool SceneBlack::Unload()
 
 	return true;
 }
-

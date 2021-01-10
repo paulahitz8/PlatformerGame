@@ -22,7 +22,6 @@ public:
 
 private:
 
-	// scene
 	SDL_Texture* sceneLose;
 	SDL_Rect rectLose;
 

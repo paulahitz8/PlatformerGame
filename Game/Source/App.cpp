@@ -31,7 +31,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	entityManager = new EntityManager(input);
 	sceneManager = new SceneManager(input, render, tex, win, config, entityManager);
 
-
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(win);
@@ -147,7 +146,7 @@ bool App::Update()
 	if (ret == true)
 		ret = PostUpdate();
 
-	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
 		if (!changeFps) changeFps = true;
 		else if (changeFps) changeFps = false;
@@ -212,7 +211,7 @@ void App::FinishUpdate(Render* render)
 	else if (render->vsyncBool == false) render->vsync = "off";
 	sprintf_s(title, 256, "FPS: %d   Avg. FPS: %.2f   Last-frame MS: %02u   Vsync: %s",
 		frames, averageFps, lastFrameMs, render->vsync);
-	app->win->SetTitle(title);
+	win->SetTitle(title);
 
 	PERF_START(pTimer);
 	if (frameDelay > lastFrameMs)
@@ -228,8 +227,6 @@ void App::FinishUpdate(Render* render)
 			frames = 30;
 		}
 	}
-
-	PERF_PEEK(pTimer);
 }
 
 // Call modules before each loop iteration

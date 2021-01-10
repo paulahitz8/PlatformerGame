@@ -17,23 +17,12 @@ class Life : public Entity
 public:
 
 	Life();
-
-	/*void Init();*/
-
-	// Destructor
 	virtual ~Life();
 
-	// Called before player is available
-	//bool Awake(pugi::xml_node& conf);
-
-	// Called before the first frame
-	//bool Start();
-
-	// Called each loop iteration
 	bool Update(float dt);
+
 	bool Draw(Render* render);
 
-	// Called before quitting
 	bool CleanUp();
 
 	void SetPlayer(Player* player);

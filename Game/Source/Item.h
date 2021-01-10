@@ -17,23 +17,12 @@ class Item : public Entity
 public:
 
 	Item();
-
-	/*void Init();*/
-
-	// Destructor
 	virtual ~Item();
 
-	// Called before player is available
-	/*bool Awake(pugi::xml_node& conf);*/
-
-	// Called before the first frame
-	/*bool Start();*/
-
-	// Called each loop iteration
 	bool Update(float dt);
+
 	bool Draw(Render* render);
 
-	// Called before quitting
 	bool CleanUp();
 
 	void SetPlayer(Player* player);

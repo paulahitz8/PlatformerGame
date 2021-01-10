@@ -8,7 +8,6 @@
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
-//#include "FadeScreen.h"
 #include "SceneWin.h"
 #include "PathFinding.h"
 #include "Player.h"
@@ -18,6 +17,7 @@
 GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 {
 	name.Create("groundenemy");
+
 	//animations
 	blankAnim.PushBack({ 0, 30, 2, 2 });
 
@@ -61,14 +61,17 @@ GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 
 	//Path
 	playerSeenG = false;
+	isDead = false;
+	isFalling = false;
 
 	currentAnimation = &leftIdle;
 	currentDeadAnimation = &blankAnim;
 
 	timer = 0;
 	soundTimer = 0;
-
-	isDead = false;
+	pathIndex = 0;
+	createPath = 0;
+	pathTimer = 0;
 
 	enemyPos = { 300, 993 };
 
@@ -77,25 +80,9 @@ GroundEnemy::GroundEnemy() : Entity(EntityType::GROUNDENEMY)
 
 	//Audios
 	sealFx = app->audio->LoadFx("Assets/Audio/Fx/seal_fx.wav");
-
 }
 
 GroundEnemy::~GroundEnemy() {}
-
-//bool GroundEnemy::Awake(pugi::xml_node&)
-//{
-//	
-//
-//	return true;
-//}
-
-
-//bool GroundEnemy::Start()
-//{
-//	
-//
-//	return true;
-//}
 
 bool GroundEnemy::Update(float dt)
 {
@@ -208,7 +195,6 @@ bool GroundEnemy::Update(float dt)
 		currentDeadAnimation->Update(dt);
 
 		enemyCollider->SetPos(enemyPos.x, enemyPos.y);
-
 	}
 	
 	return true;

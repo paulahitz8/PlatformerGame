@@ -4,7 +4,6 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-//#include "FadeScreen.h"
 #include "SceneLogo.h"
 #include "SceneTitle.h"
 #include "SceneGameplay.h"
@@ -50,9 +49,7 @@ bool SceneLogo::Unload()
 {
 	LOG("Freeing scene");
 
-	/*active = false;*/
 	tex->UnLoad(sceneLogo);
 
 	return false;
 }
-

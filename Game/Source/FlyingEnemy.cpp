@@ -8,7 +8,6 @@
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
-//#include "FadeScreen.h"
 #include "SceneWin.h"
 #include "PathFinding.h"
 #include "Player.h"
@@ -76,21 +75,6 @@ FlyingEnemy::FlyingEnemy() : Entity(EntityType::FLYINGENEMY)
 }
 
 FlyingEnemy::~FlyingEnemy() {}
-
-//bool FlyingEnemy::Awake(pugi::xml_node&)
-//{
-//	
-//
-//	return true;
-//}
-
-
-//bool FlyingEnemy::Start()
-//{
-//	
-//
-//	return true;
-//}
 
 bool FlyingEnemy::Update(float dt)
 {
@@ -194,10 +178,8 @@ bool FlyingEnemy::Draw(Render* render)
 
 bool FlyingEnemy::CleanUp()
 {
-	//Unload audios
 	app->audio->UnloadFx(eagleFx);
 
-	//Unload the textures
 	app->tex->UnLoad(enemyTexture);
 	app->tex->UnLoad(deadTexture);
 	if (enemyCollider != nullptr) enemyCollider->pendingToDelete = true;

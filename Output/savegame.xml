@@ -8,19 +8,19 @@
 	<collisions />
 	<entitymanager>
 		<player>
-			<player x="7048" y="1065" />
+			<player x="2544" y="1065" />
 		</player>
 		<flyingenemy>
-			<enemy x="2482" y="1054" />
+			<enemy x="2701" y="801" />
 		</flyingenemy>
 		<groundenemy>
-			<enemy x="315" y="998" />
+			<enemy x="300" y="998" />
 		</groundenemy>
 		<item />
 		<life />
 	</entitymanager>
 	<scenemanager />
 	<renderer>
-		<camera x="-6538" y="-500" />
+		<camera x="-2042" y="-500" />
 	</renderer>
 </save_state>

@@ -18,23 +18,12 @@ class GroundEnemy : public Entity
 public:
 
 	GroundEnemy();
-
-	//void Init();
-
-	// Destructor
 	virtual ~GroundEnemy();
 
-	// Called before player is available
-	/*bool Awake(pugi::xml_node& conf);*/
-
-	// Called before the first frame
-	/*bool Start();*/
-
-	// Called each loop iteration
 	bool Update(float dt);
+
 	bool Draw(Render* render);
 
-	// Called before quitting
 	bool CleanUp();
 
 	bool LoadState(pugi::xml_node&);
@@ -46,22 +35,19 @@ public:
 
 	void SetMap(Map* map);
 
-	//SDL_Rect player;
 	SDL_Texture* enemyTexture;
 	SDL_Texture* deadTexture;
 	SDL_Rect enemyRect = { 9,7,22,25 };
 
 	iPoint enemyPos;
 
+	bool playerSeenG = false;
+	bool notPause = true;
 	bool isDead = false;
 
+	int soundTimer = 0;
+	int timer = 0;
 	unsigned int sealFx;
-
-	bool playerSeenG;
-	bool notPause = true;
-
-	int soundTimer;
-	int timer;
 
 	//list of animations
 	Animation* currentAnimation = &rightIdle;
@@ -90,7 +76,6 @@ private:
 
 	Player* player = nullptr;
 	Map* map = nullptr;
-
 };
 
 #endif // __GROUNDENEMY_H__

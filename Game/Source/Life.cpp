@@ -8,14 +8,13 @@
 #include "Log.h"
 #include "Map.h"
 #include "Collisions.h"
-//#include "FadeScreen.h"
 #include "SceneWin.h"
 #include "Point.h"
-//#include "Player.h"
 
 Life::Life() : Entity(EntityType::LIFE)
 {
 	name.Create("life");
+
 	//animations
 	fishAnim.PushBack({ 40, 15, 21, 20 });
 	fishAnim.PushBack({ 11, 15, 21, 20 });
@@ -37,6 +36,8 @@ Life::Life() : Entity(EntityType::LIFE)
 	fish3Pos = { 5000, 1060 };
 	fish4Pos = { 8270, 800 };
 
+	isPicked = false;
+
 	//Audio
 	fishFx = app->audio->LoadFx("Assets/Audio/Fx/bubbles_fx.wav");
 
@@ -45,24 +46,14 @@ Life::Life() : Entity(EntityType::LIFE)
 	fish2Collider = app->collisions->AddCollider({ fish2Pos.x, fish2Pos.y, 21, 20 }, Collider::Type::LIFE, this);
 	fish3Collider = app->collisions->AddCollider({ fish3Pos.x, fish3Pos.y, 21, 20 }, Collider::Type::LIFE, this);
 	fish4Collider = app->collisions->AddCollider({ fish4Pos.x, fish4Pos.y, 21, 20 }, Collider::Type::LIFE, this);
+
+	currentAnimation1 = &fishAnim;
+	currentAnimation2 = &fishAnim;
+	currentAnimation3 = &fishAnim;
+	currentAnimation4 = &fishAnim;
 }
 
 Life::~Life() {}
-
-//bool Life::Awake(pugi::xml_node&)
-//{
-//
-//
-//	return true;
-//}
-
-
-//bool Life::Start()
-//{
-//	
-//
-//	return true;
-//}
 
 bool Life::Update(float dt)
 {
