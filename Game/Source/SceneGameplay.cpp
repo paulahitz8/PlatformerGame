@@ -18,13 +18,14 @@
 #include "SceneLose.h"
 //#include "Life.h"
 #include "Input.h"
+#include "SceneManager.h"
 
 #include "SDL_mixer/include/SDL_mixer.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-SceneGameplay::SceneGameplay(bool continueRequest, bool continueDone, Render* render, EntityManager * entityManager)
+SceneGameplay::SceneGameplay(/*bool continueRequest, bool continueDone,*/ Render* render, EntityManager * entityManager)
 {
 	btnSettings = new GuiButton(1, { 538, 708, 201, 60 }, "SETTINGS");
 	btnSettings->SetObserver(this);
@@ -50,8 +51,8 @@ SceneGameplay::SceneGameplay(bool continueRequest, bool continueDone, Render* re
 	sliderFx = new GuiSlider(8, { 630, 869, 34, 34 }, "FX");
 	sliderFx->SetObserver(this);
 
-	this->continueRequest = continueRequest;
-	this->continueDone = continueDone;
+	//this->continueRequest = continueRequest;
+	//this->continueDone = continueDone;
 	this->entityManager = entityManager;
 	this->render = render;
 }
@@ -106,10 +107,10 @@ bool SceneGameplay::Load(Textures* tex)
 	timerMenu = 0;
 	timerFullscreen = 0;
 	/*continueDone = false;*/
-	if (continueDone)
+	if (app->sceneManager->continueDone)
 	{
 		app->LoadGameRequest();
-		continueDone = false;
+		app->sceneManager->continueDone = false;
 	}
 
 	font = new Font("Assets/Fonts/pixel_digivolve.xml", tex);
@@ -134,7 +135,7 @@ bool SceneGameplay::Update(Input* input, float dt)
 	if (input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
 		app->SaveGameRequest();
-		continueRequest = true;
+		app->sceneManager->continueRequest = true;
 	}
 
 	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)

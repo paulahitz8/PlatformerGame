@@ -10,6 +10,7 @@
 #include "FadeScreen.h"
 #include "SceneGameplay.h"
 #include "Font.h"
+#include "SceneManager.h"
 
 #include "SDL_mixer/include/SDL_mixer.h"
 #include "PugiXml/src/pugixml.hpp"
@@ -17,7 +18,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-SceneTitle::SceneTitle(Window* win, bool continueRequest, bool continueDone, pugi::xml_node & config, Render * render)
+SceneTitle::SceneTitle(Window* win,/* bool continueRequest, bool continueDone,*/ pugi::xml_node & config, Render * render)
 {
 	// GUI: Initialize required controls for the screen
 	btnCredits = new GuiButton(1, { 176, 984, 194, 60 }, "CREDITS");
@@ -55,8 +56,8 @@ SceneTitle::SceneTitle(Window* win, bool continueRequest, bool continueDone, pug
 
 	this->render = render;
 	this->win = win;
-	this->continueRequest = continueRequest;
-	this->continueDone = continueDone;
+	//this->continueRequest = continueRequest;
+	//this->continueDone = continueDone;
 	this->config = config;
 }
 
@@ -96,7 +97,10 @@ bool SceneTitle::Update(Input* input, float dt)
 	{
 		btnCredits->Update(input, dt, render, drawBasic);
 		btnPlay->Update(input, dt, render, drawBasic);
-		btnContinue->Update(input, dt, render, drawBasic);
+		if (app->sceneManager->continueRequest)
+		{
+			btnContinue->Update(input, dt, render, drawBasic);
+		}
 		btnExit->Update(input, dt, render, drawBasic);
 		btnSettings->Update(input, dt, render, drawBasic);
 	}
@@ -146,7 +150,10 @@ bool SceneTitle::Draw(Render* render)
 
 	btnCredits->Draw(render);
 	btnPlay->Draw(render);
-	btnContinue->Draw(render);
+	if (app->sceneManager->continueRequest)
+	{
+		btnContinue->Draw(render);
+	}
 	btnExit->Draw(render);
 	btnSettings->Draw(render);
 	btnCredCross->Draw(render);
@@ -224,7 +231,7 @@ bool SceneTitle::Unload()
 	delete sliderMusic;
 	delete sliderFx;
 
-	continueDone = false;
+	//continueDone = false;
 	
 	return true;
 }
@@ -246,9 +253,9 @@ bool SceneTitle::OnGuiMouseClickEvent(GuiControl* control)
 		else if (control->id == 3) exitReq = false; // Exit request
 		else if (control->id == 4) 	// Continue request
 		{
-			if (continueRequest)
+			if (app->sceneManager->continueRequest)
 			{
-				continueDone = true;
+				app->sceneManager->continueDone = true;
 				TransitionToScene(SceneType::GAMEPLAY);
 			}
 			else
