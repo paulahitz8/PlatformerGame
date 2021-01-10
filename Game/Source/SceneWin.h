@@ -18,7 +18,7 @@ public:
 
 	bool Load(Textures* tex);
 
-	bool Update(Input* input, float dt, Render* render);
+	bool Update(Input* input, float dt);
 
 	bool Draw(Render* render);
 
@@ -30,9 +30,16 @@ private:
 	SDL_Texture* sceneWon12;
 	SDL_Texture* sceneWon34;
 	SDL_Texture* sceneWon5;
+
+	SDL_Texture* ice0Tex;
+	SDL_Texture* ice1Tex;
+	SDL_Texture* ice2Tex;
+	SDL_Texture* ice3Tex;
+	SDL_Texture* ice4Tex;
+	SDL_Texture* ice5Tex;
+
 	SDL_Rect rectWin;
 
-	Player* player;
 	Render* render;
 	Textures* tex;
 	Window* win;

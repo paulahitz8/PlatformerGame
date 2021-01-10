@@ -669,6 +669,7 @@ bool Player::Update(float dt)
 	// Map Limits
 	if (playerPos.x <= 0) playerPos.x = 0;
 	if (playerPos.y <= 500) playerPos.y = 500;
+	if (playerPos.x > 9500) playerPos.x = 9500;
 	
 	return true;
 }

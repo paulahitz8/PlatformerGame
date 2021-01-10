@@ -40,6 +40,7 @@ public:
 
 	bool continueRequest = false;
 	bool continueDone = false;
+	int iceNum = 0;
 
 private:
 
